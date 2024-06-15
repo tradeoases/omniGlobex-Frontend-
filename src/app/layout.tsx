@@ -7,6 +7,7 @@ import TopBanner from "@/components/TopBanner";
 import TopBar from "@/components/TopBar";
 import NavBar from "@/components/NavBar";
 import Sidemenu from "@/components/Sidemenu";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400"] });
 
@@ -25,7 +26,9 @@ export default function RootLayout({
             <TopBar />
             <NavBar />
             {children}
+            <Footer />
           </div>
+
         </body>
       </html>
     </RecoilRoot>

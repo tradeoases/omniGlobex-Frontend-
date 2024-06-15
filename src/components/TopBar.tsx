@@ -7,8 +7,9 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { SlHandbag } from "react-icons/sl";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { LuAlignLeft, LuTally1 } from "react-icons/lu";
-import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
+import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
+import Link from "next/link";
 
 export const items = [
   {
@@ -41,9 +42,9 @@ const TopBar = () => {
   return (
     <div className="w-full border-b py-4">
       <div className="hidden w-10/12 xl:w-8/12 mx-auto lg:flex items-center justify-between">
-        <div className="text-2xl font-semibold">
-          log<span className="text-4xl text-main font-bold">o</span>
-        </div>
+        <Link href="/">
+          <Logo />
+        </Link>
 
         <SearchBar />
 
@@ -79,9 +80,7 @@ const TopBar = () => {
         <div onClick={onOpen}>
           <LuAlignLeft className="text-2xl" />
         </div>
-        <div className="text-2xl font-semibold">
-          log<span className="text-4xl text-main font-bold">o</span>
-        </div>
+        <Logo />
         <p className="relative">
           <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
             3
@@ -121,6 +120,14 @@ const SearchBar = () => {
       <div className="bg-main py-3 px-6">
         <p className="font-bold text-sm">Search</p>
       </div>
+    </div>
+  );
+};
+
+export const Logo = () => {
+  return (
+    <div className="text-2xl font-semibold text-main">
+      Shop<span className="text-4xl text-black font-bold">o</span>
     </div>
   );
 };

@@ -1,9 +1,11 @@
 import AnnounceBanner from "@/components/AnnounceBanner";
+import BestSeller from "@/components/BestSeller";
 import GameWorldSection from "@/components/GameWorldSection";
+import NewArrivalSection from "@/components/NewArrivalSection";
+import PopularSales from "@/components/PopularSales";
 import ShopBrandSection from "@/components/ShopBrandSection";
-import Image from "next/image";
+import TopSellingProducts from "@/components/TopSellingProducts";
 import { BsMinecartLoaded } from "react-icons/bs";
-import { FaArrowRotateRight } from "react-icons/fa6";
 import { GoTrophy } from "react-icons/go";
 import { MdOutlineSecurity } from "react-icons/md";
 import { TbTruckReturn } from "react-icons/tb";
@@ -13,9 +15,14 @@ export default function Home() {
     <main className="w-10/12 xl:w-8/12 mx-auto py-8 space-y-8">
       <Header />
       <OurServices />
-      <GameWorldSection />
+      <GameWorldSection name="Game World" route="" />
       <ShopBrandSection />
       <AnnounceBanner />
+      <TopSellingProducts />
+      <BestSeller />
+      <GameWorldSection name="Popular Sales" route="" />
+      <NewArrivalSection />
+      <PopularSales />
     </main>
   );
 }
@@ -48,7 +55,7 @@ interface IOurService {
 
 const OurServices = () => {
   return (
-    <div className="w-full bg-white space-y-10 lg:space-y-0 lg:flex items-center justify-between p-8">
+    <div className="w-full bg-white space-y-10 lg:space-y-0 lg:flex items-center justify-between p-6 xl:p-8">
       {ourServices.map((service, i) => (
         <OurServiceItem key={i} {...service} />
       ))}
@@ -67,7 +74,7 @@ const OurServiceItem: React.FC<IOurService> = ({
       <span className={`text-main  ${id === 2 ? "text-5xl" : "text-4xl"}`}>
         {icon}
       </span>
-      <div className="space-y-2">
+      <div className="space-y-1">
         <p className="text-base font-bold">{title}</p>
         <p className="text-sm text-gray-400">{description}</p>
       </div>
