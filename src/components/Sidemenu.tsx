@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { HiArrowPath } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -41,7 +39,7 @@ export const categories: ICategory[] = [
 const Sidemenu = () => {
   const [menu, setMenu] = useState<number>(1);
   const [sidemenu, setSidemenu] = useRecoilState<boolean>(SidemenuStore);
-  
+
   const onClose = () => {
     setSidemenu(false);
   };
@@ -157,7 +155,7 @@ interface IMainMenu {
   subMenu?: IMainMenu[];
 }
 
-const MainMenuItem: React.FC<IMainMenu> = ({ name, route }) => {
+const MainMenuItem: React.FC<IMainMenu> = ({ name }) => {
   return (
     <div className="flex items-center justify-between px-6 py-3 hover:bg-main">
       <span className="text-sm">{name}</span>

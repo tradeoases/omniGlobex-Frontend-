@@ -114,7 +114,7 @@ const SearchBar = () => {
           <MdOutlineKeyboardArrowDown />
         </p>
       </div>
-      <div className="bg-main py-3 px-6">
+      <div className="bg-main py-4 px-6">
         <p className="font-bold text-sm">Search</p>
       </div>
     </div>

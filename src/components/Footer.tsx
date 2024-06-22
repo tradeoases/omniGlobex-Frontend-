@@ -1,4 +1,3 @@
-import React from "react";
 import DiscountBanner from "./DiscountBanner";
 import { Logo } from "./TopBar";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";

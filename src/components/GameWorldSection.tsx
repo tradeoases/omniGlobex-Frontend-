@@ -1,13 +1,12 @@
-import React from "react";
 import { GoArrowRight } from "react-icons/go";
 import { LuChevronRight } from "react-icons/lu";
 
 interface Props {
   name: string;
-  route: string;
+  route?: string;
 }
 
-const GameWorldSection: React.FC<Props> = ({ name, route }) => {
+const GameWorldSection: React.FC<Props> = ({ name }) => {
   return (
     <div className="w-full pt-8 space-y-3">
       <SectionHeader name={name} view={true} />
@@ -39,7 +38,6 @@ interface ISectionHeader {
 export const SectionHeader: React.FC<ISectionHeader> = ({
   name,
   view = false,
-  route,
 }) => {
   return (
     <div className="flex items-center justify-between">
@@ -59,10 +57,10 @@ export const SectionHeader: React.FC<ISectionHeader> = ({
 const GameSectionSidebar = () => {
   return (
     <div className="hidden xl:block w-full p-8 bg-gray-200">
-      <div>
+      <div className="space-y-6">
         <p className="text-base font-bold">Mobile & Tablet</p>
 
-        <div>
+        <div className="space-y-4">
           {gameSectionNavs.map((nav, i) => (
             <p key={i} className="text-gray-400">
               {nav.title}
@@ -87,7 +85,7 @@ const gameSectionNavs = [
 
 export const ProductCard = () => {
   return (
-    <div className="w-full p-6 space-y-4 bg-sain">
+    <div className="w-full p-6 space-y-4 bg-[#fff]">
       <div className="w-full h-52 flex items-center justify-center bg-gray-300">
         210X210
       </div>
