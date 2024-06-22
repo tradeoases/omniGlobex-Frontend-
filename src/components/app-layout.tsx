@@ -12,7 +12,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
   return (
     <main
       className={
-        "relative flex min-h-screen flex-col items-start justify-start bg-white text-neutral-800"
+        "relative flex min-h-screen flex-col items-start justify-start bg-light text-neutral-800"
       }
     >
       {/* The Page Content */}

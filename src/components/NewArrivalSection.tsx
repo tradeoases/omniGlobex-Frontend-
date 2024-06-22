@@ -1,4 +1,3 @@
-import React from "react";
 import { ProductCard, SectionHeader } from "./GameWorldSection";
 
 const NewArrivalSection = () => {

@@ -12,7 +12,7 @@ import { TbTruckReturn } from "react-icons/tb";
 
 export default function HomePage() {
   return (
-    <main className="w-10/12 xl:w-8/12 mx-auto py-8 space-y-8">
+    <main className="w-10/12 xl:w-8/12 mx-auto py-8 space-y-20">
       <Header />
       <OurServices />
       <GameWorldSection name="Game World" route="" />
@@ -55,7 +55,7 @@ interface IOurService {
 
 const OurServices = () => {
   return (
-    <div className="w-full bg-white space-y-10 lg:space-y-0 lg:flex items-center justify-between p-6 xl:p-8">
+    <div className="w-full bg-white space-y-10 lg:space-y-0 lg:flex items-center justify-between p-6 xl:p-12">
       {ourServices.map((service, i) => (
         <OurServiceItem key={i} {...service} />
       ))}

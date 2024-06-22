@@ -29,7 +29,7 @@ const AllProductsPage = () => {
         <div onClick={() => setOpenMenu(false)} className="flex justify-end">
           <button
             type="button"
-            className="p-2 hidden rounded-lg border border-red-500 text-red-500 text-xl"
+            className="p-2 lg:hidden rounded-lg border border-red-500 text-red-500 text-xl"
           >
             <LiaTimesSolid />
           </button>

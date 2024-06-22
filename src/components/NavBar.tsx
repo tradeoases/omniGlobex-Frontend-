@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiMenuFries } from "react-icons/ci";
