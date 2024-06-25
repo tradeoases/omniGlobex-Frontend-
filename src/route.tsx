@@ -6,6 +6,7 @@ import BecomeSellerPage from "./pages/become-seller";
 import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";
 import AllProductsPage from "./pages/all-products-page";
+import TrackOrderPage from "./pages/track-order";
 
 export default function RoutesConfig() {
   // const { id } = useParams();
@@ -18,6 +19,7 @@ export default function RoutesConfig() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/all-products" element={<AllProductsPage />} />
+      <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
