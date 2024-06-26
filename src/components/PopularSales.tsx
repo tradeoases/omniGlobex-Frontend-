@@ -1,4 +1,3 @@
-import React from "react";
 import { SectionHeader } from "./GameWorldSection";
 
 const PopularSales = () => {
@@ -19,13 +18,12 @@ export default PopularSales;
 interface IBestSale {
   previousPrice: number;
   newPrice: number;
-  image: string;
+  image?: string;
   description: string;
 }
 
 const PopularSaleItem: React.FC<IBestSale> = ({
   description,
-  image,
   newPrice,
   previousPrice,
 }) => {

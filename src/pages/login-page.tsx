@@ -66,9 +66,9 @@ const LoginPage = () => {
             </Link>
           </div>
 
-          <Button className="w-full">Log In</Button>
+          <Button className="w-full h-12">Log In</Button>
           <div>
-            <Button className="w-full" variant={"outline"}>
+            <Button className="w-full h-12" variant={"outline"}>
               <FcGoogle className="mr-2 h-4 w-4 text-xl" /> Sign In with Google
             </Button>
 

@@ -7,6 +7,8 @@ import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";
 import AllProductsPage from "./pages/all-products-page";
 import TrackOrderPage from "./pages/track-order";
+import ProfilePage from "./pages/profile-page";
+import SingleProduct from "./pages/single-product";
 
 export default function RoutesConfig() {
   // const { id } = useParams();
@@ -20,6 +22,8 @@ export default function RoutesConfig() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/single-product" element={<SingleProduct />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

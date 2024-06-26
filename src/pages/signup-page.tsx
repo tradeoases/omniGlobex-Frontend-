@@ -153,7 +153,7 @@ const SignupPage = () => {
           </div>
 
           <div>
-            <Button className="w-full">Create Account</Button>
+            <Button className="w-full h-12">Create Account</Button>
             <p className="text-sm mt-4 font-semibold text-gray-500 text-center">
               Already have an Account?{" "}
               <Link className="underline" to="/login">

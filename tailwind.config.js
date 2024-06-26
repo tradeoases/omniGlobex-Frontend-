@@ -21,7 +21,7 @@ module.exports = {
       colors: {
         main: "#FFBB38",
         light: "#f8f8f8",
-        sain: "#fff",
+        white: "#ffffff",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -31,7 +31,6 @@ module.exports = {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
-        dark: "#131416",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -75,10 +74,6 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-      },
-      backgroundImage: {
-        "blend-gradient":
-          "linear-gradient(to right, #131418, #1b1c21, #1b1c21, #26282f, #26282f, #31343d)",
       },
     },
   },
