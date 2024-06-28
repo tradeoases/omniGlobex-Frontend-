@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PageHeader";
 
 const BecomeSellerPage = () => {
+  // {import.meta.env.VITE_APP_NAME}
   return (
     <div className="w-full space-y-8 mb-10">
       <PageHeader name="Seller Application" route=" / Become Seller" />
@@ -164,9 +165,9 @@ const BecomeSellerPage = () => {
             </div>
 
             <div className="lg:w-3/5 mx-auto">
-              <Button className="w-full">Create Account</Button>
+              <Button className="w-full">Create Account </Button>
               <p className="text-sm mt-4 font-semibold text-gray-500 text-center">
-                Already have an Account?{" "}
+                Already have an Account?
                 <Link className="underline" to="/login">
                   Login
                 </Link>

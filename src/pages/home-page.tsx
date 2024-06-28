@@ -15,7 +15,7 @@ export default function HomePage() {
     <main className="w-10/12 xl:w-8/12 mx-auto py-8 space-y-20">
       <Header />
       <OurServices />
-      <GameWorldSection name="Game World" route="" />
+      <GameWorldSection name="Country showrooms" route="" />
       <ShopBrandSection />
       <AnnounceBanner />
       <TopSellingProducts />

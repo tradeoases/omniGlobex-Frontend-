@@ -66,9 +66,9 @@ const TopBar = () => {
             </span>
             <SlHandbag />
           </p>
-          <p className="relative">
+          <Link  to="/profile" className="relative">
             <CiUser className="text-2xl font-bold" />
-          </p>
+          </Link>
         </div>
       </div>
 
@@ -123,8 +123,8 @@ const SearchBar = () => {
 
 export const Logo = () => {
   return (
-    <div className="text-2xl font-semibold text-main">
-      Shop<span className="text-4xl text-black font-bold">o</span>
+    <div className="text-4xl font-semibold text-main">
+      Omni<span className="text-4xl text-black font-bold">Globex</span>
     </div>
   );
 };

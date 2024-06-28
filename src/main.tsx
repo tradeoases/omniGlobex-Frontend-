@@ -7,6 +7,7 @@ import "./styles/custom.module.css";
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import AppLayout from "./components/app-layout.tsx";
 import RoutesConfig from "./route.tsx";
+import React from "react";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

@@ -1,5 +1,6 @@
 import { GoArrowRight } from "react-icons/go";
 import { LuChevronRight } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 interface Props {
   name: string;
@@ -62,9 +63,13 @@ const GameSectionSidebar = () => {
 
         <div className="space-y-4">
           {gameSectionNavs.map((nav, i) => (
-            <p key={i} className="text-gray-400">
+            <Link
+              to={`/show-room/?country=${nav.title}`}
+              key={i}
+              className="text-gray-400 block"
+            >
               {nav.title}
-            </p>
+            </Link>
           ))}
           <p className="font-bold flex items-center gap-4">
             <span>Shop Now </span>
@@ -77,10 +82,10 @@ const GameSectionSidebar = () => {
 };
 
 const gameSectionNavs = [
-  { title: "Xiaomi", route: "" },
-  { title: "Apple", route: "" },
-  { title: "Google", route: "" },
-  { title: "Samsung", route: "" },
+  { title: "Uganda", route: "" },
+  { title: "Kenya", route: "" },
+  { title: "Rwanda", route: "" },
+  { title: "South Africa", route: "" },
 ];
 
 export const ProductCard = () => {
