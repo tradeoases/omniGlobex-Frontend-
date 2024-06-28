@@ -3,10 +3,12 @@ import { Switch } from "@/components/ui/switch";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaAddressBook, FaHeart, FaUser, FaUserGear } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
-import { IoCard, IoLogOut } from "react-icons/io5";
+import { IoBagHandle, IoCard, IoLogOut } from "react-icons/io5";
 import { MdDashboard, MdReviews } from "react-icons/md";
 import { useState } from "react";
 import Overview from "@/components/profile-dashboard/overview";
+import { Button } from "@/components/ui/button";
+import { ProductCard } from "@/components/GameWorldSection";
 
 const ProfilePage = () => {
   const [activeMenu, setActiveMenu] = useState<TActiveMenu>(
@@ -41,13 +43,8 @@ const ProfilePage = () => {
             ))}
           </div>
 
-          {activeMenu === "Dashboard" ? (
-            <Overview />
-          ) : (
-            <div className="col-span-3 space-y-6 flex items-center justify-center text-4xl font-bold animate-pulse">
-              coming soon...
-            </div>
-          )}
+          {activeMenu === "Dashboard" && <Overview />}
+          {activeMenu === "Products" && <ProductManagement />}
         </div>
       </div>
     </div>
@@ -64,6 +61,7 @@ interface IDashboardNav {
 const dashboardNavs: IDashboardNav[] = [
   { icon: <MdDashboard />, title: "Dashboard" },
   { icon: <FaUser />, title: "Personal" },
+  { icon: <IoBagHandle />, title: "Products" },
   { icon: <IoCard />, title: "Payment Method" },
   { icon: <BsFillCartCheckFill />, title: "Order" },
   { icon: <FaHeart />, title: "Wishlist" },
@@ -77,6 +75,7 @@ const dashboardNavs: IDashboardNav[] = [
 type TActiveMenu =
   | "Dashboard"
   | "Personal"
+  | "Products"
   | "Payment Method"
   | "Order"
   | "Wishlist"
@@ -85,3 +84,38 @@ type TActiveMenu =
   | "Change Password"
   | "Support Ticket"
   | "Logout";
+
+const ProductManagement = () => {
+  const [activeTab, setActiveTab] = useState<string>(productNavs[0]);
+  return (
+    <div className="col-span-3 space-y-6">
+      <div className="border-b">
+        <div className="w-10/12 xl:w-8/12 mx-auto flex items-center">
+          {productNavs.map((nav, i) => (
+            <p
+              onClick={() => setActiveTab(nav)}
+              key={i}
+              className={`py-3 px-7 border-b cursor-pointer ${
+                activeTab === nav ? " border-main " : " border-zinc-100 "
+              }`}
+            >
+              {nav}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      <div className="w-full">
+        <Button>New Product</Button>
+      </div>
+
+      <div className="w-full grid grid-cols-3 gap-8">
+        {Array.from({length: 8}).map((_,i) => (
+          <ProductCard key={i} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const productNavs = [`Products`, `Orders`, `Other info`];
