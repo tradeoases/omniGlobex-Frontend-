@@ -12,7 +12,7 @@ export default defineConfig({
     assetsDir: "assets",
   },
   define: {
-    "process.env.VITE_APP_NAME":JSON.stringify(process.env.VITE_APP_NAME)
+    "process.env.VITE_API_URL":JSON.stringify(process.env.VITE_API_URL)
   },
   resolve: {
     alias: {

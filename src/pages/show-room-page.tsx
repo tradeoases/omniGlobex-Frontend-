@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import React from "react";
+import { useSearchParams } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,11 +15,10 @@ import AllProductsPage from "./all-products-page";
 import { PageHeader } from "@/components/PageHeader";
 
 const ShowRoomPage = () => {
-  const [activeCategory, setActiveCategory] = useState<string>(
-    categories[0].name
-  );
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
+  // const [activeCategory, setActiveCategory] = useState<string>(
+  //   categories[0].name
+  // );
+  // const sliderRef = useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
 
   const country = searchParams.get(`country`);
@@ -30,7 +29,9 @@ const ShowRoomPage = () => {
         name={`show room: ${country || ``}`}
         route={`/ ${country || ``}`}
       />
-      <div className="w-10/12 xl:w-8/12 mx-auto border rounded-md bg-gray-50 h-96 mt-10"></div>
+      <div className="w-10/12 xl:w-8/12 mx-auto flex items-center justify-center font-bold text-gray-400 border rounded-md bg-gray-50 h-96 mt-10">
+        advert...
+      </div>
       <AllProductsPage />
     </div>
   );
@@ -38,7 +39,7 @@ const ShowRoomPage = () => {
 
 export default ShowRoomPage;
 
-const categories = [
+export const categories = [
   { id: 1, name: "Technology" },
   { id: 2, name: "Health" },
   { id: 3, name: "Finance" },

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICategory, categories } from "@/components/Sidemenu";
 import { Checkbox } from "@/components/ui/checkbox";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import {
   DropdownMenu,
@@ -15,10 +16,38 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { ProductCard } from "@/components/GameWorldSection";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
+import { ProductStore } from "@/store/product-store";
+import { useRecoilState } from "recoil";
+import { IProduct, getAllProducts } from "@/service/apis/product-services";
+import { AxiosResponse, HttpStatusCode } from "axios";
 
 const AllProductsPage = () => {
   const [position, setPosition] = useState<string>("bottom");
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+
+  const [products, setProducts] = useRecoilState<IProduct[] | null>(
+    ProductStore
+  );
+
+  const fetchProducts = async () => {
+    try {
+      const response: AxiosResponse<any, any> = await getAllProducts(
+        `?page=1&pageSize=25`
+      );
+
+      if (response.status === HttpStatusCode.Ok) {
+        console.log({ response });
+        setProducts(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    !products && fetchProducts();
+  }, []);
+
   return (
     <div className="w-10/12 xl:w-8/12 mx-auto my-10 grid grid-cols-1 lg:grid-cols-4 gap-x-8">
       <div
@@ -118,9 +147,13 @@ const AllProductsPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {Array.from({ length: 16 }).map((_, i) => (
-            <ProductCard key={i} />
-          ))}
+          {products ? products.map((product, i) => (
+            <ProductCard key={i} {...product} />
+          )): (
+            <div>
+              loading...
+            </div>
+          )}
         </div>
       </div>
     </div>

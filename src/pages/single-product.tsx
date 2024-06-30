@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { FaFacebookF, FaTwitter } from "react-icons/fa6";
 import {
@@ -8,23 +9,75 @@ import {
   HiOutlinePlusSmall,
 } from "react-icons/hi2";
 import { BiLogoInstagramAlt } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/GameWorldSection";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { IProduct, getOneProduct } from "@/service/apis/product-services";
+import { ProductStore, SingleProductStore } from "@/store/product-store";
+import { useSearchParams } from "react-router-dom";
+import { AxiosResponse, HttpStatusCode } from "axios";
 
 const SingleProduct = () => {
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);
+  const products = useRecoilValue<IProduct[] | null>(ProductStore);
+  const [product, setProduct] = useRecoilState<IProduct | null>(
+    SingleProductStore
+  );
+  const [searchParams] = useSearchParams();
+
+  const product_id = searchParams.get(`product_id`);
+
+  const fetchProduct = async () => {
+    if (!product_id) {
+      return;
+    }
+
+    try {
+      const response: AxiosResponse<any, any> = await getOneProduct(product_id);
+
+      if (response.status === HttpStatusCode.Ok) {
+        setProduct(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    !product && fetchProduct();
+  }, []);
+
+  if (!product)
+    return (
+      <div className="h-screen w-screen flex items-center justify-center text-xl animate-pulse">
+        Loading...
+      </div>
+    );
+
   return (
     <div className="my-20 w-full space-y-20">
       <div className="w-10/12 xl:w-8/12 mx-auto grid grid-cols-2 gap-x-20">
         <div className="space-y-8">
           <div className="w-full border p-8">
-            <div className="w-full h-96 bg-gray-400"></div>
+            <div className="w-full h-96 flex items-center justify-center bg-gray-400">
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="object-cover h-full w-full"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-5 gap-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="w-full p-4 border">
-                <div className="h-20 bg-gray-400"></div>
+                <div className="h-20 bg-gray-400">
+                  <img
+                    src={product.image_url}
+                    alt={product.name}
+                    className="object-cover h-full w-full"
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -34,9 +87,7 @@ const SingleProduct = () => {
           <p className="uppercase font-light text-sm text-gray-600">
             Mobile Phones
           </p>
-          <p className="font-semibold">
-            Samsung Galaxy Z Fold3 5G 3 colors in 512GB
-          </p>
+          <p className="font-semibold">{product.name}</p>
 
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
@@ -56,10 +107,7 @@ const SingleProduct = () => {
             <span className="text-2xl font-medium text-red-600">$99.09</span>
           </p>
 
-          <p className="text-sm font-light">
-            It is a long established fact that a reader will be distracted by
-            the readable there content of a page when looking at its layout.
-          </p>
+          <p className="text-sm font-light">{product.description}</p>
 
           <div>
             <p>Color</p>
@@ -160,7 +208,7 @@ const SingleProduct = () => {
         </div>
         <div className=" w-10/12 xl:w-8/12 mx-auto space-y-8">
           {activeTab === "Description" && <Description />}
-          {activeTab === "Seller Info" && <SellerInfo />}
+          {activeTab === "Seller Info" && <SellerInfo products={products} />}
           {activeTab === "Reviews" && <ReviewContent />}
         </div>
       </div>
@@ -169,9 +217,13 @@ const SingleProduct = () => {
         <p className="text-3xl font-bold">Related Products</p>
 
         <div className="w-full grid grid-cols-4 gap-8">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <ProductCard key={i} />
-          ))}
+          {products ? (
+            products
+              .slice(0, 4)
+              .map((product, i) => <ProductCard key={i} {...product} />)
+          ) : (
+            <div>loading...</div>
+          )}
         </div>
       </div>
     </div>
@@ -217,7 +269,11 @@ const Description = () => {
   );
 };
 
-const SellerInfo = () => {
+interface SellerInfoProps {
+  products: IProduct[] | null;
+}
+
+const SellerInfo: React.FC<SellerInfoProps> = ({ products }) => {
   return (
     <div className="w-full space-y-20">
       <div className="flex items-center justify-between border-b pb-8">
@@ -279,9 +335,13 @@ const SellerInfo = () => {
         <p className="text-lg font-semibold">Product from Shop</p>
 
         <div className="grid grid-cols-4 gap-x-8">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <ProductCard key={i} />
-          ))}
+          {products ? (
+            products
+              .slice(0, 8)
+              .map((product, i) => <ProductCard key={i} {...product} />)
+          ) : (
+            <div>loading</div>
+          )}
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 const request: AxiosInstance = axios.create({
-  baseURL: process.env.VITE_API_URL || "live one test",
+  baseURL: "http://api.omniglobex.com/api/" || "live one test",
 });
 
 request.interceptors.response.use(
