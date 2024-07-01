@@ -64,6 +64,7 @@ const LoginPage = () => {
       const response: AxiosResponse<any, any> = await userLogin(values);
 
       if (response.status === HttpStatusCode.Ok) {
+        form.reset()
         const token: string = response.data.data.token;
         setUserData(response.data.data.data);
         localStorage.setItem("token", token);
