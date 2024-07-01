@@ -34,6 +34,7 @@ const SingleProduct = () => {
 
     try {
       const response: AxiosResponse<any, any> = await getOneProduct(product_id);
+      
       if (response.status === HttpStatusCode.Ok) {
         setProduct(response.data.data);
       }
