@@ -1,7 +1,10 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
+export const apiKey = import.meta.env.VITE_API_URL;
+console.log(`VITE_BASE_SERVICE`)
+
 const request: AxiosInstance = axios.create({
-  baseURL: "http://api.omniglobex.com/api/" || "live one test",
+  baseURL: apiKey || "live one test",
 });
 
 request.interceptors.response.use(
@@ -20,7 +23,7 @@ request.interceptors.response.use(
         }
       }
     } else if (error.request) {
-      console.log();
+      console.log(`VITE `);
     } else {
       console.log();
     }

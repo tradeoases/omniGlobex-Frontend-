@@ -11,9 +11,9 @@ export default defineConfig({
   build: {
     assetsDir: "assets",
   },
-  define: {
-    "process.env.VITE_API_URL":JSON.stringify(process.env.VITE_API_URL)
-  },
+  // define: {
+  //   "process.env.API_URL":JSON.stringify(process.env.API_URL)
+  // },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

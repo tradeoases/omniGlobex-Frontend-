@@ -29,7 +29,6 @@ export default function HomePage() {
       );
 
       if (response.status === HttpStatusCode.Ok) {
-        console.log({ response });
         setProducts(response.data.data);
       }
     } catch (error) {
