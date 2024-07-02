@@ -1,6 +1,3 @@
-"use client";
-
-import React, { useState } from "react";
 import { CiUser } from "react-icons/ci";
 import { HiArrowPath } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -9,7 +6,7 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { LuAlignLeft, LuTally1 } from "react-icons/lu";
 import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 export const items = [
   {
@@ -42,7 +39,7 @@ const TopBar = () => {
   return (
     <div className="w-full border-b py-4">
       <div className="hidden w-10/12 xl:w-8/12 mx-auto lg:flex items-center justify-between">
-        <Link href="/">
+        <Link to="/">
           <Logo />
         </Link>
 
@@ -69,9 +66,9 @@ const TopBar = () => {
             </span>
             <SlHandbag />
           </p>
-          <p className="relative">
+          <Link  to="/profile" className="relative">
             <CiUser className="text-2xl font-bold" />
-          </p>
+          </Link>
         </div>
       </div>
 
@@ -95,12 +92,12 @@ const TopBar = () => {
 export default TopBar;
 
 const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [selectedCategories, setSelectedCategories] = useState([]);
 
-  function handleSearch(e: any) {
-    setSearchQuery(e.target.value);
-  }
+  // function handleSearch(e: any) {
+  //   setSearchQuery(e.target.value);
+  // }
 
   return (
     <div className="flex items-center border">
@@ -117,7 +114,7 @@ const SearchBar = () => {
           <MdOutlineKeyboardArrowDown />
         </p>
       </div>
-      <div className="bg-main py-3 px-6">
+      <div className="bg-main py-4 px-6">
         <p className="font-bold text-sm">Search</p>
       </div>
     </div>
@@ -126,8 +123,8 @@ const SearchBar = () => {
 
 export const Logo = () => {
   return (
-    <div className="text-2xl font-semibold text-main">
-      Shop<span className="text-4xl text-black font-bold">o</span>
+    <div className="text-4xl font-semibold text-main">
+      Omni<span className="text-4xl text-black font-bold">Globex</span>
     </div>
   );
 };

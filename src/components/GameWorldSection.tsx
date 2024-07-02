@@ -1,28 +1,36 @@
-import React from "react";
+import { IProduct } from "@/service/apis/product-services";
 import { GoArrowRight } from "react-icons/go";
 import { LuChevronRight } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 interface Props {
   name: string;
-  route: string;
+  route?: string;
+  products: IProduct[] | null;
 }
 
-const GameWorldSection: React.FC<Props> = ({ name, route }) => {
+const GameWorldSection: React.FC<Props> = ({ name, products }) => {
   return (
     <div className="w-full pt-8 space-y-3">
       <SectionHeader name={name} view={true} />
       <div className="hidden lg:grid grid-cols-1 md:grid-rows-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         <GameSectionSidebar />
-        {Array.from({ length: 3 }).map((_, i) => (
-          <ProductCard key={i} />
-        ))}
+        {products ? (
+          products
+            .slice(1, 4)
+            .map((product, i) => <ProductCard key={i} {...product} />)
+        ) : (
+          <div>loading...</div>
+        )}
       </div>
 
       <div className="lg:hidden grid grid-cols-1 md:grid-rows-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         <GameSectionSidebar />
-        {Array.from({ length: 2 }).map((_, i) => (
-          <ProductCard key={i} />
-        ))}
+        {products ? (
+          products.map((product, i) => <ProductCard key={i} {...product} />)
+        ) : (
+          <div>loading...</div>
+        )}
       </div>
     </div>
   );
@@ -39,7 +47,6 @@ interface ISectionHeader {
 export const SectionHeader: React.FC<ISectionHeader> = ({
   name,
   view = false,
-  route,
 }) => {
   return (
     <div className="flex items-center justify-between">
@@ -59,14 +66,18 @@ export const SectionHeader: React.FC<ISectionHeader> = ({
 const GameSectionSidebar = () => {
   return (
     <div className="hidden xl:block w-full p-8 bg-gray-200">
-      <div>
+      <div className="space-y-6">
         <p className="text-base font-bold">Mobile & Tablet</p>
 
-        <div>
+        <div className="space-y-4">
           {gameSectionNavs.map((nav, i) => (
-            <p key={i} className="text-gray-400">
+            <Link
+              to={`/show-room/?country=${nav.title}`}
+              key={i}
+              className="text-gray-400 block"
+            >
               {nav.title}
-            </p>
+            </Link>
           ))}
           <p className="font-bold flex items-center gap-4">
             <span>Shop Now </span>
@@ -79,17 +90,25 @@ const GameSectionSidebar = () => {
 };
 
 const gameSectionNavs = [
-  { title: "Xiaomi", route: "" },
-  { title: "Apple", route: "" },
-  { title: "Google", route: "" },
-  { title: "Samsung", route: "" },
+  { title: "Uganda", route: "" },
+  { title: "Kenya", route: "" },
+  { title: "Rwanda", route: "" },
+  { title: "South Africa", route: "" },
 ];
 
-export const ProductCard = () => {
+export const ProductCard: React.FC<IProduct> = ({
+  image_url,
+  name,
+  description,
+  product_id,
+}) => {
   return (
-    <div className="w-full p-6 space-y-4 bg-white">
+    <Link
+      to={`/single-product/?product_id=${product_id}`}
+      className="w-full p-6 space-y-4 bg-[#fff]"
+    >
       <div className="w-full h-52 flex items-center justify-center bg-gray-300">
-        210X210
+        <img className="object-cover w-full h-full" src={image_url} alt={name} />
       </div>
 
       <div className="flex items-center gap-2">
@@ -100,15 +119,12 @@ export const ProductCard = () => {
         ))}
       </div>
 
-      <p className="font-bold line-clamp-2">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta in,
-        magnam molestiae rerum eos
-      </p>
+      <p className="font-bold line-clamp-2">{description}</p>
 
       <p className="text-base font-semibold flex gap-x-4">
         <span className="text-gray-400 line-through">$28.27</span>
         <span className="text-red-600">$18.72</span>
       </p>
-    </div>
+    </Link>
   );
 };

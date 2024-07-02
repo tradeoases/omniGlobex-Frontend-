@@ -1,5 +1,4 @@
-"use client";
-
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LuChevronRight } from "react-icons/lu";
 import { ICategory, categories } from "./Sidemenu";
 import { useEffect, useRef } from "react";
@@ -20,9 +19,9 @@ export const CategoriesPopup: React.FC<IAllCategory> = ({
     }
   };
 
-  const handleClickInside = () => {
-    onToggle();
-  };
+  // const handleClickInside = () => {
+  //   onToggle();
+  // };
 
   useEffect(() => {
     if (isOpen) {

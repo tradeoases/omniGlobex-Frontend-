@@ -1,11 +1,10 @@
-import React from "react";
 import DiscountBanner from "./DiscountBanner";
 import { Logo } from "./TopBar";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <div>
+    <div className="w-full">
       <DiscountBanner />
 
       <div className="flex items-center justify-center h-32 lg:h-40">

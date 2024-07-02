@@ -1,11 +1,9 @@
-"use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiMenuFries } from "react-icons/ci";
 import { CategoriesPopup } from "./CategoriesPopup";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 const navs = [
   { title: "Homepage", icon: true },
@@ -57,7 +55,7 @@ const NavBar = () => {
           </div>
         </div>
         <Button asChild className="space-x-2 rounded-none">
-          <Link href="/become-seller">
+          <Link to="/become-seller">
             <span>Become a Seller</span> <LuChevronRight />
           </Link>
         </Button>
