@@ -4,9 +4,18 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { SlHandbag } from "react-icons/sl";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { LuAlignLeft, LuTally1 } from "react-icons/lu";
-import { SetterOrUpdater, useSetRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { IUser, userStore } from "@/store/user-store";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "./ui/button";
 
 export const items = [
   {
@@ -32,6 +41,9 @@ export const items = [
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
     useSetRecoilState<boolean>(SidemenuStore);
+  const userData = useRecoilValue<IUser | null>(userStore);
+  const navigate = useNavigate();
+
   const onOpen = () => {
     setSidemenu(true);
   };
@@ -66,9 +78,33 @@ const TopBar = () => {
             </span>
             <SlHandbag />
           </p>
-          <Link  to="/profile" className="relative">
-            <CiUser className="text-2xl font-bold" />
-          </Link>
+
+          {userData ? (
+            <Link to="/profile" className="relative">
+              <CiUser className="text-2xl font-bold" />
+            </Link>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost">
+                  <CiUser className="text-2xl font-bold" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-40">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => navigate(`/login`)}>
+                    Login
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(`/signup`)}>
+                    Signup
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(`/become-seller`)}>
+                    Become a Seller
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
 
@@ -92,13 +128,6 @@ const TopBar = () => {
 export default TopBar;
 
 const SearchBar = () => {
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [selectedCategories, setSelectedCategories] = useState([]);
-
-  // function handleSearch(e: any) {
-  //   setSearchQuery(e.target.value);
-  // }
-
   return (
     <div className="flex items-center border">
       <div className="py-3">

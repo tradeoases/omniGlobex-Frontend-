@@ -1,40 +1,18 @@
 import React, { useState } from "react";
-import { HiArrowPath } from "react-icons/hi2";
+import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
-import { LuCar, LuChevronRight } from "react-icons/lu";
-import {
-  MdDevices,
-  MdOutlineChair,
-  MdOutlinePhotoCamera,
-  MdOutlineSanitizer,
-  MdOutlineSportsBaseball,
-} from "react-icons/md";
+import { LuChevronRight } from "react-icons/lu";
+
 import { RiSearchLine } from "react-icons/ri";
-import { TiTimes } from "react-icons/ti";
-import { TbBabyBottle } from "react-icons/tb";
-import { BsPaintBucket } from "react-icons/bs";
-import { PiBowlFood } from "react-icons/pi";
-import { IoGameControllerOutline } from "react-icons/io5";
+
 import { useRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
+import { IMainMenu, categories, mainMenu } from "@/data/data";
 
 export interface ICategory {
   name: string;
   icon: JSX.Element;
 }
-
-export const categories: ICategory[] = [
-  { name: "Mobile & Laptops", icon: <MdDevices /> },
-  { name: "Gamming Entertainment", icon: <IoGameControllerOutline /> },
-  { name: "Image & Video", icon: <MdOutlinePhotoCamera /> },
-  { name: "Vehicles", icon: <LuCar /> },
-  { name: "Furnitures", icon: <MdOutlineChair /> },
-  { name: "Sports", icon: <MdOutlineSportsBaseball /> },
-  { name: "Food & Accessories", icon: <PiBowlFood /> },
-  { name: "Toilet & Sanitation", icon: <MdOutlineSanitizer /> },
-  { name: "Makeup Corner", icon: <BsPaintBucket /> },
-  { name: "Baby items", icon: <TbBabyBottle /> },
-];
 
 const Sidemenu = () => {
   const [menu, setMenu] = useState<number>(1);
@@ -73,22 +51,22 @@ const Sidemenu = () => {
           </div>
           <span
             onClick={onClose}
-            className="w-6 h-6 rounded-full bg-red-400 flex items-center justify-center"
+            className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center"
           >
-            <TiTimes className="text-xl text-red-900" />
+            <HiOutlineXMark className="text-xl text-gray-300" />
           </span>
         </div>
 
         <div className="px-6 w-full">
-          <div className="w-full flex items-center border justify-between">
-            <div className="">
+          <div className="grid grid-cols-12 border">
+            <div className="col-span-9">
               <input
                 type="text"
-                className="pl-2 outline-none"
+                className="pl-2 py-2 text-xs outline-none"
                 placeholder="Search Product..."
               />
             </div>
-            <div className="bg-main py-2 px-3">
+            <div className="bg-main flex items-center justify-center col-span-3 py-2 px-3">
               <p className="font-bold text-sm">
                 <RiSearchLine />
               </p>
@@ -149,11 +127,6 @@ const SideMenuCategories = () => {
   );
 };
 
-interface IMainMenu {
-  name: string;
-  route: string;
-  subMenu?: IMainMenu[];
-}
 
 const MainMenuItem: React.FC<IMainMenu> = ({ name }) => {
   return (
@@ -172,8 +145,8 @@ const MainMenu = () => {
           <MainMenuItem key={i} {...menu} />
           {menu.subMenu && (
             <div className="ml-7">
-              {menu.subMenu.map((nav, i) => (
-                <MainMenuItem key={i} {...nav} />
+              {menu.subMenu.map((nav, j) => (
+                <MainMenuItem key={j} {...nav} />
               ))}
             </div>
           )}
@@ -183,19 +156,3 @@ const MainMenu = () => {
   );
 };
 
-const mainMenu: IMainMenu[] = [
-  { name: "Home", route: "" },
-  { name: "Shop", route: "" },
-  {
-    name: "Pages",
-    route: "",
-    subMenu: [
-      { name: "Privacy Policy", route: "" },
-      { name: "FAQ", route: "" },
-      { name: "Terms and Conditions", route: "" },
-    ],
-  },
-  { name: "About", route: "" },
-  { name: "Blogs", route: "" },
-  { name: "Contact", route: "" },
-];

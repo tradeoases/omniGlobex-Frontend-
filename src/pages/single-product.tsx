@@ -56,7 +56,7 @@ const SingleProduct = () => {
 
   return (
     <div className="my-20 w-full space-y-20">
-      <div className="w-10/12 xl:w-8/12 mx-auto grid grid-cols-2 gap-x-20">
+      <div className="w-10/12 xl:w-8/12 mx-auto lg:grid grid-cols-2 space-y-8 lg:space-y-0 gap-x-20">
         <div className="space-y-8">
           <div className="w-full border p-8">
             <div className="w-full h-96 flex items-center justify-center bg-gray-400">
@@ -197,7 +197,7 @@ const SingleProduct = () => {
               <p
                 onClick={() => setActiveTab(nav)}
                 key={i}
-                className={`py-3 px-7 border-b cursor-pointer ${
+                className={`py-3 px-7 border-b whitespace-nowrap cursor-pointer ${
                   activeTab === nav ? " border-main " : " border-zinc-100 "
                 }`}
               >
@@ -216,7 +216,7 @@ const SingleProduct = () => {
       <div className="w-10/12 xl:w-8/12 mx-auto space-y-8">
         <p className="text-3xl font-bold">Related Products</p>
 
-        <div className="w-full grid grid-cols-4 gap-8">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products ? (
             products
               .slice(0, 4)
@@ -276,7 +276,7 @@ interface SellerInfoProps {
 const SellerInfo: React.FC<SellerInfoProps> = ({ products }) => {
   return (
     <div className="w-full space-y-20">
-      <div className="flex items-center justify-between border-b pb-8">
+      <div className=" space-y-10 lg:flex items-center justify-between border-b pb-8">
         <div className="flex items-center gap-x-4">
           <img
             src="https://ik.imagekit.io/2ujnunod7moo/profile1_6ynm5mYwy.jpeg?updatedAt=1691099202935"
@@ -334,7 +334,7 @@ const SellerInfo: React.FC<SellerInfoProps> = ({ products }) => {
       <div className="space-y-8">
         <p className="text-lg font-semibold">Product from Shop</p>
 
-        <div className="grid grid-cols-4 gap-x-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products ? (
             products
               .slice(0, 8)

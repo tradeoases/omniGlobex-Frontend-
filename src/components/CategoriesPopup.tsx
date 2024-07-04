@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { LuChevronRight } from "react-icons/lu";
-import { ICategory, categories } from "./Sidemenu";
+import { ICategory } from "./Sidemenu";
 import { useEffect, useRef } from "react";
+import { categories } from "@/data/data";
 
 interface IAllCategory {
   onToggle: () => void;

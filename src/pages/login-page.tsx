@@ -64,12 +64,12 @@ const LoginPage = () => {
       const response: AxiosResponse<any, any> = await userLogin(values);
 
       if (response.status === HttpStatusCode.Ok) {
-        form.reset()
+        form.reset();
         const token: string = response.data.data.token;
         setUserData(response.data.data.data);
         localStorage.setItem("token", token);
         setLoading(false);
-        navigate(`/`);
+        navigate(`/profile`);
         setSuccessMessage(true);
 
         timeoutKey = setTimeout(() => {
@@ -110,7 +110,11 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {userData && <p className="text-main font-light text-md text-center">already login</p>}
+        {userData && (
+          <p className="text-main font-light text-md text-center">
+            already login
+          </p>
+        )}
 
         <Form {...form}>
           <form

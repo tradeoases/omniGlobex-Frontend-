@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ICategory, categories } from "@/components/Sidemenu";
+import { ICategory } from "@/components/Sidemenu";
 import { Checkbox } from "@/components/ui/checkbox";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
@@ -20,6 +20,7 @@ import { ProductStore } from "@/store/product-store";
 import { useRecoilState } from "recoil";
 import { IProduct, getAllProducts } from "@/service/apis/product-services";
 import { AxiosResponse, HttpStatusCode } from "axios";
+import { categories } from "@/data/data";
 
 const AllProductsPage = () => {
   const [position, setPosition] = useState<string>("bottom");
@@ -147,12 +148,10 @@ const AllProductsPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {products ? products.map((product, i) => (
-            <ProductCard key={i} {...product} />
-          )): (
-            <div>
-              loading...
-            </div>
+          {products ? (
+            products.map((product, i) => <ProductCard key={i} {...product} />)
+          ) : (
+            <div>loading...</div>
           )}
         </div>
       </div>
@@ -161,7 +160,6 @@ const AllProductsPage = () => {
 };
 
 export default AllProductsPage;
-
 
 const ProductCategoryItem: React.FC<ICategory> = ({ name }) => {
   return (
