@@ -1,19 +1,141 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
+import { EmailStore, IRole, RoleStore } from "@/store/user-store";
+import { getAllCountries, ICountry } from "@/service/apis/countries-services";
+import { AllCountriesStore } from "@/store/country-store";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { signupSchema } from "@/data/schemas/users-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
+import { getAllRoles, IUserSignup, signup } from "@/service/apis/user-services";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const SignupPage = () => {
+  const [roles, setRoles] = useRecoilState<IRole[] | null>(RoleStore);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<boolean>(false);
+  const [countries, setCountries] = useRecoilState<ICountry[] | null>(
+    AllCountriesStore
+  );
+  const setEmailData: SetterOrUpdater<string | null> =
+    useSetRecoilState(EmailStore);
+
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      firstname: "",
+      email: "",
+      lastname: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof signupSchema>) => {
+    if (!roles) {
+      setErrorMessage("an error occurs");
+      return;
+    }
+
+    const data: IUserSignup = {
+      fullname: `${values.firstname} ${values.lastname}`,
+      email: values.email,
+      password: values.password,
+      country_id: values.country_id,
+      roleIds: roles
+        .filter((role) => role.name === "buyer")
+        .map((role) => role.role_id),
+    };
+
+    let timeoutKey: NodeJS.Timeout | undefined;
+
+    try {
+      setLoading(true);
+      const response: AxiosResponse<any, any> = await signup(data);
+
+      if (response.status === HttpStatusCode.Created) {
+        setEmailData(values.email);
+        form.reset();
+        setLoading(false);
+        setSuccessMessage(true);
+
+        timeoutKey = setTimeout(() => {
+          setSuccessMessage(false);
+        }, 2000);
+
+        return () => clearTimeout(timeoutKey);
+      }
+    } catch (error) {
+      setLoading(false);
+      if (isAxiosError(error)) {
+        setErrorMessage(error.response?.data.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    let timeoutKey: NodeJS.Timeout | undefined;
+
+    if (errorMessage) {
+      timeoutKey = setTimeout(() => {
+        setErrorMessage(null);
+      }, 2000);
+    }
+
+    return () => clearTimeout(timeoutKey);
+  }, [errorMessage]);
+
+  const fetchAllCountries = async () => {
+    try {
+      const response: AxiosResponse<any, any> = await getAllCountries();
+      if (response.status === HttpStatusCode.Ok) {
+        setCountries(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchRoles = async () => {
+    try {
+      const response: AxiosResponse<any, any> = await getAllRoles();
+
+      if (response.status === HttpStatusCode.Ok) {
+        setRoles(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    !countries && fetchAllCountries();
+    !roles && fetchRoles();
+  }, []);
+
   return (
     <main className="w-10/12 xl:w-8/12 mx-auto py-8 grid grid-cols-1 lg:grid-cols-2 gap-x-0 lg:gap-x-8">
       <div className="py-12 px-8 border bg-white">
@@ -38,130 +160,201 @@ const SignupPage = () => {
           </div>
         </div>
 
-        <div className="space-y-8 mt-10">
-          <div className="w-full space-y-8 lg:space-y-0 md:flex items-center justify-between gap-2">
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="firstname">First Name *</Label>
-              <Input
-                type="text"
-                className="focus:outline-none"
-                id="firstname"
-                placeholder="First Name"
-              />
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 mt-10"
+          >
+            <div className="w-full space-y-8 lg:space-y-0 md:flex items-center justify-between gap-2">
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="firstname"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name *</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          className="focus:outline-none"
+                          placeholder="First Name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="lastname"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name *</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="w-full focus:outline-none"
+                          placeholder="Last Name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
 
             <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="lastname">Last Name *</Label>
-              <Input
-                type="text"
-                id="lastname"
-                className="outline-none"
-                placeholder="Last Name"
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address *</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        className="focus:outline-none"
+                        id="email"
+                        placeholder="Email Address"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-          </div>
 
-          <div className="w-full space-y-8 lg:space-y-0 md:flex items-center justify-between gap-2">
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="Email">Town / City *</Label>
-              <Input
-                type="Email"
-                className="focus:outline-none"
-                id="Email"
-                placeholder="Email"
-              />
+            <div className="w-full space-y-8 lg:space-y-0 md:flex items-center justify-between gap-2">
+              <div className="w-full">
+                <FormField
+                  control={form.control}
+                  name="country_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Country</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a Country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {countries &&
+                              countries.map((country) => (
+                                <SelectItem
+                                  key={country.country_id}
+                                  value={country.country_id}
+                                >
+                                  {country.name}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
 
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="phone">Phone *</Label>
-              <Input
-                type="text"
-                id="phone"
-                className="outline-none"
-                placeholder="Phone  "
-              />
+            <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password *</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          className="focus:outline-none"
+                          placeholder="Password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          className="focus:outline-none"
+                          placeholder="Confirm Password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="w-full">
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a Country" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Uganda</SelectLabel>
-                  <SelectItem value="apple">Kenya</SelectItem>
-                  <SelectItem value="banana">Rwanda</SelectItem>
-                  <SelectItem value="blueberry">Sudan</SelectItem>
-                  <SelectItem value="grapes">Burundi</SelectItem>
-                  <SelectItem value="pineapple">Tanzania</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="address">Address *</Label>
-            <Input
-              type="text"
-              id="address"
-              className="outline-none"
-              placeholder="Address  "
+            <FormField
+              control={form.control}
+              name="terms"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 py-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Accept terms and conditions</FormLabel>
+                  </div>
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="w-full space-y-8 lg:space-y-0 md:flex items-center justify-between gap-2">
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="city">City *</Label>
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a City" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Kampala</SelectLabel>
-                    <SelectItem value="apple">Mbarara</SelectItem>
-                    <SelectItem value="banana">Jinja</SelectItem>
-                    <SelectItem value="blueberry">Masaka</SelectItem>
-                    <SelectItem value="grapes">Entebbe</SelectItem>
-                    <SelectItem value="pineapple">Kira</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+            <div className="space-y-4">
+              {errorMessage && (
+                <p className="text-base text-center font-semibold text-red-600">
+                  {errorMessage}
+                </p>
+              )}
+              {successMessage && (
+                <p className="text-base text-center font-semibold text-green-600">
+                  success
+                </p>
+              )}
+              <Button className="w-full h-12">
+                {loading ? (
+                  <AiOutlineLoading3Quarters className="animate-spin" />
+                ) : (
+                  <span>Create Account</span>
+                )}
+              </Button>
+              <p className="text-sm font-semibold text-gray-500 text-center">
+                Already have an Account?{" "}
+                <Link className="underline" to="/login">
+                  Login
+                </Link>
+              </p>
             </div>
-
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="zip">Postcode / ZIP*</Label>
-              <Input
-                type="text"
-                id="zip"
-                className="outline-none"
-                placeholder="00000  "
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms" />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Accept terms and conditions
-            </label>
-          </div>
-
-          <div>
-            <Button className="w-full h-12">Create Account</Button>
-            <p className="text-sm mt-4 font-semibold text-gray-500 text-center">
-              Already have an Account?{" "}
-              <Link className="underline" to="/login">
-                Login
-              </Link>
-            </p>
-          </div>
-        </div>
+          </form>
+        </Form>
       </div>
 
       <div className="hidden lg:block  w-full h-auto bg-white"></div>

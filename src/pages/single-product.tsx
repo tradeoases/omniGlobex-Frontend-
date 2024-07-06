@@ -23,6 +23,7 @@ const SingleProduct = () => {
   const [product, setProduct] = useRecoilState<IProduct | null>(
     SingleProductStore
   );
+  const [count, setCount] = useState<number>(1);
   const [searchParams] = useSearchParams();
 
   const product_id = searchParams.get(`product_id`);
@@ -34,7 +35,7 @@ const SingleProduct = () => {
 
     try {
       const response: AxiosResponse<any, any> = await getOneProduct(product_id);
-      
+
       if (response.status === HttpStatusCode.Ok) {
         setProduct(response.data.data);
       }
@@ -139,12 +140,22 @@ const SingleProduct = () => {
 
           <div className="w-full flex items-center gap-x-2 text-lg">
             <div className="border w-32 bg-white flex items-center">
-              <Button className="bg-white hover:bg-white rounded-none text-black shadow-none h-12 space-x-8">
+              <Button
+                onClick={() => {
+                  if (count === 1) return;
+
+                  setCount(count - 1);
+                }}
+                className="bg-white hover:bg-white rounded-none text-black shadow-none h-12 space-x-8"
+              >
                 <HiOutlineMinusSmall />
               </Button>
-              <span className="w-10 text-center">1</span>
+              <span className="w-10 text-center">{count}</span>
 
-              <Button className="bg-white hover:bg-white rounded-none text-black shadow-none h-12 space-x-8">
+              <Button
+                onClick={() => setCount(count + 1)}
+                className="bg-white hover:bg-white rounded-none text-black shadow-none h-12 space-x-8"
+              >
                 <HiOutlinePlusSmall />
               </Button>
             </div>

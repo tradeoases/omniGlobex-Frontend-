@@ -20,7 +20,6 @@ const ShowRoomPage = () => {
   // );
   // const sliderRef = useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
-
   const country = searchParams.get(`country`);
 
   return (

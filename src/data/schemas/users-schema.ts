@@ -44,6 +44,35 @@ export const createSellerSchema = z
   });
 
 export const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email" }),
-  password: z.string(),
+  email: z
+    .string()
+    .email({ message: "Invalid email" })
+    .min(1, "Email required"),
+  password: z.string().min(1, "Password is required"),
 });
+
+export const signupSchema = z
+  .object({
+    firstname: z.string().min(2, {
+      message: "first name must be at least 2 characters.",
+    }),
+
+    terms: z.boolean().default(false).optional(),
+
+    lastname: z.string().min(2, {
+      message: "last name must be at least 2 characters.",
+    }),
+    country_id: z.string().uuid({ message: "invalid" }),
+
+    email: z.string().email("Invalid email"),
+
+    password: z.string().min(8, "Password must be at least 8 characters"),
+
+    confirmPassword: z
+      .string()
+      .min(8, "password must be at least 8 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });

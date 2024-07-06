@@ -10,6 +10,8 @@ import TrackOrderPage from "./pages/track-order";
 import ProfilePage from "./pages/profile-page";
 import SingleProduct from "./pages/single-product";
 import ShowRoomPage from "./pages/show-room-page";
+import PrivacyPolicyPage from "./pages/privacy-policy-page";
+import VerifyEmailPage from "./pages/verify-email-page";
 
 export default function RoutesConfig() {
   // const { id } = useParams();
@@ -26,6 +28,8 @@ export default function RoutesConfig() {
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/single-product" element={<SingleProduct />} />
       <Route path="/show-room" element={<ShowRoomPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

@@ -19,8 +19,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
 import { userLogin } from "@/service/apis/user-services";
-import { useRecoilState } from "recoil";
-import { IUser, userStore } from "@/store/user-store";
+import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
+import { EmailStore, IUser, userStore } from "@/store/user-store";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const LoginPage = () => {
@@ -28,7 +28,8 @@ const LoginPage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
-
+  const setEmailData: SetterOrUpdater<string | null> =
+    useSetRecoilState(EmailStore);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,6 +82,7 @@ const LoginPage = () => {
     } catch (error) {
       setLoading(false);
       if (isAxiosError(error)) {
+        setEmailData(values.email);
         setErrorMessage(error.response?.data.message);
       }
     }
@@ -196,15 +198,15 @@ const LoginPage = () => {
               )}
             </Button>
             <div>
-              <Button className="w-full h-12" variant={"outline"}>
+              <Button disabled className="w-full h-12" variant={"outline"}>
                 <FcGoogle className="mr-2 h-4 w-4 text-xl" /> Sign In with
                 Google
               </Button>
 
               <p className="text-sm mt-4 font-semibold text-gray-500 text-center">
-                Don&apos;t have an Account?
+                Don&apos;t have an Account?{" "}
                 <Link className="underline" to="/signup">
-                  Sign up free
+                  sign up free
                 </Link>
               </p>
             </div>

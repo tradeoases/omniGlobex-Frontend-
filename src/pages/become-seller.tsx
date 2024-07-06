@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 import { FaPen } from "react-icons/fa6";
 import { useEffect, useState } from "react";
@@ -40,7 +40,7 @@ import {
   createSeller,
   getAllRoles,
 } from "@/service/apis/user-services";
-import { IRole, RoleStore } from "@/store/user-store";
+import { EmailStore, IRole, RoleStore } from "@/store/user-store";
 
 const BecomeSellerPage = () => {
   const [showRooms, setShowRooms] = useState<Option[]>([]);
@@ -52,6 +52,8 @@ const BecomeSellerPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
+  const setEmailData: SetterOrUpdater<string | null> =
+    useSetRecoilState(EmailStore);
 
   const form = useForm<z.infer<typeof createSellerSchema>>({
     resolver: zodResolver(createSellerSchema),
@@ -110,13 +112,13 @@ const BecomeSellerPage = () => {
       country_id,
     };
 
-    
     let timeoutKey: NodeJS.Timeout | undefined;
     try {
       setLoading(true);
       const response: AxiosResponse<any, any> = await createSeller(data);
 
       if (response.status === HttpStatusCode.Created) {
+        setEmailData(values.email);
         form.reset();
         setLoading(false);
         setShowRooms([]);

@@ -50,3 +50,8 @@ export const userStore: RecoilState<IUser | null> = atom<IUser | null>({
   key: "user-store",
   default: null,
 });
+
+export const EmailStore: RecoilState<string | null> = atom<string | null>({
+  key: "email-store",
+  default: null,
+});

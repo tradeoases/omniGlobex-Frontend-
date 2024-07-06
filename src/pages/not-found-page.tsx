@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-
 const NotFoundPage: React.FC = () => {
   return (
-    <div className="w-10/12 xl:w-8/12 mx-auto bg-yellow-400">
-      <Button variant="destructive">Destructive</Button>
+    <div className="w-10/12 xl:w-8/12 mx-auto h-96 text-center flex items-center justify-center">
+      404
+      <br />
+      not found page
     </div>
   );
 };
