@@ -22,6 +22,7 @@ import { userLogin } from "@/service/apis/user-services";
 import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
 import { EmailStore, IUser, userStore } from "@/store/user-store";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { VERIFICATION_EMAIL_MSG } from "@/utils/constants/constants";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,6 +38,9 @@ const LoginPage = () => {
 
     if (errorMessage) {
       timeoutKey = setTimeout(() => {
+        if (errorMessage === VERIFICATION_EMAIL_MSG) {
+          navigate("/verify-email");
+        }
         setErrorMessage(null);
       }, 3000);
     }
