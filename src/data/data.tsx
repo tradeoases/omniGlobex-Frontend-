@@ -16,6 +16,13 @@ import { FaAddressBook, FaHeart, FaUser, FaUserGear } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
 import { IoBagHandle, IoCard, IoLogOut } from "react-icons/io5";
 import { MdDashboard, MdReviews } from "react-icons/md";
+import card1 from "@/assets/card-1.svg";
+import card2 from "@/assets/card-2.svg";
+import card3 from "@/assets/card-3.svg";
+import card4 from "@/assets/card-4.svg";
+import iPhoneIcon from "@/assets/iphone3.svg";
+import iPhone2Icon from "@/assets/iphone2.svg";
+import iPhone3Icon from "@/assets/iphone.svg";
 
 export const categories: ICategory[] = [
   { name: "Mobile & Laptops", icon: <MdDevices /> },
@@ -87,4 +94,122 @@ export const mainMenu: IMainMenu[] = [
   { name: "About", route: "" },
   { name: "Blogs", route: "" },
   { name: "Contact", route: "" },
+];
+
+export interface IBankAccount {
+  bankName: string;
+  bankDetails: string;
+  status: string;
+  img: string;
+}
+
+export const bankAccounts: IBankAccount[] = [
+  {
+    bankName: "Datch Bangla Bank Ltd",
+    bankDetails: "Bank **********5535",
+    status: "Verified",
+    img: card1,
+  },
+  {
+    bankName: "Datch Bangla Bank Ltd",
+    bankDetails: "Bank **********5535",
+    status: "Verified",
+    img: card2,
+  },
+  {
+    bankName: "Datch Bangla Bank Ltd",
+    bankDetails: "Bank **********5535",
+    status: "Verified",
+    img: card3,
+  },
+  {
+    bankName: "Datch Bangla Bank Ltd",
+    bankDetails: "Bank **********5535",
+    status: "Verified",
+    img: card4,
+  },
+];
+
+export interface IWishList {
+  id: number;
+  product: string;
+  icon: string;
+  color: string;
+  size: string;
+  price: string;
+  quantity: number;
+  total: string;
+}
+
+export const wishlistItems: IWishList[] = [
+  {
+    id: 1,
+    product: "iPhone 12 Pro Max 128GB",
+    icon: iPhoneIcon,
+    color: "#E4BC87",
+    size: "Small",
+    price: "$38",
+    quantity: 1,
+    total: "$38",
+  },
+  {
+    id: 2,
+    product: "iPhone 12 Pro Max 128GB",
+    icon: iPhone2Icon,
+    color: "#E4BC87",
+    size: "Small",
+    price: "$38",
+    quantity: 1,
+    total: "$38",
+  },
+  {
+    id: 3,
+    product: "iPhone 12 Pro Max 128GB",
+    icon: iPhone3Icon,
+    color: "#E4BC87",
+    size: "Small",
+    price: "$38",
+    quantity: 1,
+    total: "$38",
+  },
+  {
+    id: 4,
+    product: "iPhone 12 Pro Max 128GB",
+    icon: iPhone3Icon,
+    color: "#E4BC87",
+    size: "Small",
+    price: "$38",
+    quantity: 1,
+    total: "$38",
+  },
+  {
+    id: 5,
+    product: "iPhone 12 Pro Max 128GB",
+    icon: iPhone3Icon,
+    color: "#E4BC87",
+    size: "Small",
+    price: "$38",
+    quantity: 1,
+    total: "$38",
+  },
+  {
+    id: 6,
+    product: "iPhone 12 Pro Max 128GB",
+    icon: iPhone3Icon,
+    color: "#E4BC87",
+    size: "Small",
+    price: "$38",
+    quantity: 1,
+    total: "$38",
+  },
+];
+
+export const tableHeader: string[] = [
+  `Product`,
+  `Color`,
+  `Size`,
+  `Price`,
+  `Quantity`,
+  `Total`,
+  `Action`,
 ];

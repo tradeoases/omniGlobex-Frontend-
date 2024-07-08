@@ -208,17 +208,17 @@ const SignupPage = () => {
               </div>
             </div>
 
-            <div className="grid w-full max-w-sm items-center gap-1.5">
+            <div className="w-full items-center">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full">
                     <FormLabel>Email Address *</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
-                        className="focus:outline-none"
+                        className="focus:outline-none w-full"
                         id="email"
                         placeholder="Email Address"
                         {...field}

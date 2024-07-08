@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Overview from "@/components/profile-dashboard/overview";
 import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
@@ -11,6 +12,12 @@ import {
   DashboardMenuStore,
   DashboardSideMenuStore,
 } from "@/store/side-menu-store";
+import { BuyerOrder } from "@/components/buyer-order";
+import { PersonalSection } from "@/components/profile-personal-section";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { getUserInfo } from "@/service/apis/user-services";
+import { PaymentMethod } from "@/components/payment-method";
+import { UserAddress } from "@/components/user-address";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -26,10 +33,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     !isMounted && setIsMounted(true);
-    if (!userData) {
-      setActiveMenu("Dashboard");
-      navigate(`/`);
-    }
+    !userData && fetchUserInfo();
 
     userData?.Roles[0].name === "buyer"
       ? setNavigations(
@@ -39,12 +43,39 @@ const ProfilePage = () => {
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     setUserData(null);
+
     setActiveMenu("Dashboard");
     navigate(`/`);
   };
 
-  if (!userData) return <></>;
+  useEffect(() => {
+    if (activeMenu === "Logout") {
+      localStorage.removeItem("token");
+      setUserData(null);
+
+      setActiveMenu("Dashboard");
+      navigate(`/`);
+    }
+  }, [activeMenu]);
+
+  const fetchUserInfo = async () => {
+    try {
+      const response: AxiosResponse<any, any> = await getUserInfo();
+
+      if (response.status === HttpStatusCode.Ok) {
+        setUserData(response.data.data);
+      }
+    } catch (error) {
+      setActiveMenu("Dashboard");
+      navigate("/");
+    }
+  };
+
+  if (!userData) {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className="w-10/12 xl:w-8/12 relative mx-auto py-12">
@@ -81,12 +112,12 @@ const ProfilePage = () => {
             ))}
           </div>
 
-          {activeMenu === "Dashboard" && <Overview />}
+          {activeMenu === "Dashboard" && <Overview userData={userData} />}
           {activeMenu === "Products" && <ProductManagement />}
-          {activeMenu === "Address" && <UnderConstruction />}
-          {activeMenu === "Personal" && <UnderConstruction />}
-          {activeMenu === "Payment Method" && <UnderConstruction />}
-          {activeMenu === "Order" && <UnderConstruction />}
+          {activeMenu === "Address" && <UserAddress />}
+          {activeMenu === "Personal" && <PersonalSection userData={userData} />}
+          {activeMenu === "Payment Method" && <PaymentMethod />}
+          {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Wishlist" && <UnderConstruction />}
           {activeMenu === "Reviews" && <UnderConstruction />}
           {activeMenu === "Change Password" && <UnderConstruction />}

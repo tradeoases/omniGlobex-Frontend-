@@ -12,6 +12,8 @@ import SingleProduct from "./pages/single-product";
 import ShowRoomPage from "./pages/show-room-page";
 import PrivacyPolicyPage from "./pages/privacy-policy-page";
 import VerifyEmailPage from "./pages/verify-email-page";
+import WishListPage from "./pages/wish-list-page";
+import ShoppingCartPage from "./pages/shopping-cart-page";
 
 export default function RoutesConfig() {
   // const { id } = useParams();
@@ -30,6 +32,8 @@ export default function RoutesConfig() {
       <Route path="/show-room" element={<ShowRoomPage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />
+      <Route path="/wishlist" element={<WishListPage />} />
+      <Route path="/cart" element={<ShoppingCartPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

@@ -1,14 +1,15 @@
-import { IUser, userStore } from "@/store/user-store";
+import { IUser } from "@/store/user-store";
 import { FaShippingFast } from "react-icons/fa";
 import { FaCartArrowDown, FaUserGear } from "react-icons/fa6";
-import { useRecoilValue } from "recoil";
 
-export const Overview = () => {
-  const userData = useRecoilValue<IUser | null>(userStore);
+interface Props {
+  userData: IUser | null;
+}
+export const Overview: React.FC<Props> = ({ userData }) => {
   return (
     <div className="col-span-3 space-y-6">
       <div>
-        <p className="text-base">Hello, {userData?.fullname.split(" ")[0]}</p>
+        <p className="text-base">Hello, {userData?.fullname}</p>
         <p className="text-xl font-semibold">Welcome to your Profile</p>
       </div>
 
