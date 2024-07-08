@@ -37,6 +37,12 @@ export const categories: ICategory[] = [
   { name: "Baby items", icon: <TbBabyBottle /> },
 ];
 
+export enum MessageText {
+  Default = "A confirmation email has been sent to your inbox. Please open the email and follow the instructions to confirm your email address.",
+  TokenWrong = "Confirmation token does not match the one from your email, please resend code and try again.",
+  Success = "Success! Your email is verified!",
+}
+
 export type TActiveMenu =
   | "Dashboard"
   | "Personal"

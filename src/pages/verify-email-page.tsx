@@ -1,4 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useRecoilValue } from "recoil";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { HiOutlineCheck } from "react-icons/hi2";
+
 import emailSentImg from "@/assets/email-sent.png";
 import emailVerifiedImg from "@/assets/email-verified.png";
 import { Button } from "@/components/ui/button";
@@ -8,18 +15,8 @@ import {
   resendVerificationEmail,
 } from "@/service/apis/user-services";
 import { EmailStore, IUser, userStore } from "@/store/user-store";
-import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { HiOutlineCheck } from "react-icons/hi2";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-
-enum MessageText {
-  Default = "A confirmation email has been sent to your inbox. Please open the email and follow the instructions to confirm your email address.",
-  TokenWrong = "Confirmation token does not match the one from your email, please resend code and try again.",
-  Success = "Success! Your email is verified!",
-}
+import { MessageText } from "@/data/data";
+import { LOGIN_TO_RESEND_EMAIL } from "@/utils/constants/constants";
 
 const VerifyEmailPage = () => {
   const [resendBtn, setResendBtn] = useState<boolean>(true);
@@ -34,6 +31,8 @@ const VerifyEmailPage = () => {
   const previousRoute = usePreviousRoute();
   const navigate = useNavigate();
   const email = useRecoilValue<string | null>(EmailStore);
+
+  console.log(loading);
 
   useEffect(() => {
     if (verified) {
@@ -57,9 +56,7 @@ const VerifyEmailPage = () => {
     const token = searchParams.get(`token`);
 
     if (!token) {
-      setErrorMessage(
-        "Your session has expired, please login and then resend the email"
-      );
+      setErrorMessage(LOGIN_TO_RESEND_EMAIL);
       return;
     }
 
@@ -88,9 +85,7 @@ const VerifyEmailPage = () => {
 
   const handleConfirmEmail = async (token: string | null) => {
     if (!token) {
-      setErrorMessage(
-        "Your session has expired, please login and then resend the email"
-      );
+      setErrorMessage(LOGIN_TO_RESEND_EMAIL);
 
       return;
     }
@@ -115,12 +110,12 @@ const VerifyEmailPage = () => {
 
   const handleResendVerificationEmail = async () => {
     if (!email) {
-      setResendError("The session expired, sign in to resend the a new email");
+      setResendError(LOGIN_TO_RESEND_EMAIL);
       return;
     }
 
+    setLoading(true);
     try {
-      setLoading(true);
       const response: AxiosResponse<any, any> = await resendVerificationEmail(
         email
       );
@@ -131,10 +126,12 @@ const VerifyEmailPage = () => {
 
         const timeoutKey: NodeJS.Timeout | undefined = setTimeout(() => {
           setErrorMessage(null);
+          setLoading(false);
         }, 3000);
 
         return () => clearTimeout(timeoutKey);
       }
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       if (isAxiosError(error)) {
@@ -166,7 +163,17 @@ const VerifyEmailPage = () => {
               <div className="space-y-4 flex items-center justify-center flex-col">
                 <p>Didn't you receive the email?</p>
                 {resendError && (
-                  <p className="text-red-500 text-center">{resendError}</p>
+                  <>
+                    <p className="text-red-500 text-center">{resendError}</p>
+                    {errorMessage === LOGIN_TO_RESEND_EMAIL && (
+                      <p>
+                        go to{" "}
+                        <Link to="/login" className="underline">
+                          Login
+                        </Link>
+                      </p>
+                    )}
+                  </>
                 )}
                 {resendSuccess && (
                   <p className="text-green-500 text-center">email sent</p>
@@ -194,13 +201,6 @@ const VerifyEmailPage = () => {
                 <HiOutlineCheck className="text-4xl text-emerald-600" />
               )}
             </div>
-
-            <p>
-              go to{" "}
-              <Link to="/login" className="underline">
-                Login
-              </Link>
-            </p>
           </div>
         )}
       </div>
