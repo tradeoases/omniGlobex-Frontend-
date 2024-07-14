@@ -16,7 +16,6 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 
 import { Check, ChevronsUpDown } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -396,14 +395,14 @@ const CheckoutPage = () => {
                           />
                         </div>
 
-                        <div className="flex space-x-2 items-center mb-10">
+                        {/* <div className="flex space-x-2 items-center mb-10">
                           <FormField
                             control={form.control}
                             name="createAccount"
                             render={({ field }) => (
                               <FormItem>
                                 <FormControl>
-                                  <Checkbox id="createAccount" {...field} />
+                                  <Checkbox checked={field.value} onChange={field.onChange} id="createAccount" {...field} />
                                 </FormControl>
                                 <FormLabel className="text-qblack text-[15px] select-none ml-2">
                                   Create an account?
@@ -412,7 +411,7 @@ const CheckoutPage = () => {
                               </FormItem>
                             )}
                           />
-                        </div>
+                        </div> */}
                       </form>
                     </Form>
                   </div>
