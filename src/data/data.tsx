@@ -277,3 +277,12 @@ export const wishlistData: IWishLists[] = [
     total: 50000,
   },
 ];
+
+export const navs = [
+  { title: "Homepage", icon: true },
+  { title: "Shop", icon: true },
+  { title: "Pages", icon: true },
+  { title: "About" },
+  { title: "Blog" },
+  { title: "Contact" },
+];
