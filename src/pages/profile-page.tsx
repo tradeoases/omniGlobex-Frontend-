@@ -20,7 +20,7 @@ import { PaymentMethod } from "@/components/payment-method";
 import { UserAddress } from "@/components/user-address";
 import ChangePassword from "@/components/change-password";
 
-
+import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [activeMenu, setActiveMenu] =
@@ -81,7 +81,7 @@ const ProfilePage = () => {
 
   return (
     <div className="w-10/12 xl:w-8/12 relative mx-auto py-12">
-      <div className="lg:p-8 space-y-8">
+      <div className=" space-y-8">
         <div className="w-full flex items-center gap-x-8 lg:gap-0">
           <Button
             className="lg:hidden p-1"
@@ -95,7 +95,7 @@ const ProfilePage = () => {
           <p className="text-xl font-semibold">Your Dashboard</p>
         </div>
 
-        <div className="lg:grid grid-cols-4 gap-8">
+        <div className="lg:grid grid-cols-4 gap-8 ">
           <div className="hidden lg:block col-span-1 lg:border-r bg-white px-4">
             {nagigations.map((nav, i) => (
               <div
@@ -121,8 +121,9 @@ const ProfilePage = () => {
           {activeMenu === "Payment Method" && <PaymentMethod />}
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Wishlist" && <UnderConstruction />}
-          {activeMenu === "Reviews" && <UnderConstruction />}
           {activeMenu === "Change Password" && <ChangePassword />}
+          {activeMenu === "Reviews" && <ReviewsDashboard />}
+          {activeMenu === "Change Password" && <UnderConstruction />}
           {activeMenu === "Support Ticket" && <UnderConstruction />}
         </div>
       </div>
