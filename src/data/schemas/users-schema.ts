@@ -100,3 +100,11 @@ export const personalInfoSchema = z.object({
     message: "pos code must be at least 2 characters.",
   }),
 });
+
+export const passwordResetSchema = z.object({
+
+  oldPassword: z.string().min(1, "Old Password is required"),
+  newPassword: z.string().min(1, "New Password is required"),
+  confirmPassword: z.string().min(1, "Confirm Password is required"),
+
+});
