@@ -219,3 +219,61 @@ export const tableHeader: string[] = [
   `Total`,
   `Action`,
 ];
+
+export const wishListHeader = [
+  "Product",
+  "Status",
+  "Price",
+  "Quantity",
+  "Total",
+  "Actions",
+];
+
+export interface IWishLists {
+  product: string;
+  productImage: string;
+  stockStatus: string;
+  price: number;
+  currency: string;
+  quantity: number;
+  total: number;
+}
+
+export const wishlistData: IWishLists[] = [
+  {
+    product: "Apples",
+    productImage: "",
+    stockStatus: `In Stock(${100})`,
+    price: 10000,
+    currency: "$",
+    quantity: 2,
+    total: 20000,
+  },
+  {
+    product: "Apples",
+    productImage: "",
+    stockStatus: `In Stock(${100})`,
+    price: 10000,
+    currency: "$",
+    quantity: 3,
+    total: 30000,
+  },
+  {
+    product: "Apples",
+    productImage: "",
+    stockStatus: `In Stock(${100})`,
+    price: 10000,
+    currency: "$",
+    quantity: 2,
+    total: 20000,
+  },
+  {
+    product: "Apples",
+    productImage: "",
+    stockStatus: `In Stock(${100})`,
+    price: 10000,
+    currency: "$",
+    quantity: 5,
+    total: 50000,
+  },
+];

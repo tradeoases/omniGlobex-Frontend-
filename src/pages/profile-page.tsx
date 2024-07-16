@@ -19,6 +19,7 @@ import { getUserInfo } from "@/service/apis/user-services";
 import { PaymentMethod } from "@/components/payment-method";
 import { UserAddress } from "@/components/user-address";
 import SupportTicket from "@/components/support-ticket";
+import WishList from "@/components/wish-list";
 
 import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 import ChangePassword from "@/components/change-password";
@@ -121,9 +122,10 @@ const ProfilePage = () => {
           {activeMenu === "Personal" && <PersonalSection userData={userData} />}
           {activeMenu === "Payment Method" && <PaymentMethod />}
           {activeMenu === "Order" && <BuyerOrder />}
-          {activeMenu === "Wishlist" && <UnderConstruction />}
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
+          {activeMenu === "Wishlist" && <WishList />}
+          {activeMenu === "Reviews" && <UnderConstruction />}
           {activeMenu === "Change Password" && <UnderConstruction />}
           {activeMenu === "Support Ticket" && <SupportTicket />}
         </div>
