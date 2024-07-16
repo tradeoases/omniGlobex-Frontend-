@@ -18,6 +18,8 @@ import { AxiosResponse, HttpStatusCode } from "axios";
 import { getUserInfo } from "@/service/apis/user-services";
 import { PaymentMethod } from "@/components/payment-method";
 import { UserAddress } from "@/components/user-address";
+import ChangePassword from "@/components/change-password";
+
 
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -120,7 +122,7 @@ const ProfilePage = () => {
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Wishlist" && <UnderConstruction />}
           {activeMenu === "Reviews" && <UnderConstruction />}
-          {activeMenu === "Change Password" && <UnderConstruction />}
+          {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Support Ticket" && <UnderConstruction />}
         </div>
       </div>
