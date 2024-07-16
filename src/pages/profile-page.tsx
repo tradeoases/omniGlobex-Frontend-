@@ -20,7 +20,7 @@ import { PaymentMethod } from "@/components/payment-method";
 import { UserAddress } from "@/components/user-address";
 import ChangePassword from "@/components/change-password";
 
-
+import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [activeMenu, setActiveMenu] =
@@ -121,8 +121,9 @@ const ProfilePage = () => {
           {activeMenu === "Payment Method" && <PaymentMethod />}
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Wishlist" && <UnderConstruction />}
-          {activeMenu === "Reviews" && <UnderConstruction />}
           {activeMenu === "Change Password" && <ChangePassword />}
+          {activeMenu === "Reviews" && <ReviewsDashboard />}
+          {activeMenu === "Change Password" && <UnderConstruction />}
           {activeMenu === "Support Ticket" && <UnderConstruction />}
         </div>
       </div>
