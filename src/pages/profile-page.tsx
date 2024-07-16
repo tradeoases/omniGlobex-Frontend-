@@ -18,9 +18,10 @@ import { AxiosResponse, HttpStatusCode } from "axios";
 import { getUserInfo } from "@/service/apis/user-services";
 import { PaymentMethod } from "@/components/payment-method";
 import { UserAddress } from "@/components/user-address";
-import ChangePassword from "@/components/change-password";
+import SupportTicket from "@/components/support-ticket";
 
 import { ReviewsDashboard } from "@/components/reviews-dashbaord";
+import ChangePassword from "@/components/change-password";
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [activeMenu, setActiveMenu] =
@@ -124,7 +125,7 @@ const ProfilePage = () => {
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
           {activeMenu === "Change Password" && <UnderConstruction />}
-          {activeMenu === "Support Ticket" && <UnderConstruction />}
+          {activeMenu === "Support Ticket" && <SupportTicket />}
         </div>
       </div>
     </div>
