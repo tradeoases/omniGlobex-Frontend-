@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { ProductCard } from "@/components/GameWorldSection";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import { ProductStore } from "@/store/product-store";
@@ -21,6 +20,7 @@ import { useRecoilState } from "recoil";
 import { IProduct, getAllProducts } from "@/service/apis/product-services";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { categories } from "@/data/data";
+import { ProductCard } from "@/components/product-card";
 
 const AllProductsPage = () => {
   const [position, setPosition] = useState<string>("bottom");
@@ -84,7 +84,7 @@ const AllProductsPage = () => {
           </div>
         </div>
 
-        <div className="space-y-6 border-b">
+        <div className="space-y-6 border-b text-xs">
           <p className="text-lg font-bold">Storage</p>
           <div className="pb-8 flex items-center gap-2 flex-wrap">
             <p className="p-1 px-4 border hover:bg-main">64GB</p>
@@ -168,12 +168,12 @@ const ProductCategoryItem: React.FC<ICategory> = ({ name }) => {
         <Checkbox id="terms" />
         <label
           htmlFor="terms"
-          className="line-clamp-1 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="line-clamp-1 text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {name}
         </label>
       </div>
-      <FaPlus className="text-gray-400" />
+      <FaPlus className="text-gray-400 text-xs" />
     </div>
   );
 };
@@ -188,7 +188,7 @@ const BrandItem: React.FC<IBrand> = ({ name }) => {
       <Checkbox id="terms" />
       <label
         htmlFor="terms"
-        className="line-clamp-1 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        className="line-clamp-1 text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         {name}
       </label>
