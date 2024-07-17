@@ -1,5 +1,5 @@
 import { ICategory } from "@/components/Sidemenu";
-import { BsPaintBucket } from "react-icons/bs";
+import { BsMinecartLoaded, BsPaintBucket } from "react-icons/bs";
 import { IoGameControllerOutline } from "react-icons/io5";
 import { LuCar } from "react-icons/lu";
 import {
@@ -7,10 +7,11 @@ import {
   MdOutlineChair,
   MdOutlinePhotoCamera,
   MdOutlineSanitizer,
+  MdOutlineSecurity,
   MdOutlineSportsBaseball,
 } from "react-icons/md";
 import { PiBowlFood } from "react-icons/pi";
-import { TbBabyBottle } from "react-icons/tb";
+import { TbBabyBottle, TbTruckReturn } from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaAddressBook, FaHeart, FaUser, FaUserGear } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
@@ -23,6 +24,7 @@ import card4 from "@/assets/card-4.svg";
 import iPhoneIcon from "@/assets/iphone3.svg";
 import iPhone2Icon from "@/assets/iphone2.svg";
 import iPhone3Icon from "@/assets/iphone.svg";
+import { GoTrophy } from "react-icons/go";
 
 export const categories: ICategory[] = [
   { name: "Mobile & Laptops", icon: <MdDevices /> },
@@ -286,3 +288,37 @@ export const navs = [
   { title: "Blog" },
   { title: "Contact" },
 ];
+
+export const ourServices: IOurService[] = [
+  {
+    id: 1,
+    title: "Free Shipping",
+    description: "When order over $100",
+    icon: <BsMinecartLoaded />,
+  },
+  {
+    id: 2,
+    title: "Free Return",
+    description: "Get Return within 30 days",
+    icon: <TbTruckReturn />,
+  },
+  {
+    id: 3,
+    title: "Secure Payment",
+    description: "100% Secure Online Payment",
+    icon: <MdOutlineSecurity />,
+  },
+  {
+    id: 4,
+    title: "Best Quality",
+    description: "Original Product Guaranteed",
+    icon: <GoTrophy />,
+  },
+];
+
+export interface IOurService {
+  title: string;
+  description: string;
+  icon: JSX.Element;
+  id: number;
+}

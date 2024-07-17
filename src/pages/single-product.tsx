@@ -10,12 +10,12 @@ import {
 } from "react-icons/hi2";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import { useEffect, useState } from "react";
-import { ProductCard } from "@/components/GameWorldSection";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IProduct, getOneProduct } from "@/service/apis/product-services";
 import { ProductStore, SingleProductStore } from "@/store/product-store";
 import { useSearchParams } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
+import { ProductCard } from "@/components/product-card";
 
 const SingleProduct = () => {
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);

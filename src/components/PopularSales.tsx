@@ -34,12 +34,17 @@ const PopularSaleItem: React.FC<IProduct> = ({
   return (
     <Link
       to={`/single-product/?product_id=${product_id}`}
-      className="p-4 py-3 border-b border-light w-full grid grid-cols-12 bg-white gap-x-3"
+      className="p-4 rounded-xl py-3 border-b border-light w-full grid grid-cols-12 bg-white gap-x-3"
     >
-      <img className="object-cover col-span-3" src={image_url} alt={name} />
+      <img
+        className="object-cover rounded-xl col-span-3"
+        src={image_url}
+        alt={name}
+      />
 
-      <div className="col-span-9 flex flex-col justify-center">
-        <p className="line-clamp-2 text-xs font-bold">{description}</p>
+      <div className="col-span-9 space-y-1 flex flex-col justify-center">
+        <p className="line-clamp-1 text-xs font-bold">{name}</p>
+        <p className="line-clamp-2 text-xs font-light">{description}</p>
         <p className="text-sm font-bold flex items-center gap-2">
           <span className="line-through text-gray-400">$ 20.12</span>
           <span className=" text-red-500">$18</span>

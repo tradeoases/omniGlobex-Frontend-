@@ -9,7 +9,6 @@ import {
 } from "@/service/apis/product-services";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { ProductCard } from "./GameWorldSection";
 import { useForm } from "react-hook-form";
 import { createProductSchema } from "@/data/schemas/product-schema";
 import { z } from "zod";
@@ -40,6 +39,7 @@ import { AllCountriesStore } from "@/store/country-store";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { ICreateProduct } from "@/data/product-data";
 import { UnderConstruction } from "@/pages/profile-page";
+import { ProductCard } from "./product-card";
 
 interface ProductProps {}
 

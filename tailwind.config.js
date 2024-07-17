@@ -61,6 +61,11 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        "header-bg": "url('./assets/header-img-1.jpg')",
+        "header-bg-1": "url('./assets/header-img-2.jpg')",
+        "header-bg-2": "url('./assets/header-img-4.jpg')",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

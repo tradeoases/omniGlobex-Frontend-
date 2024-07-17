@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -13,6 +14,11 @@ import {
 
 import AllProductsPage from "./all-products-page";
 import { PageHeader } from "@/components/PageHeader";
+import { useRecoilState } from "recoil";
+import { getAllProducts, IProduct } from "@/service/apis/product-services";
+import { ProductStore } from "@/store/product-store";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { Header } from "@/components/header";
 
 const ShowRoomPage = () => {
   // const [activeCategory, setActiveCategory] = useState<string>(
@@ -21,6 +27,27 @@ const ShowRoomPage = () => {
   // const sliderRef = useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
   const country = searchParams.get(`country`);
+  const [products, setProducts] = useRecoilState<IProduct[] | null>(
+    ProductStore
+  );
+
+  const fetchProducts = async () => {
+    try {
+      const response: AxiosResponse<any, any> = await getAllProducts(
+        `?page=1&pageSize=25`
+      );
+
+      if (response.status === HttpStatusCode.Ok) {
+        setProducts(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    !products && fetchProducts();
+  }, []);
 
   return (
     <div className="w-full">
@@ -28,8 +55,8 @@ const ShowRoomPage = () => {
         name={`show room: ${country || ``}`}
         route={`/ ${country || ``}`}
       />
-      <div className="w-10/12 xl:w-8/12 mx-auto flex items-center justify-center font-bold text-gray-400 border rounded-md bg-gray-50 h-96 mt-10">
-        advert...
+      <div className="w-10/12 mt-8 xl:w-8/12 mx-auto">
+        <Header products={products} />
       </div>
       <AllProductsPage />
     </div>

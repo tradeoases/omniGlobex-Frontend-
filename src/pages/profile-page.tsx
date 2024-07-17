@@ -125,8 +125,6 @@ const ProfilePage = () => {
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
           {activeMenu === "Wishlist" && <WishList />}
-          {activeMenu === "Reviews" && <UnderConstruction />}
-          {activeMenu === "Change Password" && <UnderConstruction />}
           {activeMenu === "Support Ticket" && <SupportTicket />}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { IProduct } from "@/service/apis/product-services";
-import { ProductCard, SectionHeader } from "./GameWorldSection";
+import { SectionHeader } from "./GameWorldSection";
+import { ProductCard } from "./product-card";
 
 interface Props {
   products: IProduct[] | null;
