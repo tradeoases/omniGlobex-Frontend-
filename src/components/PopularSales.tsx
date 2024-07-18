@@ -1,6 +1,6 @@
 import { IProduct } from "@/service/apis/product-services";
-import { SectionHeader } from "./GameWorldSection";
 import { Link } from "react-router-dom";
+import { SectionHeader } from "./section-header";
 
 interface Props {
   products: IProduct[] | null;
@@ -8,12 +8,19 @@ interface Props {
 
 const PopularSales: React.FC<Props> = ({ products }) => {
   return (
-    <div className="w-full space-y-3">
-      <SectionHeader name="Popular Sales" route="" view={true} />
+    <div className="w-full ">
+      <div className="bg-black p-2 pb-3">
+        <SectionHeader
+          classList="text-main"
+          name="Popular Sales"
+          route=""
+          view={true}
+        />
+      </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
         {products ? (
           products
-            .slice(0, 8)
+            .slice(0, 9)
             .map((product, i) => <PopularSaleItem key={i} {...product} />)
         ) : (
           <div>loading...</div>

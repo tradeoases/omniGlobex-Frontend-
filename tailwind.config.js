@@ -65,6 +65,7 @@ module.exports = {
         "header-bg": "url('./assets/header-img-1.jpg')",
         "header-bg-1": "url('./assets/header-img-2.jpg')",
         "header-bg-2": "url('./assets/header-img-4.jpg')",
+        "download-cover": "url('./assets/download-app-cover.png')",
       },
       keyframes: {
         "accordion-down": {

@@ -25,6 +25,12 @@ import iPhoneIcon from "@/assets/iphone3.svg";
 import iPhone2Icon from "@/assets/iphone2.svg";
 import iPhone3Icon from "@/assets/iphone.svg";
 import { GoTrophy } from "react-icons/go";
+import sellerImg1 from "@/assets/saller-1.png";
+import sellerImg2 from "@/assets/saller-2.png";
+import sellerImg3 from "@/assets/saller-3.png";
+import sellerImg4 from "@/assets/saller-4.png";
+import sellerImg5 from "@/assets/saller-5.png";
+import sellerImg6 from "@/assets/saller-6.png";
 
 export const categories: ICategory[] = [
   { name: "Mobile & Laptops", icon: <MdDevices /> },
@@ -88,20 +94,20 @@ export interface IMainMenu {
 }
 
 export const mainMenu: IMainMenu[] = [
-  { name: "Home", route: "" },
-  { name: "Shop", route: "" },
+  { name: "Home", route: "/" },
+  { name: "Shop", route: "/all-products" },
   {
     name: "Pages",
     route: "",
     subMenu: [
-      { name: "Privacy Policy", route: "" },
-      { name: "FAQ", route: "" },
-      { name: "Terms and Conditions", route: "" },
+      { name: "Privacy Policy", route: "/privacy-policy" },
+      { name: "FAQ", route: "/faq" },
+      { name: "Terms and Conditions", route: "/terms-condition" },
     ],
   },
-  { name: "About", route: "" },
-  { name: "Blogs", route: "" },
-  { name: "Contact", route: "" },
+  { name: "About", route: "/about" },
+  { name: "Blogs", route: "/blogs" },
+  { name: "Contact", route: "/contact" },
 ];
 
 export interface IBankAccount {
@@ -280,13 +286,27 @@ export const wishlistData: IWishLists[] = [
   },
 ];
 
-export const navs = [
-  { title: "Homepage", icon: true },
-  { title: "Shop", icon: true },
-  { title: "Pages", icon: true },
-  { title: "About" },
-  { title: "Blog" },
-  { title: "Contact" },
+export type TTopbarNav =
+  | "Homepage"
+  | "Shop"
+  | "Pages"
+  | "About"
+  | "Blogs"
+  | "Contact";
+
+export interface ITopbarNav {
+  title: TTopbarNav;
+  route: string;
+  icon?: boolean;
+}
+
+export const navs: ITopbarNav[] = [
+  { title: "Homepage", route: "/" },
+  { title: "Shop", icon: true, route: "/all-products" },
+  { title: "Pages", icon: true, route: "" },
+  { title: "About", route: "/about" },
+  { title: "Blogs", route: "/blogs" },
+  { title: "Contact", route: "/contact" },
 ];
 
 export const ourServices: IOurService[] = [
@@ -322,3 +342,35 @@ export interface IOurService {
   icon: JSX.Element;
   id: number;
 }
+
+export interface IBestSeller {
+  name: string;
+  image?: string;
+}
+
+export const bestSellers: IBestSeller[] = [
+  {
+    name: "Shopno BD",
+    image: sellerImg1,
+  },
+  {
+    name: "Eecoms Shop",
+    image: sellerImg2,
+  },
+  {
+    name: "Fusion X",
+    image: sellerImg3,
+  },
+  {
+    name: "Rekayi Rox",
+    image: sellerImg4,
+  },
+  {
+    name: "Habbriyi",
+    image: sellerImg5,
+  },
+  {
+    name: "Rayhans",
+    image: sellerImg6,
+  },
+];

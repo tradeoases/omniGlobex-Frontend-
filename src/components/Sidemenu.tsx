@@ -5,9 +5,10 @@ import { LuChevronRight } from "react-icons/lu";
 
 import { RiSearchLine } from "react-icons/ri";
 
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
 import { IMainMenu, categories, mainMenu } from "@/data/data";
+import { Link } from "react-router-dom";
 
 export interface ICategory {
   name: string;
@@ -127,13 +128,21 @@ const SideMenuCategories = () => {
   );
 };
 
+const MainMenuItem: React.FC<IMainMenu> = ({ name, route }) => {
+  const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
 
-const MainMenuItem: React.FC<IMainMenu> = ({ name }) => {
+  const onClose = () => {
+    setSidemenu(false);
+  };
   return (
-    <div className="flex items-center justify-between px-6 py-3 hover:bg-main">
+    <Link
+      to={route}
+      onClick={onClose}
+      className="flex items-center justify-between px-6 py-3 hover:bg-main"
+    >
       <span className="text-sm">{name}</span>
       <LuChevronRight className="text-base" />
-    </div>
+    </Link>
   );
 };
 
@@ -155,4 +164,3 @@ const MainMenu = () => {
     </div>
   );
 };
-

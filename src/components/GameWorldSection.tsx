@@ -1,8 +1,8 @@
 import { IProduct } from "@/service/apis/product-services";
-import { GoArrowRight } from "react-icons/go";
 import { ProductCard } from "./product-card";
 import { GameSectionSidebar } from "./game-section-side-bar";
 import { ProductSkeleton } from "./product-skeleton";
+import { SectionHeader } from "./section-header";
 
 interface Props {
   name: string;
@@ -42,30 +42,3 @@ const GameWorldSection: React.FC<Props> = ({ name, products }) => {
 };
 
 export default GameWorldSection;
-
-interface ISectionHeader {
-  name: string;
-  view?: boolean;
-  route?: string;
-  classList?: string;
-}
-
-export const SectionHeader: React.FC<ISectionHeader> = ({
-  name,
-  view = false,
-  classList,
-}) => {
-  return (
-    <div className={`flex items-center justify-between ${classList}`}>
-      <p className="text-base md:text-2xl font-bold">{name}</p>
-      <div>
-        {view && (
-          <p className="flex items-center justify-end gap-3">
-            <span className="text-xs font-bold">View More</span>
-            <GoArrowRight className="text-sm animate-in" />
-          </p>
-        )}
-      </div>
-    </div>
-  );
-};
