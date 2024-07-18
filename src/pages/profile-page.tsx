@@ -6,7 +6,7 @@ import { IUser, userStore } from "@/store/user-store";
 import { useNavigate } from "react-router-dom";
 import { IDashboardNav, TActiveMenu, dashboardNavs } from "@/data/data";
 import { ProductManagement } from "@/components/product-management";
-import { HiBars3BottomLeft, HiOutlineCog6Tooth } from "react-icons/hi2";
+import { HiBars3BottomLeft } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import {
   DashboardMenuStore,
@@ -133,16 +133,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-export const UnderConstruction = () => {
-  return (
-    <div className="col-span-3 h-[50vh] flex items-center justify-center">
-      <p className=" text-gray-500 flex flex-col items-center">
-        <HiOutlineCog6Tooth className="text-6xl text-gray-300 animate-spin" />
-        <span className="animate-pulse font-semibold text-2xl">
-          under construction
-        </span>
-      </p>
-    </div>
-  );
-};

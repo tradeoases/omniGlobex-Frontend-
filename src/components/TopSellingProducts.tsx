@@ -1,6 +1,6 @@
-import { SectionHeader } from "./GameWorldSection";
 import { IProduct } from "@/service/apis/product-services";
 import { TopSellingCard } from "./top-selling-card";
+import { SectionHeader } from "./section-header";
 
 interface Props {
   products: IProduct[] | null;
@@ -8,8 +8,15 @@ interface Props {
 
 const TopSellingProducts: React.FC<Props> = ({ products }) => {
   return (
-    <div className="space-y-3">
-      <SectionHeader name="Top Selling Products" view={true} route="" />
+    <div className="w-full space-y-2">
+      <div className="p-2 pb-3 bg-slate-700">
+        <SectionHeader
+          name="Top Selling Products"
+          classList="text-white"
+          view={true}
+          route=""
+        />
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {products ? (
           products

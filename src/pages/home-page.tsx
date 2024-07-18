@@ -14,11 +14,13 @@ import TopSellingProducts from "@/components/TopSellingProducts";
 import { IProduct, getAllProducts } from "@/service/apis/product-services";
 import { ProductStore } from "@/store/product-store";
 import { HeaderSection } from "@/components/header-section";
+import { useRef } from "react";
 
 export default function HomePage() {
   const [products, setProducts] = useRecoilState<IProduct[] | null>(
     ProductStore
   );
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const fetchProducts = async () => {
     try {
@@ -38,10 +40,14 @@ export default function HomePage() {
     !products && fetchProducts();
   }, []);
 
+  const scrollToSection = () => {
+    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <main className="w-10/12 xl:w-8/12 mx-auto py-8 space-y-10">
-      <HeaderSection />
-      <OurServiceSection />
+      <HeaderSection onScroll={() => scrollToSection()} />
+      <OurServiceSection sectionRef={sectionRef} />
       <GameWorldSection products={products} name="Country showrooms" route="" />
       <ShopBrandSection />
       <AnnounceBanner />

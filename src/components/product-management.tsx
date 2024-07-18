@@ -38,8 +38,8 @@ import { getAllCountries, ICountry } from "@/service/apis/countries-services";
 import { AllCountriesStore } from "@/store/country-store";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { ICreateProduct } from "@/data/product-data";
-import { UnderConstruction } from "@/pages/profile-page";
 import { ProductCard } from "./product-card";
+import { UnderConstruction } from "@/components/under-construction";
 
 interface ProductProps {}
 
