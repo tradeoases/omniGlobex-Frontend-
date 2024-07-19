@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TProductNav, productNavs } from "@/data/data";
 import {
@@ -7,7 +8,7 @@ import {
   IProduct,
   IProductCategory,
 } from "@/service/apis/product-services";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { createProductSchema } from "@/data/schemas/product-schema";
@@ -36,10 +37,12 @@ import {
 import MultiSelect, { Option } from "./multiple-select";
 import { getAllCountries, ICountry } from "@/service/apis/countries-services";
 import { AllCountriesStore } from "@/store/country-store";
-import { HiOutlineXMark } from "react-icons/hi2";
+import { HiArrowUpTray, HiOutlineXMark } from "react-icons/hi2";
 import { ICreateProduct } from "@/data/product-data";
 import { ProductCard } from "./product-card";
 import { UnderConstruction } from "@/components/under-construction";
+import { FileDisplayItem } from "./file-display-item";
+import { Label } from "./ui/label";
 
 interface ProductProps {}
 
@@ -138,6 +141,11 @@ const AddProductModal: React.FC<IModalProps> = ({ onClose }) => {
   const [countries, setCountries] = useRecoilState<ICountry[] | null>(
     AllCountriesStore
   );
+  const [fileProgress, setFileProgress] = useState<{ [key: string]: number }>(
+    {}
+  );
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
     !categories && fetchCategories();
@@ -196,15 +204,78 @@ const AddProductModal: React.FC<IModalProps> = ({ onClose }) => {
     }
   };
 
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const newFiles = Array.from(e.dataTransfer.files);
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
+    newFiles.forEach((file) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      const interval = setInterval(() => {
+        setFileProgress((prevProgress) => {
+          const newProgress = prevProgress[file.name]
+            ? prevProgress[file.name] + 10
+            : 10;
+          if (newProgress >= 100) clearInterval(interval);
+          return { ...prevProgress, [file.name]: newProgress };
+        });
+      }, 100);
+    });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newFiles = Array.from(e.target.files || []);
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
+    newFiles.forEach((file) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      const interval = setInterval(() => {
+        setFileProgress((prevProgress) => {
+          const newProgress = prevProgress[file.name]
+            ? prevProgress[file.name] + 10
+            : 10;
+          if (newProgress >= 100) clearInterval(interval);
+          return { ...prevProgress, [file.name]: newProgress };
+        });
+      }, 100);
+    });
+  };
+
+  const removeFile = (fileName: string) => {
+    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
+    setFileProgress((prevProgress) => {
+      const { [fileName]: _, ...rest } = prevProgress;
+      return rest;
+    });
+  };
+
+  const handleBoxClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black/45 p-8">
-      <div className="bg-white relative w-full lg:w-4/5 mx-auto h-full rounded-xl p-8 ">
-        <div className="flex justify-end">
-          <span onClick={onClose} className="cursor-pointer text-lg">
+    <div className="fixed top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
+      <div className="bg-white relative w-full lg:w-2/5 mx-auto h-full rounded-xl p-8 ">
+        <div className="flex mb-6 justify-end">
+          <span
+            onClick={onClose}
+            className="cursor-pointer hover:text-red-700 transition ease-in-out duration-200 text-lg"
+          >
             <HiOutlineXMark />
           </span>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+
+        <div className="scrollbar px-3 overflow-y-scroll h-[70vh] w-full">
           <div>
             <p className="text-lg font-semibold">New Product</p>
             <Form {...form}>
@@ -231,7 +302,7 @@ const AddProductModal: React.FC<IModalProps> = ({ onClose }) => {
                     )}
                   />
                 </div>
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-8">
                   <div className="w-full">
                     <FormField
                       control={form.control}
@@ -298,14 +369,67 @@ const AddProductModal: React.FC<IModalProps> = ({ onClose }) => {
                   />
                 </div>
 
+                <div className="">
+                  <div>
+                    <p className="text-base font-medium">
+                      Attached files to the products
+                    </p>
+
+                    <Label className="text-blue-500">
+                      Upload product images
+                    </Label>
+
+                    <div
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                      className="cursor-pointer rounded-xl border border-dashed border-gray-300 p-6 text-center md:border-2"
+                    >
+                      <input
+                        type="file"
+                        id="file"
+                        multiple
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                      />
+                      <span className="mb-4 flex w-full items-center justify-center">
+                        <HiArrowUpTray className="text-xl" />
+                      </span>
+                      <div>
+                        <span
+                          className="text-sx cursor-pointer text-blue-600 underline md:text-sm"
+                          onClick={handleBoxClick}
+                        >
+                          Chose a file
+                        </span>{" "}
+                        to Upload
+                      </div>
+                    </div>
+                    <div className="flex text-xs items-center justify-between">
+                      <span>Supported formats: JPG, PNG</span>
+                      <span>Max File size 10MB</span>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                      {files.map((file) => (
+                        <FileDisplayItem
+                          key={file.name}
+                          removeFile={removeFile}
+                          fileProgress={fileProgress}
+                          file={file}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
                 <Button type="submit" className="">
                   Create
                 </Button>
               </form>
             </Form>
           </div>
-
-          <div>media box</div>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 py-4 w-full border-t px-8">

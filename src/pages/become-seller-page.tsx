@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 import { FaPen } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -54,6 +55,15 @@ const BecomeSellerPage = () => {
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
   const setEmailData: SetterOrUpdater<string | null> =
     useSetRecoilState(EmailStore);
+  const [profileSrc, setProfileSrc] = useState<string | null>(null);
+  const [coverSrc, setCoverSrc] = useState<string | null>(null);
+  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+  // const [file, setFile] = useState<File[]>([]);
+  // const [loading, setLoading] = useState(false);
+  // const [progress, setProgress] = useState<{ [key: string]: number }>({});
+  const profileInputRef = useRef<HTMLInputElement | null>(null);
+  const logoInputRef = useRef<HTMLInputElement | null>(null);
+  const coverInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<z.infer<typeof createSellerSchema>>({
     resolver: zodResolver(createSellerSchema),
@@ -177,6 +187,50 @@ const BecomeSellerPage = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    type: IImageType
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // setFile([...Array.from(event.target.files || [])]);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onprogress = (e) => {
+        setLoading(true);
+        if (e.lengthComputable) {
+          // const interval = setInterval(() => {
+          //   setProgress((prevProgress) => {
+          //     const newProgress = prevProgress[file.name]
+          //       ? prevProgress[file.name] + 10
+          //       : 10;
+          //     if (newProgress >= 100) {
+          //       clearInterval(interval);
+          //     }
+          //     return { ...prevProgress, [file.name]: newProgress };
+          //   });
+          // }, 2000);
+        }
+      };
+
+      reader.onloadend = (e) => {
+        setLoading(false);
+        type === "PROFILE"
+          ? setProfileSrc(e.target?.result as string)
+          : type === "COVER"
+          ? setCoverSrc(e.target?.result as string)
+          : setLogoSrc(e.target?.result as string);
+      };
+    }
+  };
+
+  const handleUpdateLoadImage = (
+    fileInputRef: React.RefObject<HTMLDivElement>
+  ) => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -542,13 +596,30 @@ const BecomeSellerPage = () => {
             </div>
 
             <div className="flex relative items-center justify-center text-lg font-bold w-40 h-40 rounded-full bg-gray-200">
-              200X200
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full bg-pink-700 flex items-center justify-center z-20 right-0 bottom-6 text-white text-lg absolute "
+              {profileSrc && (
+                <img
+                  src={profileSrc}
+                  alt={profileSrc}
+                  className="object-center rounded-full"
+                />
+              )}
+              <input
+                ref={profileInputRef}
+                multiple={false}
+                className="hidden"
+                type="file"
+                name=""
+                id="profile"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "PROFILE")}
+              />
+              <Button
+                size="icon"
+                onClick={() => handleUpdateLoadImage(profileInputRef)}
+                className="rounded-full bg-black flex items-center justify-center z-20 border right-0 bottom-4 text-white text-lg absolute "
               >
                 <FaPen />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -564,13 +635,26 @@ const BecomeSellerPage = () => {
             </div>
 
             <div className="flex relative items-center justify-center text-lg font-bold w-40 h-40 rounded-full bg-gray-200">
-              200X200
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full bg-pink-700 flex items-center justify-center z-20 right-0 bottom-6 text-white text-lg absolute "
+              {logoSrc && (
+                <img src={logoSrc} alt={logoSrc} className="object-cover " />
+              )}
+              <input
+                ref={logoInputRef}
+                multiple={false}
+                className="hidden"
+                type="file"
+                name=""
+                id="logo"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "LOGO")}
+              />
+              <Button
+                onClick={() => handleUpdateLoadImage(logoInputRef)}
+                size="icon"
+                className="rounded-full bg-black flex items-center justify-center z-20 border right-0 bottom-4 text-white text-lg absolute "
               >
                 <FaPen />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -582,13 +666,30 @@ const BecomeSellerPage = () => {
             </p>
 
             <div className="flex relative items-center justify-center text-lg font-bold w-full h-40 rounded-lg bg-gray-200">
-              200X200
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full bg-pink-700 flex items-center justify-center z-20 right-0 -bottom-4 text-white text-lg absolute "
+              {coverSrc && (
+                <img
+                  src={coverSrc}
+                  alt={coverSrc}
+                  className="object-cover h-full w-full rounded-lg "
+                />
+              )}
+              <input
+                ref={coverInputRef}
+                multiple={false}
+                className="hidden"
+                type="file"
+                name=""
+                id="cover"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "COVER")}
+              />
+              <Button
+                size="icon"
+                onClick={() => handleUpdateLoadImage(coverInputRef)}
+                className="rounded-full bg-black flex items-center justify-center z-20 border -right-2 -bottom-2 text-white text-lg absolute "
               >
                 <FaPen />
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -598,3 +699,5 @@ const BecomeSellerPage = () => {
 };
 
 export default BecomeSellerPage;
+
+type IImageType = "PROFILE" | "COVER" | "LOGO";

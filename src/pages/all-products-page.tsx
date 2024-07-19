@@ -196,7 +196,7 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
         </div>
       </div>
 
-      <div className="space-y-6 border-b text-xs lg:text-white">
+      {/* <div className="space-y-6 border-b text-xs lg:text-white">
         <p className="text-lg font-bold">Storage</p>
         <div className="pb-8 flex items-center gap-2 flex-wrap">
           <p className="p-1 px-4 border hover:bg-main">64GB</p>
@@ -205,7 +205,7 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
           <p className="p-1 px-4 border hover:bg-main">512GB</p>
           <p className="p-1 px-4 border hover:bg-main">1024GB</p>
         </div>
-      </div>
+      </div> */}
 
       <div className="space-y-6 border-b lg:text-white">
         <p className="text-lg font-bold">Sizes</p>

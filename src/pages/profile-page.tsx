@@ -41,7 +41,9 @@ const ProfilePage = () => {
 
     userData?.Roles[0].name === "buyer"
       ? setNavigations(
-          dashboardNavs.filter((item) => item.title !== "Products")
+          dashboardNavs.filter(
+            (item) => item.title !== "Products" && item.title !== "Dashboard"
+          )
         )
       : "";
   }, []);
@@ -86,7 +88,7 @@ const ProfilePage = () => {
       <div className=" space-y-8">
         <div className="w-full flex items-center gap-x-8 lg:gap-0">
           <Button
-            className="lg:hidden p-1"
+            className="lg:hidden p-1 border shadow-none"
             variant="secondary"
             size="icon"
             asChild
