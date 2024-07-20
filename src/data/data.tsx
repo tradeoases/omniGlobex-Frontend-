@@ -374,3 +374,5 @@ export const bestSellers: IBestSeller[] = [
     image: sellerImg6,
   },
 ];
+
+export type IImageType = "PROFILE" | "COVER" | "LOGO";

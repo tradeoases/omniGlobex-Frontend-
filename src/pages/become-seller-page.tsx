@@ -42,6 +42,14 @@ import {
   getAllRoles,
 } from "@/service/apis/user-services";
 import { EmailStore, IRole, RoleStore } from "@/store/user-store";
+import { getFileBase64 } from "@/utils/getFileBase64";
+import { IUPloadFile, uploadFile } from "@/service/apis/media-service";
+import { IImageType } from "@/data/data";
+
+interface IUploadedFile {
+  file_url: string;
+  file_id: string;
+}
 
 const BecomeSellerPage = () => {
   const [showRooms, setShowRooms] = useState<Option[]>([]);
@@ -58,9 +66,9 @@ const BecomeSellerPage = () => {
   const [profileSrc, setProfileSrc] = useState<string | null>(null);
   const [coverSrc, setCoverSrc] = useState<string | null>(null);
   const [logoSrc, setLogoSrc] = useState<string | null>(null);
-  // const [file, setFile] = useState<File[]>([]);
-  // const [loading, setLoading] = useState(false);
-  // const [progress, setProgress] = useState<{ [key: string]: number }>({});
+  const [profileImage, setProfileImage] = useState<IUploadedFile | null>(null);
+  const [logoImage, setLogoImage] = useState<IUploadedFile | null>(null);
+  const [coverImage, setCoverImage] = useState<IUploadedFile | null>(null);
   const profileInputRef = useRef<HTMLInputElement | null>(null);
   const logoInputRef = useRef<HTMLInputElement | null>(null);
   const coverInputRef = useRef<HTMLInputElement | null>(null);
@@ -91,6 +99,11 @@ const BecomeSellerPage = () => {
       setErrorMessage("select at least one user role");
       return;
     }
+
+    if (!profileImage || !logoImage || !coverImage) {
+      setErrorMessage("make sure you upload all images");
+      return;
+    }
     const {
       address,
       email,
@@ -109,12 +122,12 @@ const BecomeSellerPage = () => {
       password,
       phonenumber,
       profileImages: {
-        avatar_url: "something",
-        avatar_id: "something",
-        logo_url: "something",
-        logo_id: "something",
-        cover_url: "something",
-        cover_id: "something",
+        avatar_url: profileImage?.file_url,
+        avatar_id: profileImage?.file_id,
+        logo_url: logoImage?.file_url,
+        logo_id: logoImage?.file_id,
+        cover_url: coverImage?.file_url,
+        cover_id: coverImage?.file_id,
       },
       roleIds: userRoles.map((role) => role.value),
       shopName,
@@ -189,30 +202,18 @@ const BecomeSellerPage = () => {
     }
   };
 
-  const handleFileChange = (
+  const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
     type: IImageType
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-      // setFile([...Array.from(event.target.files || [])]);
       const reader = new FileReader();
       reader.readAsDataURL(file);
 
       reader.onprogress = (e) => {
-        setLoading(true);
         if (e.lengthComputable) {
-          // const interval = setInterval(() => {
-          //   setProgress((prevProgress) => {
-          //     const newProgress = prevProgress[file.name]
-          //       ? prevProgress[file.name] + 10
-          //       : 10;
-          //     if (newProgress >= 100) {
-          //       clearInterval(interval);
-          //     }
-          //     return { ...prevProgress, [file.name]: newProgress };
-          //   });
-          // }, 2000);
+          setLoading(true);
         }
       };
 
@@ -224,9 +225,34 @@ const BecomeSellerPage = () => {
           ? setCoverSrc(e.target?.result as string)
           : setLogoSrc(e.target?.result as string);
       };
+
+      const fileBase64 = await getFileBase64(file);
+
+      console.log({ fileBase64 });
+
+      try {
+        const data: IUPloadFile = {
+          images: [fileBase64],
+          folder: "omniglobex",
+        };
+
+        const response: AxiosResponse = await uploadFile(data);
+
+        if (response.status === HttpStatusCode.Ok) {
+          const imageData: IUploadedFile = response.data.data.data[0];
+          type === "PROFILE"
+            ? setProfileImage(imageData)
+            : type === "COVER"
+            ? setCoverImage(imageData)
+            : setLogoImage(imageData);
+        }
+      } catch (error) {
+        setErrorMessage("error related to upload image");
+      }
     }
   };
 
+  console.log({ profileImage });
   const handleUpdateLoadImage = (
     fileInputRef: React.RefObject<HTMLDivElement>
   ) => {
@@ -600,7 +626,7 @@ const BecomeSellerPage = () => {
                 <img
                   src={profileSrc}
                   alt={profileSrc}
-                  className="object-center rounded-full"
+                  className="object-center"
                 />
               )}
               <input
@@ -699,5 +725,3 @@ const BecomeSellerPage = () => {
 };
 
 export default BecomeSellerPage;
-
-type IImageType = "PROFILE" | "COVER" | "LOGO";

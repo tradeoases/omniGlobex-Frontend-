@@ -1,6 +1,6 @@
-import request from "../base.service";
+// import request from "../base.service";
 
-const PATH = "image/";
+// const PATH = "image/";
 
 export const PRODUCT_FOLDER = "/product";
 export const PROFILE_FOLDER = "/profile";
@@ -10,5 +10,5 @@ export interface ICreateImage {
   folder: string;
 }
 
-export const uploadImages = async (data: ICreateImage[]) =>
-  await request.post(`${PATH}upload`, data);
+// export const uploadFIle = async (data: ICreateImage[]) =>
+//   await request.post(`${PATH}upload`, data);
