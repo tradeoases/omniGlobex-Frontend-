@@ -15,7 +15,8 @@ import VerifyEmailPage from "./pages/verify-email-page";
 import WishListPage from "./pages/wish-list-page";
 import ShoppingCartPage from "./pages/shopping-cart-page";
 import CheckoutPage from "./pages/checkout-page";
-import BlogPage from "./pages/blog-page"; 
+import BlogPage from "./pages/blog-page";
+import ContactPage from "./pages/contact-page";
 
 export default function RoutesConfig() {
   // const { id } = useParams();
@@ -25,6 +26,7 @@ export default function RoutesConfig() {
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/blogs" element={<BlogPage />} />
+      <Route path="/contact" element={<ContactPage />} />
       <Route path="/become-seller" element={<BecomeSellerPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />

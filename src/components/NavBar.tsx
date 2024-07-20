@@ -47,7 +47,7 @@ const NavBar = () => {
           <div className="flex items-center gap-6 xl:gap-10 relative -bottom-1">
             {navs.map((nav, i) =>
               nav.title === "Pages" ? (
-                <PagesItem />
+                <PagesItem key={i} />
               ) : (
                 <Link
                   to={nav.route}
