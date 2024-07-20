@@ -18,7 +18,7 @@ import CheckoutPage from "./pages/checkout-page";
 import BlogPage from "./pages/blog-page";
 import ContactPage from "./pages/contact-page";
 import FaqPage from "./pages/faq-page";
-
+import TermsConditionsPage from "./pages/terms-condition-page";
 export default function RoutesConfig() {
   return (
     <Routes>
@@ -27,6 +27,7 @@ export default function RoutesConfig() {
       <Route path="/blogs" element={<BlogPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FaqPage />} />
+      <Route path="/terms-condition" element={<TermsConditionsPage />} />
       <Route path="/become-seller" element={<BecomeSellerPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
