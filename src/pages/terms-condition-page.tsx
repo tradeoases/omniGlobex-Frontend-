@@ -1,15 +1,15 @@
 import { PageHeader } from "@/components/PageHeader";
-import { privacies } from "@/data/privacy-data";
+import { termsandConditionsData } from "@/data/privacy-data";
 
-const PrivacyPolicyPage = () => {
+const TermsConditionsPage = () => {
   return (
     <div className="w-full">
-      <PageHeader name="Privacy Policy" route="/ Privacy Policy" />
+      <PageHeader name="Terms and Condition" route="/ Terms and Condition" />
       <div className="my-10 w-10/12 xl:w-8/12 mx-auto">
-        {privacies.map((item, i) => (
+        {termsandConditionsData.map((item, i) => (
           <div key={i} className="content-item w-full mb-10">
             <h2 className="text-[18px] font-medium text-qblack mb-5">
-              {`${i + 1}. ${item.title}`}
+              {`${i + i}. ${item.title}`}
             </h2>
             <p className="text-[15px] text-gray-500 leading-7">
               {item.description}
@@ -21,4 +21,4 @@ const PrivacyPolicyPage = () => {
   );
 };
 
-export default PrivacyPolicyPage;
+export default TermsConditionsPage;
