@@ -17,16 +17,16 @@ import ShoppingCartPage from "./pages/shopping-cart-page";
 import CheckoutPage from "./pages/checkout-page";
 import BlogPage from "./pages/blog-page";
 import ContactPage from "./pages/contact-page";
+import FaqPage from "./pages/faq-page";
 
 export default function RoutesConfig() {
-  // const { id } = useParams();
-
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/blogs" element={<BlogPage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/faq" element={<FaqPage />} />
       <Route path="/become-seller" element={<BecomeSellerPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
