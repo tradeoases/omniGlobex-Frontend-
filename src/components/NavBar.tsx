@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { Button } from "./ui/button";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiMenuFries } from "react-icons/ci";
-import { CategoriesPopup } from "./CategoriesPopup";
 import { Link } from "react-router-dom";
-import { navs } from "@/data/data";
 
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { Button } from "./ui/button";
+import { CategoriesPopup } from "./CategoriesPopup";
+import { navs } from "@/data/data";
+import { NavBarPagesItem } from "./navbar-page-item";
 
 const NavBar = () => {
   const [showCategory, setShowCategory] = useState<boolean>(false);
@@ -47,7 +43,7 @@ const NavBar = () => {
           <div className="flex items-center gap-6 xl:gap-10 relative -bottom-1">
             {navs.map((nav, i) =>
               nav.title === "Pages" ? (
-                <PagesItem key={i} />
+                <NavBarPagesItem key={i} />
               ) : (
                 <Link
                   to={nav.route}
@@ -72,37 +68,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-export const PagesItem = () => {
-  return (
-    <HoverCard>
-      <HoverCardTrigger asChild>
-        <Button
-          variant="link"
-          className="p-0 h-0 gap-2 flex items-center hover:underline"
-        >
-          Pages <LuChevronDown />
-        </Button>
-      </HoverCardTrigger>
-      <HoverCardContent className="w-52 mt-7 rounded-none shadow-none">
-        <div className="flex flex-col justify-between space-y-2">
-          {otherPages.map((nav) => (
-            <Link
-              className="text-gray-600 hover:text-main font-normal"
-              key={nav.title}
-              to={nav.route}
-            >
-              {nav.title}
-            </Link>
-          ))}
-        </div>
-      </HoverCardContent>
-    </HoverCard>
-  );
-};
-
-const otherPages = [
-  { title: "Privacy Policy", route: "privacy-policy" },
-  { title: "Terms and Conditions", route: "terms-condition" },
-  { title: "FAQ", route: "/faq" },
-];
