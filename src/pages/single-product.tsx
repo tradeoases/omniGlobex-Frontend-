@@ -16,6 +16,7 @@ import { ProductStore, SingleProductStore } from "@/store/product-store";
 import { useSearchParams } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductCard } from "@/components/product-card";
+import ReviewCardDetailed from "@/components/review-card-detailed";
 
 const SingleProduct = () => {
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);
@@ -361,8 +362,14 @@ const SellerInfo: React.FC<SellerInfoProps> = ({ products }) => {
 
 const ReviewContent = () => {
   return (
-    <div className="w-full h-full flex items-center justify-center text-4xl font-bold animate-pulse">
-      coming soon...
+    <div>
+      <div className="mb-4">
+        <p className="text-lg font-semibold">Reviews</p>
+      </div>
+      <div className="w-full h-full bg-white p-4">
+        <ReviewCardDetailed reviewData={{ hasComment: true }} />
+        <ReviewCardDetailed reviewData={{ hasComment: false }} />
+      </div>
     </div>
   );
 };
