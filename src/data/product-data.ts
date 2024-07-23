@@ -6,3 +6,5 @@ export interface ICreateProduct {
   image_id?: string;
   showRooms: string[];
 }
+
+export const productDetailNavs = [`Description`, `Reviews`, `Seller Info`];

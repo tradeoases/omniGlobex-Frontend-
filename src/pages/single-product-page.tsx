@@ -16,7 +16,10 @@ import { ProductStore, SingleProductStore } from "@/store/product-store";
 import { useSearchParams } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductCard } from "@/components/product-card";
-import ReviewCardDetailed from "@/components/review-card-detailed";
+import { ProductSellerInfoTab } from "@/components/product-seller-info-tab";
+import { ProductDescriptionTab } from "@/components/product-description-tab";
+import { ProductReviewTab } from "@/components/product-review-tab";
+import { productDetailNavs } from "@/data/product-data";
 
 const SingleProduct = () => {
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);
@@ -219,9 +222,11 @@ const SingleProduct = () => {
           </div>
         </div>
         <div className=" w-10/12 xl:w-8/12 mx-auto space-y-8">
-          {activeTab === "Description" && <Description />}
-          {activeTab === "Seller Info" && <SellerInfo products={products} />}
-          {activeTab === "Reviews" && <ReviewContent />}
+          {activeTab === "Description" && <ProductDescriptionTab />}
+          {activeTab === "Seller Info" && (
+            <ProductSellerInfoTab products={products} />
+          )}
+          {activeTab === "Reviews" && <ProductReviewTab />}
         </div>
       </div>
 
@@ -243,133 +248,3 @@ const SingleProduct = () => {
 };
 
 export default SingleProduct;
-
-const productDetailNavs = [`Description`, `Reviews`, `Seller Info`];
-
-const Description = () => {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <p className="text-lg font-semibold">Introduction</p>
-        <p className="text-gray-400">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industrys standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries but also the on leap into electronic typesetting,
-          remaining essentially unchanged. It wasn’t popularised in the 1960s
-          with the release of Letraset sheets containing Lorem Ipsum passages,
-          andei more recently with desktop publishing software like Aldus
-          PageMaker including versions of Lorem Ipsum to make a type specimen
-          book.
-        </p>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-lg font-semibold">Features: </p>
-        <ul className="text-gray-400 list-disc list-inside text-sm">
-          <li>slim body with metal cover</li>
-          <li>latest Intel Core i5-1135G7 processor (4 cores / 8 threads)</li>
-          <li>8GB DDR4 RAM and fast 512GB PCIe SSD</li>
-          <li>
-            NVIDIA GeForce MX350 2GB GDDR5 graphics card backlit keyboard,
-            touchpad with gesture support
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
-};
-
-interface SellerInfoProps {
-  products: IProduct[] | null;
-}
-
-const SellerInfo: React.FC<SellerInfoProps> = ({ products }) => {
-  return (
-    <div className="w-full space-y-20">
-      <div className=" space-y-10 lg:flex items-center justify-between border-b pb-8">
-        <div className="flex items-center gap-x-4">
-          <img
-            src="https://ik.imagekit.io/2ujnunod7moo/profile1_6ynm5mYwy.jpeg?updatedAt=1691099202935"
-            alt="seller"
-            className="w-16 h-16 rounded-full bg-contain"
-          />
-
-          <div className="space-y-3">
-            <p className="text-md font-semibold">Ridoy Rock</p>
-            <p className="text-sm font-light">London,United Kingdom</p>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <span key={i} className="text-xl text-main">
-                    ★
-                  </span>
-                ))}
-              </div>
-              <span>(4.5)</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <p>
-            Products: <span className="text-gray-400">120</span>
-          </p>
-          <p>
-            Category:{" "}
-            <span className="text-gray-400">
-              Mobile Phone, Sports, Gaming, Electronics
-            </span>
-          </p>
-          <p>
-            Products: <span className="text-gray-400">Beer, Foamer</span>
-          </p>
-        </div>
-
-        <div className="space-y-3">
-          <p>
-            Products: <span className="text-gray-400">120</span>
-          </p>
-          <p>
-            Category:{" "}
-            <span className="text-gray-400">
-              Mobile Phone, Sports, Gaming, Electronics
-            </span>
-          </p>
-          <p>
-            Products: <span className="text-gray-400">Beer, Foamer</span>
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-8">
-        <p className="text-lg font-semibold">Product from Shop</p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products ? (
-            products
-              .slice(0, 8)
-              .map((product, i) => <ProductCard key={i} {...product} />)
-          ) : (
-            <div>loading</div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ReviewContent = () => {
-  return (
-    <div>
-      <div className="mb-4">
-        <p className="text-lg font-semibold">Reviews</p>
-      </div>
-      <div className="w-full h-full bg-white p-4">
-        <ReviewCardDetailed reviewData={{ hasComment: true }} />
-        <ReviewCardDetailed reviewData={{ hasComment: false }} />
-      </div>
-    </div>
-  );
-};
