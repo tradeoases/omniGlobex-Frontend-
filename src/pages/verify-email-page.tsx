@@ -32,8 +32,6 @@ const VerifyEmailPage = () => {
   const navigate = useNavigate();
   const email = useRecoilValue<string | null>(EmailStore);
 
-  console.log(loading);
-
   useEffect(() => {
     if (verified) {
       let timeoutKey: NodeJS.Timeout | undefined;

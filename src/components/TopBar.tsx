@@ -89,7 +89,9 @@ const TopBar = () => {
         <div onClick={onOpen}>
           <LuAlignLeft className="text-2xl" />
         </div>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
         <p className="relative">
           <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
             3

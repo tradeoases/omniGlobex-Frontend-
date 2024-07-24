@@ -10,10 +10,9 @@ export interface IUserSignup {
   fullname: string;
 }
 
-export interface ISellerSignup extends IUserSignup {
+export interface ISellerSignup extends IUserSignup, ProfileImagesAttributes {
   address: string;
   shopName: string;
-  profileImages: ProfileImagesAttributes;
   phonenumber: string;
   city?: string;
   showRooms: string[];

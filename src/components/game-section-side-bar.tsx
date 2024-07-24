@@ -1,5 +1,5 @@
-import { LuChevronRight } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { LuChevronRight } from "react-icons/lu";
 
 export const GameSectionSidebar = () => {
   return (

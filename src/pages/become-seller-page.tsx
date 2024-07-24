@@ -43,13 +43,13 @@ import {
 } from "@/service/apis/user-services";
 import { EmailStore, IRole, RoleStore } from "@/store/user-store";
 import { getFileBase64 } from "@/utils/getFileBase64";
-import { IUPloadFile, uploadFile } from "@/service/apis/media-service";
+// import { uploadImageFileToImageKit } from "@/service/apis/media-service";
 import { IImageType } from "@/data/data";
 
-interface IUploadedFile {
-  file_url: string;
-  file_id: string;
-}
+// interface IUploadedFile {
+//   file_url: string;
+//   file_id: string;
+// }
 
 const BecomeSellerPage = () => {
   const [showRooms, setShowRooms] = useState<Option[]>([]);
@@ -66,9 +66,9 @@ const BecomeSellerPage = () => {
   const [profileSrc, setProfileSrc] = useState<string | null>(null);
   const [coverSrc, setCoverSrc] = useState<string | null>(null);
   const [logoSrc, setLogoSrc] = useState<string | null>(null);
-  const [profileImage, setProfileImage] = useState<IUploadedFile | null>(null);
-  const [logoImage, setLogoImage] = useState<IUploadedFile | null>(null);
-  const [coverImage, setCoverImage] = useState<IUploadedFile | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [logoImage, setLogoImage] = useState<string | null>(null);
+  const [coverImage, setCoverImage] = useState<string | null>(null);
   const profileInputRef = useRef<HTMLInputElement | null>(null);
   const logoInputRef = useRef<HTMLInputElement | null>(null);
   const coverInputRef = useRef<HTMLInputElement | null>(null);
@@ -89,6 +89,10 @@ const BecomeSellerPage = () => {
     },
   });
 
+  // console.log({ profileImage });
+  // console.log({ logoImage });
+  // console.log({ coverImage });
+
   const onSubmit = async (values: z.infer<typeof createSellerSchema>) => {
     if (showRooms.length === 0) {
       setErrorMessage("select at least one show room");
@@ -104,40 +108,58 @@ const BecomeSellerPage = () => {
       setErrorMessage("make sure you upload all images");
       return;
     }
-    const {
-      address,
-      email,
-      firstname,
-      lastname,
-      password,
-      phonenumber,
-      shopName,
-      country_id,
-    } = values;
-
-    const data: ISellerSignup = {
-      address,
-      email,
-      fullname: `${firstname} ${lastname}`,
-      password,
-      phonenumber,
-      profileImages: {
-        avatar_url: profileImage?.file_url,
-        avatar_id: profileImage?.file_id,
-        logo_url: logoImage?.file_url,
-        logo_id: logoImage?.file_id,
-        cover_url: coverImage?.file_url,
-        cover_id: coverImage?.file_id,
-      },
-      roleIds: userRoles.map((role) => role.value),
-      shopName,
-      showRooms: showRooms.map((room) => room.value),
-      country_id,
-    };
 
     let timeoutKey: NodeJS.Timeout | undefined;
     try {
       setLoading(true);
+
+      // const profile = await uploadImageFileToImageKit(profileImage);
+      // const logo = await uploadImageFileToImageKit(logoImage);
+      // const cover = await uploadImageFileToImageKit(coverImage);
+
+      // console.log({ profile, cover, logo });
+
+      // if (!profile || !logo || !cover) {
+      //   setLoading(false);
+      //   setErrorMessage("make sure you upload all images");
+      //   return;
+      // }
+
+      const {
+        address,
+        email,
+        firstname,
+        lastname,
+        password,
+        phonenumber,
+        shopName,
+        country_id,
+      } = values;
+
+      const data: ISellerSignup = {
+        address,
+        email,
+        fullname: `${firstname} ${lastname}`,
+        password,
+        phonenumber,
+        avatar_url:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        avatar_id:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        logo_url:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        logo_id:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        cover_url:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        cover_id:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        roleIds: userRoles.map((role) => role.value),
+        shopName,
+        showRooms: showRooms.map((room) => room.value),
+        country_id,
+      };
+
       const response: AxiosResponse<any, any> = await createSeller(data);
 
       if (response.status === HttpStatusCode.Created) {
@@ -228,31 +250,14 @@ const BecomeSellerPage = () => {
 
       const fileBase64 = await getFileBase64(file);
 
-      console.log({ fileBase64 });
-
-      try {
-        const data: IUPloadFile = {
-          images: [fileBase64],
-          folder: "omniglobex",
-        };
-
-        const response: AxiosResponse = await uploadFile(data);
-
-        if (response.status === HttpStatusCode.Ok) {
-          const imageData: IUploadedFile = response.data.data.data[0];
-          type === "PROFILE"
-            ? setProfileImage(imageData)
-            : type === "COVER"
-            ? setCoverImage(imageData)
-            : setLogoImage(imageData);
-        }
-      } catch (error) {
-        setErrorMessage("error related to upload image");
-      }
+      fileBase64 && type === "PROFILE"
+        ? setProfileImage(fileBase64)
+        : type === "COVER"
+        ? setCoverImage(fileBase64)
+        : setLogoImage(fileBase64);
     }
   };
 
-  console.log({ profileImage });
   const handleUpdateLoadImage = (
     fileInputRef: React.RefObject<HTMLDivElement>
   ) => {
@@ -704,7 +709,7 @@ const BecomeSellerPage = () => {
                 multiple={false}
                 className="hidden"
                 type="file"
-                name=""
+                name="cover"
                 id="cover"
                 accept="image/*"
                 onChange={(e) => handleFileChange(e, "COVER")}

@@ -112,7 +112,7 @@ const ProductCategoryItem: React.FC<ICategory> = ({ name }) => {
   return (
     <div className="flex py-2 items-center justify-between">
       <div className="flex items-center gap-4">
-        <Checkbox id="terms" className="lg:border-white" />
+        <Checkbox id="terms" className="" />
         <label
           htmlFor="terms"
           className="line-clamp-1 text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -132,7 +132,7 @@ interface IBrand {
 const BrandItem: React.FC<IBrand> = ({ name }) => {
   return (
     <div className="flex items-center py-2 gap-4">
-      <Checkbox id="terms" className="lg:border-white" />
+      <Checkbox id="terms" className="" />
       <label
         htmlFor="terms"
         className="line-clamp-1 text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -164,7 +164,7 @@ interface ISideBarProps {
 const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
   return (
     <div
-      className={`fixed z-10 overflow-x-scroll h-full top-0 left-0 right-0 rounded-xl lg:static lg:block bg-white lg:bg-black max-h-fit py-10 px-10 lg:px-6 space-y-10 ${
+      className={`fixed z-10 overflow-x-scroll h-full top-0 left-0 right-0 rounded-xl lg:static lg:block bg-white lg:bg-gray-100 border max-h-fit py-10 px-10 lg:px-6 space-y-10 ${
         open ? " block " : " hidden "
       }`}
     >
@@ -177,16 +177,16 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
         </button>
       </div>
       <div className="space-y-6 border-b">
-        <p className="text-lg font-bold lg:text-white">Product Categories</p>
+        <p className="text-lg font-bold ">Product Categories</p>
 
-        <div className="space-y-2 pb-8 lg:text-white">
+        <div className="space-y-2 pb-8">
           {categories.map((cat, i) => (
             <ProductCategoryItem {...cat} key={i} />
           ))}
         </div>
       </div>
 
-      <div className="space-y-6 border-b lg:text-white">
+      <div className="space-y-6 border-b">
         <p className="text-lg font-bold ">Brands</p>
 
         <div className="space-y-2 pb-8">
@@ -207,7 +207,7 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
         </div>
       </div> */}
 
-      <div className="space-y-6 border-b lg:text-white">
+      <div className="space-y-6 border-b ">
         <p className="text-lg font-bold">Sizes</p>
 
         <div className="space-y-2 pb-8">
