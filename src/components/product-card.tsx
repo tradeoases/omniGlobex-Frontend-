@@ -4,9 +4,15 @@ import { IoIosHeartEmpty, IoMdHeart } from "react-icons/io";
 import { HiArrowPath } from "react-icons/hi2";
 import { IoExpandOutline } from "react-icons/io5";
 import { TbShoppingBag, TbShoppingBagCheck } from "react-icons/tb";
-
 import { Button } from "./ui/button";
 import { IProduct } from "@/service/apis/product-services";
+import { useRecoilState } from "recoil";
+import { userStore } from "@/store/user-store";
+import { IUser } from "@/store/user-store";
+import { Link } from "react-router-dom";
+import { ICreateOrder } from "@/service/apis/order-service";
+import { OrdersInCartStore } from "@/store/order-store";
+
 
 export const ProductCard: React.FC<IProduct> = ({
   image_url,
@@ -16,8 +22,26 @@ export const ProductCard: React.FC<IProduct> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [fav, setFav] = useState<boolean>(false);
-  const [cartAdded, setCartAdded] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useRecoilState<ICreateOrder[]>(OrdersInCartStore);
+  const productIsInCart = cartItems.some(
+    (product) => product.product_id === product_id
+  );
   const navigate = useNavigate();
+  const [userDetails] = useRecoilState<IUser | null>(userStore);
+
+  const addToCard = () => {
+    const itemDetails: ICreateOrder = {
+      product_id,
+      image_url,
+      name,
+      description,
+      status: "PENDING",
+      quantity: 1,
+    };
+    setCartItems((existingCartProducts) => [...existingCartProducts, itemDetails]);
+  };
+
+
   return (
     <div
       className="w-full rounded-xl p-6 relative shadow space-y-4 bg-white"
@@ -62,24 +86,32 @@ export const ProductCard: React.FC<IProduct> = ({
           onMouseLeave={() => setOpen(false)}
           className="absolute -top-4 left-0 w-full bg-black/5 border rounded-xl h-full p-6"
         >
-          <div className="absolute bottom-6 w-full right-0 left-0 px-6">
-            <Button
-              onClick={() => setCartAdded(!cartAdded)}
-              className="w-full z-10 border-none flex items-center justify-center gap-x-4 bg-main hover:bg-main text-black"
-            >
-              {cartAdded ? (
-                <TbShoppingBagCheck className="text-lg text-green-700" />
-              ) : (
-                <TbShoppingBag className="text-lg" />
-              )}
-              {cartAdded ? (
-                <span className="whitespace-nowrap text-green-700">
-                  added to cart
-                </span>
-              ) : (
-                <span className="whitespace-nowrap">add to cart</span>
-              )}
-            </Button>
+          <div className="absolute bottom-6 w-full right-0 left-0 px-6 ">
+            {userDetails ? (
+              <Button
+                onClick={() => addToCard()}
+                className="w-full z-10 border-none flex items-center justify-center gap-x-4 bg-main hover:bg-main text-black"
+              >
+                {productIsInCart ? (
+                  <TbShoppingBagCheck className="text-lg text-green-700" />
+                ) : (
+                  <TbShoppingBag className="text-lg" />
+                )}
+                {productIsInCart ? (
+                  <span className="whitespace-nowrap text-green-700">
+                    added to cart
+                  </span>
+                ) : (
+                  <span className="whitespace-nowrap ">add to cart</span>
+                )}
+              </Button>
+            ) : (
+              <Link to={"/login"}>
+                <Button className="w-full z-10 border-none flex items-center justify-center gap-x-4 bg-main hover:bg-main text-black">
+                  <span className="whitespace-nowrap ">add to cart</span>
+                </Button>
+              </Link>
+            )}
           </div>
 
           <div className="w-14 h-52 absolute  p-2 flex items-center gap-2 flex-col justify-center right-6">

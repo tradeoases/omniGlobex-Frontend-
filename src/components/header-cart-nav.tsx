@@ -9,15 +9,23 @@ import { useState } from "react";
 import { IWishList, wishlistItems } from "@/data/data";
 import { CartHeaderItem } from "./cart-header-item";
 import { useNavigate } from "react-router-dom";
+import { ICreateOrder } from "@/service/apis/order-service";
+import { OrdersInCartStore } from "@/store/order-store";
+import { useRecoilState } from "recoil";
+
 
 export const HeaderCartNav = () => {
   const [wishlist, setWishlist] = useState<IWishList[]>(wishlistItems);
   const navigate = useNavigate();
 
-  const handleRemoveItem = (itemId: number) => {
+  const handleRemoveItem = (itemId: string) => {
     const updatedWishlist = wishlist.filter((item) => item.id !== itemId);
     setWishlist(updatedWishlist);
   };
+
+  const [cartItems, setCartItems] =
+    useRecoilState<ICreateOrder[]>(OrdersInCartStore);
+
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -32,10 +40,10 @@ export const HeaderCartNav = () => {
         <div className="bg-main w-full h-1" />
         <div className="px-4 text-xs">
           <div className="h-72 scrollbar pr-2 mb-4 space-y-4 overflow-y-scroll">
-            {wishlist.map((item, i) => (
+            {cartItems.map((product: ICreateOrder, i:number) => (
               <CartHeaderItem
-                {...item}
-                onClose={() => handleRemoveItem(item.id)}
+                {...product}
+                onClose={() => handleRemoveItem(product.product_id)}
                 key={i}
               />
             ))}
