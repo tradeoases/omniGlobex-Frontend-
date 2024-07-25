@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { SlHandbag } from "react-icons/sl";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 
@@ -16,16 +16,20 @@ import {
   deleteOneOrderByUser,
   getAllUserOrders,
 } from "@/service/apis/order-service";
+import { IUser, userStore } from "@/store/user-store";
 
 export const HeaderCartNav = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const userData = useRecoilValue<IUser | null>(userStore);
   const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(
     OrdersStore
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
-    !cartItems && fetchOrdersByUser();
+    if (userData) {
+      !cartItems && fetchOrdersByUser();
+    }
   }, []);
 
   const fetchOrdersByUser = async () => {
