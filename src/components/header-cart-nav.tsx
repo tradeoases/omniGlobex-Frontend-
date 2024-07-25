@@ -1,30 +1,75 @@
+import { useEffect, useState } from "react";
+import { SlHandbag } from "react-icons/sl";
+import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { AxiosResponse, HttpStatusCode } from "axios";
+
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Button } from "./ui/button";
-import { SlHandbag } from "react-icons/sl";
-import { useState } from "react";
-import { IWishList, wishlistItems } from "@/data/data";
 import { CartHeaderItem } from "./cart-header-item";
-import { useNavigate } from "react-router-dom";
+import { OrdersStore, IOrder } from "@/store/order-store";
+import {
+  deleteOneOrderByUser,
+  getAllUserOrders,
+} from "@/service/apis/order-service";
 
 export const HeaderCartNav = () => {
-  const [wishlist, setWishlist] = useState<IWishList[]>(wishlistItems);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(
+    OrdersStore
+  );
 
-  const handleRemoveItem = (itemId: number) => {
-    const updatedWishlist = wishlist.filter((item) => item.id !== itemId);
-    setWishlist(updatedWishlist);
+  useEffect(() => {
+    !cartItems && fetchOrdersByUser();
+  }, []);
+
+  const fetchOrdersByUser = async () => {
+    try {
+      const response: AxiosResponse = await getAllUserOrders();
+
+      if (response.status === HttpStatusCode.Ok) {
+        setCartItems(response.data.data);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
   };
+
+  const removeToCart = async (order_id: string) => {
+    if (!cartItems) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response: AxiosResponse = await deleteOneOrderByUser(order_id);
+
+      if (response.status === HttpStatusCode.Ok) {
+        fetchOrdersByUser();
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
         <Button variant="link" className="relative p-0 m-0">
-          <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute top-0 -right-3">
-            3
-          </span>
+          {cartItems ? (
+            <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute top-0 -right-3">
+              {cartItems.length}
+            </span>
+          ) : (
+            <></>
+          )}
           <SlHandbag className="text-lg" />
         </Button>
       </HoverCardTrigger>
@@ -32,13 +77,18 @@ export const HeaderCartNav = () => {
         <div className="bg-main w-full h-1" />
         <div className="px-4 text-xs">
           <div className="h-72 scrollbar pr-2 mb-4 space-y-4 overflow-y-scroll">
-            {wishlist.map((item, i) => (
-              <CartHeaderItem
-                {...item}
-                onClose={() => handleRemoveItem(item.id)}
-                key={i}
-              />
-            ))}
+            {cartItems ? (
+              cartItems.map((product, i) => (
+                <CartHeaderItem
+                  {...product}
+                  onClose={() => removeToCart(product.order_id)}
+                  key={i}
+                  loading={loading}
+                />
+              ))
+            ) : (
+              <div>no cart item</div>
+            )}
           </div>
 
           <div className="border-t py-2 space-y-4">

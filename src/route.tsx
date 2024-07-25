@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+
 import NotFoundPage from "./pages/not-found-page";
 import HomePage from "./pages/home-page";
 import { AboutPage } from "./pages/about-page";
@@ -19,6 +20,7 @@ import BlogPage from "./pages/blog-page";
 import ContactPage from "./pages/contact-page";
 import FaqPage from "./pages/faq-page";
 import TermsConditionsPage from "./pages/terms-condition-page";
+
 export default function RoutesConfig() {
   return (
     <Routes>

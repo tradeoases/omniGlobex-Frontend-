@@ -220,8 +220,6 @@ export const wishlistItems: IWishList[] = [
 
 export const tableHeader: string[] = [
   `Product`,
-  `Color`,
-  `Size`,
   `Price`,
   `Quantity`,
   `Total`,
