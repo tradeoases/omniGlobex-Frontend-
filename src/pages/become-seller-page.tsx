@@ -186,7 +186,7 @@ const BecomeSellerPage = () => {
         setCountries(response.data.data);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -198,7 +198,7 @@ const BecomeSellerPage = () => {
         setRoles(response.data.data);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -252,7 +252,6 @@ const BecomeSellerPage = () => {
     }
   };
 
-  console.log({ profileImage });
   const handleUpdateLoadImage = (
     fileInputRef: React.RefObject<HTMLDivElement>
   ) => {

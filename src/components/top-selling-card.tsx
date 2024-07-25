@@ -1,11 +1,23 @@
-import { IProduct } from "@/service/apis/product-services";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
-import { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { AxiosResponse, HttpStatusCode } from "axios";
 import { TbShoppingBag, TbShoppingBagCheck } from "react-icons/tb";
 import { IoExpandOutline } from "react-icons/io5";
 import { IoIosHeartEmpty, IoMdHeart } from "react-icons/io";
 import { HiArrowPath } from "react-icons/hi2";
+import { BiLoader } from "react-icons/bi";
+
+import { IProduct } from "@/service/apis/product-services";
+import { Button } from "./ui/button";
+import { IUser, userStore } from "@/store/user-store";
+import { IOrder, OrdersStore } from "@/store/order-store";
+import {
+  createOrder,
+  deleteOneOrderByUser,
+  getAllUserOrders,
+  ICreateOrder,
+} from "@/service/apis/order-service";
 
 export const TopSellingCard: React.FC<IProduct> = ({
   image_url,
@@ -15,8 +27,79 @@ export const TopSellingCard: React.FC<IProduct> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [fav, setFav] = useState<boolean>(false);
-  const [cartAdded, setCartAdded] = useState<boolean>(false);
+  const [isAddedToCart, setIsAddToCart] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(
+    OrdersStore
+  );
+  const userData = useRecoilValue<IUser | null>(userStore);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cartItems) {
+      cartItems.some((item) => item.product_id === product_id)
+        ? setIsAddToCart(true)
+        : setIsAddToCart(false);
+    }
+  }, [cartItems]);
+
+  const addToCart = async () => {
+    if (!userData) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const data: ICreateOrder = {
+        product_id,
+        quantity: 1,
+      };
+      const response: AxiosResponse = await createOrder(data);
+
+      if (response.status === HttpStatusCode.Created) {
+        await fetchOrdersByUser();
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const fetchOrdersByUser = async () => {
+    try {
+      const response: AxiosResponse = await getAllUserOrders();
+
+      if (response.status === HttpStatusCode.Ok) {
+        setCartItems(response.data.data);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const removeToCart = async () => {
+    if (!cartItems) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const orderId: string = cartItems?.filter(
+        (item) => item.product_id === product_id
+      )[0].order_id as string;
+
+      const response: AxiosResponse = await deleteOneOrderByUser(orderId);
+
+      if (response.status === HttpStatusCode.Ok) {
+        setLoading(false);
+        fetchOrdersByUser();
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
   return (
     <div
       onMouseEnter={() => setOpen(true)}
@@ -48,7 +131,7 @@ export const TopSellingCard: React.FC<IProduct> = ({
         </p>
         {!open && (
           <Button className=" bg-main text-xs h-8 text-black">
-            {cartAdded ? (
+            {isAddedToCart ? (
               <span className="text-green-700">Added to cart</span>
             ) : (
               <span>Add to cart</span>
@@ -64,15 +147,24 @@ export const TopSellingCard: React.FC<IProduct> = ({
         >
           <div className="absolute ml-7 bottom-4 md:bottom-6 lg:bottom-10 xl:bottom-6 w-full flex items-center md:ml-4 lg:ml-8 xl:ml-3 justify-center right-0 left-0 px-6">
             <Button
-              onClick={() => setCartAdded(!cartAdded)}
+              onClick={() => {
+                isAddedToCart ? removeToCart() : addToCart();
+              }}
               className="border-none flex items-center justify-center gap-x-2 bg-main hover:bg-main text-black"
             >
-              {cartAdded ? (
+              {loading && (
+                <span className="text-lg animate-spin">
+                  <BiLoader />
+                </span>
+              )}
+
+              {!loading && isAddedToCart ? (
                 <TbShoppingBagCheck className="text-lg text-green-700" />
               ) : (
                 <TbShoppingBag className="text-lg" />
               )}
-              {cartAdded ? (
+
+              {!loading && isAddedToCart ? (
                 <span className="whitespace-nowrap text-green-700">
                   added to cart
                 </span>

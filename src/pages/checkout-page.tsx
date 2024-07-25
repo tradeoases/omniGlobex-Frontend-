@@ -1,3 +1,10 @@
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRecoilState } from "recoil";
+import { Link } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -5,83 +12,59 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import {
-  CheckoutSchema,
   PaymentMethodSchema,
   TCheckoutSchema,
   TPaymentMethodSchema,
 } from "@/data/schemas/checkout-form-schema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
 
-import { Check, ChevronsUpDown } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/PageHeader";
+import { IOrder, OrdersStore } from "@/store/order-store";
+import { getAllUserOrders } from "@/service/apis/order-service";
+import { getAllCountries, ICountry } from "@/service/apis/countries-services";
+import { AllCountriesStore } from "@/store/country-store";
 
-const countries = [
-  {
-    label: "Uganda",
-    value: "Uganda",
-  },
-  {
-    label: "Malawi",
-    value: "Malawi",
-  },
-  {
-    label: "Kenya",
-    value: "Kenya",
-  },
-  {
-    label: "Tanzania",
-    value: "Tanzania",
-  },
-] as const;
-
-const cities = [
-  {
-    value: "Masaka",
-    label: "Masaka",
-  },
-  {
-    value: "Kampala",
-    label: "Kampala",
-  },
-  {
-    value: "Mbarara",
-    label: "Mbarara",
-  },
-  {
-    value: "Wakiso",
-    label: "Wakiso",
-  },
-  {
-    value: "Gulu",
-    label: "Gulu",
-  },
-];
+import { AddShippingAddress } from "@/components/add-shipping-address-form";
 
 const CheckoutPage = () => {
-  const form = useForm<TCheckoutSchema>({
-    resolver: zodResolver(CheckoutSchema),
-  });
+  const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(
+    OrdersStore
+  );
+  const [countries, setCountries] = useRecoilState<ICountry[] | null>(
+    AllCountriesStore
+  );
+  const [isEditAddress, setIsEditAddress] = useState<boolean>(false);
+  const [openAddressForm, setOpenAddressForm] = useState<boolean>(false);
+
+  useEffect(() => {
+    !countries && fetchAllCountries();
+    !cartItems && fetchOrdersByUser();
+  }, []);
+
+  const fetchOrdersByUser = async () => {
+    try {
+      const response: AxiosResponse = await getAllUserOrders();
+
+      if (response.status === HttpStatusCode.Ok) {
+        setCartItems(response.data.data);
+      }
+    } catch (error) {
+      console.log("Error");
+    }
+  };
+
+  const fetchAllCountries = async () => {
+    try {
+      const response: AxiosResponse = await getAllCountries();
+      if (response.status === HttpStatusCode.Ok) {
+        setCountries(response.data.data);
+      }
+    } catch (error) {
+      console.log("Error");
+    }
+  };
 
   const paymentMethodForm = useForm<TPaymentMethodSchema>({
     resolver: zodResolver(PaymentMethodSchema),
@@ -124,296 +107,57 @@ const CheckoutPage = () => {
                     <h1 className="sm:text-2xl text-xl text-qblack font-medium mb-5">
                       Billing Details
                     </h1>
-                    <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className="sm:flex sm:space-x-5 items-center mb-6">
-                          <FormField
-                            control={form.control}
-                            name="firstName"
-                            render={({ field }) => (
-                              <FormItem className="sm:w-1/2 mb-5 sm:mb-0">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  First Name
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="First Name"
-                                    className="w-full"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
 
-                          <FormField
-                            control={form.control}
-                            name="lastName"
-                            render={({ field }) => (
-                              <FormItem className="sm:w-1/2 mb-5 sm:mb-0">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  Last Name
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="Last Name"
-                                    className="w-full"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                    {!openAddressForm && (
+                      <div>
+                        <h1 className="text-lg text-qblack font-medium mb-5">
+                          Shipping Address
+                        </h1>
+
+                        <div className="w-full mb-4 grid grid-cols-4 gap-4">
+                          <div className="col-span-3 rounded-lg border text-sm space-y-1 text-gray-500  p-4">
+                            <p className="text-sm font-bold text-gray-800">
+                              John Doe
+                            </p>
+                            <p>johndoe@example.com</p>
+                            <p className="font-medium text-sm text-gray-700">
+                              William Street, Kampala, Uganda.
+                            </p>
+                            <p className="">P.O.B 32142</p>
+                          </div>
+
+                          <div className="col-span-1 flex flex-col space-y-4 justify-evenly ">
+                            <Button
+                              onClick={() => {
+                                setIsEditAddress(false);
+                                setOpenAddressForm(true);
+                              }}
+                              variant="outline"
+                              className="w-full rounded-lg border h-full flex items-center justify-center"
+                            >
+                              add
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                setIsEditAddress(true);
+                                setOpenAddressForm(true);
+                              }}
+                              className="w-full rounded-lg border h-full flex items-center justify-center bg-black text-white"
+                            >
+                              edit
+                            </Button>
+                          </div>
                         </div>
+                      </div>
+                    )}
 
-                        <div className="sm:flex sm:space-x-5 items-center mb-6">
-                          <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                              <FormItem className="sm:w-1/2 mb-5 sm:mb-0">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  Email Address
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="Email Address"
-                                    className="w-full"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          <FormField
-                            control={form.control}
-                            name="phoneNumber"
-                            render={({ field }) => (
-                              <FormItem className="sm:w-1/2 mb-5 sm:mb-0">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  Phone Number
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="Phone Number"
-                                    className="w-full"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <div className="w-full mb-6">
-                          <FormField
-                            control={form.control}
-                            name="country"
-                            render={({ field }) => (
-                              <FormItem className="flex flex-col">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  Country
-                                </FormLabel>
-                                <Popover>
-                                  <PopoverTrigger asChild>
-                                    <FormControl>
-                                      <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        className={cn(
-                                          "w-full justify-between",
-                                          !field.value &&
-                                            "text-muted-foreground"
-                                        )}
-                                      >
-                                        {field.value
-                                          ? countries.find(
-                                              (country) =>
-                                                country.value === field.value
-                                            )?.label
-                                          : "Select a country"}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                      </Button>
-                                    </FormControl>
-                                  </PopoverTrigger>
-                                  <PopoverContent className="w-full p-0">
-                                    <Command>
-                                      <CommandList>
-                                        <CommandInput placeholder="Search country..." />
-                                        <CommandEmpty>
-                                          No country found.
-                                        </CommandEmpty>
-                                        <CommandGroup>
-                                          {countries.map((country) => (
-                                            <CommandItem
-                                              value={country.label}
-                                              key={country.value}
-                                              onSelect={() => {
-                                                form.setValue(
-                                                  "country",
-                                                  country.value
-                                                );
-                                              }}
-                                            >
-                                              <Check
-                                                className={cn(
-                                                  "mr-2 h-4 w-4",
-                                                  country.value === field.value
-                                                    ? "opacity-100"
-                                                    : "opacity-0"
-                                                )}
-                                              />
-                                              {country.label}
-                                            </CommandItem>
-                                          ))}
-                                        </CommandGroup>
-                                      </CommandList>
-                                    </Command>
-                                  </PopoverContent>
-                                </Popover>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-
-                        <div className="w-full mb-6">
-                          <FormField
-                            control={form.control}
-                            name="address"
-                            render={({ field }) => (
-                              <FormItem className="sm:w-full mb-5 sm:mb-0">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  Address
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="Address"
-                                    className="w-full"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-
-                        <div className="sm:flex sm:space-x-5 items-center mb-6">
-                          <FormField
-                            control={form.control}
-                            name="city"
-                            render={({ field }) => (
-                              <FormItem className="sm:w-1/2 mb-5 sm:mb-0">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  Town / City
-                                </FormLabel>
-                                <Popover>
-                                  <PopoverTrigger asChild>
-                                    <FormControl>
-                                      <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        className={cn(
-                                          "w-full justify-between",
-                                          !field.value &&
-                                            "text-muted-foreground"
-                                        )}
-                                      >
-                                        {field.value
-                                          ? cities.find(
-                                              (city) =>
-                                                city.value === field.value
-                                            )?.label
-                                          : "Select a city or town"}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                      </Button>
-                                    </FormControl>
-                                  </PopoverTrigger>
-                                  <PopoverContent className="w-full p-0">
-                                    <Command>
-                                      <CommandList>
-                                        <CommandInput placeholder="Search city..." />
-                                        <CommandEmpty>
-                                          No city found.
-                                        </CommandEmpty>
-                                        <CommandGroup>
-                                          {cities.map((city) => (
-                                            <CommandItem
-                                              value={city.label}
-                                              key={city.value}
-                                              onSelect={() => {
-                                                form.setValue(
-                                                  "city",
-                                                  city.value
-                                                );
-                                              }}
-                                            >
-                                              <Check
-                                                className={cn(
-                                                  "mr-2 h-4 w-4",
-                                                  city.value === field.value
-                                                    ? "opacity-100"
-                                                    : "opacity-0"
-                                                )}
-                                              />
-                                              {city.label}
-                                            </CommandItem>
-                                          ))}
-                                        </CommandGroup>
-                                      </CommandList>
-                                    </Command>
-                                  </PopoverContent>
-                                </Popover>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          <FormField
-                            control={form.control}
-                            name="zip"
-                            render={({ field }) => (
-                              <FormItem className="sm:w-1/2 mb-5 sm:mb-0">
-                                <FormLabel className="input-label capitalize block  mb-2 text-qgray text-[13px] font-normal">
-                                  Zip Code
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="Zip Code"
-                                    className="w-full"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-
-                        {/* <div className="flex space-x-2 items-center mb-10">
-                          <FormField
-                            control={form.control}
-                            name="createAccount"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Checkbox checked={field.value} onChange={field.onChange} id="createAccount" {...field} />
-                                </FormControl>
-                                <FormLabel className="text-qblack text-[15px] select-none ml-2">
-                                  Create an account?
-                                </FormLabel>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div> */}
-                      </form>
-                    </Form>
+                    {openAddressForm && (
+                      <AddShippingAddress
+                        edit={isEditAddress}
+                        countries={countries}
+                        onClose={() => setOpenAddressForm(false)}
+                      />
+                    )}
                   </div>
 
                   <div className="md:w-1/2">
@@ -425,76 +169,46 @@ const CheckoutPage = () => {
                       <div className="sub-total mb-6">
                         <div className="flex justify-between mb-5">
                           <p className="text-[13px] font-medium text-qblack uppercase">
-                            PROduct
+                            Product
                           </p>
                           <p className="text-[13px] font-medium text-qblack uppercase">
                             total
                           </p>
                         </div>
-                        <div className="w-full h-[1px] bg-[#EDEDED]"></div>
+                        <div className="w-full h-[1px] bg-gray-100"></div>
                       </div>
                       <div className="product-list w-full mb-[30px]">
                         <ul className="flex flex-col space-y-5">
-                          <li>
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <h4 className="text-[15px] text-qblack mb-2.5">
-                                  Apple Watch
-                                  <sup className="text-[13px] text-qgray ml-2 mt-2">
-                                    x1
-                                  </sup>
-                                </h4>
-                                <p className="text-[13px] text-qgray">
-                                  64GB, Black, 44mm, Chain Belt
-                                </p>
-                              </div>
-                              <div>
-                                <span className="text-[15px] text-qblack font-medium">
-                                  $38
-                                </span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <h4 className="text-[15px] text-qblack mb-2.5">
-                                  Apple Watch
-                                  <sup className="text-[13px] text-qgray ml-2 mt-2">
-                                    x1
-                                  </sup>
-                                </h4>
-                                <p className="text-[13px] text-qgray">
-                                  64GB, Black, 44mm, Chain Belt
-                                </p>
-                              </div>
-                              <div>
-                                <span className="text-[15px] text-qblack font-medium">
-                                  $38
-                                </span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <h4 className="text-[15px] text-qblack mb-2.5">
-                                  Apple Watch
-                                  <sup className="text-[13px] text-qgray ml-2 mt-2">
-                                    x1
-                                  </sup>
-                                </h4>
-                                <p className="text-[13px] text-qgray">
-                                  64GB, Black, 44mm, Chain Belt
-                                </p>
-                              </div>
-                              <div>
-                                <span className="text-[15px] text-qblack font-medium">
-                                  $38
-                                </span>
-                              </div>
-                            </div>
-                          </li>
+                          {cartItems ? (
+                            cartItems.map((item, i) => (
+                              <li key={i}>
+                                <div className="flex justify-between space-y-3 items-center">
+                                  <div>
+                                    <h4 className="text-[15px] w-2/3 hover:text-blue-700">
+                                      <Link
+                                        to={`/single-product/?product_id=${item.product_id}`}
+                                      >
+                                        {item.Product.name}
+                                      </Link>
+                                      <sup className="text-[13px] text-qgray ">
+                                        x{item.quantity}
+                                      </sup>
+                                    </h4>
+                                    <p className="text-[13px] text-gray-400 w-2/3 line-clamp-1">
+                                      {item.Product.description}
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <span className="text-[15px] text-qblack font-medium">
+                                      $38
+                                    </span>
+                                  </div>
+                                </div>
+                              </li>
+                            ))
+                          ) : (
+                            <div>loading..</div>
+                          )}
                         </ul>
                       </div>
                       <div className="w-full h-[1px] bg-[#EDEDED]"></div>

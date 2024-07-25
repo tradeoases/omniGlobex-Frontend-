@@ -1,18 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { IoIosHeartEmpty, IoMdHeart } from "react-icons/io";
 import { HiArrowPath } from "react-icons/hi2";
 import { IoExpandOutline } from "react-icons/io5";
 import { TbShoppingBag, TbShoppingBagCheck } from "react-icons/tb";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { BiLoader } from "react-icons/bi";
+
 import { Button } from "./ui/button";
 import { IProduct } from "@/service/apis/product-services";
-import { useRecoilState } from "recoil";
 import { userStore } from "@/store/user-store";
 import { IUser } from "@/store/user-store";
-import { Link } from "react-router-dom";
-import { ICreateOrder } from "@/service/apis/order-service";
-import { OrdersInCartStore } from "@/store/order-store";
-
+import {
+  createOrder,
+  deleteOneOrderByUser,
+  getAllUserOrders,
+  ICreateOrder,
+} from "@/service/apis/order-service";
+import { IOrder, OrdersStore } from "@/store/order-store";
 
 export const ProductCard: React.FC<IProduct> = ({
   image_url,
@@ -22,25 +28,79 @@ export const ProductCard: React.FC<IProduct> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [fav, setFav] = useState<boolean>(false);
-  const [cartItems, setCartItems] = useRecoilState<ICreateOrder[]>(OrdersInCartStore);
-  const productIsInCart = cartItems.some(
-    (product) => product.product_id === product_id
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isAddedToCart, setIsAddToCart] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(
+    OrdersStore
   );
   const navigate = useNavigate();
-  const [userDetails] = useRecoilState<IUser | null>(userStore);
+  const userData = useRecoilValue<IUser | null>(userStore);
 
-  const addToCard = () => {
-    const itemDetails: ICreateOrder = {
-      product_id,
-      image_url,
-      name,
-      description,
-      status: "PENDING",
-      quantity: 1,
-    };
-    setCartItems((existingCartProducts) => [...existingCartProducts, itemDetails]);
+  useEffect(() => {
+    if (cartItems) {
+      cartItems.some((item) => item.product_id === product_id)
+        ? setIsAddToCart(true)
+        : setIsAddToCart(false);
+    }
+  }, [cartItems]);
+
+  const addToCart = async () => {
+    if (!userData) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const data: ICreateOrder = {
+        product_id,
+        quantity: 1,
+      };
+      const response: AxiosResponse = await createOrder(data);
+
+      if (response.status === HttpStatusCode.Created) {
+        await fetchOrdersByUser();
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
+  const fetchOrdersByUser = async () => {
+    try {
+      const response: AxiosResponse = await getAllUserOrders();
+
+      if (response.status === HttpStatusCode.Ok) {
+        setCartItems(response.data.data);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const removeToCart = async () => {
+    if (!cartItems) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const orderId: string = cartItems?.filter(
+        (item) => item.product_id === product_id
+      )[0].order_id as string;
+
+      const response: AxiosResponse = await deleteOneOrderByUser(orderId);
+
+      if (response.status === HttpStatusCode.Ok) {
+        fetchOrdersByUser();
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -87,31 +147,32 @@ export const ProductCard: React.FC<IProduct> = ({
           className="absolute -top-4 left-0 w-full bg-black/5 border rounded-xl h-full p-6"
         >
           <div className="absolute bottom-6 w-full right-0 left-0 px-6 ">
-            {userDetails ? (
-              <Button
-                onClick={() => addToCard()}
-                className="w-full z-10 border-none flex items-center justify-center gap-x-4 bg-main hover:bg-main text-black"
-              >
-                {productIsInCart ? (
-                  <TbShoppingBagCheck className="text-lg text-green-700" />
-                ) : (
-                  <TbShoppingBag className="text-lg" />
-                )}
-                {productIsInCart ? (
-                  <span className="whitespace-nowrap text-green-700">
-                    added to cart
-                  </span>
-                ) : (
-                  <span className="whitespace-nowrap ">add to cart</span>
-                )}
-              </Button>
-            ) : (
-              <Link to={"/login"}>
-                <Button className="w-full z-10 border-none flex items-center justify-center gap-x-4 bg-main hover:bg-main text-black">
-                  <span className="whitespace-nowrap ">add to cart</span>
-                </Button>
-              </Link>
-            )}
+            <Button
+              onClick={() => {
+                isAddedToCart ? removeToCart() : addToCart();
+              }}
+              className="w-full z-10 border-none flex items-center justify-center gap-x-4 bg-main hover:bg-main text-black"
+            >
+              {loading && (
+                <span className="text-lg animate-spin">
+                  <BiLoader />
+                </span>
+              )}
+
+              {!loading && isAddedToCart ? (
+                <TbShoppingBagCheck className="text-lg text-green-700" />
+              ) : (
+                <TbShoppingBag className="text-lg" />
+              )}
+
+              {!loading && isAddedToCart ? (
+                <span className="whitespace-nowrap text-green-700">
+                  adding to cart
+                </span>
+              ) : (
+                <span className="whitespace-nowrap ">add to cart</span>
+              )}
+            </Button>
           </div>
 
           <div className="w-14 h-52 absolute  p-2 flex items-center gap-2 flex-col justify-center right-6">

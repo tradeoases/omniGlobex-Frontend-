@@ -1,9 +1,19 @@
-import {ICreateOrder} from "@/service/apis/order-service";
 import { RecoilState, atom } from "recoil";
 
-export const OrdersInCartStore: RecoilState<ICreateOrder[]> = atom<
-  ICreateOrder[] 
->({
-  key: "orders-in-cart-store",
-  default: [],
+import { TOrderType } from "@/service/apis/order-service";
+import { IProduct } from "@/service/apis/product-services";
+
+export interface IOrder {
+  Product: IProduct;
+  order_id: string;
+  product_id: string;
+  status: TOrderType;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const OrdersStore: RecoilState<IOrder[] | null> = atom<IOrder[] | null>({
+  key: "orders-store",
+  default: null,
 });

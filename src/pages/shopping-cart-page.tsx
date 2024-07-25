@@ -1,42 +1,103 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { HiOutlineXMark } from "react-icons/hi2";
+import { useRecoilState } from "recoil";
+import { AxiosResponse, HttpStatusCode } from "axios";
+
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PageHeader";
-import { tableHeader, wishlistItems } from "@/data/data";
+import { tableHeader } from "@/data/data";
 import { Input } from "@/components/ui/input";
+import { IOrder, OrdersStore } from "@/store/order-store";
+import {
+  deleteOneOrderByUser,
+  getAllUserOrders,
+  IUpdateOrderData,
+  updateOrderQuantity,
+} from "@/service/apis/order-service";
 
 export const ShoppingCartPage = () => {
-  const [wishlist, setWishlist] = useState(wishlistItems);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(
+    OrdersStore
+  );
 
-  const handleDecreaseQuantity = (itemId: number) => {
-    const updatedWishlist = wishlist.map((item) =>
-      item.id === itemId && item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1 }
-        : item
-    );
-    setWishlist(updatedWishlist);
+  const fetchOrdersByUser = async () => {
+    try {
+      const response: AxiosResponse = await getAllUserOrders();
+
+      if (response.status === HttpStatusCode.Ok) {
+        setCartItems(response.data.data);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
-  const handleIncreaseQuantity = (itemId: number) => {
-    const updatedWishlist = wishlist.map((item) =>
-      item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setWishlist(updatedWishlist);
+  const removeToCart = async (order_id: string) => {
+    if (!cartItems) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response: AxiosResponse = await deleteOneOrderByUser(order_id);
+
+      if (response.status === HttpStatusCode.Ok) {
+        await fetchOrdersByUser();
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
-  const handleRemoveItem = (itemId: number) => {
-    const updatedWishlist = wishlist.filter((item) => item.id !== itemId);
-    setWishlist(updatedWishlist);
+  const handleDecreaseQuantity = async (orderId: string, quantity: number) => {
+    if (quantity <= 1) {
+      return;
+    }
+
+    try {
+      setLoading(false);
+      const data: IUpdateOrderData = {
+        order_id: orderId,
+        quantity: quantity - 1,
+      };
+      const response: AxiosResponse = await updateOrderQuantity(data);
+
+      if (response.status === HttpStatusCode.Ok) {
+        await fetchOrdersByUser();
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
-  // const handleRemoveAll = () => {
-  //   setWishlist([]);
-  // };
+  const handleIncreaseQuantity = async (orderId: string, quantity: number) => {
+    try {
+      setLoading(false);
+      const data: IUpdateOrderData = {
+        order_id: orderId,
+        quantity: quantity + 1,
+      };
+      const response: AxiosResponse = await updateOrderQuantity(data);
+
+      if (response.status === HttpStatusCode.Ok) {
+        await fetchOrdersByUser();
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white w-full">
       <PageHeader route="/ cart" name="Your Cart" />
-      {wishlist.length > 0 ? (
+
+      {!cartItems || (cartItems && cartItems.length > 0) ? (
         <div className="w-10/12 text-center xl:w-8/12 mx-auto space-y-8 my-8">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <tbody>
@@ -53,9 +114,9 @@ export const ShoppingCartPage = () => {
                 ))}
               </tr>
 
-              {wishlist.map((item) => (
+              {cartItems?.map((item) => (
                 <tr
-                  key={item.id}
+                  key={item.order_id}
                   className="bg-white border-b hover:bg-gray-50"
                 >
                   <td className="pl-10 py-4 w-[380px]">
@@ -63,47 +124,36 @@ export const ShoppingCartPage = () => {
                       <div className="w-[80px] h-[80px] overflow-hidden flex justify-center items-center border border-[#EDEDED] relative">
                         <span className="box-border block overflow-hidden w-auto h-auto opacity-100 border-none m-0 p-0 absolute inset-0">
                           <img
-                            src={item.icon}
-                            alt={item.product}
+                            src={item.Product.image_url}
+                            alt={item.Product.name}
                             className="w-full h-full object-contain absolute inset-0 box-border p-0 border-none m-auto block min-w-[100%] min-h-[100%] max-h-[100%]"
                           />
                         </span>
                       </div>
 
                       <div className="flex-1 fle flex-col">
-                        <p className="font-medium text-[15px] text-gray-800">
-                          {item.product}
-                        </p>
+                        <Link
+                          to={`/single-product/?product_id=${item.product_id}`}
+                          className="font-medium text-[15px] hover:text-blue-700 text-gray-800"
+                        >
+                          {item.Product.name}
+                        </Link>
                       </div>
                     </div>
                   </td>
-
-                  <td className="text-center py-4 px-2">
-                    <div className="flex justify-center items-center">
-                      <span
-                        className={`w-5 h-5 block rounded-full bg-[${item.color}]`}
-                      ></span>
-                    </div>
-                    <span
-                      className="w-5 h-5 inline-block rounded-full"
-                      style={{ backgroundColor: item.color }}
-                    ></span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
-                    <span className="px-2 inline-block text-xs leading-5 font-semibold rounded-full text-gray-500">
-                      {item.size}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
+                  <td className="px-6 py-4 text-center whitespace-no-wrap">
                     <span className="text-xs leading-5 font-semibold text-gray-500">
-                      {item.price}
+                      price
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
+                  <td className="px-6 py-4 flex items-center justify-center whitespace-no-wrap">
                     <div className="border w-32 flex items-center justify-between">
                       <Button
+                        disabled={loading}
                         className="text-base shadow-none border-none rounded-none text-gray-500 px-4 bg-white hover:bg-gray-50"
-                        onClick={() => handleDecreaseQuantity(item.id)}
+                        onClick={() =>
+                          handleDecreaseQuantity(item.order_id, item.quantity)
+                        }
                       >
                         -
                       </Button>
@@ -111,22 +161,25 @@ export const ShoppingCartPage = () => {
                         {item.quantity}
                       </span>
                       <Button
+                        disabled={loading}
                         className="text-base shadow-none border-none rounded-none text-gray-500 px-4 bg-white hover:bg-gray-50"
-                        onClick={() => handleIncreaseQuantity(item.id)}
+                        onClick={() =>
+                          handleIncreaseQuantity(item.order_id, item.quantity)
+                        }
                       >
                         +
                       </Button>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-no-wrap">
+                  <td className="px-6 text-center py-4 whitespace-no-wrap">
                     <span className="text-xs leading-5 font-semibold text-gray-500">
-                      {item.total}
+                      total
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-no-wrap text-right">
+                  <td className="px-6 py-4 flex items-center justify-center whitespace-no-wrap text-right">
                     <span
                       className="cursor-pointer hover:text-red-500"
-                      onClick={() => handleRemoveItem(item.id)}
+                      onClick={() => removeToCart(item.order_id)}
                     >
                       <HiOutlineXMark />
                     </span>
@@ -238,9 +291,12 @@ export const ShoppingCartPage = () => {
                     <span className="text-red-500">$321</span>
                   </p>
 
-                  <Button className="rounded-none shadow-none w-full h-11">
+                  <Link
+                    to="/checkout"
+                    className="rounded-none shadow-none w-full h-11"
+                  >
                     Checkout
-                  </Button>
+                  </Link>
                 </form>
               </div>
             </div>
