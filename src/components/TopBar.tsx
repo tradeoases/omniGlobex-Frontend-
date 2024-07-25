@@ -2,36 +2,30 @@ import { CiUser } from "react-icons/ci";
 import { HiArrowPath } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { SlHandbag } from "react-icons/sl";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { LuAlignLeft, LuTally1 } from "react-icons/lu";
-import { SetterOrUpdater, useSetRecoilState } from "recoil";
+import { LuAlignLeft } from "react-icons/lu";
+import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { IUser, userStore } from "@/store/user-store";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "./ui/button";
 
-export const items = [
-  {
-    id: "item-01",
-    name: "Item 1",
-    url: "",
-    category: "CategoryOne",
-  },
-  {
-    id: "item-02",
-    name: "Item 2",
-    url: "",
-    category: "CategoryTwo",
-  },
-  {
-    id: "Item 3",
-    name: "Item 3",
-    url: "",
-    category: "CategoryThree",
-  },
-];
+import { SearchBar } from "./search-bar";
+import { Logo } from "./logo";
+import { HeaderCartNav } from "./header-cart-nav";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
     useSetRecoilState<boolean>(SidemenuStore);
+  const userData = useRecoilValue<IUser | null>(userStore);
+  const navigate = useNavigate();
+
   const onOpen = () => {
     setSidemenu(true);
   };
@@ -44,7 +38,6 @@ const TopBar = () => {
         </Link>
 
         <SearchBar />
-
         <div className="flex items-center gap-x-6 text-xl">
           <p className="relative">
             <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
@@ -53,22 +46,41 @@ const TopBar = () => {
             <HiArrowPath className="text-2xl" />
           </p>
 
-          <p className="relative">
+          <Link to="/wishlist" className="relative">
             <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
               9
             </span>
             <IoIosHeartEmpty className="text-2xl" />
-          </p>
-
-          <p className="relative">
-            <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-              3
-            </span>
-            <SlHandbag />
-          </p>
-          <Link  to="/profile" className="relative">
-            <CiUser className="text-2xl font-bold" />
           </Link>
+
+          <HeaderCartNav />
+
+          {userData ? (
+            <Link to="/profile" className="relative">
+              <CiUser className="text-2xl" />
+            </Link>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="link" className="p-0 m-0">
+                  <CiUser className="text-2xl" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-40">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => navigate(`/login`)}>
+                    Login
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(`/signup`)}>
+                    Signup
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(`/become-seller`)}>
+                    Become a Seller
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
 
@@ -77,7 +89,9 @@ const TopBar = () => {
         <div onClick={onOpen}>
           <LuAlignLeft className="text-2xl" />
         </div>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
         <p className="relative">
           <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
             3
@@ -90,41 +104,3 @@ const TopBar = () => {
 };
 
 export default TopBar;
-
-const SearchBar = () => {
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [selectedCategories, setSelectedCategories] = useState([]);
-
-  // function handleSearch(e: any) {
-  //   setSearchQuery(e.target.value);
-  // }
-
-  return (
-    <div className="flex items-center border">
-      <div className="py-3">
-        <input
-          type="text"
-          className="pl-2 outline-none bg-light"
-          placeholder="Search Product..."
-        />
-      </div>
-      <div className="py-3">
-        <p className="flex items-center gap-x-4 px-2">
-          <LuTally1 className="text-gray-400" /> <span>All Categories</span>
-          <MdOutlineKeyboardArrowDown />
-        </p>
-      </div>
-      <div className="bg-main py-4 px-6">
-        <p className="font-bold text-sm">Search</p>
-      </div>
-    </div>
-  );
-};
-
-export const Logo = () => {
-  return (
-    <div className="text-4xl font-semibold text-main">
-      Omni<span className="text-4xl text-black font-bold">Globex</span>
-    </div>
-  );
-};

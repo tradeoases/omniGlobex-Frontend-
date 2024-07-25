@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ICategory, categories } from "@/components/Sidemenu";
+import { ICategory } from "@/components/Sidemenu";
 import { Checkbox } from "@/components/ui/checkbox";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
@@ -13,13 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { ProductCard } from "@/components/GameWorldSection";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import { ProductStore } from "@/store/product-store";
 import { useRecoilState } from "recoil";
 import { IProduct, getAllProducts } from "@/service/apis/product-services";
 import { AxiosResponse, HttpStatusCode } from "axios";
+import { categories } from "@/data/data";
+import { ProductCard } from "@/components/product-card";
 
 const AllProductsPage = () => {
   const [position, setPosition] = useState<string>("bottom");
@@ -32,7 +33,7 @@ const AllProductsPage = () => {
   const fetchProducts = async () => {
     try {
       const response: AxiosResponse<any, any> = await getAllProducts(
-        `?page=1&pageSize=25`
+        `?page=1&pageSize=15`
       );
 
       if (response.status === HttpStatusCode.Ok) {
@@ -50,63 +51,10 @@ const AllProductsPage = () => {
 
   return (
     <div className="w-10/12 xl:w-8/12 mx-auto my-10 grid grid-cols-1 lg:grid-cols-4 gap-x-8">
-      <div
-        className={`fixed overflow-x-scroll h-full top-0 left-0 right-0 lg:static lg:block bg-white max-h-fit py-10 px-10 lg:px-6 space-y-10 ${
-          openMenu ? " block " : " hidden "
-        }`}
-      >
-        <div onClick={() => setOpenMenu(false)} className="flex justify-end">
-          <button
-            type="button"
-            className="p-2 lg:hidden rounded-lg border border-red-500 text-red-500 text-xl"
-          >
-            <LiaTimesSolid />
-          </button>
-        </div>
-        <div className="space-y-6 border-b">
-          <p className="text-lg font-bold">Product Categories</p>
-
-          <div className="space-y-2 pb-8">
-            {categories.map((cat, i) => (
-              <ProductCategoryItem {...cat} key={i} />
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-6 border-b">
-          <p className="text-lg font-bold">Brands</p>
-
-          <div className="space-y-2 pb-8">
-            {brands.map((brand, i) => (
-              <BrandItem name={brand} key={i} />
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-6 border-b">
-          <p className="text-lg font-bold">Storage</p>
-          <div className="pb-8 flex items-center gap-2 flex-wrap">
-            <p className="p-1 px-4 border hover:bg-main">64GB</p>
-            <p className="p-1 px-4 border hover:bg-main">128GB</p>
-            <p className="p-1 px-4 border hover:bg-main">256GB</p>
-            <p className="p-1 px-4 border hover:bg-main">512GB</p>
-            <p className="p-1 px-4 border hover:bg-main">1024GB</p>
-          </div>
-        </div>
-
-        <div className="space-y-6 border-b">
-          <p className="text-lg font-bold">Sizes</p>
-
-          <div className="space-y-2 pb-8">
-            {sizes.map((brand, i) => (
-              <BrandItem name={brand} key={i} />
-            ))}
-          </div>
-        </div>
-      </div>
+      <SideBar onOpen={() => setOpenMenu(false)} open={openMenu} />
 
       <div className="lg:col-span-3 w-full space-y-8">
-        <div className="bg-white px-6 py-6 w-full space-y-8 md:space-y-0 md:flex items-center justify-between">
+        <div className="bg-white border rounded-xl px-6 py-6 w-full space-y-8 md:space-y-0 md:flex items-center justify-between">
           <p>
             <span className="text-gray-400">Showing</span> 1-16 of 66 results
           </p>
@@ -147,12 +95,10 @@ const AllProductsPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {products ? products.map((product, i) => (
-            <ProductCard key={i} {...product} />
-          )): (
-            <div>
-              loading...
-            </div>
+          {products ? (
+            products.map((product, i) => <ProductCard key={i} {...product} />)
+          ) : (
+            <div>loading...</div>
           )}
         </div>
       </div>
@@ -162,20 +108,19 @@ const AllProductsPage = () => {
 
 export default AllProductsPage;
 
-
 const ProductCategoryItem: React.FC<ICategory> = ({ name }) => {
   return (
     <div className="flex py-2 items-center justify-between">
       <div className="flex items-center gap-4">
-        <Checkbox id="terms" />
+        <Checkbox id="terms" className="" />
         <label
           htmlFor="terms"
-          className="line-clamp-1 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="line-clamp-1 text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {name}
         </label>
       </div>
-      <FaPlus className="text-gray-400" />
+      <FaPlus className="text-gray-400 text-xs" />
     </div>
   );
 };
@@ -187,10 +132,10 @@ interface IBrand {
 const BrandItem: React.FC<IBrand> = ({ name }) => {
   return (
     <div className="flex items-center py-2 gap-4">
-      <Checkbox id="terms" />
+      <Checkbox id="terms" className="" />
       <label
         htmlFor="terms"
-        className="line-clamp-1 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        className="line-clamp-1 text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         {name}
       </label>
@@ -210,3 +155,67 @@ const brands: string[] = [
 ];
 
 const sizes: string[] = ["S", "M", "XL", "XXL", "Slim Fit"];
+
+interface ISideBarProps {
+  open: boolean;
+  onOpen: () => void;
+}
+
+const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
+  return (
+    <div
+      className={`fixed z-10 overflow-x-scroll h-full top-0 left-0 right-0 rounded-xl lg:static lg:block bg-white lg:bg-gray-100 border max-h-fit py-10 px-10 lg:px-6 space-y-10 ${
+        open ? " block " : " hidden "
+      }`}
+    >
+      <div onClick={onOpen} className="flex justify-end">
+        <button
+          type="button"
+          className="p-2 lg:hidden rounded-lg text-red-500 text-xl"
+        >
+          <LiaTimesSolid />
+        </button>
+      </div>
+      <div className="space-y-6 border-b">
+        <p className="text-lg font-bold ">Product Categories</p>
+
+        <div className="space-y-2 pb-8">
+          {categories.map((cat, i) => (
+            <ProductCategoryItem {...cat} key={i} />
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-6 border-b">
+        <p className="text-lg font-bold ">Brands</p>
+
+        <div className="space-y-2 pb-8">
+          {brands.map((brand, i) => (
+            <BrandItem name={brand} key={i} />
+          ))}
+        </div>
+      </div>
+
+      {/* <div className="space-y-6 border-b text-xs lg:text-white">
+        <p className="text-lg font-bold">Storage</p>
+        <div className="pb-8 flex items-center gap-2 flex-wrap">
+          <p className="p-1 px-4 border hover:bg-main">64GB</p>
+          <p className="p-1 px-4 border hover:bg-main">128GB</p>
+          <p className="p-1 px-4 border hover:bg-main">256GB</p>
+          <p className="p-1 px-4 border hover:bg-main">512GB</p>
+          <p className="p-1 px-4 border hover:bg-main">1024GB</p>
+        </div>
+      </div> */}
+
+      <div className="space-y-6 border-b ">
+        <p className="text-lg font-bold">Sizes</p>
+
+        <div className="space-y-2 pb-8">
+          {sizes.map((brand, i) => (
+            <BrandItem name={brand} key={i} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

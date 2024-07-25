@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 import { FaPen } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -40,7 +41,15 @@ import {
   createSeller,
   getAllRoles,
 } from "@/service/apis/user-services";
-import { IRole, RoleStore } from "@/store/user-store";
+import { EmailStore, IRole, RoleStore } from "@/store/user-store";
+import { getFileBase64 } from "@/utils/getFileBase64";
+// import { uploadImageFileToImageKit } from "@/service/apis/media-service";
+import { IImageType } from "@/data/data";
+
+// interface IUploadedFile {
+//   file_url: string;
+//   file_id: string;
+// }
 
 const BecomeSellerPage = () => {
   const [showRooms, setShowRooms] = useState<Option[]>([]);
@@ -52,6 +61,17 @@ const BecomeSellerPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
+  const setEmailData: SetterOrUpdater<string | null> =
+    useSetRecoilState(EmailStore);
+  const [profileSrc, setProfileSrc] = useState<string | null>(null);
+  const [coverSrc, setCoverSrc] = useState<string | null>(null);
+  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [logoImage, setLogoImage] = useState<string | null>(null);
+  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const profileInputRef = useRef<HTMLInputElement | null>(null);
+  const logoInputRef = useRef<HTMLInputElement | null>(null);
+  const coverInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<z.infer<typeof createSellerSchema>>({
     resolver: zodResolver(createSellerSchema),
@@ -69,6 +89,10 @@ const BecomeSellerPage = () => {
     },
   });
 
+  // console.log({ profileImage });
+  // console.log({ logoImage });
+  // console.log({ coverImage });
+
   const onSubmit = async (values: z.infer<typeof createSellerSchema>) => {
     if (showRooms.length === 0) {
       setErrorMessage("select at least one show room");
@@ -79,44 +103,67 @@ const BecomeSellerPage = () => {
       setErrorMessage("select at least one user role");
       return;
     }
-    const {
-      address,
-      email,
-      firstname,
-      lastname,
-      password,
-      phonenumber,
-      shopName,
-      country_id,
-    } = values;
 
-    const data: ISellerSignup = {
-      address,
-      email,
-      fullname: `${firstname} ${lastname}`,
-      password,
-      phonenumber,
-      profileImages: {
-        avatar_url: "something",
-        avatar_id: "something",
-        logo_url: "something",
-        logo_id: "something",
-        cover_url: "something",
-        cover_id: "something",
-      },
-      roleIds: userRoles.map((role) => role.value),
-      shopName,
-      showRooms: showRooms.map((room) => room.value),
-      country_id,
-    };
+    if (!profileImage || !logoImage || !coverImage) {
+      setErrorMessage("make sure you upload all images");
+      return;
+    }
 
-    
     let timeoutKey: NodeJS.Timeout | undefined;
     try {
       setLoading(true);
+
+      // const profile = await uploadImageFileToImageKit(profileImage);
+      // const logo = await uploadImageFileToImageKit(logoImage);
+      // const cover = await uploadImageFileToImageKit(coverImage);
+
+      // console.log({ profile, cover, logo });
+
+      // if (!profile || !logo || !cover) {
+      //   setLoading(false);
+      //   setErrorMessage("make sure you upload all images");
+      //   return;
+      // }
+
+      const {
+        address,
+        email,
+        firstname,
+        lastname,
+        password,
+        phonenumber,
+        shopName,
+        country_id,
+      } = values;
+
+      const data: ISellerSignup = {
+        address,
+        email,
+        fullname: `${firstname} ${lastname}`,
+        password,
+        phonenumber,
+        avatar_url:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        avatar_id:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        logo_url:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        logo_id:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        cover_url:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        cover_id:
+          "https://ik.imagekit.io/2ujnunod7moo/profile-placeholder_ALCfN7w0T.jpg?updatedAt=1709953134969",
+        roleIds: userRoles.map((role) => role.value),
+        shopName,
+        showRooms: showRooms.map((room) => room.value),
+        country_id,
+      };
+
       const response: AxiosResponse<any, any> = await createSeller(data);
 
       if (response.status === HttpStatusCode.Created) {
+        setEmailData(values.email);
         form.reset();
         setLoading(false);
         setShowRooms([]);
@@ -161,7 +208,7 @@ const BecomeSellerPage = () => {
         setCountries(response.data.data);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -173,8 +220,48 @@ const BecomeSellerPage = () => {
         setRoles(response.data.data);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
     }
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    type: IImageType
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onprogress = (e) => {
+        if (e.lengthComputable) {
+          setLoading(true);
+        }
+      };
+
+      reader.onloadend = (e) => {
+        setLoading(false);
+        type === "PROFILE"
+          ? setProfileSrc(e.target?.result as string)
+          : type === "COVER"
+          ? setCoverSrc(e.target?.result as string)
+          : setLogoSrc(e.target?.result as string);
+      };
+
+      const fileBase64 = await getFileBase64(file);
+
+      fileBase64 && type === "PROFILE"
+        ? setProfileImage(fileBase64)
+        : type === "COVER"
+        ? setCoverImage(fileBase64)
+        : setLogoImage(fileBase64);
+    }
+  };
+
+  const handleUpdateLoadImage = (
+    fileInputRef: React.RefObject<HTMLDivElement>
+  ) => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -540,13 +627,30 @@ const BecomeSellerPage = () => {
             </div>
 
             <div className="flex relative items-center justify-center text-lg font-bold w-40 h-40 rounded-full bg-gray-200">
-              200X200
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full bg-pink-700 flex items-center justify-center z-20 right-0 bottom-6 text-white text-lg absolute "
+              {profileSrc && (
+                <img
+                  src={profileSrc}
+                  alt={profileSrc}
+                  className="object-center"
+                />
+              )}
+              <input
+                ref={profileInputRef}
+                multiple={false}
+                className="hidden"
+                type="file"
+                name=""
+                id="profile"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "PROFILE")}
+              />
+              <Button
+                size="icon"
+                onClick={() => handleUpdateLoadImage(profileInputRef)}
+                className="rounded-full bg-black flex items-center justify-center z-20 border right-0 bottom-4 text-white text-lg absolute "
               >
                 <FaPen />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -562,13 +666,26 @@ const BecomeSellerPage = () => {
             </div>
 
             <div className="flex relative items-center justify-center text-lg font-bold w-40 h-40 rounded-full bg-gray-200">
-              200X200
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full bg-pink-700 flex items-center justify-center z-20 right-0 bottom-6 text-white text-lg absolute "
+              {logoSrc && (
+                <img src={logoSrc} alt={logoSrc} className="object-cover " />
+              )}
+              <input
+                ref={logoInputRef}
+                multiple={false}
+                className="hidden"
+                type="file"
+                name=""
+                id="logo"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "LOGO")}
+              />
+              <Button
+                onClick={() => handleUpdateLoadImage(logoInputRef)}
+                size="icon"
+                className="rounded-full bg-black flex items-center justify-center z-20 border right-0 bottom-4 text-white text-lg absolute "
               >
                 <FaPen />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -580,13 +697,30 @@ const BecomeSellerPage = () => {
             </p>
 
             <div className="flex relative items-center justify-center text-lg font-bold w-full h-40 rounded-lg bg-gray-200">
-              200X200
-              <button
-                type="button"
-                className="w-8 h-8 rounded-full bg-pink-700 flex items-center justify-center z-20 right-0 -bottom-4 text-white text-lg absolute "
+              {coverSrc && (
+                <img
+                  src={coverSrc}
+                  alt={coverSrc}
+                  className="object-cover h-full w-full rounded-lg "
+                />
+              )}
+              <input
+                ref={coverInputRef}
+                multiple={false}
+                className="hidden"
+                type="file"
+                name="cover"
+                id="cover"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "COVER")}
+              />
+              <Button
+                size="icon"
+                onClick={() => handleUpdateLoadImage(coverInputRef)}
+                className="rounded-full bg-black flex items-center justify-center z-20 border -right-2 -bottom-2 text-white text-lg absolute "
               >
                 <FaPen />
-              </button>
+              </Button>
             </div>
           </div>
         </div>

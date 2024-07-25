@@ -1,6 +1,6 @@
 import DiscountBanner from "./DiscountBanner";
-import { Logo } from "./TopBar";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
+import { Logo } from "./logo";
 
 const Footer = () => {
   return (

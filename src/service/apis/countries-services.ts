@@ -11,3 +11,6 @@ export interface ICountry {
 }
 
 export const getAllCountries = async () => await request.get(`country`);
+
+export const getOneCountry = async (country_id: string) =>
+  await request.get(`country/${country_id}`);

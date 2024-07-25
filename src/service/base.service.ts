@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 export const apiKey = import.meta.env.VITE_API_URL;
-console.log(`VITE_BASE_SERVICE`)
 
 const request: AxiosInstance = axios.create({
   baseURL: apiKey || "live one test",
