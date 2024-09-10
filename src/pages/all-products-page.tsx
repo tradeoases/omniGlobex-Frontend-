@@ -25,29 +25,20 @@ import { ProductCard } from "@/components/product-card";
 const AllProductsPage = () => {
   const [position, setPosition] = useState<string>("bottom");
   const [openMenu, setOpenMenu] = useState<boolean>(false);
-
+  const [page, setPage] = useState<number>(1)
   const [products, setProducts] = useRecoilState<IProduct[] | null>(
     ProductStore
   );
 
   const fetchProducts = async () => {
-    try {
-      const response: AxiosResponse<any, any> = await getAllProducts(
-        `?page=1&pageSize=15`
-      );
-
-      if (response.status === HttpStatusCode.Ok) {
-        console.log({ response });
-        setProducts(response.data.data);
-      }
-    } catch (error) {
-      console.log(error);
+    const response: AxiosResponse<any, any> = await getAllProducts(
+      `?page=${page}&pageSize=15`
+    );
+    if (response.status === HttpStatusCode.Ok) {
+      console.log({ response });
+      setProducts(response.data.data);
     }
   };
-
-  useEffect(() => {
-    !products && fetchProducts();
-  }, []);
 
   return (
     <div className="w-10/12 xl:w-8/12 mx-auto my-10 grid grid-cols-1 lg:grid-cols-4 gap-x-8">
