@@ -40,7 +40,7 @@ const NavBar = () => {
               />
             )}
           </div>
-          <div className="flex items-center gap-6 xl:gap-10 relative -bottom-1">
+          <div className="flex items-center gap-6 xl:gap-10 relative -bottom-1 flex-1">
             {navs.map((nav, i) =>
               nav.title === "Pages" ? (
                 <NavBarPagesItem key={i} />
@@ -48,7 +48,7 @@ const NavBar = () => {
                 <Link
                   to={nav.route}
                   key={i}
-                  className="flex cursor-pointer items-center gap-x-1"
+                  className="flex cursor-pointer items-center gap-x-2"
                 >
                   <span className="whitespace-nowrap">{nav.title}</span>
                   {nav.icon && <LuChevronDown />}
@@ -56,12 +56,16 @@ const NavBar = () => {
               )
             )}
           </div>
+
+          <Button
+            asChild
+            className="bg-gradient-to-r from-yellow-200 to-yellow-700 text-white py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105"
+          >
+            <Link to="/become-seller">
+              <span>Become a Seller</span> <LuChevronRight />
+            </Link>
+          </Button>
         </div>
-        <Button asChild className="space-x-2 rounded-none">
-          <Link to="/become-seller">
-            <span>Become a Seller</span> <LuChevronRight />
-          </Link>
-        </Button>
       </div>
     </div>
   );
