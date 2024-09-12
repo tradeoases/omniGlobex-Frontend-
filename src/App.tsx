@@ -1,12 +1,14 @@
 import "./App.css";
 import { ModeToggle } from "./components/mode-toggle";
 import { Button } from "./components/ui/button";
+import TopBanner from './components/TopBanner'; 
 
 function App() {
   return (
     <>
-    <Button variant="destructive">Destructive</Button>
-    <ModeToggle />
+      <TopBanner /> 
+      {/* <Button variant="destructive">Destructive</Button> */}
+      <ModeToggle />
     </>
   );
 }
