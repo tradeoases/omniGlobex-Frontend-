@@ -7,6 +7,7 @@ import { AxiosResponse, HttpStatusCode } from "axios";
 
 import { ProductManagement } from "@/components/product-management";
 import { IUser, userStore } from "@/store/user-store";
+import { INewOrder, NewOrderStore } from "@/store/order-store";
 import Overview from "@/components/profile-dashboard/overview";
 import { IDashboardNav, TActiveMenu, dashboardNavs } from "@/data/data";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import {
 import { BuyerOrder } from "@/components/buyer-order";
 import { PersonalSection } from "@/components/profile-personal-section";
 import { getUserInfo } from "@/service/apis/user-services";
+import { getAllUserOrders } from "@/service/apis/order-service";
 import { PaymentMethod } from "@/components/payment-method";
 import { UserAddress } from "@/components/user-address";
 import SupportTicket from "@/components/support-ticket";
@@ -26,6 +28,8 @@ import ChangePassword from "@/components/change-password";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
+  const [newOrderData, setNewOrderData] =
+    useRecoilState<INewOrder[]>(NewOrderStore);
   const [activeMenu, setActiveMenu] =
     useRecoilState<TActiveMenu>(DashboardMenuStore);
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -36,41 +40,9 @@ const ProfilePage = () => {
     useState<IDashboardNav[]>(dashboardNavs);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    !isMounted && setIsMounted(true);
-    !userData && fetchUserInfo();
-
-    userData?.Roles[0].name === "buyer"
-      ? setNavigations(
-          dashboardNavs.filter(
-            (item) => item.title !== "Products" && item.title !== "Dashboard"
-          )
-        )
-      : "";
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUserData(null);
-
-    setActiveMenu("Dashboard");
-    navigate(`/`);
-  };
-
-  useEffect(() => {
-    if (activeMenu === "Logout") {
-      localStorage.removeItem("token");
-      setUserData(null);
-
-      setActiveMenu("Dashboard");
-      navigate(`/`);
-    }
-  }, [activeMenu]);
-
   const fetchUserInfo = async () => {
     try {
       const response: AxiosResponse<any, any> = await getUserInfo();
-
       if (response.status === HttpStatusCode.Ok) {
         setUserData(response.data.data);
       }
@@ -80,13 +52,52 @@ const ProfilePage = () => {
     }
   };
 
-  if (!userData) {
+  const fetchAllUserOrders = async () => {
+    try {
+      const response: AxiosResponse<any, any> = await getAllUserOrders();
+      if (response.status === HttpStatusCode.Ok) {
+        console.log({ response });
+        setNewOrderData(response.data.data);
+      }
+    } catch (error) {
+      setActiveMenu("Dashboard");
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      if (!userData) {
+        await fetchUserInfo();
+      }
+
+      if (newOrderData.length === 0) {
+        await fetchAllUserOrders();
+      }
+    };
+
+    if (!isMounted) {
+      fetchInitialData();
+      setIsMounted(true);
+    }
+  }, [isMounted, userData, newOrderData.length]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUserData(null);
+    setNewOrderData([]);
+
+    setActiveMenu("Dashboard");
+    navigate(`/`);
+  };
+
+  if (!userData || !newOrderData) {
     return <div>loading...</div>;
   }
 
   return (
     <div className="w-10/12 xl:w-8/12 relative mx-auto py-12">
-      <div className=" space-y-8">
+      <div className="space-y-8">
         <div className="w-full flex items-center gap-x-8 lg:gap-0">
           <Button
             className="lg:hidden p-1 border shadow-none"
@@ -119,7 +130,9 @@ const ProfilePage = () => {
             ))}
           </div>
 
-          {activeMenu === "Dashboard" && <Overview userData={userData} />}
+          {activeMenu === "Dashboard" && (
+            <Overview userData={userData} newOrderData={newOrderData || []} />
+          )}
           {activeMenu === "Products" && <ProductManagement />}
           {activeMenu === "Address" && <UserAddress />}
           {activeMenu === "Personal" && <PersonalSection userData={userData} />}

@@ -13,7 +13,18 @@ export interface IOrder {
   updatedAt: string;
 }
 
+export interface INewOrder {
+  title: string;
+  count: number;
+  icon: JSX.Element;
+}
+
 export const OrdersStore: RecoilState<IOrder[] | null> = atom<IOrder[] | null>({
   key: "orders-store",
   default: null,
+});
+
+export const NewOrderStore = atom<INewOrder[] | null>({
+  key: "NewOrderStore",
+  default: [],
 });

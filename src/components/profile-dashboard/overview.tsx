@@ -1,20 +1,51 @@
 import { IUser } from "@/store/user-store";
+import { INewOrder } from "@/store/order-store";
 import { FaShippingFast } from "react-icons/fa";
 import { FaCartArrowDown, FaUserGear } from "react-icons/fa6";
+import { useEffect, useState } from "react";
 
 interface Props {
   userData: IUser | null;
+  newOrderData: INewOrder[];
 }
-export const Overview: React.FC<Props> = ({ userData }) => {
+export const Overview: React.FC<Props> = ({ userData, newOrderData }) => {
+  const [storedUserData, setStoredUserData] = useState<IUser | null>(() => {
+    const savedUserData = localStorage.getItem("userData");
+    return savedUserData ? JSON.parse(savedUserData) : null;
+  });
+
+  useEffect(() => {
+    if (userData) {
+      localStorage.setItem("userData", JSON.stringify(userData));
+      setStoredUserData(userData);
+    }
+  }, [userData]);
+
+  const finalUserData = userData || storedUserData;
+
+  const personalInfo = [
+    { key: "Name", value: finalUserData?.fullname || "N/A" },
+    { key: "Email", value: finalUserData?.email || "N/A" },
+    { key: "Phone", value: finalUserData?.phonenumber || "N/A" },
+    { key: "City", value: finalUserData?.city || "N/A" },
+    { key: "Zip", value: finalUserData?.zipCode || "N/A" },
+  ];
+
+  const newOrders: INewOrder[] = [
+    { title: "New Order", count: 654, icon: <FaCartArrowDown /> },
+    { title: "New Order", count: 654, icon: <FaShippingFast /> },
+    { title: "New Order", count: 654, icon: <FaUserGear /> },
+  ];
+
   return (
     <div className="col-span-3 space-y-6">
       <div>
-        <p className="text-base">Hello, {userData?.fullname}</p>
+        <p className="text-base">Hello, {finalUserData?.fullname}</p>
         <p className="text-xl font-semibold">Welcome to your Profile</p>
       </div>
 
       <div className="grid mx-auto w-full grid-cols-3 gap-x-2 md:gap-x-8">
-        {newOrderData.map((order, i) => (
+        {newOrders.map((order, i) => (
           <NewOrderBoard key={i} {...order} />
         ))}
       </div>
@@ -52,11 +83,6 @@ export const Overview: React.FC<Props> = ({ userData }) => {
 
 export default Overview;
 
-interface INewOrder {
-  title: string;
-  count: number;
-  icon: JSX.Element;
-}
 const NewOrderBoard: React.FC<INewOrder> = ({ count, title, icon }) => {
   return (
     <div className="bg-black hover:bg-main hover:text-black xl:w-52 hover:rounded text-white space-y-4 p-2 md:p-8 transition-colors duration-300 ease-in-out">
@@ -68,17 +94,3 @@ const NewOrderBoard: React.FC<INewOrder> = ({ count, title, icon }) => {
     </div>
   );
 };
-
-const newOrderData: INewOrder[] = [
-  { title: "New Order", count: 654, icon: <FaCartArrowDown /> },
-  { title: "New Order", count: 654, icon: <FaShippingFast /> },
-  { title: "New Order", count: 654, icon: <FaUserGear /> },
-];
-
-const personalInfo = [
-  { key: "Name", value: "Shuvo Khan" },
-  { key: "Email", value: "nabiwembo@gmail.com" },
-  { key: "Phone", value: "01239301920" },
-  { key: "City", value: "Kampala" },
-  { key: "Zip", value: "4040" },
-];
