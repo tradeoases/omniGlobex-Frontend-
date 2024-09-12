@@ -3,7 +3,7 @@ import axios from 'axios';
 export const getLocaleInfo = async () => {
   try {
     // Use the proxied API call (through Vite proxy configured as '/api')
-    const response = await axios.get('/api/json/');
+    const response = await axios.get('https://ipapi.co/json/');
     const { country_code, languages } = response.data;
 
     // Check if the 'languages' field exists and parse it properly
@@ -17,7 +17,7 @@ export const getLocaleInfo = async () => {
 
     return { currency, language };
   } catch (error) {
-    // console.error('Error detecting locale:', error.message);
+    console.error('Error fetching locale info:', error);
 
     // Fallback to USD and English if API call fails
     return { currency: 'USD', language: 'en' };
