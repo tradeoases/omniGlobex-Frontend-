@@ -16,8 +16,12 @@ const Footer = () => {
           <div className="lg:col-span-2 space-y-5">
             <p>About</p>
             <p className="w-3/4 text-gray-400">
-              We know there are a lot of threa developers our but we pride into
-              a firm in the industry.
+            Our platform is a comprehensive B2B multi-vendor marketplace designed to connect various
+business entities, including suppliers, buyers, local marketing companies, local logistics
+companies, and international supply chain service providers. The platform aims to facilitate
+international trade by providing a secure, efficient, and user-friendly environment for business
+transactions, market insights, and supply chain management.
+
             </p>
           </div>
 
@@ -63,7 +67,7 @@ const Footer = () => {
             </div>
             <p className="text-base text-gray-400">
               &copy;{new Date().getFullYear()}{" "}
-              <span className="text-black">Campany Name</span> All rights
+              <span className="text-black">OmniGlobex</span> All rights
               reserved
             </p>
           </div>
