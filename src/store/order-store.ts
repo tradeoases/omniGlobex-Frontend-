@@ -24,7 +24,7 @@ export const OrdersStore: RecoilState<IOrder[] | null> = atom<IOrder[] | null>({
   default: null,
 });
 
-export const NewOrderStore = atom<INewOrder[] | null>({
+export const NewOrderStore = atom<INewOrder[]>({
   key: "NewOrderStore",
   default: [],
 });

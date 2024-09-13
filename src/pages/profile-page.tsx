@@ -36,8 +36,7 @@ const ProfilePage = () => {
   const setSidemenu: SetterOrUpdater<boolean> = useSetRecoilState<boolean>(
     DashboardSideMenuStore
   );
-  const [nagigations, setNavigations] =
-    useState<IDashboardNav[]>(dashboardNavs);
+  const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
   const navigate = useNavigate();
 
   const fetchUserInfo = async () => {
@@ -113,7 +112,7 @@ const ProfilePage = () => {
 
         <div className="lg:grid grid-cols-4 gap-8 ">
           <div className="hidden lg:block col-span-1 lg:border-r bg-white px-4">
-            {nagigations.map((nav, i) => (
+            {navigations.map((nav, i) => (
               <div
                 key={i}
                 onClick={() => {

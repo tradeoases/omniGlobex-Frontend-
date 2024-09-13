@@ -8,7 +8,7 @@ interface Props {
   userData: IUser | null;
   newOrderData: INewOrder[];
 }
-export const Overview: React.FC<Props> = ({ userData, newOrderData }) => {
+export const Overview: React.FC<Props> = ({ userData }) => {
   const [storedUserData, setStoredUserData] = useState<IUser | null>(() => {
     const savedUserData = localStorage.getItem("userData");
     return savedUserData ? JSON.parse(savedUserData) : null;
