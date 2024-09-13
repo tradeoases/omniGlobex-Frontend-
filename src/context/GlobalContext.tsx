@@ -1,9 +1,9 @@
-import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+// import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { getLocaleInfo } from '../utils/localeDetection';
 import { fetchCurrencies } from '../utils/api';
-import i18n from '../i18n';
+// import i18n from '../i18n';
 
 interface CurrencyRates {
   [key: string]: number;
