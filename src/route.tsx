@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import NotFoundPage from "./pages/not-found-page";
 import HomePage from "./pages/home-page";
-import { AboutPage } from "./pages/about-page";
+import { AboutPage } from "./pages/about-us/about-page";
 import BecomeSellerPage from "./pages/become-seller-page";
 import LoginPage from "./pages/login-page";
 import SignupPage from "./pages/signup-page";

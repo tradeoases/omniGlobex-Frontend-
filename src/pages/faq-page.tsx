@@ -27,10 +27,7 @@ const FaqPage = () => {
                       </h1>
                     </AccordionTrigger>
                     <AccordionContent>
-                      There are many variations of passages of Lorem Ipsum
-                      available into the but the majority have suffered
-                      alteration in some form, by injecte find to a humour, or
-                      randomised words
+                      
                     </AccordionContent>
                   </AccordionItem>
                 ))}
