@@ -1,30 +1,16 @@
-import React from 'react';
 import { useGlobalContext } from '../context/GlobalContext';
-import Select from 'react-select';
 
-const LanguageSelector: React.FC = () => {
+const LanguageSelector = () => {
   const { selectedLanguage, setLanguage, languages } = useGlobalContext();
 
-  const handleLanguageChange = (selectedOption: any) => {
-    setLanguage(selectedOption.value);
-  };
-
-  const languageOptions = languages.map((lang) => ({
-    value: lang.code,
-    label: (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <img src={lang.flag} alt={`${lang.name} flag`} width="20" style={{ marginRight: '10px' }} />
-        <span>{lang.name}</span>
-      </div>
-    ),
-  }));
-
   return (
-    <Select
-      value={languageOptions.find(option => option.value === selectedLanguage)}
-      onChange={handleLanguageChange}
-      options={languageOptions}
-    />
+    <select value={selectedLanguage} onChange={(e) => setLanguage(e.target.value)}>
+      {languages.map((language) => (
+        <option key={language.code} value={language.code}>
+          {language.name}
+        </option>
+      ))}
+    </select>
   );
 };
 

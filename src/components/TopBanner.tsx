@@ -1,7 +1,4 @@
-// ./components/TopBanner.tsx
-// import React from 'react';
 import { Link } from 'react-router-dom';
-// import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import CurrencySelector from './CurrencySelector';
 import LanguageSelector from './LanguageSelector';
 import {SelectShowroom} from './select-show-room';

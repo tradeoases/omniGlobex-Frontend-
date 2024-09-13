@@ -1,3 +1,4 @@
+
 import { useGlobalContext } from '../context/GlobalContext';
 
 interface PriceDisplayProps {

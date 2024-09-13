@@ -4,7 +4,6 @@ import axios from 'axios';
 import { getLocaleInfo } from '../utils/localeDetection';
 import { fetchCurrencies } from '../utils/api';
 
-
 interface CurrencyRates {
   [key: string]: number;
 }
@@ -57,13 +56,11 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
         // Fetch languages from REST Countries API
         const response = await axios.get('https://restcountries.com/v3.1/all');
-       // Adjust GlobalContext.tsx to ensure that the language data has unique keys
-const languagesData = response.data.map((country: any) => ({
-  code: `${country.cca2}-${Object.keys(country.languages || {})[0] || 'en'}`, // Unique key: country code + language code
-  name: Object.values(country.languages || {})[0] || 'English',
-  flag: country.flags?.svg || '',
-})).filter((lang: any) => lang.code && lang.name);
-
+        const languagesData = response.data.map((country: any) => ({
+          code: `${country.cca2}-${Object.keys(country.languages || {})[0] || 'en'}`, // Unique key: country code + language code
+          name: Object.values(country.languages || {})[0] || 'English',
+          flag: country.flags?.svg || '',
+        })).filter((lang: any) => lang.code && lang.name);
 
         // Add English and Arabic at the top
         const prioritizedLanguages = [
