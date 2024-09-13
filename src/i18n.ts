@@ -6,11 +6,12 @@ i18n
   .use(HttpBackend)
   .use(initReactI18next)
   .init({
-    lng: localStorage.getItem('selectedLanguage') || 'en',  // default language is fetched from local storage or 'en'
-    fallbackLng: 'en',
+    lng: localStorage.getItem('selectedLanguage') || 'en', // Default language
+    fallbackLng: 'en', // Fallback to English
     backend: {
-      loadPath: '/locales/{{lng}}.json',  // modify as needed for remote translations
+      loadPath: '/locales/{{lng}}.json', // Dynamic loading of translation files
     },
+    supportedLngs: ['en', 'ar'], // Prioritize English and Arabic
     interpolation: {
       escapeValue: false,
     },

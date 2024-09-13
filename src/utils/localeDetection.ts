@@ -2,32 +2,27 @@ import axios from 'axios';
 
 export const getLocaleInfo = async () => {
   try {
-    // Use the proxied API call (through Vite proxy configured as '/api')
-    const response = await axios.get('https://ipapi.co/json/');
-    const { country_code, languages } = response.data;
+    // Use ipgeolocation.io API to get user location and language info
+    const response = await axios.get('https://api.ipgeolocation.io/ipgeo?apiKey=4547ead891fe44ddb40ae9039236ea00');
+    const { country_code2, languages } = response.data;
 
-    // Check if the 'languages' field exists and parse it properly
+    // Ensure language is correctly parsed
     let language = 'en';  // Default to 'en' if parsing fails
     if (languages && typeof languages === 'string') {
       language = languages.split(',')[0].split('-')[0] || 'en';
     }
 
-    
-    const currency = countryCurrencyMap[country_code] || 'USD';
-
+    const currency = countryCurrencyMap[country_code2] || 'USD';
     return { currency, language };
   } catch (error) {
     console.error('Error fetching locale info:', error);
-
-    // Fallback to USD and English if API call fails
     return { currency: 'USD', language: 'en' };
   }
 };
 
-// Currency mapping by country code
+// Mapping country code to currencies
 const countryCurrencyMap: Record<string, string> = {
   UG: 'UGX',
   KE: 'KES',
   US: 'USD',
-  
 };

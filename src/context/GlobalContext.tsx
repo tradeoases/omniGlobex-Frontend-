@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { getLocaleInfo } from '../utils/localeDetection';
 import { fetchCurrencies } from '../utils/api';
-import i18n from '../i18n'; 
+import i18n from '../i18n';
 
 interface CurrencyRates {
   [key: string]: number;
@@ -42,7 +42,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setSelectedCurrency(currency);
         setSelectedLanguage(language);
 
-        // Safely initialize i18n and change language
+        // safely initialize i18n and change language
         if (i18n.isInitialized) {
           i18n.changeLanguage(language);
         } else {
@@ -57,13 +57,22 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
         // Fetch languages from REST Countries API
         const response = await axios.get('https://restcountries.com/v3.1/all');
-        const languagesData = response.data.map((country: any) => ({
-          code: country.cca2 + '-' + Object.keys(country.languages || {})[0],
-          name: Object.values(country.languages || {})[0] || 'Unknown',
-          flag: country.flags.svg || '',
-        })).filter((lang: any) => lang.code && lang.name);
+       // Adjust GlobalContext.tsx to ensure that the language data has unique keys
+const languagesData = response.data.map((country: any) => ({
+  code: `${country.cca2}-${Object.keys(country.languages || {})[0] || 'en'}`, // Unique key: country code + language code
+  name: Object.values(country.languages || {})[0] || 'English',
+  flag: country.flags?.svg || '',
+})).filter((lang: any) => lang.code && lang.name);
 
-        setLanguages(languagesData);
+
+        // Add English and Arabic at the top
+        const prioritizedLanguages = [
+          { code: 'en', name: 'English', flag: 'path-to-english-flag' },
+          { code: 'ar', name: 'Arabic', flag: 'path-to-arabic-flag' },
+          ...languagesData
+        ];
+
+        setLanguages(prioritizedLanguages);
       } catch (error) {
         console.error('Error during initialization:', error);
       }
@@ -72,13 +81,19 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     init();
   }, []);
 
+  const handleLanguageChange = (language: string) => {
+    setSelectedLanguage(language);
+    localStorage.setItem('selectedLanguage', language);
+    i18n.changeLanguage(language);
+  };
+
   return (
     <GlobalContext.Provider
       value={{
         selectedCurrency,
         setCurrency: setSelectedCurrency,
         selectedLanguage,
-        setLanguage: setSelectedLanguage,
+        setLanguage: handleLanguageChange,
         currencies,
         languages,
       }}
