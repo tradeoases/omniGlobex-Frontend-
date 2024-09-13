@@ -10,9 +10,12 @@ export interface IRole {
 export interface IUser {
   user_id: string;
   country_id: string;
+  city: string;
   email: string;
   active: number;
   fullname: string;
+  phonenumber: string;
+  zipCode: String;
   status: number;
   is_verified: number;
   createdAt: string;
