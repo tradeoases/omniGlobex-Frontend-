@@ -1,6 +1,5 @@
 import { ImLocation } from "react-icons/im";
 import { CgPhone } from "react-icons/cg";
-
 import { PageHeader } from "@/components/PageHeader";
 import GetInTouchCard from "@/components/get-in-touch-card";
 import { FaEnvelope } from "react-icons/fa6";
@@ -16,7 +15,7 @@ const ContactPage = () => {
               Contact Information
             </h1>
             <p className="text-sm text-gray-400 mb-5">
-              Fill the form below or write us .We will help you as soon as
+              Fill the form below or write to us. We will help you as soon as
               possible.
             </p>
             <div className="xl:flex xl:space-x-7 mb-7">

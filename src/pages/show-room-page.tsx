@@ -36,6 +36,7 @@ const ShowRoomPage = () => {
       const response: AxiosResponse<any, any> = await getAllProducts(
         `?page=1&pageSize=25`
       );
+      // console.log({ response });
 
       if (response.status === HttpStatusCode.Ok) {
         setProducts(response.data.data);

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiMenuFries } from "react-icons/ci";
-import { Link } from "react-router-dom";
-
+import { NavLink, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { CategoriesPopup } from "./CategoriesPopup";
 import { navs } from "@/data/data";
@@ -10,6 +9,7 @@ import { NavBarPagesItem } from "./navbar-page-item";
 
 const NavBar = () => {
   const [showCategory, setShowCategory] = useState<boolean>(false);
+  const location = useLocation();
 
   const onToggleCategory = () => {
     setShowCategory(!showCategory);
@@ -18,6 +18,8 @@ const NavBar = () => {
   const handleShowCat = () => {
     showCategory ? setShowCategory(false) : setShowCategory(true);
   };
+
+  const isSellerActive = location.pathname === "/become-seller";
 
   return (
     <div className="hidden lg:block w-full border-b py-2 bg-main">
@@ -40,28 +42,39 @@ const NavBar = () => {
               />
             )}
           </div>
-          <div className="flex items-center gap-6 xl:gap-10 relative -bottom-1">
+          <div className="flex items-center gap-6 xl:gap-10 relative -bottom-1 flex-1">
             {navs.map((nav, i) =>
               nav.title === "Pages" ? (
                 <NavBarPagesItem key={i} />
               ) : (
-                <Link
+                <NavLink
                   to={nav.route}
                   key={i}
-                  className="flex cursor-pointer items-center gap-x-1"
+                  className={({ isActive }) =>
+                    `flex cursor-pointer items-center gap-x-2 ${
+                      isActive
+                        ? "text-yellow-700 font-bold border-b-2 border-yellow-700"
+                        : ""
+                    }`
+                  }
                 >
                   <span className="whitespace-nowrap">{nav.title}</span>
                   {nav.icon && <LuChevronDown />}
-                </Link>
+                </NavLink>
               )
             )}
           </div>
+          <Button
+            asChild
+            className={`bg-gradient-to-r from-yellow-200 to-yellow-700 text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105 ${
+              isSellerActive ? "font-bold text-yellow-700" : ""
+            }`}
+          >
+            <NavLink to="/become-seller">
+              <span>Become a Seller</span> <LuChevronRight />
+            </NavLink>
+          </Button>
         </div>
-        <Button asChild className="space-x-2 rounded-none">
-          <Link to="/become-seller">
-            <span>Become a Seller</span> <LuChevronRight />
-          </Link>
-        </Button>
       </div>
     </div>
   );

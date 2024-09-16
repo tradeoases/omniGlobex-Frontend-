@@ -27,6 +27,7 @@ const GetInTouchCard = () => {
 
   function onSubmit(values: z.infer<typeof getInTouchSchema>) {
     console.log(values);
+    form.reset();
   }
   return (
     <div className="flex-1 bg-white sm:p-10 p-3 w-full">
@@ -51,7 +52,10 @@ const GetInTouchCard = () => {
         </span>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 outline-none"
+        >
           <div className="">
             <FormField
               control={form.control}
@@ -62,7 +66,11 @@ const GetInTouchCard = () => {
                     <FormItem>
                       <FormLabel>Name *</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="John Doe" />
+                        <Input
+                          {...field}
+                          placeholder="John Doe"
+                          className=" outline-none"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -122,7 +130,7 @@ const GetInTouchCard = () => {
                         <Textarea
                           {...field}
                           placeholder="Type your message here"
-                          className="resize-none"
+                          // className="resize-none"
                         />
                       </FormControl>
                       <FormMessage />
