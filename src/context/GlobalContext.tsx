@@ -1,11 +1,19 @@
-import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
-import { getLocaleInfo } from '../utils/localeDetection';
 import { fetchCurrencies } from '../utils/api';
+import { getLocaleInfo } from '../utils/localeDetection';
+import axios from 'axios';
 
+// Types
 interface CurrencyRates {
   [key: string]: number;
+}
+
+interface Language {
+  code: string;
+  name: string;
+  nativeName: string;
+  flag: string;
 }
 
 interface GlobalContextType {
@@ -14,11 +22,13 @@ interface GlobalContextType {
   selectedLanguage: string;
   setLanguage: (language: string) => void;
   currencies: CurrencyRates;
-  languages: { code: string; name: string; flag: string }[];
+  languages: Language[];
 }
 
+// Create GlobalContext
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
+// Hook to access context
 export const useGlobalContext = () => {
   const context = useContext(GlobalContext);
   if (!context) {
@@ -27,21 +37,23 @@ export const useGlobalContext = () => {
   return context;
 };
 
-export const GlobalProvider = ({ children }: { children: ReactNode }) => {
+// GlobalProvider component
+export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [currencies, setCurrencies] = useState<CurrencyRates>({});
-  const [languages, setLanguages] = useState<{ code: string; name: string; flag: string }[]>([]);
+  const [languages, setLanguages] = useState<Language[]>([]);
 
   useEffect(() => {
     const init = async () => {
       try {
+        // Get locale info (currency and language)
         const { currency, language } = await getLocaleInfo();
         setSelectedCurrency(currency);
         setSelectedLanguage(language);
 
-        // safely initialize i18n and change language
+        // Initialize language with i18n
         if (i18n.isInitialized) {
           i18n.changeLanguage(language);
         } else {
@@ -54,29 +66,31 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
           setCurrencies(availableCurrencies);
         }
 
-        // Fetch languages from REST Countries API
+        // Fetch supported languages dynamically from an API (e.g., restcountries)
         const response = await axios.get('https://restcountries.com/v3.1/all');
-        const languagesData = response.data.map((country: any) => ({
-          code: `${country.cca2}-${Object.keys(country.languages || {})[0] || 'en'}`, // Unique key: country code + language code
-          name: Object.values(country.languages || {})[0] || 'English',
-          flag: country.flags?.svg || '',
-        })).filter((lang: any) => lang.code && lang.name);
+        const languageMap = new Map<string, Language>();
 
-        // Add English and Arabic at the top
-        const prioritizedLanguages = [
-          { code: 'en', name: 'English', flag: 'path-to-english-flag' },
-          { code: 'ar', name: 'Arabic', flag: 'path-to-arabic-flag' },
-          ...languagesData
-        ];
+        response.data.forEach((country: any) => {
+          Object.entries(country.languages || {}).forEach(([langCode, langName]: [string, any]) => {
+            if (!languageMap.has(langCode)) {
+              languageMap.set(langCode, {
+                code: langCode,
+                name: langName as string,
+                nativeName: country.name.nativeName?.[langCode]?.common || langName as string,
+                flag: country.flags?.svg || '',
+              });
+            }
+          });
+        });
 
-        setLanguages(prioritizedLanguages);
+        setLanguages(Array.from(languageMap.values()));
       } catch (error) {
         console.error('Error during initialization:', error);
       }
     };
 
     init();
-  }, []);
+  }, [i18n]);
 
   const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language);

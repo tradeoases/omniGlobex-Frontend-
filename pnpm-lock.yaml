@@ -59,6 +59,9 @@ importers:
       '@radix-ui/react-switch':
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: ^5.56.2
+        version: 5.56.2(react@18.3.1)
       '@types/react-router-dom':
         specifier: ^5.3.3
         version: 5.3.3
@@ -89,6 +92,9 @@ importers:
       i18next:
         specifier: ^23.15.1
         version: 23.15.1
+      i18next-browser-languagedetector:
+        specifier: ^8.0.0
+        version: 8.0.0
       i18next-http-backend:
         specifier: ^2.6.1
         version: 2.6.1
@@ -1418,6 +1424,14 @@ packages:
     peerDependencies:
       '@svgr/core': '*'
 
+  '@tanstack/query-core@5.56.2':
+    resolution: {integrity: sha512-gor0RI3/R5rVV3gXfddh1MM+hgl0Z4G7tj6Xxpq6p2I03NGPaJ8dITY9Gz05zYYb/EJq9vPas/T4wn9EaDPd4Q==}
+
+  '@tanstack/react-query@5.56.2':
+    resolution: {integrity: sha512-SR0GzHVo6yzhN72pnRhkEFRAHMsUo5ZPzAxfTMvUxFIDVS6W9LYUp6nXW3fcHVdg0ZJl8opSH85jqahvm6DSVg==}
+    peerDependencies:
+      react: ^18 || ^19
+
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
 
@@ -1999,6 +2013,9 @@ packages:
 
   html-parse-stringify@3.0.1:
     resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+
+  i18next-browser-languagedetector@8.0.0:
+    resolution: {integrity: sha512-zhXdJXTTCoG39QsrOCiOabnWj2jecouOqbchu3EfhtSHxIB5Uugnm9JaizenOy39h7ne3+fLikIjeW88+rgszw==}
 
   i18next-http-backend@2.6.1:
     resolution: {integrity: sha512-rCilMAnlEQNeKOZY1+x8wLM5IpYOj10guGvEpeC59tNjj6MMreLIjIW8D1RclhD3ifLwn6d/Y9HEM1RUE6DSog==}
@@ -3980,6 +3997,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@tanstack/query-core@5.56.2': {}
+
+  '@tanstack/react-query@5.56.2(react@18.3.1)':
+    dependencies:
+      '@tanstack/query-core': 5.56.2
+      react: 18.3.1
+
   '@types/babel__core@7.20.5':
     dependencies:
       '@babel/parser': 7.24.7
@@ -4639,6 +4663,10 @@ snapshots:
   html-parse-stringify@3.0.1:
     dependencies:
       void-elements: 3.1.0
+
+  i18next-browser-languagedetector@8.0.0:
+    dependencies:
+      '@babel/runtime': 7.25.6
 
   i18next-http-backend@2.6.1:
     dependencies:
