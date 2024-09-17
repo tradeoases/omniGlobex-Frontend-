@@ -21,6 +21,8 @@ import FaqPage from "./pages/staticpages/faq-page";
 import TermsConditionsPage from "./pages/staticpages/terms-condition-page";
 import ShowRoomPage from "./pages/products/show-room-page";
 import AllProductsPage from "./pages/products/all-products-page";
+import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
+import CreateBusiness from "./pages/BusinessInformation/CreateBusiness";
 
 export default function RoutesConfig() {
   return (
@@ -33,7 +35,9 @@ export default function RoutesConfig() {
       <Route path="/terms-condition" element={<TermsConditionsPage />} />
       <Route path="/become-seller" element={<BecomeSellerPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
+      {/* <Route path="/signup" element={<SignupPage />} /> */}
+      <Route path="signup" element={<IntegratedSignup />} />
+      <Route path="/createBusiness" element={<CreateBusiness />} />
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/profile" element={<ProfilePage />} />

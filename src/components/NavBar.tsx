@@ -1,10 +1,10 @@
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 
-import { 
-  Link, 
-  NavLink, 
-  useLocation, 
-  //useNavigate 
+import {
+  Link,
+  NavLink,
+  useLocation,
+  //useNavigate
 } from "react-router-dom";
 
 import { navs } from "@/data/data";
@@ -73,7 +73,7 @@ const NavBar = () => {
               isSellerActive ? "font-bold text-yellow-700" : ""
             }`}
           >
-            <NavLink to="/become-seller">
+            <NavLink to="/signup">
               <span>Become a Member</span> <LuChevronRight />
             </NavLink>
           </Button>
