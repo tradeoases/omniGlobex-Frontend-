@@ -12,13 +12,14 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import AllProductsPage from "./all-products-page";
+
 import { PageHeader } from "@/components/PageHeader";
 import { useRecoilState } from "recoil";
 import { getAllProducts, IProduct } from "@/service/apis/product-services";
 import { ProductStore } from "@/store/product-store";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { Header } from "@/components/header";
+import AllProductsPage from "./all-products-page";
 
 const ShowRoomPage = () => {
   // const [activeCategory, setActiveCategory] = useState<string>(
@@ -36,6 +37,7 @@ const ShowRoomPage = () => {
       const response: AxiosResponse<any, any> = await getAllProducts(
         `?page=1&pageSize=25`
       );
+      // console.log({ response });
 
       if (response.status === HttpStatusCode.Ok) {
         setProducts(response.data.data);

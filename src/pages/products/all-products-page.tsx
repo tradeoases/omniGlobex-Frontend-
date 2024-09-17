@@ -29,16 +29,20 @@ const AllProductsPage = () => {
   const [products, setProducts] = useRecoilState<IProduct[] | null>(
     ProductStore
   );
+  const [totalResults, setTotalResults] = useState<number>(0);
+  const pageSize = 15;
+  const currentPage = 1;
 
   const fetchProducts = async () => {
     try {
       const response: AxiosResponse<any, any> = await getAllProducts(
-        `?page=1&pageSize=15`
+        `?page=${currentPage}&pageSize=${pageSize}`
       );
 
       if (response.status === HttpStatusCode.Ok) {
         console.log({ response });
         setProducts(response.data.data);
+        setTotalResults(response.data.data.totalCount || 53); //Set total count from API or use fallback
       }
     } catch (error) {
       console.log(error);
@@ -56,7 +60,16 @@ const AllProductsPage = () => {
       <div className="lg:col-span-3 w-full space-y-8">
         <div className="bg-white border rounded-xl px-6 py-6 w-full space-y-8 md:space-y-0 md:flex items-center justify-between">
           <p>
-            <span className="text-gray-400">Showing</span> 1-16 of 66 results
+            <span className="text-gray-400">Showing</span>{" "}
+            {products && products.length > 0 ? (
+              <>
+                {pageSize * (currentPage - 1) + 1}-
+                {Math.min(pageSize * currentPage, totalResults)} of{" "}
+                {totalResults} results
+              </>
+            ) : (
+              "0 results"
+            )}
           </p>
 
           <div className="flex items-center gap-2">
