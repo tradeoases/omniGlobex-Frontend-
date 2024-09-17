@@ -1,25 +1,26 @@
 import { Route, Routes } from "react-router-dom";
 
-import NotFoundPage from "./pages/not-found-page";
+import NotFoundPage from "./pages/staticpages/not-found-page";
 import HomePage from "./pages/home-page";
 import { AboutPage } from "./pages/about-us/about-page";
-import BecomeSellerPage from "./pages/become-seller-page";
-import LoginPage from "./pages/login-page";
-import SignupPage from "./pages/signup-page";
-import AllProductsPage from "./pages/all-products-page";
-import TrackOrderPage from "./pages/track-order-page";
-import ProfilePage from "./pages/profile-page";
-import SingleProduct from "./pages/single-product-page";
-import ShowRoomPage from "./pages/show-room-page";
-import PrivacyPolicyPage from "./pages/privacy-policy-page";
-import VerifyEmailPage from "./pages/verify-email-page";
-import WishListPage from "./pages/wish-list-page";
-import ShoppingCartPage from "./pages/shopping-cart-page";
-import CheckoutPage from "./pages/checkout-page";
-import BlogPage from "./pages/blog-page";
-import ContactPage from "./pages/contact-page";
-import FaqPage from "./pages/faq-page";
-import TermsConditionsPage from "./pages/terms-condition-page";
+import BecomeSellerPage from "./pages/Authentication/become-seller-page";
+import LoginPage from "./pages/Authentication/login-page";
+import SignupPage from "./pages/Authentication/signup-page";
+
+import TrackOrderPage from "./pages/cartandcheckout/track-order-page";
+import ProfilePage from "./pages/user/profile-page";
+import SingleProduct from "./pages/products/single-product-page";
+import PrivacyPolicyPage from "./pages/staticpages/privacy-policy-page";
+import VerifyEmailPage from "./pages/Authentication/verify-email-page";
+import WishListPage from "./pages/cartandcheckout/wish-list-page";
+import ShoppingCartPage from "./pages/cartandcheckout/shopping-cart-page";
+import CheckoutPage from "./pages/cartandcheckout/checkout-page";
+import BlogPage from "./pages/Blogs/blog-page";
+import ContactPage from "./pages/staticpages/contact-page";
+import FaqPage from "./pages/staticpages/faq-page";
+import TermsConditionsPage from "./pages/staticpages/terms-condition-page";
+import ShowRoomPage from "./pages/products/show-room-page";
+import AllProductsPage from "./pages/products/all-products-page";
 
 export default function RoutesConfig() {
   return (

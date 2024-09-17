@@ -1,30 +1,18 @@
-import { CiUser } from "react-icons/ci";
-import { HiArrowPath } from "react-icons/hi2";
-import { IoIosHeartEmpty } from "react-icons/io";
 import { SlHandbag } from "react-icons/sl";
 import { LuAlignLeft } from "react-icons/lu";
-import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from "recoil";
+import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
-import { Link, useNavigate } from "react-router-dom";
-import { IUser, userStore } from "@/store/user-store";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 import { SearchBar } from "./search-bar";
 import { Logo } from "./logo";
-import { HeaderCartNav } from "./header-cart-nav";
+import { SelectShowroom } from "./select-show-room";
+import CurrencySelector from "./CurrencySelector";
+import LanguageSelector from "./LanguageSelector";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
     useSetRecoilState<boolean>(SidemenuStore);
-  const userData = useRecoilValue<IUser | null>(userStore);
-  const navigate = useNavigate();
 
   const onOpen = () => {
     setSidemenu(true);
@@ -32,55 +20,20 @@ const TopBar = () => {
 
   return (
     <div className="w-full border-b py-4">
-      <div className="hidden w-10/12 xl:w-8/12 mx-auto lg:flex items-center justify-between">
+      <div className="hidden w-10/12 xl:w-8/12 mx-auto lg:flex  lg:items-center lg:justify-between">
         <Link to="/">
           <Logo />
         </Link>
 
         <SearchBar />
-        <div className="flex items-center gap-x-6 text-xl">
-          <p className="relative">
-            <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-              2
-            </span>
-            <HiArrowPath className="text-2xl" />
-          </p>
 
-          <Link to="/wishlist" className="relative">
-            <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-              9
-            </span>
-            <IoIosHeartEmpty className="text-2xl" />
+        <div className="flex items-center justify-end md:gap-4">
+          <Link to="/track-order" className="whitespace-nowrap">
+            Track Order
           </Link>
-
-          <HeaderCartNav />
-
-          {userData ? (
-            <Link to="/profile" className="relative">
-              <CiUser className="text-2xl" />
-            </Link>
-          ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="link" className="p-0 m-0">
-                  <CiUser className="text-2xl" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-40">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate(`/login`)}>
-                    Login
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate(`/signup`)}>
-                    Signup
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate(`/become-seller`)}>
-                    Become a Seller
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+          <SelectShowroom />
+          <CurrencySelector />
+          <LanguageSelector />
         </div>
       </div>
 
