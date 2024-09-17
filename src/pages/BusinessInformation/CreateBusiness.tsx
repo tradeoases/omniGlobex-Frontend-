@@ -45,7 +45,7 @@ const CreateBusiness = () => {
   );
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<boolean>(false);
+  const [successMessage] = useState<boolean>(false);
 
   const form = useForm<CreateBusinessForm>({
     resolver: zodResolver(createBusinessSchema),
