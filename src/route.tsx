@@ -3,9 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/staticpages/not-found-page";
 import HomePage from "./pages/home-page";
 import { AboutPage } from "./pages/about-us/about-page";
-import BecomeSellerPage from "./pages/Authentication/become-seller-page";
+// import BecomeSellerPage from "./pages/Authentication/become-seller-page";
 import LoginPage from "./pages/Authentication/login-page";
-import SignupPage from "./pages/Authentication/signup-page";
+// import SignupPage from "./pages/Authentication/signup-page";
 
 import TrackOrderPage from "./pages/cartandcheckout/track-order-page";
 import ProfilePage from "./pages/user/profile-page";
@@ -33,7 +33,7 @@ export default function RoutesConfig() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="/terms-condition" element={<TermsConditionsPage />} />
-      <Route path="/become-seller" element={<BecomeSellerPage />} />
+      {/* <Route path="/become-seller" element={<BecomeSellerPage />} /> */}
       <Route path="/login" element={<LoginPage />} />
       {/* <Route path="/signup" element={<SignupPage />} /> */}
       <Route path="signup" element={<IntegratedSignup />} />

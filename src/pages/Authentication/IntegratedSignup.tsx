@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
@@ -31,11 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  ISellerSignup,
-  IUserSignup,
-  signup,
-} from "@/service/apis/user-services";
+import { IUserSignup, signup } from "@/service/apis/user-services";
 
 const IntegratedSignup = () => {
   const [countries, setCountries] = useRecoilState<ICountry[] | null>(
