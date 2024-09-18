@@ -3,9 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/staticpages/not-found-page";
 import HomePage from "./pages/home-page";
 import { AboutPage } from "./pages/about-us/about-page";
-import BecomeSellerPage from "./pages/Authentication/become-seller-page";
+// import BecomeSellerPage from "./pages/Authentication/become-seller-page";
 import LoginPage from "./pages/Authentication/login-page";
-import SignupPage from "./pages/Authentication/signup-page";
+// import SignupPage from "./pages/Authentication/signup-page";
 
 import TrackOrderPage from "./pages/cartandcheckout/track-order-page";
 import ProfilePage from "./pages/user/profile-page";
@@ -21,6 +21,8 @@ import FaqPage from "./pages/staticpages/faq-page";
 import TermsConditionsPage from "./pages/staticpages/terms-condition-page";
 import ShowRoomPage from "./pages/products/show-room-page";
 import AllProductsPage from "./pages/products/all-products-page";
+import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
+import CreateBusiness from "./pages/BusinessInformation/CreateBusiness";
 
 export default function RoutesConfig() {
   return (
@@ -31,9 +33,11 @@ export default function RoutesConfig() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="/terms-condition" element={<TermsConditionsPage />} />
-      <Route path="/become-seller" element={<BecomeSellerPage />} />
+      {/* <Route path="/become-seller" element={<BecomeSellerPage />} /> */}
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
+      {/* <Route path="/signup" element={<SignupPage />} /> */}
+      <Route path="signup" element={<IntegratedSignup />} />
+      <Route path="/createBusiness" element={<CreateBusiness />} />
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/profile" element={<ProfilePage />} />
