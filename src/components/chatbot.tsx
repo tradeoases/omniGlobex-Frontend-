@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { fetchMessages } from '../service/chatService';
 import axios from 'axios';
 import '../styles/chatbot.css';
+import robotIcon from './robot-icon.svg'; 
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ sender: 'user' | 'bot'; text: string }[]>([]);
   const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<{ sender: 'user' | 'bot'; text: string }[]>([]);
 
-  const { mutate: sendMessage, status }: UseMutationResult<string, Error, string, unknown> = useMutation({
+  const { data: fetchedMessages, isLoading: isMessagesLoading, error: fetchError } = useQuery({
+    queryKey: ['messages'],
+    queryFn: fetchMessages,
+    enabled: isOpen,
+  });
+
+  const { mutate: sendMessage, status: messageStatus } = useMutation({
     mutationFn: async (message: string) => {
-      try {
-        const { data } = await axios.post('https://api.chatbot.com/query', { message }, {
-          headers: {
-            Authorization: 'Bearer Bsk5nUn5qhSww0l07obNUyYG_KaafSVF',
-            'Content-Type': 'application/json',
-          },
-        });
-        return data.response;
-      } catch (error) {
-        throw new Error('Error sending message');
-      }
+      const { data } = await axios.post('https://api.chatbot.com/query', { message }, {
+        headers: {
+          Authorization: 'Bearer Bsk5nUn5qhSww0l07obNUyYG_KaafSVF',
+          'Content-Type': 'application/json',
+        },
+      });
+      return data.response;
     },
     onSuccess: (botResponse) => {
       setMessages((prev) => [
@@ -38,6 +42,12 @@ const Chatbot: React.FC = () => {
     },
   });
 
+  useEffect(() => {
+    if (fetchedMessages) {
+      setMessages(fetchedMessages);
+    }
+  }, [fetchedMessages]);
+
   const toggleChat = () => setIsOpen(!isOpen);
 
   const handleSend = () => {
@@ -54,7 +64,7 @@ const Chatbot: React.FC = () => {
   return (
     <div className={`chatbot-container ${isOpen ? 'open' : ''}`}>
       <div className="chatbot-toggle" onClick={toggleChat}>
-        <img src="/chat-icon.svg" alt="Chat" className="chat-icon" />
+        <img src={robotIcon} alt="Chat" className="chat-icon" />
       </div>
 
       {isOpen && (
@@ -65,12 +75,16 @@ const Chatbot: React.FC = () => {
           </div>
 
           <div className="chat-body">
+            {isMessagesLoading && <div className="loading">Loading conversation...</div>}
+            {fetchError && <div className="error">Failed to load messages. Please try again.</div>}
+
             {messages.map((msg, idx) => (
               <div key={idx} className={`message ${msg.sender}`}>
                 {msg.text}
               </div>
             ))}
-            {status === 'pending' && <div className="loading">Loading...</div>}
+
+            {messageStatus === 'pending' && <div className="loading">Loading...</div>}
           </div>
 
           <div className="chat-input-container">
@@ -80,7 +94,9 @@ const Chatbot: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
             />
-            <button onClick={handleSend}>Send</button>
+            <button onClick={handleSend} disabled={messageStatus === 'pending'}>
+              {messageStatus === 'pending' ? 'Sending...' : 'Send'}
+            </button>
           </div>
         </div>
       )}

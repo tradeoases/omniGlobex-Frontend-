@@ -12,7 +12,7 @@ import RoutesConfig from './route.tsx';
 import { GlobalProvider } from './context/GlobalContext';
 import './i18n';
 import Chatbot from './components/chatbot';  
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';  // Ensure correct import
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';  
 
 // Create a QueryClient instance
 const queryClient = new QueryClient();

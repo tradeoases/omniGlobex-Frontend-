@@ -9,7 +9,7 @@ const CurrencySelector: React.FC = () => {
   const options = useMemo(() => {
     return Object.keys(currencies).map(currencyCode => (
       <option key={currencyCode} value={currencyCode}>
-        {currencyCode} – {currencies[currencyCode].toFixed(2)}
+        {currencyCode} 
       </option>
     ));
   }, [currencies]);
