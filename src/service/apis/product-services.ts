@@ -10,6 +10,7 @@ export interface IPage {
 export interface IProduct {
   product_id: string;
   name: string;
+  UnitPrice: string;
   description: string;
   category_id: string;
   image_url: string;
@@ -28,6 +29,14 @@ export interface IProductCategory {
   name: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface SellerInfo {
+  fullname: string;
+  location: string;
+  rating: number;
+  totalProducts: number;
+  categories: string[];
 }
 
 export const getAllProducts = async (params?: string) =>

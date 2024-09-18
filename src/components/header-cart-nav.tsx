@@ -68,13 +68,13 @@ export const HeaderCartNav = () => {
       <HoverCardTrigger asChild>
         <Button variant="link" className="relative p-0 m-0">
           {cartItems ? (
-            <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute top-0 -right-3">
+            <span className="bg-white w-5 h-5 rounded-full text-xs flex items-center justify-center absolute top-0 -right-3">
               {cartItems.length}
             </span>
           ) : (
             <></>
           )}
-          <SlHandbag className="text-lg" />
+          <SlHandbag className="text-lg text-white" />
         </Button>
       </HoverCardTrigger>
       <HoverCardContent className="w-72 rounded-none p-0">

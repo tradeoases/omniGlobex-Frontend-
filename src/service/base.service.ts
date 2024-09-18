@@ -33,6 +33,7 @@ request.interceptors.response.use(
 request.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const token: string | null = localStorage?.getItem("token");
+    // console.log({ token });
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },

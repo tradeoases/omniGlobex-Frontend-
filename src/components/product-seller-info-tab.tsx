@@ -16,7 +16,7 @@ export const ProductSellerInfoTab: React.FC<Props> = ({ products }) => {
             className="w-16 h-16 rounded-full bg-contain"
           />
 
-          <div className="space-y-3">
+          <div className="space-y-3 ml-4">
             <p className="text-md font-semibold">Ridoy Rock</p>
             <p className="text-sm font-light">London,United Kingdom</p>
             <div className="flex items-center gap-2">
@@ -32,7 +32,7 @@ export const ProductSellerInfoTab: React.FC<Props> = ({ products }) => {
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 ml-10">
           <p>
             Products: <span className="text-gray-400">120</span>
           </p>
@@ -47,7 +47,7 @@ export const ProductSellerInfoTab: React.FC<Props> = ({ products }) => {
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 pl-10">
           <p>
             Products: <span className="text-gray-400">120</span>
           </p>

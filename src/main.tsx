@@ -1,3 +1,4 @@
+
 // src/main.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -15,10 +16,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Create a QueryClient instance
 const queryClient = new QueryClient();
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
+
   <React.StrictMode>
     <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+
       <BrowserRouter>
         <GlobalProvider>
           <QueryClientProvider client={queryClient}>  {/* Wrap entire app */}
@@ -31,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           </QueryClientProvider>
         </GlobalProvider>
       </BrowserRouter>
+      </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>
 );

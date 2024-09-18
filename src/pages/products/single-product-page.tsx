@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IProduct, getOneProduct } from "@/service/apis/product-services";
 import { ProductStore, SingleProductStore } from "@/store/product-store";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductCard } from "@/components/product-card";
 import { ProductSellerInfoTab } from "@/components/product-seller-info-tab";
@@ -22,6 +22,7 @@ import { ProductReviewTab } from "@/components/product-review-tab";
 import { productDetailNavs } from "@/data/product-data";
 
 const SingleProduct = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);
   const products = useRecoilValue<IProduct[] | null>(ProductStore);
   const [product, setProduct] = useRecoilState<IProduct | null>(
@@ -174,6 +175,7 @@ const SingleProduct = () => {
             <Button
               className="bg-black w-full rounded-none h-12 space-x-8"
               size="lg"
+              onClick={() => navigate("/login")}
             >
               Add To Cart
             </Button>
@@ -191,16 +193,16 @@ const SingleProduct = () => {
             </p>
           </div>
 
-          <div className="text-red-600 flex items-center gap-x-4">
+          <div className="text-red-600 flex items-center gap-x-4 cursor-pointer">
             <HiMiniFlag />
             <span>Report This Item</span>
           </div>
 
           <div className="flex items-center gap-x-4">
             <span>Share this </span>
-            <FaFacebookF className="text-xl text-blue-800" />
-            <BiLogoInstagramAlt className="text-xl text-pink-600" />
-            <FaTwitter className="text-xl text-sky-600" />
+            <FaFacebookF className="text-xl text-blue-800 cursor-pointer" />
+            <BiLogoInstagramAlt className="text-xl text-pink-600 cursor-pointer" />
+            <FaTwitter className="text-xl text-sky-600 cursor-pointer" />
           </div>
         </div>
       </div>
