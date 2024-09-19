@@ -5,12 +5,12 @@ const InformationSection = () => {
         <strong>Introduction</strong>
       </p>
       <p className="text-sm leading-7 mb-2.5 text-gray-500">
-        OmniGlobex ("we," "us," or "our") is committed to protecting the privacy
-        and personal data of our users and customers. This Privacy Policy
-        outlines how we collect, use, and protect the personal information you
-        provide to us when accessing and using our website and services. We
-        comply with the General Data Protection Regulation (GDPR) and other
-        applicable data protection laws.
+        OmniGlobex is committed to protecting the privacy and personal data of
+        our users and customers. This Privacy Policy outlines how we collect,
+        use, and protect the personal information you provide to us when
+        accessing and using our website and services. We comply with the General
+        Data Protection Regulation (GDPR) and other applicable data protection
+        laws.
       </p>
 
       <p className="text-sm leading-7 mb-2.5 text-gray-500">
@@ -33,7 +33,7 @@ const InformationSection = () => {
           Usage data (such as IP address, browser type, operating system, etc.)
         </li>
         <li>
-          Cookies and tracking technologies data (for more details, refer to our
+          Cookies and tracking technologies data (for more details, refer to our{" "}
           <a href="/cookie-policy" className="text-qblack underline">
             Cookie Policy
           </a>
