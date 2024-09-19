@@ -58,7 +58,10 @@ const Footer = () => {
               >
                 <p className="pb-2">Privacy Policy</p>
               </Link>
-              <Link to="#" className="hover:text-main transition duration-300">
+              <Link
+                to="/cookie-policy"
+                className="hover:text-main transition duration-300"
+              >
                 <p>Cookie Policy</p>
               </Link>
             </div>
