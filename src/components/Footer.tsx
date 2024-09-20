@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="w-full bg-gray-50">
+    <div className="w-full bg-gray-700">
       {/* Discount Banner */}
       <DiscountBanner />
 
@@ -19,7 +19,7 @@ const Footer = () => {
         <div className="border-t border-b py-14 grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Company Section */}
           <div className="space-y-5">
-            <h3 className="text-lg font-semibold">Company</h3>
+            <h3 className="text-lg font-semibold text-gray-100">Company</h3>
             <div className="space-y-3 text-gray-500">
               <Link
                 to="about"
@@ -44,7 +44,7 @@ const Footer = () => {
 
           {/* Legal Section */}
           <div className="space-y-5">
-            <h3 className="text-lg font-semibold">Legal</h3>
+            <h3 className="text-lg font-semibold text-gray-100">Legal</h3>
             <div className="space-y-3 text-gray-500">
               <Link
                 to="terms-condition"
@@ -69,7 +69,7 @@ const Footer = () => {
 
           {/* Terms Section */}
           <div className="space-y-5">
-            <h3 className="text-lg font-semibold">Terms</h3>
+            <h3 className="text-lg font-semibold text-gray-100">Terms</h3>
             <div className="space-y-3 text-gray-500">
               <Link
                 to="track-order"
