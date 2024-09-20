@@ -31,9 +31,8 @@ const NavBar = () => {
     const profile = JSON.parse(unparsed);
 
     setUserData(profile);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log({userData});
 
   return (
     <div className="hidden lg:block lg:min-h-12 w-full  border-b py-2 bg-main">
@@ -95,7 +94,7 @@ const NavBar = () => {
               <DropdownMenuContent className="w-40">
                 <DropdownMenuGroup>
                   <DropdownMenuItem onClick={() => navigate(`/profile`)}>
-                   {userData.fullname}
+                   {userData.fullname }
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {

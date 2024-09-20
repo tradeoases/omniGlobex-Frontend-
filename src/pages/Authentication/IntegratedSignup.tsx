@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+// import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -63,11 +63,11 @@ const IntegratedSignup = () => {
 
   const {
     mutate: onSubmit,
-    isLoading: loading,
+
     error: mutationError,
     isError: isMutationError,
     isSuccess: mutationSuccess,
-    data
+    
   } = useMutation({
     mutationKey: ["countries"],
     mutationFn: async (values: z.infer<typeof signupSchema>) => {
@@ -103,16 +103,12 @@ const IntegratedSignup = () => {
         return () => clearTimeout(timeoutKey);
       }
     },
-    onSuccess: () => {
-
-    },
-    onError: (e:any) => {
-      console.log(e)
+    onSuccess: () => {},
+    onError: (e: any) => {
+      console.log(e);
       return new Error(e.response?.data?.message || e.message);
     },
   });
-
-  console.log(data)
 
   if (countryLoading) {
     return <div>Loading...</div>;
@@ -366,7 +362,8 @@ const IntegratedSignup = () => {
                 <div className="w-full">
                   {isMutationError && (
                     <p className="text-base text-center font-semibold text-red-600">
-                      {mutationError.response?.data?.message|| mutationError.message}
+                      {mutationError.response?.data?.message ||
+                        mutationError.message}
                     </p>
                   )}
                   {mutationSuccess && (
@@ -374,16 +371,13 @@ const IntegratedSignup = () => {
                       success
                     </p>
                   )}
-                  <Button
-                    disabled={loading}
-                    type="submit"
-                    className="w-full h-12"
-                  >
-                    {loading ? (
+                  <Button type="submit" className="w-full h-12">
+                    {/* {loading ? (
                       <AiOutlineLoading3Quarters className="animate-spin" />
-                    ) : (
-                      <span>Create Account</span>
-                    )}
+                    ) :  */}
+                    {/* ( */}
+                    <span>Create Account</span>
+                    {/* )} */}
                   </Button>
                   <p className="text-sm mt-4 font-semibold text-gray-500 text-center">
                     Already have an Account?
