@@ -37,7 +37,6 @@ const FaqPage = () => {
               Frequently asked questions
             </h1>
             <div>
-
               {isLoading && <div>Loading...</div>}
               {isError && (
                 <div>
@@ -59,8 +58,7 @@ const FaqPage = () => {
                     )
                   )}
                 </Accordion>
-              )}         
-
+              )}
             </div>
           </div>
           <div className="w-full md:w-1/2 ">
