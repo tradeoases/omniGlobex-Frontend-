@@ -12,14 +12,17 @@ export type BlogType = {
   title: string
   summary: string
   data: string
+  id: number
+  coverImageUrl: string
 }
 
 const BlogCard = ({blog}: {blog: BlogType}) => {
+  console.log(blog)
   return (
     <div>
       <div className="blog-card-wrapper w-full border border-[#D3D3D3] ">
         <div className="img w-full h-[240px] md:h-[340px] relative bg-gray-300">
-          <img />
+          <img className="h-full w-full" src={blog.coverImageUrl} alt={`${blog.title} image`}/>
         </div>
         <div className="p-[24px]">
           <div className="short-data flex space-x-9 items-center mb-3">
@@ -28,7 +31,7 @@ const BlogCard = ({blog}: {blog: BlogType}) => {
                 <img src={UserIcon} alt="user" />
               </span>
               <span className="text-xs md:text-base text-qgraytwo capitalize">
-                By {blog.creator}
+                By {blog.creator||'Admin'}
               </span>
             </div>
             <div className="flex space-x-1.5 items-center">
@@ -36,7 +39,7 @@ const BlogCard = ({blog}: {blog: BlogType}) => {
                 <img src={commentIcon} alt="comment" />
               </span>
               <span className="text-xs md:text-base text-qgraytwo">
-                {blog.comments.length} Comments
+                {blog?.comments?.length || 0} Comments
               </span>
             </div>
           </div>

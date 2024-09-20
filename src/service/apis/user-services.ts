@@ -69,9 +69,6 @@ export interface IVerifyEmail {
   token: string;
 }
 
-
-export const getAllRoles = async () => await request.get(`role`);
-
 export const userLogin = async (data: IUserSignin) =>
   await request.post(`${PATH}signin`, data);
 

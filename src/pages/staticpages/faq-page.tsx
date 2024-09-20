@@ -6,8 +6,27 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import request from "@/service/base.service";
+import { useQuery } from "@tanstack/react-query";
 
 const FaqPage = () => {
+  const {
+    data: faq,
+    isLoading,
+    isError,
+    error,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["faqs"],
+    queryFn: async () => {
+      const faqRes = await request.get("content/faqs");
+      if (faqRes.status === 200) {
+        return faqRes.data.data;
+      }
+    },
+  });
+  console.log({ error });
+
   return (
     <div className="w-full">
       <PageHeader name="Frequently asked questions" route="/ FAQ" />
@@ -18,20 +37,28 @@ const FaqPage = () => {
               Frequently asked questions
             </h1>
             <div>
-              <Accordion type="single" collapsible className="w-full">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <AccordionItem key={i} value={`item-${i + 1}`}>
-                    <AccordionTrigger>
-                      <h1 className="text-lg">
-                        {`0${i + 1}`}. How does information technology work ?
-                      </h1>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+              {isLoading && <div>Loading...</div>}
+              {isError && (
+                <div>
+                  <p>An error occured</p>
+                  <p>{error.message}</p>
+                </div>
+              )}
+
+              {isSuccess && (
+                <Accordion type="single" collapsible className="w-full">
+                  {faq.map(
+                    (fa: { question: string; id: number; answer: string }) => (
+                      <AccordionItem key={fa.id} value={`item-${fa.id}`}>
+                        <AccordionTrigger>
+                          <h1 className="text-lg">{fa.question}</h1>
+                        </AccordionTrigger>
+                        <AccordionContent>{fa.answer}</AccordionContent>
+                      </AccordionItem>
+                    )
+                  )}
+                </Accordion>
+              )}
             </div>
           </div>
           <div className="w-full md:w-1/2 ">

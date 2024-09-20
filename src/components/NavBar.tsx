@@ -31,7 +31,7 @@ const NavBar = () => {
     const profile = JSON.parse(unparsed);
 
     setUserData(profile);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -91,15 +91,14 @@ const NavBar = () => {
                   <CiUser className="text-2xl" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-40">
+              <DropdownMenuContent className="w-fit">
                 <DropdownMenuGroup>
                   <DropdownMenuItem onClick={() => navigate(`/profile`)}>
-                   {userData.fullname }
+                    {userData.fullname}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);
-
                       localStorage.removeItem("token");
                       localStorage.removeItem("profile");
                     }}
