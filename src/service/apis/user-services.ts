@@ -3,7 +3,7 @@ import request from "../base.service";
 const PATH = "user/";
 
 export interface IUserSignup {
-  country_id: string;
+  countryId: string;
   password: string;
   email: string;
   fullname: string;
@@ -56,12 +56,12 @@ export interface ProfileAttributes {
 // }
 
 export interface IUserSignup {
-  country_id: string;
+  countryId: string;
   password: string;
   email: string;
   fullname: string;
   address: string;
-  phonenumber: string;
+  phoneNumber: string;
   city: string;
 }
 
@@ -69,8 +69,6 @@ export interface IVerifyEmail {
   token: string;
 }
 
-export const createSeller = async (data: ISellerSignup) =>
-  await request.post(`${PATH}seller`, data);
 
 export const getAllRoles = async () => await request.get(`role`);
 

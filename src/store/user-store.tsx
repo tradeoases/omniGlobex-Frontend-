@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { RecoilState, atom } from "recoil";
 
 export interface IRole {
@@ -15,7 +16,7 @@ export interface IUser {
   active: number;
   fullname: string;
   phonenumber: string;
-  zipCode: String;
+  zipCode: string;
   status: number;
   is_verified: number;
   createdAt: string;

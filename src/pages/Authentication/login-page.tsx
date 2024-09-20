@@ -33,6 +33,7 @@ const LoginPage = () => {
     useSetRecoilState(EmailStore);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     let timeoutKey: NodeJS.Timeout | undefined;
 
@@ -71,8 +72,11 @@ const LoginPage = () => {
       if (response.status === HttpStatusCode.Ok) {
         form.reset();
         const token: string = response.data.data.token;
-        setUserData(response.data.data.data);
+        const userData: any = response.data.data.data;
+
+        setUserData(userData);
         localStorage.setItem("token", token);
+        localStorage.setItem("profile", JSON.stringify(userData));
         setLoading(false);
         navigate(`/profile`);
         setSuccessMessage(true);
@@ -84,11 +88,12 @@ const LoginPage = () => {
         return () => clearTimeout(timeoutKey);
       }
     } catch (error) {
-      setLoading(false);
       if (isAxiosError(error)) {
         setEmailData(values.email);
         setErrorMessage(error.response?.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
