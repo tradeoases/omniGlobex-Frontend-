@@ -45,7 +45,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="w-10/12 xl:w-8/12 mx-auto py-8 space-y-10">
+    <main className=" mx-auto py-8 space-y-10">
       <HeaderSection onScroll={() => scrollToSection()} />
       <OurServiceSection sectionRef={sectionRef} />
       <GameWorldSection products={products} name="Country showrooms" route="" />

@@ -1,12 +1,13 @@
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-
+import { SlHandbag } from "react-icons/sl";
 import { navs } from "@/data/data";
 import { NavBarPagesItem } from "./navbar-page-item";
 import { Button } from "./ui/button";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { HeaderCartNav } from "./header-cart-nav";
+import { Tooltip } from "react-tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +18,12 @@ import {
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { IUser, userStore } from "@/store/user-store";
+
+const Badge = ({ count }: { count: number }) => (
+  <span className="bg-white w-5 h-5 rounded-full text-xs hover:bg-yellow-700 flex items-center justify-center absolute -top-2 -right-3">
+    {count}
+  </span>
+);
 
 const NavBar = () => {
   const location = useLocation();
@@ -61,13 +68,29 @@ const NavBar = () => {
             )}
           </div>
         </div>
-        <div className="flex items-center gap-x-6 text-xl">
+        <div className="flex items-center gap-x-8 text-xl">
+          {userData && (
+            <Link to="/cart" aria-label="View Cart" className="relative">
+              <Badge count={3} />
+              <SlHandbag
+                className="text-lg text-white"
+                data-tooltip-id="cartTooltip"
+                data-tooltip-content="View Cart"
+              />
+              <Tooltip id="cartTooltip" place="top" />
+            </Link>
+          )}
           {userData && (
             <Link to="/wishlist" className="relative">
-              <span className="bg-white w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-                9
+              <span className=" w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
+                <Badge count={3} />
+                <IoIosHeartEmpty
+                  className="text-2xl text-white"
+                  data-tooltip-id="wishlistTooltip"
+                  data-tooltip-content="Wishlist"
+                />
               </span>
-              <IoIosHeartEmpty className="text-2xl text-white" />
+              <Tooltip id="wishlistTooltip" />
             </Link>
           )}
 
