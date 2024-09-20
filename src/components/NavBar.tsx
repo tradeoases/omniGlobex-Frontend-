@@ -114,7 +114,7 @@ const NavBar = () => {
                   <CiUser className="text-2xl" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-40">
+              <DropdownMenuContent className="w-fit">
                 <DropdownMenuGroup>
                   <DropdownMenuItem onClick={() => navigate(`/profile`)}>
                     {userData.fullname}
@@ -122,7 +122,6 @@ const NavBar = () => {
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);
-
                       localStorage.removeItem("token");
                       localStorage.removeItem("profile");
                     }}
