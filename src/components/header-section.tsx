@@ -9,60 +9,73 @@ interface Props {
 
 export const HeaderSection: React.FC<Props> = ({ onScroll }) => {
   const navigate = useNavigate();
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-      <div className="col-span-3 flex w-full flex-col text-white items-start justify-between bg-header-bg-2 bg-cover p-12 rounded-[50px]">
-        <div className="space-y-10 mb-10 lg:space-y-20">
-          <p className="text-2xl lg:text-5xl font-medium">
-            The simple <br /> product
-          </p>
-          <p className="lg:text-lg  font-light hover:text-white text-gray-400">
-            <Link to="/" className="flex  items-center gap-2">
-              open product <HiChevronRight />
+    <div className="relative bg-main py-10 px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-5 gap-6">
+      {/* Hero Section */}
+      <div className="col-span-3 flex flex-col bg-cover bg-center text-white p-12 rounded-xl shadow-lg transition-transform hover:scale-105 relative bg-header-bg-2">
+        <div className="space-y-6 mb-8 lg:mb-14">
+          <h1 className="text-3xl lg:text-6xl font-bold leading-tight">
+            Discover the Future <br /> with Our Products
+          </h1>
+          <p className="lg:text-lg font-light text-gray-200">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-white hover:underline"
+            >
+              Shop Now <HiChevronRight />
             </Link>
           </p>
         </div>
 
-        <div className="w-full flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
           <Link
             to="/all-products"
-            className="py-2 lg:py-4 border px-4 rounded-full"
+            className="py-3 px-6 bg-yellow-500 hover:bg-yellow-600 text-black rounded-full font-semibold shadow-lg transition-colors"
           >
-            All Products
+            Browse Products
           </Link>
-          <p
+          <button
             onClick={onScroll}
-            className="w-10 cursor-pointer lg:w-16 h-10 lg:h-16 border-white rounded-full border-2 flex items-center justify-center "
+            className="w-12 h-12 lg:w-16 lg:h-16 bg-main hover:bg-yellow-600 text-black rounded-full border-1 flex items-center justify-center transition-all"
           >
-            <HiArrowSmallDown className="text-2xl lg:text-5xl" />
-          </p>
+            <HiArrowSmallDown className="text-2xl lg:text-4xl" />
+          </button>
+        </div>
+
+        {/* Promo badge */}
+        <div className="absolute top-4 right-4 bg-red-500 px-3 py-1 rounded-full text-xs lg:text-sm">
+          <span>Up to 50% off!</span>
         </div>
       </div>
 
-      <div className="col-span-2 grid grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-0 lg:space-y-5">
+      {/* Sidebar Links */}
+      <div className="col-span-2 grid grid-cols-2 lg:grid-cols-1 gap-6">
+        {/* First Card */}
         <div
           onClick={() => navigate("/blogs")}
-          className="bg-header-bg cursor-pointer bg-cover flex items-start justify-between flex-col rounded-[50px] p-6 lg:p-12 h-[20vh] lg:h-[35vh]"
+          className="bg-gray-900 cursor-pointer p-6 lg:p-8 rounded-xl shadow-xl transition-transform hover:scale-105 relative z-10"
+          style={{ backgroundColor: "#1F1F1F" }}
         >
-          <p className="text-md lg:text-5xl font-medium">
-            See All
-            <br /> Blogs
-          </p>
-
-          <MdOutlineArrowOutward className="text-2xl lg:text-5xl" />
+          <h2 className="text-lg lg:text-4xl font-bold text-white">
+            Explore Our <br /> Blogs
+          </h2>
+          <MdOutlineArrowOutward className="text-xl lg:text-3xl text-white" />
         </div>
 
+        {/* Second Card */}
         <div
           onClick={() => navigate("/contact")}
-          className="bg-main cursor-pointer flex justify-between items-start flex-col relative rounded-[50px] lg:h-[35vh] p-6 h-[20vh] lg:p-12"
+          className="bg-gray-900 cursor-pointer p-6 lg:p-8 rounded-xl shadow-xl transition-transform hover:scale-105 relative z-10"
+          style={{ backgroundColor: "#1F1F1F" }}
         >
-          <div className="flex w-full items-center justify-between">
-            <span className="text-xs lg:text-md font-light">
-              Have some <br /> questions
-            </span>
-            <LiaTelegram className="text-2xl lg:text-5xl" />
+          <div className="flex justify-between items-center text-white">
+            <span className="text-sm lg:text-lg">Need Help?</span>
+            <LiaTelegram className="text-xl lg:text-3xl" />
           </div>
-          <div className="lg:text-5xl font-medium">Contact Us</div>
+          <p className="text-xl lg:text-4xl font-semibold text-white">
+            Contact Us
+          </p>
         </div>
       </div>
     </div>
