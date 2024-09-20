@@ -22,7 +22,6 @@ const AppLayout: React.FC<Props> = ({ children }) => {
       <section className="relative flex w-full flex-col items-start justify-start">
         <Sidemenu />
         <DashboardSideMenu />
-        {/* <TopBanner /> */}
         <NavBar />
         <TopBar />
         {children}

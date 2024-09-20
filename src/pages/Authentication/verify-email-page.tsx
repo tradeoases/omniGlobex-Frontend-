@@ -44,7 +44,7 @@ const VerifyEmailPage = () => {
 
       return () => clearTimeout(timeoutKey);
     }
-  }, [verified]);
+  }, [verified, ok]);
 
   useEffect(() => {
     if (userData) {

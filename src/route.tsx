@@ -31,6 +31,7 @@ export default function RoutesConfig() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="terms-condition" element={<TermsPage />} />
+      <Route path="/signin" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="forgot-password" element={<ForgotPasswordPage />} />
       <Route path="signup" element={<IntegratedSignup />} />

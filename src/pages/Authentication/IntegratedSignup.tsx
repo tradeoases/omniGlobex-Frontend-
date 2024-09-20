@@ -2,12 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
+import { AxiosResponse, HttpStatusCode } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+// import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -20,8 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { ICountry, getAllCountries } from "@/service/apis/countries-services";
-import { AllCountriesStore } from "@/store/country-store";
+import { getAllCountries, ICountry } from "@/service/apis/countries-services";
 import { signupSchema } from "@/data/schemas/users-schema";
 import {
   Form,
@@ -32,14 +29,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { IUserSignup, signup } from "@/service/apis/user-services";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const IntegratedSignup = () => {
-  const [countries, setCountries] = useRecoilState<ICountry[] | null>(
-    AllCountriesStore
-  );
-  const [loading, setLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<boolean>(false);
+  const {
+    data: countries,
+    isError: isCountryError,
+    error: countryError,
+    isLoading: countryLoading,
+  } = useQuery({
+    queryKey: ["countries"],
+    queryFn: async () => {
+      const response: AxiosResponse<any, any> = await getAllCountries();
+      if (response.status === HttpStatusCode.Ok) {
+        return response.data.data;
+      }
+    },
+  });
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -55,11 +61,17 @@ const IntegratedSignup = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof signupSchema>) => {
-    let timeoutKey: NodeJS.Timeout | undefined;
-    try {
-      setLoading(true);
+  const {
+    mutate: onSubmit,
 
+    error: mutationError,
+    isError: isMutationError,
+    isSuccess: mutationSuccess,
+    
+  } = useMutation({
+    mutationKey: ["countries"],
+    mutationFn: async (values: z.infer<typeof signupSchema>) => {
+      let timeoutKey: NodeJS.Timeout | undefined;
       const {
         address,
         email,
@@ -71,65 +83,45 @@ const IntegratedSignup = () => {
       } = values;
       const data: IUserSignup = {
         address,
-        fullname,
+        fullname: fullname,
         email,
         password,
-        phonenumber,
+        phoneNumber: phonenumber,
         city,
-        country_id,
+        countryId: country_id,
       };
-      console.log({ data });
 
       const response: AxiosResponse<any, any> = await signup(data);
-      console.log("full response", response);
 
       if (response.status === HttpStatusCode.Created) {
-        console.log({ response });
         form.reset();
-        setLoading(false);
-        setSuccessMessage(true);
 
         timeoutKey = setTimeout(() => {
-          setSuccessMessage(false);
           form.reset();
         }, 2000);
 
         return () => clearTimeout(timeoutKey);
       }
-    } catch (error) {
-      setLoading(false);
-      if (isAxiosError(error)) {
-        setErrorMessage(error.response?.data.message);
-      }
-    }
-  };
+    },
+    onSuccess: () => {},
+    onError: (e: any) => {
+      console.log(e);
+      return new Error(e.response?.data?.message || e.message);
+    },
+  });
 
-  useEffect(() => {
-    !countries && fetchAllCountries();
-  }, []);
+  if (countryLoading) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    let timeoutKey: NodeJS.Timeout | undefined;
-
-    if (errorMessage) {
-      timeoutKey = setTimeout(() => {
-        setErrorMessage(null);
-      }, 2000);
-    }
-
-    return () => clearTimeout(timeoutKey);
-  }, [errorMessage]);
-
-  const fetchAllCountries = async () => {
-    try {
-      const response: AxiosResponse<any, any> = await getAllCountries();
-      if (response.status === HttpStatusCode.Ok) {
-        setCountries(response.data.data);
-      }
-    } catch (error) {
-      setLoading(false);
-    }
-  };
+  if (isCountryError) {
+    return (
+      <div>
+        <h1>{countryError.name}</h1>
+        <p>{countryError.message}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full space-y-8 mb-10">
@@ -160,7 +152,7 @@ const IntegratedSignup = () => {
 
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit((e) => onSubmit(e))}
               className="space-y-8 mt-10"
             >
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
@@ -242,7 +234,7 @@ const IntegratedSignup = () => {
                         <FormLabel>Password *</FormLabel>
                         <FormControl>
                           <Input
-                            type="text"
+                            type="password"
                             className="focus:outline-none"
                             id="password"
                             placeholder="Enter password"
@@ -264,7 +256,7 @@ const IntegratedSignup = () => {
                         <FormLabel>Confirm password *</FormLabel>
                         <FormControl>
                           <Input
-                            type="text"
+                            type="password"
                             className="focus:outline-none"
                             id="confirmPassword"
                             placeholder="Confirm password"
@@ -295,7 +287,7 @@ const IntegratedSignup = () => {
                         <SelectContent>
                           <SelectGroup>
                             {countries &&
-                              countries.map((country) => (
+                              countries.map((country: ICountry) => (
                                 <SelectItem
                                   key={country.country_id}
                                   value={country.country_id}
@@ -368,26 +360,24 @@ const IntegratedSignup = () => {
 
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
                 <div className="w-full">
-                  {errorMessage && (
+                  {isMutationError && (
                     <p className="text-base text-center font-semibold text-red-600">
-                      {errorMessage}
+                      {mutationError.response?.data?.message ||
+                        mutationError.message}
                     </p>
                   )}
-                  {successMessage && (
+                  {mutationSuccess && (
                     <p className="text-base text-center font-semibold text-green-600">
                       success
                     </p>
                   )}
-                  <Button
-                    disabled={loading}
-                    type="submit"
-                    className="w-full h-12"
-                  >
-                    {loading ? (
+                  <Button type="submit" className="w-full h-12">
+                    {/* {loading ? (
                       <AiOutlineLoading3Quarters className="animate-spin" />
-                    ) : (
-                      <span>Create Account</span>
-                    )}
+                    ) :  */}
+                    {/* ( */}
+                    <span>Create Account</span>
+                    {/* )} */}
                   </Button>
                   <p className="text-sm mt-4 font-semibold text-gray-500 text-center">
                     Already have an Account?
