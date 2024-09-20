@@ -1,5 +1,4 @@
 import { IoMailOutline } from "react-icons/io5";
-import { Button } from "./ui/button";
 
 const DiscountBanner = () => {
   return (
