@@ -1,4 +1,5 @@
 import { IoMailOutline } from "react-icons/io5";
+import { Button } from "./ui/button";
 
 const DiscountBanner = () => {
   return (
@@ -21,9 +22,12 @@ const DiscountBanner = () => {
           />
         </div>
 
-        <div className="bg-main whitespace-nowrap  text-xs md:text-sm font-bold p-3 md:p-4">
+        <button
+          type="submit"
+          className="bg-main whitespace-nowrap cursor-pointer  text-xs md:text-sm font-bold p-3 md:p-4"
+        >
           Get the Coupon
-        </div>
+        </button>
       </div>
     </div>
   );
