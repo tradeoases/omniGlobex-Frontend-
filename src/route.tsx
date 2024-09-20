@@ -8,6 +8,7 @@ import ProfilePage from "./pages/user/profile-page";
 import SingleProduct from "./pages/products/single-product-page";
 import { PrivacyPolicyPage } from "./pages/privacy-policy/privacy-policy-page";
 import VerifyEmailPage from "./pages/Authentication/verify-email-page";
+import ForgotPasswordPage from "./pages/Authentication/forgot-password";
 import WishListPage from "./pages/cartandcheckout/wish-list-page";
 import ShoppingCartPage from "./pages/cartandcheckout/shopping-cart-page";
 import CheckoutPage from "./pages/cartandcheckout/checkout-page";
@@ -31,6 +32,7 @@ export default function RoutesConfig() {
       <Route path="/faq" element={<FaqPage />} />
       <Route path="terms-condition" element={<TermsPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="forgot-password" element={<ForgotPasswordPage />} />
       <Route path="signup" element={<IntegratedSignup />} />
       <Route path="/createBusiness" element={<CreateBusiness />} />
       <Route path="/all-products" element={<AllProductsPage />} />

@@ -179,7 +179,10 @@ const LoginPage = () => {
                   Remember me
                 </label>
               </div>
-              <Link to="#" className="text-main font-bold text-sm">
+              <Link
+                to="/forgot-password"
+                className="text-main font-bold text-sm"
+              >
                 Forgot Password
               </Link>
             </div>
