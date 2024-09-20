@@ -61,10 +61,6 @@ const TopBar = () => {
           <SelectShowroom />
           <CurrencySelector />
           <LanguageSelector />
-          <Link to="/cart" aria-label="View Cart" className="relative">
-            <Badge count={3} />
-            <SlHandbag className="text-lg" />
-          </Link>
         </div>
       </div>
     </header>

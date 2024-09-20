@@ -23,12 +23,10 @@ const FaqPage = () => {
                   <AccordionItem key={i} value={`item-${i + 1}`}>
                     <AccordionTrigger>
                       <h1 className="text-lg">
-                        {`0${i + 1}`}. How does information technology work ?
+                        How does information technology work ?
                       </h1>
                     </AccordionTrigger>
-                    <AccordionContent>
-                      
-                    </AccordionContent>
+                    <AccordionContent></AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
