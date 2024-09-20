@@ -5,6 +5,7 @@ import { SidemenuStore } from "@/store/sidemenuStore";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./search-bar";
 import { Logo } from "./logo";
+import img from "../assets/omniGlobexlogo.png";
 import { SelectShowroom } from "./select-show-room";
 import CurrencySelector from "./CurrencySelector";
 import LanguageSelector from "./LanguageSelector";
@@ -48,13 +49,18 @@ const TopBar = () => {
       <div className="hidden lg:flex lg:items-center lg:justify-between w-10/12 xl:w-8/12 mx-auto">
         <div className="flex items-center gap-x-4">
           {" "}
+          <img
+            src={img}
+            alt="Omniglobex logo"
+            className="h-12 w-auto cursor-pointer"
+          />
           <Link to="/" aria-label="Go to Home">
             <Logo />
           </Link>
           <SearchBar />
         </div>
 
-        <div className="flex items-center ml-4 justify-end gap-4">
+        <div className="flex items-center ml-16 justify-end gap-4">
           <Link to="/track-order" className="whitespace-nowrap hover:underline">
             Track Order
           </Link>

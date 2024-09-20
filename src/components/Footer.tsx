@@ -8,7 +8,15 @@ const Footer = () => {
     <div className="w-full bg-gray-700">
       {/* Discount Banner */}
       <DiscountBanner />
-
+      {/* "Back to top" Button */}
+      <div className="flex justify-center items-center">
+        <span
+          className="bg-gray-600 w-full text-center cursor-pointer text-white px-4 py-4 hover:bg-gray-500 shadow-md"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          Back to top
+        </span>
+      </div>
       {/* Logo Section */}
       <div className="flex items-center justify-center h-32 lg:h-40">
         <Logo />
