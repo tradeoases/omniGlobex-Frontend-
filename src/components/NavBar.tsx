@@ -5,7 +5,7 @@ import { SlHandbag } from "react-icons/sl";
 import { navs } from "@/data/data";
 import { NavBarPagesItem } from "./navbar-page-item";
 import { Button } from "./ui/button";
-import { IoIosHeartEmpty } from "react-icons/io";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import { HeaderCartNav } from "./header-cart-nav";
 import { Tooltip } from "react-tooltip";
 import {
@@ -20,7 +20,7 @@ import { useRecoilState } from "recoil";
 import { IUser, userStore } from "@/store/user-store";
 
 const Badge = ({ count }: { count: number }) => (
-  <span className="bg-white w-5 h-5 rounded-full text-xs hover:bg-yellow-700 flex items-center justify-center absolute -top-2 -right-3">
+  <span className="bg-white w-4 h-4 rounded-full text-xs hover:bg-yellow-700 flex items-center justify-center absolute -top-3 -right-2">
     {count}
   </span>
 );
@@ -71,9 +71,9 @@ const NavBar = () => {
         <div className="flex items-center gap-x-8 text-xl">
           {userData && (
             <Link to="/cart" aria-label="View Cart" className="relative">
-              <Badge count={3} />
+              <Badge count={0} />
               <SlHandbag
-                className="text-lg text-white"
+                className="text-sm text-white"
                 data-tooltip-id="cartTooltip"
                 data-tooltip-content="View Cart"
               />
@@ -83,14 +83,14 @@ const NavBar = () => {
           {userData && (
             <Link to="/wishlist" className="relative">
               <span className=" w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-                <Badge count={3} />
-                <IoIosHeartEmpty
-                  className="text-2xl text-white"
-                  data-tooltip-id="wishlistTooltip"
-                  data-tooltip-content="Wishlist"
+                <Badge count={0} />
+                <IoIosNotificationsOutline
+                  className=" text-3xl text-white"
+                  data-tooltip-id="notificationTooltip"
+                  data-tooltip-content="Notifications"
                 />
               </span>
-              <Tooltip id="wishlistTooltip" />
+              <Tooltip id="notificationTooltip" />
             </Link>
           )}
 
