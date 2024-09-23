@@ -74,7 +74,7 @@ export const HeaderCartNav = () => {
           ) : (
             <></>
           )}
-          <SlHandbag className="text-lg text-white" />
+          <SlHandbag className="text-sm text-white" />
         </Button>
       </HoverCardTrigger>
       <HoverCardContent className="w-72 rounded-none p-0">

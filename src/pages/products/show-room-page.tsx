@@ -12,7 +12,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-
 import { PageHeader } from "@/components/PageHeader";
 import { useRecoilState } from "recoil";
 import { getAllProducts, IProduct } from "@/service/apis/product-services";
@@ -54,7 +53,7 @@ const ShowRoomPage = () => {
   return (
     <div className="w-full">
       <PageHeader
-        name={`show room: ${country || ``}`}
+        name={`Show Room: ${country || ``}`}
         route={`/ ${country || ``}`}
       />
       <div className="w-10/12 mt-8 xl:w-8/12 mx-auto">
