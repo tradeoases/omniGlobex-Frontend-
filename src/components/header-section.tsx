@@ -54,7 +54,7 @@ export const HeaderSection: React.FC<Props> = ({ onScroll }) => {
         {/* First Card */}
         <div
           onClick={() => navigate("/blogs")}
-          className="bg-gray-900 cursor-pointer p-6 lg:p-8 rounded-xl shadow-xl transition-transform hover:scale-105 relative z-10"
+          className="bg-gray-900 cursor-pointer p-6 lg:p-8 rounded-xl shadow-xl transition-transform hover:scale-105 relative"
           style={{ backgroundColor: "#1F1F1F" }}
         >
           <h2 className="text-lg lg:text-4xl font-bold text-white">

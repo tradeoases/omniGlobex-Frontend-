@@ -52,6 +52,9 @@ const TopBar = () => {
           <img
             src={img}
             alt="Omniglobex logo"
+            onError={(e) => {
+              e.currentTarget.src = "path-to-fallback-logo.png";
+            }}
             className="h-12 w-auto cursor-pointer"
           />
           <Link to="/" aria-label="Go to Home">
