@@ -19,9 +19,9 @@ import { BuyerOrder } from "@/components/buyer-order";
 import { PersonalSection } from "@/components/profile-personal-section";
 import { getUserInfo } from "@/service/apis/user-services";
 import { getAllUserOrders } from "@/service/apis/order-service";
-import { PaymentMethod } from "@/components/payment-method";
+// import { PaymentMethod } from "@/components/payment-method";
 // import { UserAddress } from "@/components/user-address";
-import WishList from "@/components/wish-list";
+// import WishList from "@/components/wish-list";
 import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 import ChangePassword from "@/components/change-password";
 import BusinessPage from "./components/BusinessPage";
@@ -134,11 +134,11 @@ const ProfilePage = () => {
           )}
           {activeMenu === "Products" && <ProductManagement />}
           {activeMenu === "Personal" && <PersonalSection userData={userData} />}
-          {activeMenu === "Payment Method" && <PaymentMethod />}
+          {/* {activeMenu === "Payment Method" && <PaymentMethod />} */}
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
-          {activeMenu === "Cart" && <WishList />}
+          {/* {activeMenu === "Cart" && <WishList />} */}
           {activeMenu === "Business" && <BusinessPage />}
         </div>
       </div>
