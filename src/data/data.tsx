@@ -11,7 +11,7 @@ import {
   MdOutlineSportsBaseball,
 } from "react-icons/md";
 import { PiBowlFood } from "react-icons/pi";
-import { TbBabyBottle, TbTruckReturn } from "react-icons/tb";
+import { TbBabyBottle, TbTruckReturn, TbSubscript } from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import {  FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
@@ -58,7 +58,7 @@ export type TActiveMenu =
   | "Payment Method"
   | "Order"
   | "Cart"
-  | "Address"
+  | "Subscription"
   | "Reviews"
   | "Business"
   | "Change Password"
@@ -79,6 +79,7 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <FaHeart />, title: "Cart" },
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
+  { icon: <TbSubscript />, title: 'Subscription'},
   { icon: <MdReviews />, title: "Business" },
   { icon: <HiLockClosed />, title: "Change Password" },
   { icon: <IoLogOut />, title: "Logout" },

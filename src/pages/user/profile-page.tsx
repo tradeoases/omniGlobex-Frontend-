@@ -24,7 +24,8 @@ import { getAllUserOrders } from "@/service/apis/order-service";
 // import WishList from "@/components/wish-list";
 import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 import ChangePassword from "@/components/change-password";
-import BusinessPage from "./components/BusinessPage";
+import BusinessPage from "./pages/BusinessPage";
+import Subscriptions from "./pages/Subscriptions";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -138,6 +139,7 @@ const ProfilePage = () => {
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
+          {activeMenu === "Subscription" && <Subscriptions />}
           {/* {activeMenu === "Cart" && <WishList />} */}
           {activeMenu === "Business" && <BusinessPage />}
         </div>
