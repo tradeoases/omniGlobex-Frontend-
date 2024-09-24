@@ -35,7 +35,7 @@ export default function RoutesConfig() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="forgot-password" element={<ForgotPasswordPage />} />
       <Route path="signup" element={<IntegratedSignup />} />
-      <Route path="/createBusiness" element={<CreateBusiness />} />
+      <Route path="/create-business" element={<CreateBusiness />} />
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/profile" element={<ProfilePage />} />

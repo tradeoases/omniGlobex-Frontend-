@@ -51,4 +51,4 @@ export const getAllProductCategories = async () =>
   await request.get(`category`);
 
 export const createProduct = async (data: ICreateProduct) =>
-  await request.post(`${PATH}create`, data);
+  await request.post(`product/`, data);

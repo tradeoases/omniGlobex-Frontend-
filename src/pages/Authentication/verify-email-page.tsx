@@ -17,6 +17,7 @@ import {
 import { EmailStore, IUser, userStore } from "@/store/user-store";
 import { MessageText } from "@/data/data";
 import { LOGIN_TO_RESEND_EMAIL } from "@/utils/constants/constants";
+import { Input } from "@/components/ui/input";
 
 const VerifyEmailPage = () => {
   const [resendBtn, setResendBtn] = useState<boolean>(true);
@@ -30,8 +31,11 @@ const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();
   const previousRoute = usePreviousRoute();
   const navigate = useNavigate();
-  const email = useRecoilValue<string | null>(EmailStore);
-
+  const [token, setToken] = useState<null | string>();
+  const email = useRecoilValue<{ email: string | null; id: string | null }>(
+    EmailStore
+  );
+  const [code, setCode] = useState<string>("");
   useEffect(() => {
     if (verified) {
       let timeoutKey: NodeJS.Timeout | undefined;
@@ -54,11 +58,11 @@ const VerifyEmailPage = () => {
     const token = searchParams.get(`token`);
 
     if (!token) {
-      setErrorMessage(LOGIN_TO_RESEND_EMAIL);
       return;
     }
 
-    handleConfirmEmail(token);
+    setToken(token);
+    handleConfirmEmail();
   }, []);
 
   useEffect(() => {
@@ -81,23 +85,21 @@ const VerifyEmailPage = () => {
     return () => clearTimeout(timeoutKey);
   }, []);
 
-  const handleConfirmEmail = async (token: string | null) => {
-    if (!token) {
-      setErrorMessage(LOGIN_TO_RESEND_EMAIL);
-
-      return;
-    }
-
-    localStorage.setItem("token", token);
-
+  const handleConfirmEmail = async () => {
     let response: AxiosResponse<any, any>;
     try {
       response = await emailVerification({
-        token,
+        token: token as any,
+        key: code,
+        id: email.id as any,
       });
 
       if (response.status === HttpStatusCode.Ok) {
         setVerified(true);
+        const data = response.data.data;
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("profile", JSON.stringify(data.user));
+        navigate("/create-business");
       }
     } catch (error) {
       if (isAxiosError(error)) {
@@ -115,12 +117,14 @@ const VerifyEmailPage = () => {
     setLoading(true);
     try {
       const response: AxiosResponse<any, any> = await resendVerificationEmail(
-        email
+        email.email || ""
       );
 
       if (response.status === HttpStatusCode.Ok) {
         setLoading(false);
         setResendSuccess(true);
+
+        console.log(response.data.data);
 
         const timeoutKey: NodeJS.Timeout | undefined = setTimeout(() => {
           setErrorMessage(null);
@@ -150,6 +154,24 @@ const VerifyEmailPage = () => {
             className="w-60 h-40 object-cover"
           />
         </div>
+
+        {email.id && (
+          <div>
+            <Input
+              placeholder="Code"
+              onChange={(e) => setCode(e.target.value)}
+              value={code}
+              className="py-4"
+            />
+            <Button
+              onClick={handleConfirmEmail}
+              size="sm"
+              className="w-full py-4"
+            >
+              <span>Verify</span>
+            </Button>
+          </div>
+        )}
 
         {!verified ? (
           <div className="w-full lg:w-1/2 mx-auto space-y-6">
@@ -207,3 +229,6 @@ const VerifyEmailPage = () => {
 };
 
 export default VerifyEmailPage;
+
+
+

@@ -28,13 +28,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { createBusiness } from "@/service/apis/business-services";
+import { useNavigate } from "react-router-dom";
 
 // Define the schema for validation using Zod
 const createBusinessSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
-  country_id: z.string().min(1, "Country is required"),
-  address: z.string().min(1, "Address is required"),
-  description: z.string().min(1, "Description is required"),
+  countryId: z.string().min(1, "Country is required"),
+  location: z.string().min(1, "Address is required"),
+  businessDescription: z
+    .string()
+    .min(80, "Description is required and must be atleast 80 characters long"),
 });
 
 type CreateBusinessForm = z.infer<typeof createBusinessSchema>;
@@ -46,14 +50,14 @@ const CreateBusiness = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   const form = useForm<CreateBusinessForm>({
     resolver: zodResolver(createBusinessSchema),
     defaultValues: {
       businessName: "",
-      country_id: "",
-      address: "",
-      description: "",
+      countryId: "",
+      location: "",
+      businessDescription: "",
     },
   });
 
@@ -61,19 +65,21 @@ const CreateBusiness = () => {
     try {
       setLoading(true);
       console.log("Form Values: ", values);
-      form.reset();
 
-      // Add logic to submit the business data here
-      // Example:
-      // const response: AxiosResponse<any, any> = await createBusinessAPI(values);
-      // if (response.status === HttpStatusCode.Created) {
-      //   setSuccessMessage(true);
-      //   form.reset();
-      // }
+      const response: AxiosResponse<any, any> = await createBusiness(values);
+     
+      if (response.status === HttpStatusCode.Created) {
+        form.reset();
+        navigate("/profile");
+      }
+
+      console.log(response)
 
       setLoading(false);
     } catch (error) {
+
       setLoading(false);
+      console.log(error)
       setErrorMessage("Failed to create business");
     }
   };
@@ -127,7 +133,7 @@ const CreateBusiness = () => {
             <div className="w-full">
               <FormField
                 control={form.control}
-                name="country_id"
+                name="countryId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Country *</FormLabel>
@@ -161,7 +167,7 @@ const CreateBusiness = () => {
             <div className="w-full">
               <FormField
                 control={form.control}
-                name="address"
+                name="location"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Address *</FormLabel>
@@ -182,7 +188,7 @@ const CreateBusiness = () => {
             <div className="w-full">
               <FormField
                 control={form.control}
-                name="description"
+                name="businessDescription"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description *</FormLabel>

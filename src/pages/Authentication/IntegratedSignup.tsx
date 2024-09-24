@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/form";
 import { IUserSignup, signup } from "@/service/apis/user-services";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRecoilState } from "recoil";
+import { EmailStore } from "@/store/user-store";
 
 const IntegratedSignup = () => {
   const {
@@ -61,17 +63,67 @@ const IntegratedSignup = () => {
     },
   });
 
+  // const {
+  //   mutate: onSubmit,
+
+  //   error: mutationError,
+  //   isError: isMutationError,
+  //   isSuccess: mutationSuccess,
+
+  // } = useMutation({
+  //   mutationKey: [],
+  //   mutationFn: async (values: z.infer<typeof signupSchema>) => {
+  //     let timeoutKey: NodeJS.Timeout | undefined;
+  //     const {
+  //       address,
+  //       email,
+  //       fullname,
+  //       city,
+  //       password,
+  //       phonenumber,
+  //       country_id,
+  //     } = values;
+  //     const data: IUserSignup = {
+  //       address,
+  //       fullname: fullname,
+  //       email,
+  //       password,
+  //       phoneNumber: phonenumber,
+  //       city,
+  //       countryId: country_id,
+  //     };
+
+  //     const response: AxiosResponse<any, any> = await signup(data);
+
+  //     if (response.status === HttpStatusCode.Created) {
+  //       form.reset();
+
+  //       timeoutKey = setTimeout(() => {
+  //         form.reset();
+  //       }, 2000);
+
+  //       return () => clearTimeout(timeoutKey);
+  //     }
+  //   },
+  //   onSuccess: (data) => {
+  //     console.log(data)
+  //   },
+  //   onError: (e: any) => {
+  //     console.log(e);
+  //     return new Error(e.response?.data?.message || e.message);
+  //   },
+  // });
+
+  const [, setEmail] = useRecoilState(EmailStore);
+  const navigate = useNavigate()
   const {
     mutate: onSubmit,
-
     error: mutationError,
     isError: isMutationError,
     isSuccess: mutationSuccess,
-    
   } = useMutation({
     mutationKey: ["countries"],
     mutationFn: async (values: z.infer<typeof signupSchema>) => {
-      let timeoutKey: NodeJS.Timeout | undefined;
       const {
         address,
         email,
@@ -81,9 +133,10 @@ const IntegratedSignup = () => {
         phonenumber,
         country_id,
       } = values;
+
       const data: IUserSignup = {
         address,
-        fullname: fullname,
+        fullname,
         email,
         password,
         phoneNumber: phonenumber,
@@ -94,16 +147,20 @@ const IntegratedSignup = () => {
       const response: AxiosResponse<any, any> = await signup(data);
 
       if (response.status === HttpStatusCode.Created) {
-        form.reset();
-
-        timeoutKey = setTimeout(() => {
-          form.reset();
-        }, 2000);
-
-        return () => clearTimeout(timeoutKey);
+        return response.data;
       }
     },
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      setEmail({
+        email: form.getValues("email"),
+        id: data.data.id,
+      });
+      form.reset();
+      setTimeout(() => {
+        form.reset();
+      }, 2000);
+      navigate('/verify-email')
+    },
     onError: (e: any) => {
       console.log(e);
       return new Error(e.response?.data?.message || e.message);
@@ -111,7 +168,7 @@ const IntegratedSignup = () => {
   });
 
   if (countryLoading) {
-    return <div>Loading...</div>;
+    return <div>Countries Loading...</div>;
   }
 
   if (isCountryError) {
