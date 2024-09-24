@@ -47,7 +47,7 @@ const ProfilePage = () => {
       }
     } catch (error) {
       setActiveMenu("Dashboard");
-      navigate("/");
+      // navigate("/");
     }
   };
 
@@ -60,7 +60,7 @@ const ProfilePage = () => {
       }
     } catch (error) {
       setActiveMenu("Dashboard");
-      navigate("/");
+      // navigate("/");
     }
   };
 
@@ -139,8 +139,9 @@ const ProfilePage = () => {
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
-          {activeMenu === "Wishlist" && <WishList />}
+          {activeMenu === "Cart" && <WishList />}
           {activeMenu === "Support Ticket" && <SupportTicket />}
+          {activeMenu === "Business" && <div>Business pages</div>}
         </div>
       </div>
     </div>

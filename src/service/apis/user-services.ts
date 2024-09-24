@@ -75,8 +75,8 @@ export const userLogin = async (data: IUserSignin) =>
 export const signup = async (data: IUserSignup) =>
   await request.post(`${PATH}signup`, data);
 
-export const emailVerification = async (token: IVerifyEmail) =>
-  await request.post(`${PATH}verify-email`, token);
+export const emailVerification = async (data?: {key?: string, token?:string, id?:string}) =>
+  await request.post(`${PATH}verify-email`, data);
 
 export const resendVerificationEmail = async (email: string) =>
   request.get(`${PATH}verification/email/${email}`);

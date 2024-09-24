@@ -57,9 +57,10 @@ export type TActiveMenu =
   | "Products"
   | "Payment Method"
   | "Order"
-  | "Wishlist"
+  | "Cart"
   | "Address"
   | "Reviews"
+  | "Business"
   | "Change Password"
   | "Support Ticket"
   | "Logout";
@@ -75,9 +76,10 @@ export const dashboardNavs: IDashboardNav[] = [
   { icon: <IoBagHandle />, title: "Products" },
   { icon: <IoCard />, title: "Payment Method" },
   { icon: <BsFillCartCheckFill />, title: "Order" },
-  { icon: <FaHeart />, title: "Wishlist" },
+  { icon: <FaHeart />, title: "Cart" },
   { icon: <FaAddressBook />, title: "Address" },
   { icon: <MdReviews />, title: "Reviews" },
+  { icon: <MdReviews />, title: "Business" },
   { icon: <HiLockClosed />, title: "Change Password" },
   { icon: <FaUserGear />, title: "Support Ticket" },
   { icon: <IoLogOut />, title: "Logout" },
