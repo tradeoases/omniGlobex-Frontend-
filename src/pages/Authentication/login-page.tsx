@@ -29,10 +29,11 @@ const LoginPage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
-  const setEmailData: SetterOrUpdater<string | null> =
-    useSetRecoilState(EmailStore);
+  const setEmailData: SetterOrUpdater<{
+    email: string | null;
+    id: string | null;
+  }> = useSetRecoilState(EmailStore);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     let timeoutKey: NodeJS.Timeout | undefined;
@@ -53,6 +54,7 @@ const LoginPage = () => {
     }
 
     return () => clearTimeout(timeoutKey);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorMessage]);
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -89,7 +91,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       if (isAxiosError(error)) {
-        setEmailData(values.email);
+        setEmailData({ email: values.email, id: null });
         setErrorMessage(error.response?.data.message);
       }
     } finally {

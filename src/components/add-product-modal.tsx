@@ -68,9 +68,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof createProductSchema>) => {
-    console.log("This is that");
     try {
-      console.log("Hello");
       const data: ICreateProduct = {
         ...values,
         showRooms: showRooms
@@ -80,7 +78,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
       // image_url:
       //   "https://ik.imagekit.io/2ujnunod7moo/produits/9_4QQrWWsK_.webp?updatedAt=1704398952106be60d630-9591-4f19-be4d-e7bf2834da01/200/300",
 
-      console.log({ data });
       const response: AxiosResponse<any, any> = await createProduct(data);
       if (response.status === HttpStatusCode.Ok) {
         console.log(response.data);
@@ -110,7 +107,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
   const {
     isLoading: businessLoading,
     isError: businessIsError,
-    error: businessError,
+    // error: businessError,
     data: businesses,
     isSuccess: businessSuccess,
   } = useQuery({
@@ -286,6 +283,17 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
                     )}
                   /> */}
                 </div>
+
+                {businessLoading && (
+                  <div>Your registered business are still loading...</div>
+                )}
+                {businessIsError && (
+                  <div>
+                    Failed to load your business. Please refresh or add a
+                    business before you can add a product
+                  </div>
+                )}
+
                 {businessSuccess && (
                   <FormField
                     control={form.control}
