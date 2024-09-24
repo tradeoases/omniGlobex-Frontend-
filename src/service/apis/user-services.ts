@@ -81,4 +81,4 @@ export const emailVerification = async (data?: {key?: string, token?:string, id?
 export const resendVerificationEmail = async (email: string) =>
   request.get(`${PATH}verification/email/${email}`);
 
-export const getUserInfo = async () => await request.get(`userinfo`);
+export const getUserInfo = async () => await request.get(`user/details/userinfo`);

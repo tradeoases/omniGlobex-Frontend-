@@ -20,11 +20,11 @@ import { PersonalSection } from "@/components/profile-personal-section";
 import { getUserInfo } from "@/service/apis/user-services";
 import { getAllUserOrders } from "@/service/apis/order-service";
 import { PaymentMethod } from "@/components/payment-method";
-import { UserAddress } from "@/components/user-address";
-import SupportTicket from "@/components/support-ticket";
+// import { UserAddress } from "@/components/user-address";
 import WishList from "@/components/wish-list";
 import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 import ChangePassword from "@/components/change-password";
+import BusinessPage from "./components/BusinessPage";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -133,15 +133,13 @@ const ProfilePage = () => {
             <Overview userData={userData} newOrderData={newOrderData || []} />
           )}
           {activeMenu === "Products" && <ProductManagement />}
-          {activeMenu === "Address" && <UserAddress />}
           {activeMenu === "Personal" && <PersonalSection userData={userData} />}
           {activeMenu === "Payment Method" && <PaymentMethod />}
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
           {activeMenu === "Cart" && <WishList />}
-          {activeMenu === "Support Ticket" && <SupportTicket />}
-          {activeMenu === "Business" && <div>Business pages</div>}
+          {activeMenu === "Business" && <BusinessPage />}
         </div>
       </div>
     </div>
