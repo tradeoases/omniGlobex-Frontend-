@@ -21,6 +21,7 @@ import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
 import CreateBusiness from "./pages/BusinessInformation/CreateBusiness";
 import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
+import BlogDetails from "./pages/Blogs/components/blog-details";
 
 export default function RoutesConfig() {
   return (
@@ -28,6 +29,7 @@ export default function RoutesConfig() {
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/blogs" element={<BlogPage />} />
+      <Route path="/blog/:id" element={<BlogDetails />}/>
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="terms-condition" element={<TermsPage />} />
