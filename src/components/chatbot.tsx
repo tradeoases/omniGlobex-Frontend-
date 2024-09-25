@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchMessages } from '../service/chatService';
-import axios from 'axios';
+import { fetchMessages, sendMessage } from '../service/chatService';
 import '../styles/chatbot.css';
-import robotIcon from './robot-icon.svg'; 
+import robotIcon from './robot-icon.svg';
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,19 +12,11 @@ const Chatbot: React.FC = () => {
   const { data: fetchedMessages, isLoading: isMessagesLoading, error: fetchError } = useQuery({
     queryKey: ['messages'],
     queryFn: fetchMessages,
-    enabled: isOpen,
+    enabled: isOpen, 
   });
 
-  const { mutate: sendMessage, status: messageStatus } = useMutation({
-    mutationFn: async (message: string) => {
-      const { data } = await axios.post('https://api.chatbot.com/query', { message }, {
-        headers: {
-          Authorization: 'Bearer Bsk5nUn5qhSww0l07obNUyYG_KaafSVF',
-          'Content-Type': 'application/json',
-        },
-      });
-      return data.response;
-    },
+  const { mutate: sendChatMessage, status: messageStatus } = useMutation({
+    mutationFn: sendMessage,
     onSuccess: (botResponse) => {
       setMessages((prev) => [
         ...prev,
@@ -52,7 +43,9 @@ const Chatbot: React.FC = () => {
 
   const handleSend = () => {
     if (input.trim()) {
-      sendMessage(input.trim());
+      setMessages((prev) => [...prev, { sender: 'user', text: input.trim() }]);
+      sendChatMessage(input.trim());
+      setInput(''); // Clear input after sending
     } else {
       setMessages((prev) => [
         ...prev,
@@ -84,7 +77,8 @@ const Chatbot: React.FC = () => {
               </div>
             ))}
 
-            {messageStatus === 'pending' && <div className="loading">Loading...</div>}
+            {/* Correcting the status check to 'pending' instead of 'loading' */}
+            {messageStatus === 'pending' && <div className="loading">Loading response...</div>}
           </div>
 
           <div className="chat-input-container">
@@ -93,6 +87,8 @@ const Chatbot: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
+              onKeyPress={(e) => e.key === 'Enter' && handleSend()} // Allow 'Enter' to send messages
+              disabled={messageStatus === 'pending'} // Disable input during pending status
             />
             <button onClick={handleSend} disabled={messageStatus === 'pending'}>
               {messageStatus === 'pending' ? 'Sending...' : 'Send'}
