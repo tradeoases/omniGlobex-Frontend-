@@ -22,6 +22,8 @@ import CreateBusiness from "./pages/BusinessInformation/CreateBusiness";
 import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
 import BlogDetails from "./pages/Blogs/components/blog-details";
+import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
+
 
 export default function RoutesConfig() {
   return (
@@ -38,6 +40,7 @@ export default function RoutesConfig() {
       <Route path="forgot-password" element={<ForgotPasswordPage />} />
       <Route path="signup" element={<IntegratedSignup />} />
       <Route path="/create-business" element={<CreateBusiness />} />
+      <Route path="/business/:businessId" element={<BusinessDetailPage />} />
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/profile" element={<ProfilePage />} />
