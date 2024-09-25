@@ -1,37 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse, HttpStatusCode } from "axios";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
 
-import { getAllProductByUser, IProduct } from "@/service/apis/product-services";
-import { ProductByUserStore } from "@/store/product-store";
-import { Button } from "./ui/button";
-import { ProductCard } from "./product-card";
+import { getAllProductByUser, IProduct } from "@/service/apis/product-services"
+import { Button } from "../../../components/ui/button";
+import { ProductCard } from "../../../components/product-card";
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
   onOpen: () => void;
 }
 
 export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
-  const [products, setProducts] = useRecoilState<IProduct[] | null>(
-    ProductByUserStore
-  );
-
-  const fetchProducts = async () => {
-    try {
+  const {data: products} = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
       const response: AxiosResponse<any, any> = await getAllProductByUser();
 
       if (response.status === HttpStatusCode.Ok) {
-        setProducts(response.data.data);
+        return response.data.data;
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    !products && fetchProducts();
-  }, []);
+    },
+  });
+  
 
   return (
     <div className="space-y-10 w-full">
@@ -45,7 +35,7 @@ export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
         {products ? (
           products
             .slice(0, 8)
-            .map((product, i) => <ProductCard key={i} {...product} />)
+            .map((product:IProduct) => <ProductCard  {...product} />)
         ) : (
           <div>no product</div>
         )}

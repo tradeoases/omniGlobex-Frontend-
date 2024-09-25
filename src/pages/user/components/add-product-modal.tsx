@@ -13,8 +13,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+import { Input } from "../../../components/ui/input";
+import { Textarea } from "../../../components/ui/textarea";
 import {
   createProduct,
   getAllProductCategories,
@@ -29,10 +29,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Button } from "./ui/button";
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { getBusinesses } from "@/service/apis/business-services";
 
 interface Props {
@@ -312,14 +312,14 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
                               <SelectGroup>
                                 {businesses.map(
                                   (business: {
-                                    businessid: string;
-                                    businessname: string;
+                                    businessId: string;
+                                    businessName: string;
                                   }) => (
                                     <SelectItem
-                                      key={business.businessid}
-                                      value={business.businessid}
+                                      key={business.businessId}
+                                      value={business.businessId}
                                     >
-                                      {business.businessname}
+                                      {business.businessName}
                                     </SelectItem>
                                   )
                                 )}

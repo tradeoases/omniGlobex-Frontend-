@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { TProductNav, productNavs } from "@/data/data";
 import { UnderConstruction } from "@/components/under-construction";
-import { AddProductModal } from "./add-product-modal";
-import { ProductManagementProductTab } from "./product-management-product-tab";
+import { AddProductModal } from "../components/add-product-modal";
+import { ProductManagementProductTab } from "../components/product-management-product-tab";
 
 interface ProductProps {}
 
