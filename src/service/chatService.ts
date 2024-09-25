@@ -1,14 +1,23 @@
-// src/services/chatService.ts
 import axios from 'axios';
 
-// Fetch conversation history
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
 export const fetchMessages = async () => {
-  const response = await axios.get('/api/chat/messages');
-  return response.data;
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/chatbot/history`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    throw error;
+  }
 };
 
-// Send a message to the chatbot backend
-export const sendMessage = async (message: { text: string }) => {
-  const response = await axios.post('/api/chat/send', message);
-  return response.data;  
+export const sendMessage = async (message: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/api/chatbot/chat`, { message });
+    return response.data.response; 
+  } catch (error) {
+    console.error("Error sending message:", error);
+    throw error;
+  }
 };
