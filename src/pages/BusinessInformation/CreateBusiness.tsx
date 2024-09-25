@@ -36,6 +36,7 @@ const createBusinessSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
   countryId: z.string().min(1, "Country is required"),
   location: z.string().min(1, "Address is required"),
+  city: z.string().min(1, "Address is required"),
   businessDescription: z
     .string()
     .min(80, "Description is required and must be atleast 80 characters long"),
@@ -56,6 +57,7 @@ const CreateBusiness = () => {
     defaultValues: {
       businessName: "",
       countryId: "",
+      city: "",
       location: "",
       businessDescription: "",
     },
@@ -163,7 +165,26 @@ const CreateBusiness = () => {
                 )}
               />
             </div>
-
+            <div className="w-full">
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City *</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        className="focus:outline-none"
+                        placeholder="Address"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="w-full">
               <FormField
                 control={form.control}

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getBusinesses } from "@/service/apis/business-services";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const BusinessPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,17 +34,22 @@ const BusinessPage = () => {
     <div className="col-span-3 no-scrollbars relative w-full overflow-x-auto">
       <h2 className="text-center text-3xl tracking-wider">Business List</h2>
 
-      <div className="px-3 my-3 rounded-md col-span-3 no-scrollbars relative overflow-x-auto">
-        <div className="border flex p-2 my-3 max-w-sm rounded-md">
+      {/* Search and Create Business Button */}
+      <div className="flex items-center justify-between px-3 my-3">
+        <div className="flex-1 max-w-sm">
           <input
             type="text"
             placeholder="Search by business name"
-            className="outline-none pl-2 w-full"
+            className="outline-none px-4 py-2 w-full border rounded-sm"
             onChange={(event) => setSearchTerm(event.target.value)}
           />
         </div>
+        <Link to="/create-business" className="ml-4 bg-main text-white px-4 py-2 rounded-sm hover:bg-yellow-600">
+          Create Business
+        </Link>
       </div>
 
+      {/* Business List */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredBusinesses && filteredBusinesses.length > 0 ? (
           filteredBusinesses.map((business: any) => (
