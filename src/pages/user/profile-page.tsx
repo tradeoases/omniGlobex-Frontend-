@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { HiBars3BottomLeft } from "react-icons/hi2";
 import { AxiosResponse, HttpStatusCode } from "axios";
 
-import { ProductManagement } from "@/components/product-management";
+import { ProductManagement } from "@/pages/user/pages/product-management";
 import { IUser, userStore } from "@/store/user-store";
 import { INewOrder, NewOrderStore } from "@/store/order-store";
 import Overview from "@/components/profile-dashboard/overview";

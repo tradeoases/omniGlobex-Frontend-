@@ -79,26 +79,18 @@ export const signupSchema = z
   });
 
 export const personalInfoSchema = z.object({
-  firstname: z.string().min(2, {
-    message: "first name must be at least 2 characters.",
+  fullname: z.string().min(10, {
+    message: "Full name must be at least 10 characters.",
   }),
-  lastname: z.string().min(2, {
-    message: "last name must be at least 2 characters.",
-  }),
-  country_id: z.string().min(1, "country is required"),
   email: z.string().email("Invalid email"),
-  phonenumber: z.string().min(10, {
+  phoneNumber: z.string().min(10, {
     message: "phone number must be at least 10 characters.",
   }),
-  address: z.string().min(2, {
+  location: z.string().min(2, {
     message: "address must be at least 2 characters.",
   }),
-  town: z.string().min(2, {
+  city: z.string().min(2, {
     message: "town must be at least 2 characters.",
-  }),
-
-  postCode: z.string().min(2, {
-    message: "pos code must be at least 2 characters.",
   }),
 });
 
