@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 export const apiKey = import.meta.env.VITE_API_URL;
-console.log(`VITE_BASE_SERVICE`)
 
 const request: AxiosInstance = axios.create({
   baseURL: apiKey || "live one test",
@@ -34,6 +33,7 @@ request.interceptors.response.use(
 request.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const token: string | null = localStorage?.getItem("token");
+    // console.log({ token });
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
