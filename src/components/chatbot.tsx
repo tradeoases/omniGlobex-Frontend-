@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchMessages, sendMessage } from '../service/chatService';
+import { fetchMessages } from '../service/chatService';
+import axios from 'axios';
 import '../styles/chatbot.css';
 import robotIcon from './robot-icon.svg'; 
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [conversationStarted, setConversationStarted] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);  
-
-  const quickReplies = ["What is your refund policy?", "How do I contact support?", "What services do you offer?"];
+  const [messages, setMessages] = useState<{ sender: 'user' | 'bot'; text: string }[]>([]);
 
   const { data: fetchedMessages, isLoading: isMessagesLoading, error: fetchError } = useQuery({
     queryKey: ['messages'],
@@ -35,17 +32,23 @@ const Chatbot: React.FC = () => {
         { sender: 'user', text: input },
         { sender: 'bot', text: botResponse },
       ]);
-      setInput('');  
-      setIsTyping(false);  
+      setInput('');
     },
     onError: () => {
       setMessages((prev) => [
         ...prev,
-        { sender: 'bot', text: 'Failed to send message. Please try again.' }
+        { sender: 'bot', text: 'Sorry, something went wrong.' },
       ]);
-      setIsTyping(false);  
-    }
+    },
   });
+
+  useEffect(() => {
+    if (fetchedMessages) {
+      setMessages(fetchedMessages);
+    }
+  }, [fetchedMessages]);
+
+  const toggleChat = () => setIsOpen(!isOpen);
 
   const handleSend = () => {
     if (input.trim()) {
@@ -60,38 +63,26 @@ const Chatbot: React.FC = () => {
 
   return (
     <div className={`chatbot-container ${isOpen ? 'open' : ''}`}>
-      {!isOpen && (
-        <div className="chatbot-toggle" onClick={() => setIsOpen(!isOpen)}>
-          <MessageCircle size={24} color="white" />
-        </div>
-      )}
+      <div className="chatbot-toggle" onClick={toggleChat}>
+        <img src={robotIcon} alt="Chat" className="chat-icon" />
+      </div>
 
       {isOpen && (
         <div className="chat-window">
           <div className="chat-header">
-            <img src={AvatarIcon} alt="Chatbot Avatar" />
-            <h4>Omni - Your Professional Assistant</h4>
-            <button onClick={() => setIsOpen(false)}><X size={24} /></button>
+            <h4>Chat with Us</h4>
+            <button onClick={toggleChat}>&times;</button>
           </div>
 
           <div className="chat-body">
-            {!conversationStarted ? (
-              <button className="start-conversation" onClick={startConversation}>
-                Start Conversation
-              </button>
-            ) : (
-              <>
-                {isMessagesLoading && <p className="loading">Loading conversation...</p>}
-                {fetchError && <p className="error">Failed to load messages. Please try again.</p>}
+            {isMessagesLoading && <div className="loading">Loading conversation...</div>}
+            {fetchError && <div className="error">Failed to load messages. Please try again.</div>}
 
-                {messages.map((msg, idx) => (
-                  <div key={idx} className={`message ${msg.sender}`}>
-                    {msg.sender === 'bot' && (
-                      <img src={AvatarIcon} alt="Bot Avatar" className="bot-avatar" />
-                    )}
-                    <div className="message-content">{msg.text}</div>
-                  </div>
-                ))}
+            {messages.map((msg, idx) => (
+              <div key={idx} className={`message ${msg.sender}`}>
+                {msg.text}
+              </div>
+            ))}
 
             {messageStatus === 'pending' && <div className="loading">Loading...</div>}
           </div>
@@ -107,17 +98,6 @@ const Chatbot: React.FC = () => {
               {messageStatus === 'pending' ? 'Sending...' : 'Send'}
             </button>
           </div>
-
-          {conversationStarted && (
-            <div className="feedback">
-              <button onClick={() => handleFeedback('up')}>
-                <ThumbsUp />
-              </button>
-              <button onClick={() => handleFeedback('down')}>
-                <ThumbsDown />
-              </button>
-            </div>
-          )}
         </div>
       )}
     </div>
