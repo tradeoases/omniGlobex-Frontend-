@@ -1,8 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getBusinessById } from "@/service/apis/business-services";
 
 const BusinessDetailPage = () => {
+  const navigate = useNavigate();
   const { businessId } = useParams();
   if (!businessId) {
     return <div>Invalid business ID</div>;
@@ -20,9 +21,22 @@ const BusinessDetailPage = () => {
         Loading...
       </div>
     );
-  if (isError) return <div className="flex justify-center items-center h-64 w-screen text-red-600">Error: {error.message}</div>;
+  if (isError)
+    return (
+      <div className="flex justify-center items-center h-64 w-screen text-red-600">
+        Error: {error.message}
+      </div>
+    );
 
   const business = data?.data?.data;
+
+  const handleUserAdd = () => {
+    navigate(`/business/${businessId}/add-user`);
+  };
+
+ const handleBusinessLocation = () => {
+navigate((`/business/${businessId}/add-location`));
+ }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 pt-10">
@@ -47,7 +61,18 @@ const BusinessDetailPage = () => {
         </p>
 
         <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-4">Business Users</h3>
+          <div className="flex">
+            <h3 className=" flex-1 max-w-sm text-xl font-semibold mb-4">
+              Business Users
+            </h3>
+            <span
+              onClick={handleUserAdd}
+              className="ml-4 underline px-2 py-2 rounded-sm hover:text-main cursor-pointer"
+            >
+              Add User
+            </span>
+          </div>
+
           {business?.businessUsers.length > 0 ? (
             <table className="min-w-full bg-white border border-gray-300 table-auto">
               {" "}
@@ -76,7 +101,14 @@ const BusinessDetailPage = () => {
         </div>
 
         <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-4">Business Locations</h3>
+          <div className="flex">
+            <h3 className=" flex-1 max-w-sm text-xl font-semibold mb-4">
+              Business Locations
+            </h3>
+            <span onClick={handleBusinessLocation} className="ml-4 underline px-2 py-2 rounded-sm hover:text-main cursor-pointer">
+              Add Location
+            </span>
+          </div>
           {business?.businessLocations.length > 0 ? (
             <table className="min-w-full bg-white border border-gray-300 table-auto">
               <thead>

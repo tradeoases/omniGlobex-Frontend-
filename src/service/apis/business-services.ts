@@ -16,3 +16,7 @@ export const getBusinessById = async (businessId: string) => {
   const response = await request.get(`/business/${businessId}`);
   return response;
 };
+
+export const addBusinessUser = async (businessId: string, userData: any) => {
+  await request.post(`/business/${businessId}/users`, userData);
+};

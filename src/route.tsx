@@ -23,7 +23,8 @@ import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
 import BlogDetails from "./pages/Blogs/components/blog-details";
 import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
-
+import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
+import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
 
 export default function RoutesConfig() {
   return (
@@ -31,7 +32,7 @@ export default function RoutesConfig() {
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/blogs" element={<BlogPage />} />
-      <Route path="/blog/:id" element={<BlogDetails />}/>
+      <Route path="/blog/:id" element={<BlogDetails />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="terms-condition" element={<TermsPage />} />
@@ -41,6 +42,15 @@ export default function RoutesConfig() {
       <Route path="signup" element={<IntegratedSignup />} />
       <Route path="/create-business" element={<CreateBusiness />} />
       <Route path="/business/:businessId" element={<BusinessDetailPage />} />
+      <Route
+        path="/business/:businessId/add-user"
+        element={<AddBusinessUserPage />}
+      />
+      <Route
+        path="/business/:businessId/add-location"
+        element={<AddBusinessLocation />}
+      />
+
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/profile" element={<ProfilePage />} />

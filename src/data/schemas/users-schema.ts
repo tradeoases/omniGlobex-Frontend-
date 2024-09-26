@@ -99,3 +99,9 @@ export const passwordResetSchema = z.object({
   newPassword: z.string().min(1, "New Password is required"),
   confirmPassword: z.string().min(1, "Confirm Password is required"),
 });
+
+export const addBusinessUser = z.object({
+  username: z.string().min(1, "User name is required"),
+  useremail: z.string().min(1, "User email is required"),
+
+});
