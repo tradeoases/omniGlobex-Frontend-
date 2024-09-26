@@ -11,11 +11,11 @@ import {
   MdOutlineSportsBaseball,
 } from "react-icons/md";
 import { PiBowlFood } from "react-icons/pi";
-import { TbBabyBottle, TbTruckReturn } from "react-icons/tb";
+import { TbBabyBottle, TbTruckReturn, TbSubscript } from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
-import { FaAddressBook, FaHeart, FaUser, FaUserGear } from "react-icons/fa6";
+import {  FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
-import { IoBagHandle, IoCard, IoLogOut } from "react-icons/io5";
+import { IoBagHandle,  IoLogOut } from "react-icons/io5";
 import { MdDashboard, MdReviews } from "react-icons/md";
 import card1 from "@/assets/card-1.svg";
 import card2 from "@/assets/card-2.svg";
@@ -58,7 +58,7 @@ export type TActiveMenu =
   | "Payment Method"
   | "Order"
   | "Cart"
-  | "Address"
+  | "Subscription"
   | "Reviews"
   | "Business"
   | "Change Password"
@@ -74,14 +74,14 @@ export const dashboardNavs: IDashboardNav[] = [
   { icon: <MdDashboard />, title: "Dashboard" },
   { icon: <FaUser />, title: "Personal" },
   { icon: <IoBagHandle />, title: "Products" },
-  { icon: <IoCard />, title: "Payment Method" },
+  // { icon: <IoCard />, title: "Payment Method" },
   { icon: <BsFillCartCheckFill />, title: "Order" },
-  { icon: <FaHeart />, title: "Cart" },
-  { icon: <FaAddressBook />, title: "Address" },
-  { icon: <MdReviews />, title: "Reviews" },
+  // { icon: <FaHeart />, title: "Cart" },
+  // { icon: <FaAddressBook />, title: "Address" },
+  // { icon: <MdReviews />, title: "Reviews" },
+  { icon: <TbSubscript />, title: 'Subscription'},
   { icon: <MdReviews />, title: "Business" },
   { icon: <HiLockClosed />, title: "Change Password" },
-  { icon: <FaUserGear />, title: "Support Ticket" },
   { icon: <IoLogOut />, title: "Logout" },
 ];
 

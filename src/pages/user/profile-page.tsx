@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { HiBars3BottomLeft } from "react-icons/hi2";
 import { AxiosResponse, HttpStatusCode } from "axios";
 
-import { ProductManagement } from "@/components/product-management";
+import { ProductManagement } from "@/pages/user/pages/product-management";
 import { IUser, userStore } from "@/store/user-store";
 import { INewOrder, NewOrderStore } from "@/store/order-store";
 import Overview from "@/components/profile-dashboard/overview";
@@ -19,12 +19,13 @@ import { BuyerOrder } from "@/components/buyer-order";
 import { PersonalSection } from "@/components/profile-personal-section";
 import { getUserInfo } from "@/service/apis/user-services";
 import { getAllUserOrders } from "@/service/apis/order-service";
-import { PaymentMethod } from "@/components/payment-method";
-import { UserAddress } from "@/components/user-address";
-import SupportTicket from "@/components/support-ticket";
-import WishList from "@/components/wish-list";
+// import { PaymentMethod } from "@/components/payment-method";
+// import { UserAddress } from "@/components/user-address";
+// import WishList from "@/components/wish-list";
 import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 import ChangePassword from "@/components/change-password";
+import BusinessPage from "./pages/BusinessPage";
+import Subscriptions from "./pages/Subscriptions";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -133,15 +134,14 @@ const ProfilePage = () => {
             <Overview userData={userData} newOrderData={newOrderData || []} />
           )}
           {activeMenu === "Products" && <ProductManagement />}
-          {activeMenu === "Address" && <UserAddress />}
           {activeMenu === "Personal" && <PersonalSection userData={userData} />}
-          {activeMenu === "Payment Method" && <PaymentMethod />}
+          {/* {activeMenu === "Payment Method" && <PaymentMethod />} */}
           {activeMenu === "Order" && <BuyerOrder />}
           {activeMenu === "Change Password" && <ChangePassword />}
           {activeMenu === "Reviews" && <ReviewsDashboard />}
-          {activeMenu === "Cart" && <WishList />}
-          {activeMenu === "Support Ticket" && <SupportTicket />}
-          {activeMenu === "Business" && <div>Business pages</div>}
+          {activeMenu === "Subscription" && <Subscriptions />}
+          {/* {activeMenu === "Cart" && <WishList />} */}
+          {activeMenu === "Business" && <BusinessPage />}
         </div>
       </div>
     </div>

@@ -41,6 +41,8 @@ const NavBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log({ userData });
+
   return (
     <div className="hidden lg:block lg:min-h-12 w-full  border-b py-2 bg-main">
       <div className="hidden w-10/12 xl:w-8/12 mx-auto lg:flex items-center justify-between">

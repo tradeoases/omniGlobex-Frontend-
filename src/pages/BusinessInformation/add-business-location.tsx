@@ -28,60 +28,53 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { createBusiness } from "@/service/apis/business-services";
-import { useNavigate } from "react-router-dom";
+// import { addBusinessUser } from "@/service/apis/business-services";
+// import { useNavigate } from "react-router-dom";
 
 // Define the schema for validation using Zod
-const createBusinessSchema = z.object({
-  businessName: z.string().min(1, "Business name is required"),
+const createlocationSchema = z.object({
   countryId: z.string().min(1, "Country is required"),
   location: z.string().min(1, "Address is required"),
   city: z.string().min(1, "Address is required"),
-  businessDescription: z
-    .string()
-    .min(80, "Description is required and must be atleast 80 characters long"),
 });
 
-type CreateBusinessForm = z.infer<typeof createBusinessSchema>;
+type CreateBusinessLocationForm = z.infer<typeof createlocationSchema>;
 
-const CreateBusiness = () => {
+const AddBusinessLocation = () => {
   const [countries, setCountries] = useRecoilState<ICountry[] | null>(
     AllCountriesStore
   );
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const form = useForm<CreateBusinessForm>({
-    resolver: zodResolver(createBusinessSchema),
+//   const navigate = useNavigate();
+  const form = useForm<CreateBusinessLocationForm>({
+    resolver: zodResolver(createlocationSchema),
     defaultValues: {
-      businessName: "",
+      location: "",
       countryId: "",
       city: "",
-      location: "",
-      businessDescription: "",
     },
   });
 
-  const onSubmit = async (values: CreateBusinessForm) => {
+  const onSubmit = async (values: CreateBusinessLocationForm) => {
     try {
       setLoading(true);
       console.log("Form Values: ", values);
 
-      const response: AxiosResponse<any, any> = await createBusiness(values);
-     
-      if (response.status === HttpStatusCode.Created) {
-        form.reset();
-        navigate("/profile");
-      }
+    //   const response: AxiosResponse<any, any> = await addBusinessUser(values);
 
-      console.log(response)
+    //   if (response.status === HttpStatusCode.Created) {
+    //     form.reset();
+    //     navigate("/profile");
+    //   }
+
+    //   console.log(response);
 
       setLoading(false);
     } catch (error) {
-
       setLoading(false);
-      console.log(error)
+      console.log(error);
       setErrorMessage("Failed to create business");
     }
   };
@@ -104,34 +97,15 @@ const CreateBusiness = () => {
   return (
     <div className="w-full space-y-8 mb-10">
       <div className="w-10/12 xl:w-8/12 mx-auto flex flex-col items-center px-7 py-10 bg-white">
-        <p className="text-4xl font-extrabold text-center">Create Business</p>
+        <p className="text-4xl font-extrabold text-center">
+          Add Business Location
+        </p>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 mt-10 w-full"
           >
-            <div className="w-full">
-              <FormField
-                control={form.control}
-                name="businessName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Business Name *</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        className="focus:outline-none"
-                        placeholder="Business Name"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             <div className="w-full">
               <FormField
                 control={form.control}
@@ -206,26 +180,6 @@ const CreateBusiness = () => {
               />
             </div>
 
-            <div className="w-full">
-              <FormField
-                control={form.control}
-                name="businessDescription"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description *</FormLabel>
-                    <FormControl>
-                      <textarea
-                        className="focus:outline-none w-full h-24 p-2 border border-gray-300 rounded-md"
-                        placeholder="Business Description"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             {errorMessage && (
               <p className="text-base text-center font-semibold text-red-600">
                 {errorMessage}
@@ -240,7 +194,7 @@ const CreateBusiness = () => {
               {loading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                <span>Create Business</span>
+                <span>Add Business Location</span>
               )}
             </Button>
           </form>
@@ -250,4 +204,4 @@ const CreateBusiness = () => {
   );
 };
 
-export default CreateBusiness;
+export default AddBusinessLocation;
