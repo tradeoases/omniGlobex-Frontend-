@@ -11,6 +11,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "../../../components/ui/input";
@@ -32,7 +33,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { getBusinesses } from "@/service/apis/business-services";
 
 interface Props {
@@ -43,7 +48,20 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
   // const [fileProgress, setFileProgress] = useState<{ [key: string]: number }>(
   //   {}
   // );
+  // Disable scrolling when popover is open
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  useEffect(() => {
+    if (isPopoverOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
 
+    // Clean up on unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isPopoverOpen]);
   const [showRooms, setShowRooms] = useState<
     {
       countryId: string;
@@ -67,6 +85,8 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
     },
   });
 
+  const [successMessage, setSuccessMessage] = useState("");
+
   const onSubmit = async (values: z.infer<typeof createProductSchema>) => {
     try {
       const data: ICreateProduct = {
@@ -81,6 +101,11 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
       const response: AxiosResponse<any, any> = await createProduct(data);
       if (response.status === HttpStatusCode.Ok) {
         console.log(response.data);
+        form.reset();
+        setSuccessMessage("Product added successfully!");
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 3000);
       }
     } catch (error) {
       console.log(error);
@@ -208,7 +233,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
   // };
 
   return (
-    <div className="fixed top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
+    <div className="fixed cursor-pointer top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
       <div className="bg-white relative w-full lg:w-4/5 xl:w-2/5 mx-auto h-full rounded-xl p-4 py-8 md:p-8 ">
         <div className="flex justify-end">
           <span
@@ -218,7 +243,9 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
             <HiOutlineXMark />
           </span>
         </div>
-
+        {successMessage && (
+          <div className="mt-4 text-red-500">{successMessage}</div>
+        )}
         <p className="text-lg font-semibold">New Product</p>
         <div className="scrollbar pl-1 pr-3 md:px-3 overflow-y-scroll h-[73vh] w-full">
           <div>
@@ -233,6 +260,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
                     name="name"
                     render={({ field }) => (
                       <FormItem className="w-full">
+                        <FormLabel>Product Name *</FormLabel>
                         <FormControl>
                           <Input
                             type="text"
@@ -387,34 +415,32 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
                     </div>
                   )}
                   {countryLoading && <div>Loading showrooms...</div>}
-                  <Popover>
+                  <Popover onOpenChange={(isOpen) => setIsPopoverOpen(isOpen)}>
                     <PopoverTrigger>
-                      <div>Showrooms</div>
+                      <div className="cursor-pointer border py-2 rounded text-gray-600 text-sm">
+                        Select Showrooms
+                      </div>
                     </PopoverTrigger>
-                    <PopoverContent className="overflow-scroll">
-                      {showRooms.map((room) => (
-                        <div>
-                          {room.country}
-                          <Input
+                    <PopoverContent className="max-h-60 cursor-pointer w-64 overflow-y-auto bg-white shadow-lg rounded-md p-4 border border-gray-200">
+                      {/* Your scrollable content */}
+                      {showRooms.map((room, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-2"
+                        >
+                          <span>{room.country}</span>
+                          <input
                             type="checkbox"
-                            className="p-1 m-0"
-                            value={room.countryId}
-                            key={room.countryId}
-                            checked={showRooms.some(
-                              (r) =>
-                                r.countryId === room.countryId && r.selected
-                            )}
-                            onChange={(e) => {
-                              setShowRooms((prev) => {
-                                const isSelected = e.target.checked; // Get checkbox state
-                                const updatedRooms = prev.map((r) =>
-                                  r.countryId === e.target.value
-                                    ? { ...r, selected: isSelected } // Update selected state
+                            checked={room.selected}
+                            onChange={() =>
+                              setShowRooms((prev) =>
+                                prev.map((r, i) =>
+                                  i === index
+                                    ? { ...r, selected: !r.selected }
                                     : r
-                                );
-                                return updatedRooms;
-                              });
-                            }}
+                                )
+                              )
+                            }
                           />
                         </div>
                       ))}
