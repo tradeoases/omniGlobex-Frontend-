@@ -3,17 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { fetchCurrencies } from '../utils/api';
 import { getLocaleInfo } from '../utils/localeDetection';
 
-
 const supportedLanguages = [
-  { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },  
-  { code: 'es', name: 'Español', nativeName: 'Español', flag: '🇪🇸' },  
-  { code: 'ar', name: 'العربية', nativeName: 'العربية', flag: '🇦🇪' },  
-  { code: 'de', name: 'Deutsch', nativeName: 'Deutsch', flag: '🇩🇪' },  
-  { code: 'he', name: 'עברית', nativeName: 'עברית', flag: '🇮🇱' },     
-  { code: 'ko', name: '한국어', nativeName: '한국어', flag: '🇰🇷' },   
-  { code: 'pt', name: 'Português', nativeName: 'Português', flag: '🇵🇹' }, 
-  { code: 'zh-Hans', name: '中文 (简体)', nativeName: '中文 (简体)', flag: '🇨🇳' }, 
-  { code: 'zh-Hant', name: '中文 (繁體)', nativeName: '中文 (繁體)', flag: '🇹🇼' }, 
+  { code: 'en', name: 'English', nativeName: 'English', flag: '/flags/us.png' },
+  { code: 'es', name: 'Español', nativeName: 'Español', flag: '/flags/es.png' },
+  { code: 'ar', name: 'العربية', nativeName: 'العربية', flag: '/flags/ae.png' },
+  { code: 'de', name: 'Deutsch', nativeName: 'Deutsch', flag: '/flags/de.png' },
+  { code: 'he', name: 'עברית', nativeName: 'עברית', flag: '/flags/il.png' },
+  { code: 'ko', name: '한국어', nativeName: '한국어', flag: '/flags/kr.png' },
+  { code: 'pt', name: 'Português', nativeName: 'Português', flag: '/flags/pt.png' },
+  { code: 'zh-Hans', name: '中文 (简体)', nativeName: '中文 (简体)', flag: '/flags/cn.png' },
+  { code: 'zh-Hant', name: '中文 (繁體)', nativeName: '中文 (繁體)', flag: '/flags/tw.png' },
 ];
 
 interface CurrencyRates {
