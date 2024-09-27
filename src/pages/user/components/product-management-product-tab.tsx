@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse, HttpStatusCode } from "axios";
 
-import { getAllProductByUser, IProduct } from "@/service/apis/product-services"
+import { getAllProductByUser, IProduct } from "@/service/apis/product-services";
 import { Button } from "../../../components/ui/button";
 import { ProductCard } from "../../../components/product-card";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
-  const {data: products} = useQuery({
+  const { data: products } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
       const response: AxiosResponse<any, any> = await getAllProductByUser();
@@ -21,7 +21,6 @@ export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
       }
     },
   });
-  
 
   return (
     <div className="space-y-10 w-full">
@@ -35,7 +34,7 @@ export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
         {products ? (
           products
             .slice(0, 8)
-            .map((product:IProduct) => <ProductCard  {...product} />)
+            .map((product: IProduct) => <ProductCard {...product} />)
         ) : (
           <div>no product</div>
         )}
