@@ -12,7 +12,7 @@ const LanguageSelector: React.FC = () => {
   const options = useMemo(() => {
     return languages.map(lang => (
       <option key={lang.code} value={lang.code}>
-        {lang.flag} {lang.name} 
+        {lang.name} 
       </option>
     ));
   }, [languages]);
@@ -30,13 +30,21 @@ const LanguageSelector: React.FC = () => {
     setShowModal(false);
   };
 
+  const selectedLang = languages.find(lang => lang.code === selectedLanguage);
+
   return (
-    <>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      {selectedLang && (
+        <img
+          src={selectedLang.flag}
+          alt={`${selectedLang.name} flag`}
+          style={{ width: '24px', height: '16px', marginRight: '8px' }}
+        />
+      )}
       <select
         value={selectedLanguage}
         onChange={handleLanguageChange}
         aria-label={t('selectLanguage')}
-        style={{ fontFamily: 'Arial, sans-serif' }} 
       >
         {options}
       </select>
@@ -47,7 +55,7 @@ const LanguageSelector: React.FC = () => {
           onConfirm={confirmChange}
         />
       )}
-    </>
+    </div>
   );
 };
 
