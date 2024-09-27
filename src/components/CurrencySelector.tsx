@@ -1,3 +1,4 @@
+// src/components/CurrencySelector.tsx
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGlobalContext } from '../context/GlobalContext';
@@ -20,12 +21,12 @@ const CurrencySelector: React.FC = () => {
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCurrency = e.target.value;
     setPendingCurrency(newCurrency);
-    setShowModal(true);  // show confirmton modal
+    setShowModal(true);  // Show confirmation modal
   };
 
   const confirmChange = () => {
     if (pendingCurrency) {
-      setCurrency(pendingCurrency);  // ply the change
+      setCurrency(pendingCurrency);  // Apply the change
     }
     setShowModal(false);
   };
