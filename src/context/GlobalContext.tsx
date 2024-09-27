@@ -1,11 +1,30 @@
-import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
-import { getLocaleInfo } from '../utils/localeDetection';
 import { fetchCurrencies } from '../utils/api';
+import { getLocaleInfo } from '../utils/localeDetection';
+
+
+const supportedLanguages = [
+  { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },  
+  { code: 'es', name: 'Español', nativeName: 'Español', flag: '🇪🇸' },  
+  { code: 'ar', name: 'العربية', nativeName: 'العربية', flag: '🇦🇪' },  
+  { code: 'de', name: 'Deutsch', nativeName: 'Deutsch', flag: '🇩🇪' },  
+  { code: 'he', name: 'עברית', nativeName: 'עברית', flag: '🇮🇱' },     
+  { code: 'ko', name: '한국어', nativeName: '한국어', flag: '🇰🇷' },   
+  { code: 'pt', name: 'Português', nativeName: 'Português', flag: '🇵🇹' }, 
+  { code: 'zh-Hans', name: '中文 (简体)', nativeName: '中文 (简体)', flag: '🇨🇳' }, 
+  { code: 'zh-Hant', name: '中文 (繁體)', nativeName: '中文 (繁體)', flag: '🇹🇼' }, 
+];
 
 interface CurrencyRates {
   [key: string]: number;
+}
+
+interface Language {
+  code: string;
+  name: string;
+  nativeName: string;
+  flag: string;
 }
 
 interface GlobalContextType {
@@ -14,7 +33,7 @@ interface GlobalContextType {
   selectedLanguage: string;
   setLanguage: (language: string) => void;
   currencies: CurrencyRates;
-  languages: { code: string; name: string; flag: string }[];
+  languages: Language[];
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -27,12 +46,12 @@ export const useGlobalContext = () => {
   return context;
 };
 
-export const GlobalProvider = ({ children }: { children: ReactNode }) => {
+export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [currencies, setCurrencies] = useState<CurrencyRates>({});
-  const [languages, setLanguages] = useState<{ code: string; name: string; flag: string }[]>([]);
+  const [languages] = useState<Language[]>(supportedLanguages); // Use the predefined list
 
   useEffect(() => {
     const init = async () => {
@@ -41,42 +60,23 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setSelectedCurrency(currency);
         setSelectedLanguage(language);
 
-        // safely initialize i18n and change language
         if (i18n.isInitialized) {
           i18n.changeLanguage(language);
         } else {
           i18n.on('initialized', () => i18n.changeLanguage(language));
         }
 
-        // Fetch available currencies
         const availableCurrencies = await fetchCurrencies();
         if (availableCurrencies) {
           setCurrencies(availableCurrencies);
         }
-
-        // Fetch languages from REST Countries API
-        const response = await axios.get('https://restcountries.com/v3.1/all');
-        const languagesData = response.data.map((country: any) => ({
-          code: `${country.cca2}-${Object.keys(country.languages || {})[0] || 'en'}`, // Unique key: country code + language code
-          name: Object.values(country.languages || {})[0] || 'English',
-          flag: country.flags?.svg || '',
-        })).filter((lang: any) => lang.code && lang.name);
-
-        // Add English and Arabic at the top
-        const prioritizedLanguages = [
-          { code: 'en', name: 'English', flag: 'path-to-english-flag' },
-          { code: 'ar', name: 'Arabic', flag: 'path-to-arabic-flag' },
-          ...languagesData
-        ];
-
-        setLanguages(prioritizedLanguages);
       } catch (error) {
         console.error('Error during initialization:', error);
       }
     };
 
     init();
-  }, []);
+  }, [i18n]);
 
   const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language);
