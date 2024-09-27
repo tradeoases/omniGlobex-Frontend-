@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { RecoilState, atom } from "recoil";
 
 export interface IRole {
@@ -10,9 +11,12 @@ export interface IRole {
 export interface IUser {
   user_id: string;
   country_id: string;
+  city: string;
   email: string;
   active: number;
   fullname: string;
+  phonenumber: string;
+  zipCode: string;
   status: number;
   is_verified: number;
   createdAt: string;
@@ -51,7 +55,10 @@ export const userStore: RecoilState<IUser | null> = atom<IUser | null>({
   default: null,
 });
 
-export const EmailStore: RecoilState<string | null> = atom<string | null>({
+export const EmailStore: RecoilState<{
+  email: string | null;
+  id: string | null;
+}> = atom<{ email: string | null; id: string | null }>({
   key: "email-store",
-  default: null,
+  default: { email: null, id: null },
 });

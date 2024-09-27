@@ -69,7 +69,7 @@ export const SearchBar = () => {
         </SelectContent>
       </Select>
       <div className="bg-main py-3 px-4 xl:px-6">
-        <p className="font-bold text-xs xl:text-sm">Search</p>
+        <p className="font-bold text-xs xl:text-sm cursor-pointer">Search</p>
       </div>
     </div>
   );

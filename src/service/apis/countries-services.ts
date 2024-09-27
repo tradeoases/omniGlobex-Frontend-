@@ -6,6 +6,8 @@ export interface ICountry {
   alpha_2: string;
   alpha_3: string;
   phone_code: string;
+  currency: string;
+  currencyName:string;
   createdAt: Date;
   updatedAt: Date;
 }

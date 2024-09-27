@@ -37,6 +37,7 @@ export const NavBarPagesItem = () => {
 
 const otherPages = [
   { title: "Privacy Policy", route: "privacy-policy" },
+  { title: "Cookie Policy", route: "/cookie-policy" },
   { title: "Terms and Conditions", route: "terms-condition" },
   { title: "FAQ", route: "/faq" },
 ];

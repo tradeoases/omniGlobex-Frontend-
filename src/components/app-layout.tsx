@@ -1,4 +1,4 @@
-import TopBanner from "@/components/TopBanner";
+// import TopBanner from "@/components/TopBanner";
 import TopBar from "@/components/TopBar";
 import NavBar from "@/components/NavBar";
 import Sidemenu from "@/components/Sidemenu";
@@ -22,9 +22,8 @@ const AppLayout: React.FC<Props> = ({ children }) => {
       <section className="relative flex w-full flex-col items-start justify-start">
         <Sidemenu />
         <DashboardSideMenu />
-        <TopBanner />
-        <TopBar />
         <NavBar />
+        <TopBar />
         {children}
         <Footer />
       </section>
