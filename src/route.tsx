@@ -25,6 +25,10 @@ import BlogDetails from "./pages/Blogs/components/blog-details";
 import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
 import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
 import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
+import DashboardLayout from "./pages/user/DashboardLayout";
+import { Overview } from "./components/profile-dashboard/overview";
+import { PersonalSection } from "./components/profile-personal-section";
+import BuyerProfile from "./pages/user/buyer-profile/BuyerProfile";
 
 export default function RoutesConfig() {
   return (
@@ -53,7 +57,13 @@ export default function RoutesConfig() {
 
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<PersonalSection userData />} />
+
+        <Route path="buyer" element={<BuyerProfile />} />
+
+        <Route path="supplier" element={<ProfilePage />} />
+      </Route>
       <Route path="/single-product" element={<SingleProduct />} />
       <Route path="/show-room" element={<ShowRoomPage />} />
       <Route path="cookie-policy" element={<CookiesPolicyPage />} />

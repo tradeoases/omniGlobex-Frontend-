@@ -118,7 +118,7 @@ const NavBar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-fit">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate(`/profile`)}>
+                  <DropdownMenuItem onClick={() => navigate(`/dashboard`)}>
                     {userData.fullname}
                   </DropdownMenuItem>
                   <DropdownMenuItem

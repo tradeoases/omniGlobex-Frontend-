@@ -13,9 +13,9 @@ import {
 import { PiBowlFood } from "react-icons/pi";
 import { TbBabyBottle, TbTruckReturn, TbSubscript } from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
-import {  FaUser } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
-import { IoBagHandle,  IoLogOut } from "react-icons/io5";
+import { IoBagHandle, IoLogOut } from "react-icons/io5";
 import { MdDashboard, MdReviews } from "react-icons/md";
 import card1 from "@/assets/card-1.svg";
 import card2 from "@/assets/card-2.svg";
@@ -63,7 +63,10 @@ export type TActiveMenu =
   | "Business"
   | "Change Password"
   | "Support Ticket"
-  | "Logout";
+  | "Logout"
+  | "Personal Info"
+  | "Supplier Dashboard"
+  | "Buyer's Dashboard";
 
 export interface IDashboardNav {
   icon: JSX.Element;
@@ -79,7 +82,7 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <FaHeart />, title: "Cart" },
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
-  { icon: <TbSubscript />, title: 'Subscription'},
+  { icon: <TbSubscript />, title: "Subscription" },
   { icon: <MdReviews />, title: "Business" },
   { icon: <HiLockClosed />, title: "Change Password" },
   { icon: <IoLogOut />, title: "Logout" },

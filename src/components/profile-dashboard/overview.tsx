@@ -5,11 +5,7 @@ import { INewOrder } from "@/store/order-store";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "@/service/apis/user-services";
 
-interface Props {
-  userData: IUser | null;
-  newOrderData: INewOrder[];
-}
-export const Overview: React.FC<Props> = () => {
+export const Overview = () => {
   const {
     data: personalInfo,
     isLoading: personalInfoLoading,
@@ -21,7 +17,7 @@ export const Overview: React.FC<Props> = () => {
       const response = await getUserInfo();
       if (response.status === 200) {
         const finalUserData = response.data.data;
-        console.log({finalUserData})
+        console.log({ finalUserData });
         const personalInfo = [
           { key: "Name", value: finalUserData?.fullname || "N/A" },
           { key: "Email", value: finalUserData?.email || "N/A" },
@@ -59,7 +55,9 @@ export const Overview: React.FC<Props> = () => {
 
           <div className="space-y-4">
             {personalInfoLoading && <div>Personal Information loading...</div>}
-            {personalInfoErrored && <div>Failed to load persoanl information</div>}
+            {personalInfoErrored && (
+              <div>Failed to load persoanl information</div>
+            )}
             {isSuccessPersonal &&
               personalInfo?.map((info, i) => (
                 <div className="text-base grid grid-cols-4" key={i}>
@@ -67,7 +65,7 @@ export const Overview: React.FC<Props> = () => {
                   <span className="col-span-3">{info.value}</span>
                 </div>
               ))}
-              {}
+            {}
           </div>
         </div>
 
