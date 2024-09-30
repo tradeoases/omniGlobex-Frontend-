@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRecoilState } from "recoil";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { Input } from "@/components/ui/input";
@@ -18,8 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { getAllCountries, ICountry } from "@/service/apis/countries-services";
-import { AllCountriesStore } from "@/store/country-store";
+import {
+  getAllCountryInContinent,
+  ICountry,
+} from "@/service/apis/countries-services";
 import {
   Form,
   FormControl,
@@ -30,6 +31,7 @@ import {
 } from "@/components/ui/form";
 import { createBusiness } from "@/service/apis/business-services";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 // Define the schema for validation using Zod
 const createBusinessSchema = z.object({
@@ -45,9 +47,14 @@ const createBusinessSchema = z.object({
 type CreateBusinessForm = z.infer<typeof createBusinessSchema>;
 
 const CreateBusiness = () => {
-  const [countries, setCountries] = useRecoilState<ICountry[] | null>(
-    AllCountriesStore
-  );
+  const [continent, setContinent] = useState<
+    | "ASIA"
+    | "EUROPE"
+    | "NORTH AMERICA"
+    | "SOUTH AMERICA"
+    | "AFRICA"
+    | "AUSTRALIA/OCEANIA"
+  >("EUROPE");
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage] = useState<boolean>(false);
@@ -63,41 +70,43 @@ const CreateBusiness = () => {
     },
   });
 
+  const {
+    data: countries,
+    isError: isCountryError,
+    error: countryError,
+    isLoading: countryLoading,
+    isSuccess: countrySuccess,
+  } = useQuery({
+    queryKey: ["countries-by-continent", continent],
+    queryFn: async () => {
+      const response: AxiosResponse<any, any> = await getAllCountryInContinent(
+        continent
+      );
+      if (response.status === HttpStatusCode.Ok) {
+        return response.data.data;
+      }
+    },
+  });
+
   const onSubmit = async (values: CreateBusinessForm) => {
     try {
       setLoading(true);
       console.log("Form Values: ", values);
 
       const response: AxiosResponse<any, any> = await createBusiness(values);
-     
+
       if (response.status === HttpStatusCode.Created) {
         form.reset();
         navigate("/profile");
       }
 
-      console.log(response)
+      console.log(response);
 
       setLoading(false);
     } catch (error) {
-
       setLoading(false);
-      console.log(error)
+      console.log(error);
       setErrorMessage("Failed to create business");
-    }
-  };
-
-  useEffect(() => {
-    !countries && fetchAllCountries();
-  }, []);
-
-  const fetchAllCountries = async () => {
-    try {
-      const response: AxiosResponse<any, any> = await getAllCountries();
-      if (response.status === HttpStatusCode.Ok) {
-        setCountries(response.data.data);
-      }
-    } catch (error) {
-      setLoading(false);
     }
   };
 
@@ -132,38 +141,90 @@ const CreateBusiness = () => {
               />
             </div>
 
-            <div className="w-full">
-              <FormField
-                control={form.control}
-                name="countryId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Country *</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a Country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {countries &&
-                            countries.map((country) => (
-                              <SelectItem
-                                key={country.country_id}
-                                value={country.country_id}
-                              >
-                                {country.name}
-                              </SelectItem>
-                            ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
+              {countryLoading && <div>Loading...</div>}
+              {isCountryError && (
+                <div>
+                  <h1>{countryError.name}</h1>
+                  <p>{countryError.message}</p>
+                </div>
+              )}
+              {countrySuccess && (
+                <div className="w-full">
+                  <FormLabel>Continent</FormLabel>
+                  <Select
+                    onValueChange={(
+                      e:
+                        | "ASIA"
+                        | "EUROPE"
+                        | "NORTH AMERICA"
+                        | "SOUTH AMERICA"
+                        | "AFRICA"
+                        | "AUSTRALIA/OCEANIA"
+                    ) => {
+                      form.setValue("countryId", "");
+                      setContinent(e);
+                    }}
+                    defaultValue={continent}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a Continent" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="ASIA">ASIA</SelectItem>
+                        <SelectItem value="EUROPE">EUROPE</SelectItem>
+                        <SelectItem value="NORTH AMERICA">
+                          NORTH AMERICA
+                        </SelectItem>
+                        <SelectItem value="SOUTH AMERICA">
+                          SOUTH AMERICA
+                        </SelectItem>
+                        <SelectItem value="AFRICA">AFRICA</SelectItem>
+                        <SelectItem disabled value="AUSTRALIA/OCEANIA">
+                          AUSTRALIA/OCEANIA
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              {countrySuccess && (
+                <div className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="countryId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country *</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a Country" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {countries &&
+                                countries.map((country: ICountry) => (
+                                  <SelectItem
+                                    key={country.country_id}
+                                    value={country.country_id}
+                                  >
+                                    {country.name}
+                                  </SelectItem>
+                                ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
             </div>
             <div className="w-full">
               <FormField

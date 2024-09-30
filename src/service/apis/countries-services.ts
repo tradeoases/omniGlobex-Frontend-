@@ -16,3 +16,6 @@ export const getAllCountries = async () => await request.get(`country`);
 
 export const getOneCountry = async (country_id: string) =>
   await request.get(`country/${country_id}`);
+
+export const getAllCountryInContinent = async (continent: string) =>
+  await request.get(`country/continent/${continent}`);

@@ -18,7 +18,10 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { getAllCountries, ICountry } from "@/service/apis/countries-services";
+import {
+  getAllCountryInContinent,
+  ICountry,
+} from "@/service/apis/countries-services";
 import { signupSchema } from "@/data/schemas/users-schema";
 import {
   Form,
@@ -32,23 +35,35 @@ import { IUserSignup, signup } from "@/service/apis/user-services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { EmailStore } from "@/store/user-store";
+import { useState } from "react";
 
 const IntegratedSignup = () => {
+  const [continent, setContinent] = useState<
+    | "ASIA"
+    | "EUROPE"
+    | "NORTH AMERICA"
+    | "SOUTH AMERICA"
+    | "AFRICA"
+    | "AUSTRALIA/OCEANIA"
+  >("EUROPE");
+
   const {
     data: countries,
     isError: isCountryError,
     error: countryError,
     isLoading: countryLoading,
+    isSuccess: countrySuccess,
   } = useQuery({
-    queryKey: ["countries"],
+    queryKey: ["countries-by-continent", continent],
     queryFn: async () => {
-      const response: AxiosResponse<any, any> = await getAllCountries();
+      const response: AxiosResponse<any, any> = await getAllCountryInContinent(
+        continent
+      );
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data;
       }
     },
   });
-
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -63,59 +78,8 @@ const IntegratedSignup = () => {
     },
   });
 
-  // const {
-  //   mutate: onSubmit,
-
-  //   error: mutationError,
-  //   isError: isMutationError,
-  //   isSuccess: mutationSuccess,
-
-  // } = useMutation({
-  //   mutationKey: [],
-  //   mutationFn: async (values: z.infer<typeof signupSchema>) => {
-  //     let timeoutKey: NodeJS.Timeout | undefined;
-  //     const {
-  //       address,
-  //       email,
-  //       fullname,
-  //       city,
-  //       password,
-  //       phonenumber,
-  //       country_id,
-  //     } = values;
-  //     const data: IUserSignup = {
-  //       address,
-  //       fullname: fullname,
-  //       email,
-  //       password,
-  //       phoneNumber: phonenumber,
-  //       city,
-  //       countryId: country_id,
-  //     };
-
-  //     const response: AxiosResponse<any, any> = await signup(data);
-
-  //     if (response.status === HttpStatusCode.Created) {
-  //       form.reset();
-
-  //       timeoutKey = setTimeout(() => {
-  //         form.reset();
-  //       }, 2000);
-
-  //       return () => clearTimeout(timeoutKey);
-  //     }
-  //   },
-  //   onSuccess: (data) => {
-  //     console.log(data)
-  //   },
-  //   onError: (e: any) => {
-  //     console.log(e);
-  //     return new Error(e.response?.data?.message || e.message);
-  //   },
-  // });
-
   const [, setEmail] = useRecoilState(EmailStore);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     mutate: onSubmit,
     error: mutationError,
@@ -159,26 +123,13 @@ const IntegratedSignup = () => {
       setTimeout(() => {
         form.reset();
       }, 2000);
-      navigate('/verify-email')
+      navigate("/verify-email");
     },
     onError: (e: any) => {
       console.log(e);
       return new Error(e.response?.data?.message || e.message);
     },
   });
-
-  if (countryLoading) {
-    return <div>Countries Loading...</div>;
-  }
-
-  if (isCountryError) {
-    return (
-      <div>
-        <h1>{countryError.name}</h1>
-        <p>{countryError.message}</p>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full space-y-8 mb-10">
@@ -327,38 +278,89 @@ const IntegratedSignup = () => {
                 </div>
               </div>
 
-              <div className="w-full">
-                <FormField
-                  control={form.control}
-                  name="country_id"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Country</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a Country" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {countries &&
-                              countries.map((country: ICountry) => (
-                                <SelectItem
-                                  key={country.country_id}
-                                  value={country.country_id}
-                                >
-                                  {country.name}
-                                </SelectItem>
-                              ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
+                {countryLoading && <div>Loading...</div>}
+                {isCountryError && (
+                  <div>
+                    <h1>{countryError.name}</h1>
+                    <p>{countryError.message}</p>
+                  </div>
+                )}
+                {countrySuccess && (
+                  <div className="w-full">
+                    <FormLabel>Continent</FormLabel>
+                    <Select
+                      onValueChange={(
+                        e:
+                          | "ASIA"
+                          | "EUROPE"
+                          | "NORTH AMERICA"
+                          | "SOUTH AMERICA"
+                          | "AFRICA"
+                          | "AUSTRALIA/OCEANIA"
+                      ) => {
+                        form.setValue("country_id", "");
+                        setContinent(e);
+                      }}
+                      defaultValue={continent}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a Continent" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="ASIA">ASIA</SelectItem>
+                          <SelectItem value="EUROPE">EUROPE</SelectItem>
+                          <SelectItem value="NORTH AMERICA">
+                            NORTH AMERICA
+                          </SelectItem>
+                          <SelectItem value="SOUTH AMERICA">
+                            SOUTH AMERICA
+                          </SelectItem>
+                          <SelectItem value="AFRICA">AFRICA</SelectItem>
+                          <SelectItem disabled value="AUSTRALIA/OCEANIA">
+                            AUSTRALIA/OCEANIA
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                {countrySuccess && (
+                  <div className="w-full">
+                    <FormField
+                      control={form.control}
+                      name="country_id"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Country" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {countries &&
+                                  countries.map((country: ICountry) => (
+                                    <SelectItem
+                                      key={country.country_id}
+                                      value={country.country_id}
+                                    >
+                                      {country.name}
+                                    </SelectItem>
+                                  ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
@@ -406,13 +408,23 @@ const IntegratedSignup = () => {
               </div>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Accept terms and conditions
-                </label>
+                <FormField
+                  control={form.control}
+                  name="termsAndConditions"
+                  render={({ field }) => (
+                    <FormItem className="flex">
+                      <FormControl>
+                        <Checkbox
+                          className="p-0"
+                          id="termsAndConditions"
+                          onCheckedChange={field.onChange}
+                          checked={field.value}
+                        />
+                      </FormControl>
+                      <FormLabel>Accept terms and conditions</FormLabel>
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">

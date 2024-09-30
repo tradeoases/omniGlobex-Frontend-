@@ -67,6 +67,10 @@ export const signupSchema = z
 
     email: z.string().email("Invalid email"),
 
+    termsAndConditions: z.boolean().refine((val) => val === true, {
+      message: "You must accept the terms and conditions.",
+    }),
+
     password: z.string().min(8, "Password must be at least 8 characters"),
 
     confirmPassword: z
@@ -103,5 +107,4 @@ export const passwordResetSchema = z.object({
 export const addBusinessUser = z.object({
   username: z.string().min(1, "User name is required"),
   useremail: z.string().min(1, "User email is required"),
-
 });

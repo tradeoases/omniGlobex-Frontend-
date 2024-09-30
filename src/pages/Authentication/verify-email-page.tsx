@@ -62,7 +62,7 @@ const VerifyEmailPage = () => {
     }
 
     setToken(token);
-    handleConfirmEmail();
+    handleConfirmEmail(token);
   }, []);
 
   useEffect(() => {
@@ -85,14 +85,19 @@ const VerifyEmailPage = () => {
     return () => clearTimeout(timeoutKey);
   }, []);
 
-  const handleConfirmEmail = async () => {
+  const handleConfirmEmail = async (token?: string | null) => {
     let response: AxiosResponse<any, any>;
     try {
-      response = await emailVerification({
-        token: token as any,
-        key: code,
-        id: email.id as any,
-      });
+      response = await emailVerification(
+        token
+          ? {
+              token: token as any,
+            }
+          : {
+              key: code,
+              id: email.id as any,
+            }
+      );
 
       if (response.status === HttpStatusCode.Ok) {
         setVerified(true);
@@ -103,6 +108,7 @@ const VerifyEmailPage = () => {
       }
     } catch (error) {
       if (isAxiosError(error)) {
+        console.log(error.response?.data.message);
         setErrorMessage(error.response?.data.message);
       }
     }
@@ -124,8 +130,6 @@ const VerifyEmailPage = () => {
         setLoading(false);
         setResendSuccess(true);
 
-        console.log(response.data.data);
-
         const timeoutKey: NodeJS.Timeout | undefined = setTimeout(() => {
           setErrorMessage(null);
           setLoading(false);
@@ -141,6 +145,8 @@ const VerifyEmailPage = () => {
       }
     }
   };
+
+  console.log(errorMessage);
 
   return (
     <div className="w-10/12 p-8 xl:w-8/12 mx-auto flex items-center flex-col justify-center my-8">
@@ -163,13 +169,25 @@ const VerifyEmailPage = () => {
               value={code}
               className="py-4"
             />
+            {errorMessage && (
+              <p className="text-red-500 text-center">{errorMessage}</p>
+            )}
             <Button
-              onClick={handleConfirmEmail}
+              onClick={() => handleConfirmEmail(token)}
               size="sm"
               className="w-full py-4"
             >
               <span>Verify</span>
             </Button>
+            {/* <div>
+              <div className="flex items-center justify-center">
+                {!ok ? (
+                  <AiOutlineLoading3Quarters className="animate-spin text-4xl" />
+                ) : (
+                  <HiOutlineCheck className="text-4xl text-emerald-600" />
+                )}
+              </div>
+            </div> */}
           </div>
         )}
 
@@ -185,13 +203,15 @@ const VerifyEmailPage = () => {
                 {resendError && (
                   <>
                     <p className="text-red-500 text-center">{resendError}</p>
-                    {errorMessage === LOGIN_TO_RESEND_EMAIL && (
+                    {errorMessage === LOGIN_TO_RESEND_EMAIL ? (
                       <p>
                         go to{" "}
                         <Link to="/login" className="underline">
                           Login
                         </Link>
                       </p>
+                    ) : (
+                      <p className="text-red-500 text-center">{errorMessage}</p>
                     )}
                   </>
                 )}
@@ -229,6 +249,3 @@ const VerifyEmailPage = () => {
 };
 
 export default VerifyEmailPage;
-
-
-
