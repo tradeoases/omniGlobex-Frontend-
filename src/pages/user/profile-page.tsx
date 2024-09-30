@@ -15,7 +15,6 @@ import {
   DashboardSideMenuStore,
 } from "@/store/side-menu-store";
 import { BuyerOrder } from "@/components/buyer-order";
-import { PersonalSection } from "@/components/profile-personal-section";
 import { getUserInfo } from "@/service/apis/user-services";
 import { getAllUserOrders } from "@/service/apis/order-service";
 import { ReviewsDashboard } from "@/components/reviews-dashbaord";
@@ -24,13 +23,13 @@ import BusinessPage from "./pages/BusinessPage";
 import Subscriptions from "./pages/Subscriptions";
 import { SearchBar } from "@/components/search-bar";
 import Messages from "./supplier-profile/Messages";
-import { IoNotificationsCircleOutline } from "react-icons/io5";
-import { NotificationsIcon } from "./buyer-profile/BuyerProfile";
+import NotificationsIcon from "./buyer-profile/NotificationsIcon";
 import { SelectShowroom } from "@/components/select-show-room";
 import SupplierProfile from "./supplier-profile/SupplierProfile";
 import AnalyticsAndReporting from "./supplier-profile/Analytics";
 
 const ProfilePage = () => {
+  // Recoil states
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [newOrderData, setNewOrderData] =
     useRecoilState<INewOrder[]>(NewOrderStore);
@@ -40,9 +39,12 @@ const ProfilePage = () => {
   const setSidemenu: SetterOrUpdater<boolean> = useSetRecoilState<boolean>(
     DashboardSideMenuStore
   );
+
+  // Local state
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
   const navigate = useNavigate();
 
+  // Fetch user information
   const fetchUserInfo = async () => {
     try {
       const response: AxiosResponse<any, any> = await getUserInfo();
@@ -54,6 +56,7 @@ const ProfilePage = () => {
     }
   };
 
+  // Fetch all user orders
   const fetchAllUserOrders = async () => {
     try {
       const response: AxiosResponse<any, any> = await getAllUserOrders();
@@ -65,12 +68,12 @@ const ProfilePage = () => {
     }
   };
 
+  // Initial data fetch
   useEffect(() => {
     const fetchInitialData = async () => {
       if (!userData) {
         await fetchUserInfo();
       }
-
       if (newOrderData.length === 0) {
         await fetchAllUserOrders();
       }
@@ -82,6 +85,7 @@ const ProfilePage = () => {
     }
   }, [isMounted, userData, newOrderData.length]);
 
+  // Logout handler
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUserData(null);
@@ -91,6 +95,7 @@ const ProfilePage = () => {
     navigate(`/`);
   };
 
+  // Loading state
   if (!userData || !newOrderData) {
     return <div>Loading...</div>;
   }
@@ -128,7 +133,7 @@ const ProfilePage = () => {
           >
             <HiBars3BottomLeft className="text-4xl" />
           </Button>
-          <p className=" flex items-center gap-2">
+          <p className="flex items-center gap-2">
             <SearchBar />
             <SelectShowroom />
             <div className="items-center space-x-4">
@@ -142,6 +147,7 @@ const ProfilePage = () => {
           </p>
         </div>
 
+        {/* Active Menu Content */}
         {activeMenu === "Dashboard" && (
           <div className="p-6 bg-white rounded shadow-sm">
             <Overview userData={userData} newOrderData={newOrderData || []} />

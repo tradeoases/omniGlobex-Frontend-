@@ -17,7 +17,7 @@ const SupplierProfile = () => {
   };
 
   return (
-    <div className="w-full col-span-11">
+    <div className="w-full max-w-full px-4 sm:px-6 md:px-8 lg:px-10">
       {/* Company Profile Section */}
       <section className="w-full">
         <h2 className="text-xl font-semibold mb-4">Company Profile</h2>
