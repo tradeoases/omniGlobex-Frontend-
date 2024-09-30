@@ -27,8 +27,8 @@ import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
 import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
-import { PersonalSection } from "./components/profile-personal-section";
-import BuyerProfile from "./pages/user/buyer-profile/BuyerProfile";
+
+import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 
 export default function RoutesConfig() {
   return (
@@ -60,7 +60,7 @@ export default function RoutesConfig() {
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Overview userData />} />
 
-        <Route path="buyer" element={<BuyerProfile />} />
+        <Route path="buyer" element={<BuyerDashboard />} />
 
         <Route path="supplier" element={<ProfilePage />} />
       </Route>
