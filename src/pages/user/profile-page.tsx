@@ -22,6 +22,13 @@ import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 import ChangePassword from "@/components/change-password";
 import BusinessPage from "./pages/BusinessPage";
 import Subscriptions from "./pages/Subscriptions";
+import { SearchBar } from "@/components/search-bar";
+import Messages from "./supplier-profile/Messages";
+import { IoNotificationsCircleOutline } from "react-icons/io5";
+import { NotificationsIcon } from "./buyer-profile/BuyerProfile";
+import { SelectShowroom } from "@/components/select-show-room";
+import SupplierProfile from "./supplier-profile/SupplierProfile";
+import AnalyticsAndReporting from "./supplier-profile/Analytics";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -89,15 +96,15 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="w-10/12 xl:w-8/12 relative mx-auto py-12 flex">
+    <div className="p-4 flex">
       {/* Sidebar */}
-      <div className="hidden lg:block w-1/4 border-r bg-white px-4">
+      <div className="hidden lg:block bg-white px-4">
         {navigations.map((nav, i) => (
           <div
             key={i}
             onClick={() => {
               setActiveMenu(nav.title);
-              if (nav.title === `Logout`) handleLogout(); 
+              if (nav.title === `Logout`) handleLogout();
             }}
             className={`w-full text-xs cursor-pointer py-4 flex items-center gap-x-5 ${
               activeMenu === nav.title ? "text-black" : "text-gray-500"
@@ -110,7 +117,7 @@ const ProfilePage = () => {
       </div>
 
       {/* Active Component Area */}
-      <div className="w-3/4 p-6 space-y-8">
+      <div className="w-full p-6 space-y-4">
         <div className="w-full flex items-center gap-x-8 lg:gap-0">
           <Button
             className="lg:hidden p-1 border shadow-none"
@@ -121,15 +128,23 @@ const ProfilePage = () => {
           >
             <HiBars3BottomLeft className="text-4xl" />
           </Button>
-          <p className="text-xl font-semibold">Your Dashboard</p>
+          <p className=" flex items-center gap-2">
+            <SearchBar />
+            <SelectShowroom />
+            <div className="items-center space-x-4">
+              <span className="relative">
+                <NotificationsIcon />
+                <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
+                  3
+                </span>
+              </span>
+            </div>
+          </p>
         </div>
 
         {activeMenu === "Dashboard" && (
           <div className="p-6 bg-white rounded shadow-sm">
-            <Overview
-              userData={userData}
-              newOrderData={newOrderData || []}
-            />
+            <Overview userData={userData} newOrderData={newOrderData || []} />
           </div>
         )}
         {activeMenu === "Products" && (
@@ -137,14 +152,19 @@ const ProfilePage = () => {
             <ProductManagement />
           </div>
         )}
-        {activeMenu === "Personal" && (
-          <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
-            <PersonalSection userData={userData} />
+        {activeMenu === "Supplier Profile" && (
+          <div className="p-6 bg-white rounded shadow-sm">
+            <SupplierProfile />
           </div>
         )}
         {activeMenu === "Order" && (
           <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
             <BuyerOrder />
+          </div>
+        )}
+        {activeMenu === "Analytics" && (
+          <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
+            <AnalyticsAndReporting />
           </div>
         )}
         {activeMenu === "Change Password" && (
@@ -165,6 +185,11 @@ const ProfilePage = () => {
         {activeMenu === "Business" && (
           <div className="p-6 bg-white rounded shadow-sm">
             <BusinessPage />
+          </div>
+        )}
+        {activeMenu === "Messages" && (
+          <div className="p-6 bg-white rounded shadow-sm">
+            <Messages />
           </div>
         )}
       </div>

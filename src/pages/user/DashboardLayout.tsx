@@ -2,14 +2,15 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
   return (
-    <div className="w-10/12 xl:w-8/12 relative mx-auto py-12">
-      
+    <div className="p-4 sm:p-6 md:p-8 lg:p-10">
       {/* Horizontal Navbar */}
-      <div className="flex justify-around border-b pb-4 mb-6">
+      <div className="flex flex-wrap justify-between md:justify-around border-b pb-4 mb-6 space-y-2 md:space-y-0">
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
-            `text-lg font-medium ${isActive ? "text-black" : "text-gray-500"}`
+            `text-sm sm:text-base md:text-lg font-medium ${
+              isActive ? "text-black" : "text-gray-500"
+            }`
           }
         >
           Personal Info
@@ -17,7 +18,9 @@ const DashboardLayout = () => {
         <NavLink
           to="supplier"
           className={({ isActive }) =>
-            `text-lg font-medium ${isActive ? "text-black" : "text-gray-500"}`
+            `text-sm sm:text-base md:text-lg font-medium ${
+              isActive ? "text-black" : "text-gray-500"
+            }`
           }
         >
           Supplier Dashboard
@@ -25,7 +28,9 @@ const DashboardLayout = () => {
         <NavLink
           to="buyer"
           className={({ isActive }) =>
-            `text-lg font-medium ${isActive ? "text-black" : "text-gray-500"}`
+            `text-sm sm:text-base md:text-lg font-medium ${
+              isActive ? "text-black" : "text-gray-500"
+            }`
           }
         >
           Buyer's Dashboard
@@ -33,7 +38,7 @@ const DashboardLayout = () => {
       </div>
 
       {/* Content area for active component */}
-      <div>
+      <div className="w-full">
         <Outlet />
       </div>
     </div>
