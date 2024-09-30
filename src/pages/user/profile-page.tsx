@@ -97,7 +97,7 @@ const ProfilePage = () => {
             key={i}
             onClick={() => {
               setActiveMenu(nav.title);
-              if (nav.title === `Logout`) handleLogout();
+              if (nav.title === `Logout`) handleLogout(); 
             }}
             className={`w-full text-xs cursor-pointer py-4 flex items-center gap-x-5 ${
               activeMenu === nav.title ? "text-black" : "text-gray-500"
