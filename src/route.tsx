@@ -58,7 +58,7 @@ export default function RoutesConfig() {
       <Route path="/all-products" element={<AllProductsPage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<PersonalSection userData />} />
+        <Route index element={<Overview userData />} />
 
         <Route path="buyer" element={<BuyerProfile />} />
 

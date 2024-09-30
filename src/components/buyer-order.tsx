@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 
 export const BuyerOrder = () => {
   return (
-    <div className="col-span-3 no-scrollbars relative w-full overflow-x-auto">
+    <div className="flex items-center gap-2 container w-full p-6">
       <table className="w-full  text-sm text-left text-gray-500 dark:text-gray-400">
         <tbody className="">
           <tr className="text-base text-gray-500 border-t whitespace-nowrap px-2 border-b default-border-bottom">

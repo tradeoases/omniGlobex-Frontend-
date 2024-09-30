@@ -11,7 +11,12 @@ import {
   MdOutlineSportsBaseball,
 } from "react-icons/md";
 import { PiBowlFood } from "react-icons/pi";
-import { TbBabyBottle, TbTruckReturn, TbSubscript } from "react-icons/tb";
+import {
+  TbBabyBottle,
+  TbTruckReturn,
+  TbSubscript,
+  TbMessageCircle2Filled,
+} from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
@@ -53,7 +58,7 @@ export enum MessageText {
 
 export type TActiveMenu =
   | "Dashboard"
-  | "Personal"
+  | "Supplier Profile"
   | "Products"
   | "Payment Method"
   | "Order"
@@ -65,7 +70,9 @@ export type TActiveMenu =
   | "Support Ticket"
   | "Logout"
   | "Personal Info"
+  | "Messages"
   | "Supplier Dashboard"
+  | "Analytics"
   | "Buyer's Dashboard";
 
 export interface IDashboardNav {
@@ -75,7 +82,7 @@ export interface IDashboardNav {
 
 export const dashboardNavs: IDashboardNav[] = [
   { icon: <MdDashboard />, title: "Dashboard" },
-  { icon: <FaUser />, title: "Personal" },
+  { icon: <FaUser />, title: "Supplier Profile" },
   { icon: <IoBagHandle />, title: "Products" },
   // { icon: <IoCard />, title: "Payment Method" },
   { icon: <BsFillCartCheckFill />, title: "Order" },
@@ -83,7 +90,9 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
   { icon: <TbSubscript />, title: "Subscription" },
+  { icon: <TbMessageCircle2Filled />, title: "Messages" },
   { icon: <MdReviews />, title: "Business" },
+  { icon: <MdReviews />, title: "Analytics" },
   { icon: <HiLockClosed />, title: "Change Password" },
   { icon: <IoLogOut />, title: "Logout" },
 ];
