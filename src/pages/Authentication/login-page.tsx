@@ -91,8 +91,9 @@ const LoginPage = () => {
         return () => clearTimeout(timeoutKey);
       }
     } catch (error) {
+      
       if (isAxiosError(error)) {
-        setEmailData({ email: values.email, id: error.response?.data.data.id });
+        setEmailData({ email: values.email, id: error.response?.data?.data?.id });
        
         setErrorMessage(error.response?.data.message);
       }

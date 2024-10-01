@@ -114,7 +114,7 @@ const CreateBusiness = () => {
     <div className="w-full space-y-8 mb-10">
       <div className="w-10/12 xl:w-8/12 mx-auto flex flex-col items-center px-7 py-10 bg-white">
         <p className="text-4xl font-extrabold text-center">Create Business</p>
-
+        <p className="text-xl font-bold">Creating a business will enable you to become a supplier and sell your products on our platform</p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
