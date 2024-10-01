@@ -1,6 +1,6 @@
 // Sidebar.js
 const Sidebar = ({ activeSection, setActiveSection }) => {
-    const sections = ["Dashboard", "Show room","RFQ", "Messages", "Ratings", "Orders", "Profile", "Logout"];
+    const sections = ["Dashboard", "Show room","RFQ", "Messages", "Ratings", "Orders"];
   
     return (
       <div className=" border-r bg-white h-full p-6">
