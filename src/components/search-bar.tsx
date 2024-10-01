@@ -3,41 +3,27 @@ import {
   getAllProductCategories,
   IProductCategory,
 } from "@/service/apis/product-services";
-import { CategoryStore } from "@/store/product-store";
 import { AxiosResponse, HttpStatusCode } from "axios";
-import { useEffect } from "react";
 import { LuTally1 } from "react-icons/lu";
-import { useRecoilState } from "recoil";
 import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
+  SelectItem,               
   SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
 
 export const SearchBar = () => {
-  const [categories, setCategories] = useRecoilState<IProductCategory[] | null>(
-    CategoryStore
-  );
-
-  useEffect(() => {
-    if (!categories) fetchCategories();
-  }, [categories]);
-
-  const fetchCategories = async () => {
-    try {
-      const response: AxiosResponse<any, any> = await getAllProductCategories();
+  const {data:categories} = useQuery({queryKey: ['categories'], queryFn: async() => {
+    const response: AxiosResponse<any, any> = await getAllProductCategories();
 
       if (response.status === HttpStatusCode.Ok) {
-        setCategories(response.data.data);
+        return response.data.data as IProductCategory[]
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }})
 
   return (
     <div className="flex items-center border border-gray-300 rounded-md max-w-4xl w-full mx-auto">
@@ -49,7 +35,7 @@ export const SearchBar = () => {
       />
 
       {/* Category Select Dropdown */}
-      <Select className="flex-shrink-0">
+      <Select>
         <SelectTrigger className="w-32 md:w-36 lg:w-44 focus:ring-0 border-l focus:ring-offset-0 bg-light rounded-none gap-x-4 border-none shadow-none">
           <LuTally1 className="text-gray-400" />
           <SelectValue placeholder="All categories" />

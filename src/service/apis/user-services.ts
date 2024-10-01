@@ -82,3 +82,5 @@ export const resendVerificationEmail = async (email: string) =>
   request.get(`${PATH}verification/email/${email}`);
 
 export const getUserInfo = async () => await request.get(`user/details/userinfo`);
+
+export const getUserPreferences = async () => await request.get('user/preferences/all')

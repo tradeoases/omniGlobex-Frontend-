@@ -3,10 +3,8 @@ import { LuAlignLeft } from "react-icons/lu";
 import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
 import { Link } from "react-router-dom";
-import { SearchBar } from "./search-bar";
 import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
-import { SelectShowroom } from "./select-show-room";
 import CurrencySelector from "./CurrencySelector";
 import LanguageSelector from "./LanguageSelector";
 

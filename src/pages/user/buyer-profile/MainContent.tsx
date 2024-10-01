@@ -6,7 +6,7 @@ import Ratings from "./Ratings";
 import OrderTracking from "./OrderTracking";
 import BuyersShowRoom from "./BuyersShowRoom";
 
-const MainContent = ({ activeSection }) => {
+const MainContent = ({ activeSection }: {activeSection:string}) => {
   switch (activeSection) {
     case "Dashboard":
       return <DashboardOverview />;

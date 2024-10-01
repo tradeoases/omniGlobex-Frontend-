@@ -45,7 +45,9 @@ const BuyerDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 p-4">
         {/* Header with a hamburger menu for mobile */}
-        <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <Header
+        //  toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          />
 
         {/* Main content */}
         <MainContent activeSection={activeSection} />
