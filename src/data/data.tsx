@@ -109,6 +109,7 @@ export interface IMainMenu {
 
 export const mainMenu: IMainMenu[] = [
   { name: "Home", route: "/" },
+  { name: "Supplier", route: "/supplier-dashboard" },
   { name: "Shop", route: "/buyer-dashboard" },
   {
     name: "Pages",

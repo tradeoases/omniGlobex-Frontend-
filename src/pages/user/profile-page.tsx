@@ -103,7 +103,7 @@ const ProfilePage = () => {
   return (
     <div className="p-4 flex w-full">
       {/* Sidebar */}
-      <div className="hidden lg:block bg-white px-4">
+      <div className=" lg:block bg-white px-4">
         {navigations.map((nav, i) => (
           <div
             key={i}
