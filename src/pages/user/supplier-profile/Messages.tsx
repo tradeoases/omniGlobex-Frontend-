@@ -1,5 +1,5 @@
 const Messages = () => (
-  <div className=" ">
+  <div className="p-4 w-full">
     <h2 className="text-lg font-semibold">Messages</h2>
     <div className="bg-white p-4 shadow rounded mt-4">
       <div className="flex items-center justify-between">

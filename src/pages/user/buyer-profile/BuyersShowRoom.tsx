@@ -1,12 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HiOutlineChevronLeft } from "react-icons/hi2";
-import { HiOutlineChevronRight } from "react-icons/hi2";
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
 import { HeaderProductCard } from "@/components/header-product-card";
-
 import { IProduct } from "@/service/apis/product-services";
-
 import { Button } from "@/components/ui/button";
-
 import { ProductSkeleton } from "@/components/product-skeleton";
 
 interface Props {
@@ -27,14 +23,12 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
   }, [products]);
 
   const loadMore = useCallback(() => {
-    products &&
-      localProducts &&
-      setLocalProducts((prev) => {
-        const updatedProducts = prev
-          ? [...prev, ...products.slice(6, 20)]
-          : products.slice(6, 20);
-        return updatedProducts;
-      });
+    products && localProducts && setLocalProducts((prev) => {
+      const updatedProducts = prev
+        ? [...prev, ...products.slice(5, 20)]
+        : products.slice(5, 20);
+      return updatedProducts;
+    });
   }, [localProducts]);
 
   const handleScroll = useCallback(() => {
@@ -100,7 +94,7 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
           containerRef.current.scrollTo({ left: 0, behavior: "smooth" });
         }
       }
-    }, 3000); // Scroll every 3 seconds
+    }, 3000);
 
     return () => clearInterval(scrollInterval);
   }, []);
@@ -123,7 +117,7 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
           containerRef.current.scrollTo({ left: 0, behavior: "smooth" });
         }
       }
-    }, 3000); // Scroll every 3 seconds
+    }, 3000);
   }, []);
 
   useEffect(() => {
@@ -142,16 +136,16 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
       </div>
     );
   }
+  
   return (
-    <div className="">
-      <div className="space-y-8 bg-white p-8 md:px-12">
+    <div className="bg-white py-8">
+      <div className="space-y-8 p-4 md:px-12">
         <div className="relative flex w-full items-center justify-center">
           <Button
             onClick={scrollLeft}
             size="icon"
             variant="outline"
-            className="absolute left-0 z-10 rounded-full"
-            disabled={!canScrollLeft}
+            className={`absolute left-0 z-10 rounded-full ${!canScrollLeft && 'invisible'}`}
           >
             <HiOutlineChevronLeft />
           </Button>
@@ -159,7 +153,7 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
             ref={containerRef}
             onMouseEnter={stopAutoScroll}
             onMouseLeave={startAutoScroll}
-            className="no-scrollbars flex w-full items-center space-x-4 overflow-x-scroll scroll-smooth p-4"
+            className="no-scrollbars flex w-full items-center space-x-4 overflow-x-scroll scroll-smooth p-2"
           >
             {localProducts &&
               localProducts.map((product, i) => (
@@ -170,8 +164,7 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
             onClick={scrollRight}
             size="icon"
             variant="outline"
-            className="absolute right-0 z-10 rounded-full"
-            disabled={!canScrollRight}
+            className={`absolute right-0 z-10 rounded-full ${!canScrollRight && 'invisible'}`}
           >
             <HiOutlineChevronRight />
           </Button>

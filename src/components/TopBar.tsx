@@ -60,14 +60,14 @@ const TopBar = () => {
           <Link to="/" aria-label="Go to Home">
             <Logo />
           </Link>
-          <SearchBar />
+          {/* <SearchBar /> */}
         </div>
 
         <div className="flex items-center ml-14 justify-end gap-4">
-          <Link to="/track-order" className="whitespace-nowrap hover:underline">
+          {/* <Link to="/track-order" className="whitespace-nowrap hover:underline">
             Track Order
-          </Link>
-          <SelectShowroom />
+          </Link> */}
+          {/* <SelectShowroom /> */}
           <CurrencySelector />
           <LanguageSelector />
         </div>

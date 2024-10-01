@@ -24,8 +24,8 @@ export const SearchBar = () => {
   );
 
   useEffect(() => {
-    !categories && fetchCategories();
-  }, []);
+    if (!categories) fetchCategories();
+  }, [categories]);
 
   const fetchCategories = async () => {
     try {
@@ -38,17 +38,19 @@ export const SearchBar = () => {
       console.log(error);
     }
   };
+
   return (
-    <div className="flex items-center border">
-      <div className="py-2">
-        <input
-          type="text"
-          className="pl-2 outline-none text-xs xl:text-sm bg-light"
-          placeholder="Search Product..."
-        />
-      </div>
-      <Select>
-        <SelectTrigger className="w-44 focus:ring-0 border-l focus:ring-offset-0 bg-light rounded-none gap-x-4 border-none shadow-none">
+    <div className="flex items-center border border-gray-300 rounded-md max-w-4xl w-full mx-auto">
+      {/* Input Field */}
+      <input
+        type="text"
+        className="pl-2 flex-1 outline-none text-xs md:text-sm lg:text-base"
+        placeholder="Search Product..."
+      />
+
+      {/* Category Select Dropdown */}
+      <Select className="flex-shrink-0">
+        <SelectTrigger className="w-32 md:w-36 lg:w-44 focus:ring-0 border-l focus:ring-offset-0 bg-light rounded-none gap-x-4 border-none shadow-none">
           <LuTally1 className="text-gray-400" />
           <SelectValue placeholder="All categories" />
         </SelectTrigger>
@@ -56,10 +58,10 @@ export const SearchBar = () => {
           <SelectGroup>
             <SelectLabel>Categories</SelectLabel>
             {categories &&
-              categories.map((item, i) => (
+              categories.map((item) => (
                 <SelectItem
                   className="line-clamp-1"
-                  key={i}
+                  key={item.category_id}
                   value={item.category_id}
                 >
                   {item.name}
@@ -68,9 +70,11 @@ export const SearchBar = () => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <div className="bg-main py-3 px-4 xl:px-6">
-        <p className="font-bold text-xs xl:text-sm cursor-pointer">Search</p>
-      </div>
+
+      {/* Search Button */}
+      <button className="bg-main py-2 px-4 text-xs md:text-sm lg:text-base font-bold text-white hover:bg-main-dark flex-shrink-0">
+        Search
+      </button>
     </div>
   );
 };

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { BiLoader } from "react-icons/bi";
 import { TbShoppingBag, TbShoppingBagCheck } from "react-icons/tb";
-
 import { IProduct } from "@/service/apis/product-services";
 import { Button } from "./ui/button";
 import { IOrder, OrdersStore } from "@/store/order-store";
@@ -24,9 +23,7 @@ export const HeaderProductCard: React.FC<IProduct> = ({
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isAddedToCart, setIsAddToCart] = useState<boolean>(false);
-  const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(
-    OrdersStore
-  );
+  const [cartItems, setCartItems] = useRecoilState<IOrder[] | null>(OrdersStore);
   const navigate = useNavigate();
   const userData = useRecoilValue<IUser | null>(userStore);
 
@@ -66,7 +63,6 @@ export const HeaderProductCard: React.FC<IProduct> = ({
       const response: AxiosResponse = await getAllUserOrders();
 
       if (response.status === HttpStatusCode.Ok) {
-        console.log(response);
         setCartItems(response.data.data);
       }
     } catch (error) {
@@ -81,57 +77,47 @@ export const HeaderProductCard: React.FC<IProduct> = ({
 
     try {
       setLoading(true);
-
       const orderId: string = cartItems?.filter(
         (item) => item.product_id === product_id
-      )[0].order_id as string;
+      )[0]?.order_id || "";
+      const response = await deleteOneOrderByUser(orderId);
 
-      const response: AxiosResponse = await deleteOneOrderByUser(orderId);
-
-      if (response.status === HttpStatusCode.Ok) {
+      if (response.status === HttpStatusCode.NoContent) {
+        await fetchOrdersByUser();
         setLoading(false);
-        fetchOrdersByUser();
       }
     } catch (error) {
       setLoading(false);
     }
   };
 
+  const handleClick = () => {
+    isAddedToCart ? removeToCart() : addToCart();
+  };
+
   return (
-    <div className="mx-auto w-64 space-y-3 rounded-xl border bg-white p-4 shadow">
-      <div className="h-3/5 w-56 rounded-lg bg-gray-100">
-        <img src={image_url} alt={name} className="w-full h-full rounded-lg" />
+    <div className="flex w-[200px] flex-col items-center rounded-md border p-2 shadow-md transition-all duration-300 hover:scale-105">
+      <img
+        src={image_url}
+        alt={name}
+        className="h-40 w-full object-cover rounded-t-md"
+      />
+      <div className="mt-2 flex flex-col items-center justify-between">
+        <h3 className="text-center text-sm font-semibold">{name}</h3>
+        <p className="text-center text-xs">{description}</p>
+        <Button
+          onClick={handleClick}
+          className="mt-2 w-full"
+          variant="outline"
+          disabled={loading}
+        >
+          {loading ? (
+            <BiLoader className="animate-spin" />
+          ) : (
+            <span>{isAddedToCart ? <TbShoppingBagCheck /> : <TbShoppingBag />}</span>
+          )}
+        </Button>
       </div>
-
-      <div className="space-y-1">
-        <p className="line-clamp-1 font-bold text-sm ">{name}</p>
-        <p className=" text-sm font-bold text-red-500">234 UGX</p>
-        <p className="line-clamp-1  w-full text-xs font-light">{description}</p>
-      </div>
-      <Button
-        onClick={() => {
-          isAddedToCart ? removeToCart() : addToCart();
-        }}
-        className="h-10 w-full rounded-lg bg-main gap-x-2 flex items-center justify-center text-black hover:bg-yellow-600"
-      >
-        {loading && (
-          <span className="text-lg animate-spin">
-            <BiLoader />
-          </span>
-        )}
-
-        {!loading && isAddedToCart ? (
-          <TbShoppingBagCheck className="text-lg text-green-700" />
-        ) : (
-          <TbShoppingBag className="text-lg" />
-        )}
-
-        {!loading && isAddedToCart ? (
-          <span className="text-green-700">added to cart</span>
-        ) : (
-          <span>add to cart</span>
-        )}
-      </Button>
     </div>
   );
 };

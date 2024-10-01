@@ -32,27 +32,35 @@ export const SelectShowroom = () => {
   };
 
   useEffect(() => {
-    !countries && fetchAllCountries();
+    if (!countries) fetchAllCountries();
   }, []);
 
   const handleSelectChange = (value: string) => {
-    const country = countries?.filter(
+    const country = countries?.find(
       (country) => country.country_id === value
-    )[0].name;
-    navigate(`/show-room/?country=${country}`);
+    )?.name;
+    if (country) {
+      navigate(`/show-room/?country=${country}`);
+    }
   };
+
   return (
     <Select onValueChange={handleSelectChange}>
-      <SelectTrigger className="w-full h-4 shadow-none px-0 focus:ring-0 focus:ring-offset-0 rounded-none border-none bg-light gap-x-1 text-xs focus-visible:ring-offset-0 focus-visible:border-none focus-visible:ring-0">
-        <SelectValue placeholder="SHOWROOM" />
+      <SelectTrigger className="w-full h-10 md:h-8 lg:h-6 px-4 md:px-3 lg:px-2 text-sm md:text-xs bg-light border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
+        <SelectValue placeholder="Select Showroom" />
       </SelectTrigger>
-      <SelectContent className="border-none rounded-none">
-        {countries &&
+      <SelectContent className="bg-white shadow-lg rounded-md">
+        {countries && countries.length > 0 ? (
           countries.map((country) => (
             <SelectItem key={country.country_id} value={country.country_id}>
               {country.name}
             </SelectItem>
-          ))}
+          ))
+        ) : (
+          <SelectItem value="none" disabled>
+            No countries available
+          </SelectItem>
+        )}
       </SelectContent>
     </Select>
   );

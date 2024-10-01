@@ -64,7 +64,7 @@ const NavBar = () => {
                   }
                 >
                   <span className="whitespace-nowrap">{nav.title}</span>
-                  {nav.icon && <LuChevronDown />}
+                  {nav.icon}
                 </NavLink>
               )
             )}
