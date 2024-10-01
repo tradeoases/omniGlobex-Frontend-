@@ -1,7 +1,3 @@
-import { IUser } from "@/store/user-store";
-import { INewOrder } from "@/store/order-store";
-// import { FaShippingFast } from "react-icons/fa";
-// import { FaCartArrowDown, FaUserGear } from "react-icons/fa6";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "@/service/apis/user-services";
 

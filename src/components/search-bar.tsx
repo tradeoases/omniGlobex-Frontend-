@@ -49,7 +49,7 @@ export const SearchBar = () => {
       />
 
       {/* Category Select Dropdown */}
-      <Select className="flex-shrink-0">
+      <Select>
         <SelectTrigger className="w-32 md:w-36 lg:w-44 focus:ring-0 border-l focus:ring-offset-0 bg-light rounded-none gap-x-4 border-none shadow-none">
           <LuTally1 className="text-gray-400" />
           <SelectValue placeholder="All categories" />
