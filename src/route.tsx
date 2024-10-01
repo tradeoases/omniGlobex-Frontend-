@@ -55,12 +55,13 @@ export default function RoutesConfig() {
         element={<AddBusinessLocation />}
       />
 
-      <Route path="/all-products" element={<AllProductsPage />} />
+      {/* <Route path="/all-products" element={<AllProductsPage />} /> */}
+      <Route path="/buyer-dashboard" element={<BuyerDashboard/>}/>
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Overview userData />} />
 
-        <Route path="buyer" element={<BuyerDashboard />} />
+        {/* <Route path="buyer" element={<BuyerDashboard />} /> */}
 
         <Route path="supplier" element={<ProfilePage />} />
       </Route>

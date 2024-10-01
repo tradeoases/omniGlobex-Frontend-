@@ -8,7 +8,7 @@ const BuyerDashboard = () => {
   const [activeSection, setActiveSection] = useState("Dashboard");
 
   return (
-    <div className="flex overflow-hidden">
+    <div className=" w-full flex overflow-hidden">
       <Sidebar
         activeSection={activeSection}
         setActiveSection={setActiveSection}
