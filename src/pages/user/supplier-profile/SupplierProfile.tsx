@@ -10,7 +10,8 @@ const SupplierProfile = () => {
     defaultValues: companyInfo,
   });
 
-  const onSubmit = (data) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (data: any) => {
     setCompanyInfo(data);
     setIsEditing(false);
   };
@@ -19,13 +20,17 @@ const SupplierProfile = () => {
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
       {/* Company Profile Section */}
       <section className="w-full bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Company Profile</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+          Company Profile
+        </h2>
 
         {isEditing ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-medium mb-2 text-gray-700">Company Name:</label>
+                <label className="block font-medium mb-2 text-gray-700">
+                  Company Name:
+                </label>
                 <input
                   type="text"
                   {...register("name")}
@@ -33,7 +38,9 @@ const SupplierProfile = () => {
                 />
               </div>
               <div>
-                <label className="block font-medium mb-2 text-gray-700">Business Type:</label>
+                <label className="block font-medium mb-2 text-gray-700">
+                  Business Type:
+                </label>
                 <input
                   type="text"
                   {...register("businessType")}
@@ -41,7 +48,9 @@ const SupplierProfile = () => {
                 />
               </div>
               <div>
-                <label className="block font-medium mb-2 text-gray-700">Location:</label>
+                <label className="block font-medium mb-2 text-gray-700">
+                  Location:
+                </label>
                 <input
                   type="text"
                   {...register("location")}
@@ -49,7 +58,9 @@ const SupplierProfile = () => {
                 />
               </div>
               <div>
-                <label className="block font-medium mb-2 text-gray-700">Employees:</label>
+                <label className="block font-medium mb-2 text-gray-700">
+                  Employees:
+                </label>
                 <input
                   type="number"
                   {...register("employees")}
@@ -57,7 +68,9 @@ const SupplierProfile = () => {
                 />
               </div>
               <div>
-                <label className="block font-medium mb-2 text-gray-700">Certifications:</label>
+                <label className="block font-medium mb-2 text-gray-700">
+                  Certifications:
+                </label>
                 <input
                   type="text"
                   {...register("certifications")}
@@ -65,7 +78,9 @@ const SupplierProfile = () => {
                 />
               </div>
               <div>
-                <label className="block font-medium mb-2 text-gray-700">Track Record:</label>
+                <label className="block font-medium mb-2 text-gray-700">
+                  Track Record:
+                </label>
                 <textarea
                   {...register("trackRecord")}
                   className="border border-gray-300 px-4 py-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -106,24 +121,33 @@ const SupplierProfile = () => {
                   <strong>Number of Employees:</strong> {companyInfo.employees}
                 </li>
                 <li>
-                  <strong>Certifications:</strong> {companyInfo.certifications.join(", ")}
+                  <strong>Certifications:</strong>{" "}
+                  {companyInfo.certifications.join(", ")}
                 </li>
               </ul>
             </div>
 
             {/* Ratings & Reviews */}
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Ratings & Reviews</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">
+              Ratings & Reviews
+            </h3>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Overall Rating:</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Overall Rating:
+              </label>
               <div className="mt-2 text-yellow-500">
                 {Array(Math.floor(companyInfo.ratings)).fill("★").join("")}
                 {companyInfo.ratings % 1 !== 0 && "☆"}{" "}
-                <span className="ml-2 text-gray-700">{companyInfo.ratings}/5</span>
+                <span className="ml-2 text-gray-700">
+                  {companyInfo.ratings}/5
+                </span>
               </div>
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700">Recent Reviews:</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Recent Reviews:
+              </label>
               <div className="mt-2 space-y-2">
                 {companyInfo.reviews.map((review, index) => (
                   <p key={index} className="border-b border-gray-200 py-2">
@@ -134,7 +158,9 @@ const SupplierProfile = () => {
             </div>
 
             {/* Track Record */}
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Track Record</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">
+              Track Record
+            </h3>
             <ul className="space-y-2 mb-6">
               {companyInfo.trackRecord.map((record, index) => (
                 <li key={index} className="text-gray-700">

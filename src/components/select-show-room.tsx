@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { AxiosResponse, HttpStatusCode } from "axios";
-import { useRecoilState } from "recoil";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllCountries, ICountry } from "@/service/apis/countries-services";
 import {
@@ -11,38 +7,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { AllCountriesStore } from "@/store/country-store";
+import { useQuery } from "@tanstack/react-query";
 
 export const SelectShowroom = () => {
-  const [countries, setCountries] = useRecoilState<ICountry[] | null>(
-    AllCountriesStore
-  );
+  const {
+    data: countries,
+    isSuccess,
+    isLoading,
+    isError
+  } = useQuery({
+    queryKey: ["countries"],
+    queryFn: async () => {
+      const response = await getAllCountries();
+      if (response.status === 200) {
+        return response.data.data as ICountry[];
+      }
+    },
+  });
 
   const navigate = useNavigate();
 
-  const fetchAllCountries = async () => {
-    try {
-      const response: AxiosResponse<any, any> = await getAllCountries();
-      if (response.status === HttpStatusCode.Ok) {
-        setCountries(response.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (!countries) fetchAllCountries();
-  }, []);
-
   const handleSelectChange = (value: string) => {
-    const country = countries?.find(
-      (country) => country.country_id === value
-    )?.name;
-    if (country) {
-      navigate(`/show-room/?country=${country}`);
+    if (isSuccess) {
+      const country = countries?.find(
+        (country) => country.country_id === value
+      )?.name;
+      if (country) {
+        navigate(`/show-room/?country=${country}`);
+      }
     }
   };
+
+  if(isLoading) return <div></div>
+  if(isError) return <div></div>
 
   return (
     <Select onValueChange={handleSelectChange}>

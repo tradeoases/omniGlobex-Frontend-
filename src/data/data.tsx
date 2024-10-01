@@ -21,7 +21,7 @@ import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
 import { IoBagHandle, IoLogOut } from "react-icons/io5";
-import { MdDashboard, MdReviews } from "react-icons/md";
+import {  MdReviews } from "react-icons/md";
 import card1 from "@/assets/card-1.svg";
 import card2 from "@/assets/card-2.svg";
 import card3 from "@/assets/card-3.svg";
@@ -36,6 +36,7 @@ import sellerImg3 from "@/assets/saller-3.png";
 import sellerImg4 from "@/assets/saller-4.png";
 import sellerImg5 from "@/assets/saller-5.png";
 import sellerImg6 from "@/assets/saller-6.png";
+import NotificationsIcon from "@/pages/user/buyer-profile/NotificationsIcon";
 
 export const categories: ICategory[] = [
   { name: "Mobile & Laptops", icon: <MdDevices /> },
@@ -73,6 +74,7 @@ export type TActiveMenu =
   | "Messages"
   | "Supplier Dashboard"
   | "Analytics"
+  | "Notifications"
   | "Buyer's Dashboard";
 
 export interface IDashboardNav {
@@ -81,7 +83,7 @@ export interface IDashboardNav {
 }
 
 export const dashboardNavs: IDashboardNav[] = [
-  { icon: <MdDashboard />, title: "Dashboard" },
+  // { icon: <MdDashboard />, title: "Dashboard" },
   { icon: <FaUser />, title: "Supplier Profile" },
   { icon: <IoBagHandle />, title: "Products" },
   // { icon: <IoCard />, title: "Payment Method" },
@@ -90,6 +92,7 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
   { icon: <TbSubscript />, title: "Subscription" },
+  { icon: <NotificationsIcon />, title: "Notifications" },
   { icon: <TbMessageCircle2Filled />, title: "Messages" },
   { icon: <MdReviews />, title: "Business" },
   { icon: <MdReviews />, title: "Analytics" },

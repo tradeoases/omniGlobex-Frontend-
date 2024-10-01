@@ -1,19 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { HiBars3BottomLeft } from "react-icons/hi2";
 import { AxiosResponse, HttpStatusCode } from "axios";
 
 import { ProductManagement } from "@/pages/user/pages/product-management";
 import { IUser, userStore } from "@/store/user-store";
 import { INewOrder, NewOrderStore } from "@/store/order-store";
-import Overview from "@/components/profile-dashboard/overview";
 import { IDashboardNav, TActiveMenu, dashboardNavs } from "@/data/data";
-import { Button } from "@/components/ui/button";
-import {
-  DashboardMenuStore,
-  DashboardSideMenuStore,
-} from "@/store/side-menu-store";
+import { DashboardMenuStore } from "@/store/side-menu-store";
 import { BuyerOrder } from "@/components/buyer-order";
 import { getUserInfo } from "@/service/apis/user-services";
 import { getAllUserOrders } from "@/service/apis/order-service";
@@ -21,10 +16,7 @@ import { ReviewsDashboard } from "@/components/reviews-dashbaord";
 import ChangePassword from "@/components/change-password";
 import BusinessPage from "./pages/BusinessPage";
 import Subscriptions from "./pages/Subscriptions";
-import { SearchBar } from "@/components/search-bar";
 import Messages from "./supplier-profile/Messages";
-import NotificationsIcon from "./buyer-profile/NotificationsIcon";
-import { SelectShowroom } from "@/components/select-show-room";
 import SupplierProfile from "./supplier-profile/SupplierProfile";
 import AnalyticsAndReporting from "./supplier-profile/Analytics";
 
@@ -36,9 +28,6 @@ const ProfilePage = () => {
   const [activeMenu, setActiveMenu] =
     useRecoilState<TActiveMenu>(DashboardMenuStore);
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const setSidemenu: SetterOrUpdater<boolean> = useSetRecoilState<boolean>(
-    DashboardSideMenuStore
-  );
 
   // Local state
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
@@ -52,7 +41,7 @@ const ProfilePage = () => {
         setUserData(response.data.data);
       }
     } catch (error) {
-      setActiveMenu("Dashboard");
+      setActiveMenu("Supplier Profile");
     }
   };
 
@@ -64,7 +53,7 @@ const ProfilePage = () => {
         setNewOrderData(response.data.data);
       }
     } catch (error) {
-      setActiveMenu("Dashboard");
+      setActiveMenu("Supplier Profile");
     }
   };
 
@@ -122,8 +111,8 @@ const ProfilePage = () => {
       </div>
 
       {/* Active Component Area */}
-      <div className="w-full p-6 space-y-4">
-        <div className="w-full flex items-center gap-x-8 lg:gap-0">
+      <div className="w-full px-6 space-y-4">
+        {/* <div className="w-full flex items-center gap-x-8 lg:gap-0">
           <Button
             className="lg:hidden p-1 border shadow-none"
             variant="secondary"
@@ -134,8 +123,6 @@ const ProfilePage = () => {
             <HiBars3BottomLeft className="text-4xl" />
           </Button>
           <p className="flex items-center gap-2">
-            <SearchBar />
-            <SelectShowroom />
             <div className="items-center space-x-4">
               <span className="relative">
                 <NotificationsIcon />
@@ -145,14 +132,14 @@ const ProfilePage = () => {
               </span>
             </div>
           </p>
-        </div>
+        </div> */}
 
         {/* Active Menu Content */}
-        {activeMenu === "Dashboard" && (
+        {/* {activeMenu === "Dashboard" && (
           <div className="p-6 bg-white rounded shadow-sm">
-            <Overview userData={userData} newOrderData={newOrderData || []} />
+            <Overview userData={(userData as any)} newOrderData={newOrderData || []} />
           </div>
-        )}
+        )} */}
         {activeMenu === "Products" && (
           <div className="p-6 bg-white rounded shadow-sm">
             <ProductManagement />
