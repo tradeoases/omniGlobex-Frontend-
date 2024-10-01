@@ -109,7 +109,7 @@ export interface IMainMenu {
 
 export const mainMenu: IMainMenu[] = [
   { name: "Home", route: "/" },
-  { name: "Shop", route: "/all-products" },
+  { name: "Shop", route: "/buyer-dashboard" },
   {
     name: "Pages",
     route: "",
@@ -314,7 +314,7 @@ export interface ITopbarNav {
 
 export const navs: ITopbarNav[] = [
   { title: "Home", route: "/" },
-  { title: "Shop", icon: true, route: "/all-products" },
+  { title: "Shop", icon: true, route: "/buyer-dashboard" },
   { title: "Pages", icon: true, route: "" },
   { title: "About", route: "/about" },
   { title: "Blogs", route: "/blogs" },

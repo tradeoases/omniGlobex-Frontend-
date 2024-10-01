@@ -6,11 +6,14 @@ import Ratings from "./Ratings";
 import OrderTracking from "./OrderTracking";
 import ProfileManagement from "./ProfileManagement";
 import Logout from "./Logout";
+import BuyersShowRoom from "./BuyersShowRoom";
 
 const MainContent = ({ activeSection }) => {
   switch (activeSection) {
     case "Dashboard":
       return <DashboardOverview />;
+    case "Show room":
+      return <BuyersShowRoom />;
     case "RFQ":
       return <RFQManagement />;
     case "Messages":
