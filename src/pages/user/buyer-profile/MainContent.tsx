@@ -4,8 +4,6 @@ import RFQManagement from "./RFQManagement";
 import Messages from "./Messages";
 import Ratings from "./Ratings";
 import OrderTracking from "./OrderTracking";
-import ProfileManagement from "./ProfileManagement";
-import Logout from "./Logout";
 import BuyersShowRoom from "./BuyersShowRoom";
 
 const MainContent = ({ activeSection }) => {
@@ -22,10 +20,6 @@ const MainContent = ({ activeSection }) => {
       return <Ratings />;
     case "Orders":
       return <OrderTracking />;
-    case "Profile":
-      return <ProfileManagement />;
-    case "Logout":
-      return <Logout />;
     default:
       return <DashboardOverview />;
   }
