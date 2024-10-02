@@ -40,13 +40,15 @@ export interface SellerInfo {
   categories: string[];
 }
 
-export const getAllProducts = async (params?: string) =>
-  await request.get(`${PATH}${params}`);
+export const getAllProducts = async (params: string) => {
+  return await request.get(`${PATH}${params}`);
+};
 
 export const getOneProduct = async (productId: string) =>
   await request.get(`${PATH}${productId}`);
 
-export const getAllProductByUser = async () => await request.get(`${PATH}/user`);
+export const getAllProductByUser = async () =>
+  await request.get(`${PATH}/user`);
 
 export const getAllProductCategories = async () =>
   await request.get(`category`);
