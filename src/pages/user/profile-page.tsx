@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
-
 import { ProductManagement } from "@/pages/user/pages/product-management";
 import { IUser, userStore } from "@/store/user-store";
 import { INewOrder, NewOrderStore } from "@/store/order-store";
@@ -19,21 +17,24 @@ import Subscriptions from "./pages/Subscriptions";
 import Messages from "./supplier-profile/Messages";
 import SupplierProfile from "./supplier-profile/SupplierProfile";
 import AnalyticsAndReporting from "./supplier-profile/Analytics";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const ProfilePage = () => {
-  // Recoil states
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [newOrderData, setNewOrderData] =
     useRecoilState<INewOrder[]>(NewOrderStore);
   const [activeMenu, setActiveMenu] =
     useRecoilState<TActiveMenu>(DashboardMenuStore);
   const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
-  // Local state
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
   const navigate = useNavigate();
 
-  // Fetch user information
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   const fetchUserInfo = async () => {
     try {
       const response: AxiosResponse<any, any> = await getUserInfo();
@@ -45,7 +46,6 @@ const ProfilePage = () => {
     }
   };
 
-  // Fetch all user orders
   const fetchAllUserOrders = async () => {
     try {
       const response: AxiosResponse<any, any> = await getAllUserOrders();
@@ -57,7 +57,6 @@ const ProfilePage = () => {
     }
   };
 
-  // Initial data fetch
   useEffect(() => {
     const fetchInitialData = async () => {
       if (!userData) {
@@ -74,7 +73,6 @@ const ProfilePage = () => {
     }
   }, [isMounted, userData, newOrderData.length]);
 
-  // Logout handler
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUserData(null);
@@ -84,22 +82,42 @@ const ProfilePage = () => {
     navigate(`/`);
   };
 
-  // Loading state
+  const handleNavClick = (navTitle: string) => {
+    setActiveMenu(navTitle as TActiveMenu);
+    setIsSidebarOpen(false); // Close the sidebar after clicking any item
+    if (navTitle === `Logout`) handleLogout();
+  };
+
   if (!userData || !newOrderData) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="p-4 flex w-full">
+    <div className="flex flex-col lg:flex-row w-full">
+      {/* Hamburger Menu (Mobile) */}
+      <div className="fixed top-0 left-0 w-full bg-white p-4 lg:hidden z-50 shadow">
+        <button onClick={toggleSidebar} className="text-xl">
+          <FaBars />
+        </button>
+      </div>
+
       {/* Sidebar */}
-      <div className=" lg:block bg-white px-4">
+      <div
+        className={`lg:block bg-white lg:static fixed top-0 left-0 z-40 w-64 transition-transform duration-300 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 h-full lg:h-auto pt-16`} // Add pt-16 for padding to push content below the hamburger
+      >
+        {/* Close Button */}
+        <div className="absolute top-4 right-4 lg:hidden">
+          <button onClick={toggleSidebar} className="text-xl">
+            <FaTimes />
+          </button>
+        </div>
+
         {navigations.map((nav, i) => (
           <div
             key={i}
-            onClick={() => {
-              setActiveMenu(nav.title);
-              if (nav.title === `Logout`) handleLogout();
-            }}
+            onClick={() => handleNavClick(nav.title)} // Close sidebar after clicking any nav item
             className={`w-full text-xs cursor-pointer py-4 flex items-center gap-x-5 ${
               activeMenu === nav.title ? "text-black" : "text-gray-500"
             }`}
@@ -111,35 +129,7 @@ const ProfilePage = () => {
       </div>
 
       {/* Active Component Area */}
-      <div className="w-full px-6 space-y-4">
-        {/* <div className="w-full flex items-center gap-x-8 lg:gap-0">
-          <Button
-            className="lg:hidden p-1 border shadow-none"
-            variant="secondary"
-            size="icon"
-            asChild
-            onClick={() => setSidemenu(true)}
-          >
-            <HiBars3BottomLeft className="text-4xl" />
-          </Button>
-          <p className="flex items-center gap-2">
-            <div className="items-center space-x-4">
-              <span className="relative">
-                <NotificationsIcon />
-                <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
-                  3
-                </span>
-              </span>
-            </div>
-          </p>
-        </div> */}
-
-        {/* Active Menu Content */}
-        {/* {activeMenu === "Dashboard" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <Overview userData={(userData as any)} newOrderData={newOrderData || []} />
-          </div>
-        )} */}
+      <div className="w-full px-6 space-y-4 lg:ml-64">
         {activeMenu === "Products" && (
           <div className="p-6 bg-white rounded shadow-sm">
             <ProductManagement />

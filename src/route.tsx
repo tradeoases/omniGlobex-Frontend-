@@ -60,12 +60,11 @@ export default function RoutesConfig() {
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Overview />} />
-        {/* <Route path="supplier-dashboard" element={<ProfilePage />} /> */}
+        <Route path="supplier-dashboard" element={<ProfilePage />} />
 
         {/* <Route path="buyer" element={<BuyerDashboard />} /> */}
 
         {/* <Route path="supplier" element={<ProfilePage />} /> */}
-        
       </Route>
       <Route path="/single-product" element={<SingleProduct />} />
       <Route path="/show-room" element={<ShowRoomPage />} />
