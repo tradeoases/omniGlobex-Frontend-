@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRecoilState } from "recoil";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { Input } from "@/components/ui/input";
@@ -18,8 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { getAllCountries, ICountry } from "@/service/apis/countries-services";
-import { AllCountriesStore } from "@/store/country-store";
+import {
+  getAllCountriesByContinent,
+  ICountry,
+} from "@/service/apis/countries-services";
 import {
   Form,
   FormControl,
@@ -29,7 +30,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createBusiness } from "@/service/apis/business-services";
-import { useNavigate } from "react-router-dom";
+import { getStripe } from "@/service/stripe";
+import { useQuery } from "@tanstack/react-query";
 
 // Define the schema for validation using Zod
 const createBusinessSchema = z.object({
@@ -45,13 +47,34 @@ const createBusinessSchema = z.object({
 type CreateBusinessForm = z.infer<typeof createBusinessSchema>;
 
 const CreateBusiness = () => {
-  const [countries, setCountries] = useRecoilState<ICountry[] | null>(
-    AllCountriesStore
-  );
+  const [continent, setContinent] = useState<
+    | "NORTH AMERICA"
+    | "SOUTH AMERICA"
+    | "EUROPE"
+    | "AFRICA"
+    | "ASIA"
+    | "AUSTRALIA"
+  >("EUROPE");
+  const {
+    data: countries,
+    isError: isCountryError,
+    error: countryError,
+    isLoading: countryLoading,
+    isSuccess: countrySuccess,
+  } = useQuery({
+    queryKey: ["countries", continent],
+    queryFn: async () => {
+      const response: AxiosResponse<any, any> =
+        await getAllCountriesByContinent(continent);
+      if (response.status === HttpStatusCode.Ok) {
+        return response.data.data as ICountry[];
+      }
+    },
+  });
+
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage] = useState<boolean>(false);
-  const navigate = useNavigate();
   const form = useForm<CreateBusinessForm>({
     resolver: zodResolver(createBusinessSchema),
     defaultValues: {
@@ -69,34 +92,19 @@ const CreateBusiness = () => {
       console.log("Form Values: ", values);
 
       const response: AxiosResponse<any, any> = await createBusiness(values);
-     
+
       if (response.status === HttpStatusCode.Created) {
         form.reset();
-        navigate("/profile");
+        const stripe = await getStripe();
+        console.log(response.data.data);
+        await stripe?.redirectToCheckout({
+          sessionId: response.data?.data?.businessSubscription?.stripeSessionId,
+        });
       }
-
-      console.log(response)
-
-      setLoading(false);
     } catch (error) {
-
-      setLoading(false);
-      console.log(error)
+      console.log(error);
       setErrorMessage("Failed to create business");
-    }
-  };
-
-  useEffect(() => {
-    !countries && fetchAllCountries();
-  }, []);
-
-  const fetchAllCountries = async () => {
-    try {
-      const response: AxiosResponse<any, any> = await getAllCountries();
-      if (response.status === HttpStatusCode.Ok) {
-        setCountries(response.data.data);
-      }
-    } catch (error) {
+    } finally {
       setLoading(false);
     }
   };
@@ -105,7 +113,7 @@ const CreateBusiness = () => {
     <div className="w-full space-y-8 mb-10">
       <div className="w-10/12 xl:w-8/12 mx-auto flex flex-col items-center px-7 py-10 bg-white">
         <p className="text-4xl font-extrabold text-center">Create Business</p>
-
+        <p className="text-xl font-extrabold text-center">Not you can skip this step but then you will not be able to participate as a supplier and get all the full benefits of the site.</p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -132,38 +140,93 @@ const CreateBusiness = () => {
               />
             </div>
 
-            <div className="w-full">
-              <FormField
-                control={form.control}
-                name="countryId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Country *</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a Country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {countries &&
-                            countries.map((country) => (
-                              <SelectItem
-                                key={country.country_id}
-                                value={country.country_id}
-                              >
-                                {country.name}
-                              </SelectItem>
-                            ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div>
+              {countryLoading && <div>Countries Loading...</div>}
+
+              {isCountryError && (
+                <div>
+                  <h1>{countryError.name}</h1>
+                  <p>{countryError.message}</p>
+                </div>
+              )}
+
+              {countrySuccess && (
+                <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <FormItem>
+                      <FormLabel>Continent</FormLabel>
+                      <Select
+                        onValueChange={(
+                          e:
+                            | "NORTH AMERICA"
+                            | "SOUTH AMERICA"
+                            | "EUROPE"
+                            | "AFRICA"
+                            | "ASIA"
+                            | "AUSTRALIA"
+                        ) => {
+                          setContinent(e);
+                          form.setValue("countryId", "");
+                        }}
+                        defaultValue={continent}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a Country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="NORTH AMERICA">
+                              NORTH AMERICA
+                            </SelectItem>
+                            <SelectItem value="SOUTH AMERICA">
+                              SOUTH AMERICA
+                            </SelectItem>
+                            <SelectItem value="EUROPE">EUROPE</SelectItem>
+                            <SelectItem value="AFRICA">AFRICA</SelectItem>
+                            <SelectItem value="ASIA">ASIA</SelectItem>
+                            <SelectItem value="AUSTRALIA" disabled>
+                              AUSTRALIA
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  </div>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <FormField
+                      control={form.control}
+                      name="countryId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Country" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {countries &&
+                                  countries.map((country: ICountry) => (
+                                    <SelectItem
+                                      key={country.country_id}
+                                      value={country.country_id}
+                                    >
+                                      {country.name}
+                                    </SelectItem>
+                                  ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full">
               <FormField

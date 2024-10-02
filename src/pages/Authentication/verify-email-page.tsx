@@ -31,7 +31,7 @@ const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();
   const previousRoute = usePreviousRoute();
   const navigate = useNavigate();
-  const [token, setToken] = useState<null | string>();
+
   const email = useRecoilValue<{ email: string | null; id: string | null }>(
     EmailStore
   );
@@ -61,8 +61,8 @@ const VerifyEmailPage = () => {
       return;
     }
 
-    setToken(token);
-    handleConfirmEmail();
+    handleConfirmEmail(token);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -85,14 +85,18 @@ const VerifyEmailPage = () => {
     return () => clearTimeout(timeoutKey);
   }, []);
 
-  const handleConfirmEmail = async () => {
+  const handleConfirmEmail = async (token?: string) => {
     let response: AxiosResponse<any, any>;
     try {
-      response = await emailVerification({
-        token: token as any,
-        key: code,
-        id: email.id as any,
-      });
+      const body = token
+        ? {
+            token: token,
+          }
+        : {
+            key: code,
+            id: email.id as any,
+          };
+      response = await emailVerification(body);
 
       if (response.status === HttpStatusCode.Ok) {
         setVerified(true);
@@ -163,8 +167,11 @@ const VerifyEmailPage = () => {
               value={code}
               className="py-4"
             />
+            {errorMessage && (
+              <p className="text-red-500 text-center">{errorMessage}</p>
+            )}
             <Button
-              onClick={handleConfirmEmail}
+              onClick={() => handleConfirmEmail()}
               size="sm"
               className="w-full py-4"
             >
@@ -229,6 +236,3 @@ const VerifyEmailPage = () => {
 };
 
 export default VerifyEmailPage;
-
-
-

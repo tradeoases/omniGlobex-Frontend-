@@ -1,15 +1,14 @@
 import { SearchBar } from "@/components/search-bar";
 import { SelectShowroom } from "@/components/select-show-room";
 import NotificationsIcon from "./NotificationsIcon";
-import { FiMenu } from "react-icons/fi"; // For sidebar hamburger icon
+import { FiMenu } from "react-icons/fi";
 
 interface HeaderProps {
-  toggleSidebar: () => void; // Define the expected prop
+  toggleSidebar: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => (
   <header className="flex flex-col md:flex-row justify-between items-center p-4 shadow bg-white">
-    {/* Hamburger Menu for Sidebar - Visible on smaller screens */}
     <button
       onClick={toggleSidebar}
       className="md:hidden p-2 text-gray-600 hover:text-gray-900 focus:outline-none"
@@ -17,14 +16,14 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => (
       <FiMenu size={24} />
     </button>
 
-    {/* Dashboard Title */}
-    <strong className="text-lg md:text-xl mb-2 md:mb-0">Buyer's Dashboard</strong>
+    <strong className="text-lg md:text-xl mb-2 md:mb-0">
+      Buyer's Dashboard
+    </strong>
 
     <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 mb-2 md:mb-0">
       <SearchBar />
       <SelectShowroom />
     </div>
-
 
     <div className="relative items-center space-x-4">
       <NotificationsIcon />

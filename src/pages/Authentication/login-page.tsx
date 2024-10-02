@@ -54,7 +54,7 @@ const LoginPage = () => {
     }
 
     return () => clearTimeout(timeoutKey);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorMessage]);
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -91,7 +91,10 @@ const LoginPage = () => {
       }
     } catch (error) {
       if (isAxiosError(error)) {
-        setEmailData({ email: values.email, id: null });
+        setEmailData({
+          email: values.email,
+          id: error.response?.data?.data?.id,
+        });
         setErrorMessage(error.response?.data.message);
       }
     } finally {
