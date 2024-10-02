@@ -2,22 +2,17 @@ import { LuChevronRight } from "react-icons/lu";
 import { CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SlHandbag } from "react-icons/sl";
-import { navs } from "@/data/data";
-import { NavBarPagesItem } from "./navbar-page-item";
-import { Button } from "./ui/button";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { HeaderCartNav } from "./header-cart-nav";
-import { Tooltip } from "react-tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { useEffect } from "react";
+import { HiMenu, HiX } from "react-icons/hi"; // Add icons for mobile menu
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { IUser, userStore } from "@/store/user-store";
+import { Button } from "./ui/button";
+import { Tooltip } from "react-tooltip";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { HeaderCartNav } from "./header-cart-nav";
+import { navs } from "@/data/data";
+import { NavBarPagesItem } from "./navbar-page-item";
 
 const Badge = ({ count }: { count: number }) => (
   <span className="bg-white w-4 h-4 rounded-full text-xs hover:bg-yellow-700 flex items-center justify-center absolute -top-3 -right-2">
@@ -26,28 +21,35 @@ const Badge = ({ count }: { count: number }) => (
 );
 
 const NavBar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle mobile menu
   const location = useLocation();
-  const isAuthenticating =
-    location.pathname === "/signup" || location.pathname === "/signin";
+  const isAuthenticating = location.pathname === "/signup" || location.pathname === "/signin";
   const navigate = useNavigate();
 
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
+
   useEffect(() => {
     const unparsed = localStorage.getItem("profile");
     if (!unparsed) return;
     const profile = JSON.parse(unparsed);
-
     setUserData(profile);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log({ userData });
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <div className="hidden lg:block lg:min-h-12 w-full  border-b py-2 bg-main">
-      <div className="hidden w-10/12 xl:w-8/12 mx-auto lg:flex items-center justify-between">
-        <div className="flex gap-x-6 font-semibold text-sm items-center relative">
-          <div className="flex  items-center gap-6 xl:gap-10 relative -bottom-1 flex-1">
+    <div className="w-full border-b py-2 bg-main">
+      <div className="w-10/12 xl:w-8/12 mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-x-6 font-semibold text-sm relative">
+          {/* Hamburger Menu Icon for Mobile */}
+          <button className="lg:hidden" onClick={toggleMenu}>
+            {isMenuOpen ? <HiX className="text-white text-3xl" /> : <HiMenu className="text-white text-3xl" />}
+          </button>
+
+          {/* Navigation Links for Desktop */}
+          <div className="hidden lg:flex items-center gap-6 xl:gap-10 relative -bottom-1 flex-1">
             {navs.map((nav, i) =>
               nav.title === "Pages" ? (
                 <NavBarPagesItem key={i} />
@@ -70,6 +72,8 @@ const NavBar = () => {
             )}
           </div>
         </div>
+
+        {/* User Icons, Cart, Notifications */}
         <div className="flex items-center gap-x-8 text-xl">
           {userData && (
             <Link to="/cart" aria-label="View Cart" className="relative">
@@ -100,9 +104,7 @@ const NavBar = () => {
           {!userData && !isAuthenticating && (
             <Button
               asChild
-              className={`bg-gradient-to-r from-yellow-200 to-yellow-700 text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105 ${
-                isAuthenticating ? "font-bold text-yellow-700" : ""
-              }`}
+              className={`bg-gradient-to-r from-yellow-200 to-yellow-700 text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
             >
               <NavLink to="/signin">
                 <span>SIGNIN/SIGNUP</span> <LuChevronRight />
@@ -136,6 +138,26 @@ const NavBar = () => {
           )}
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-main w-full px-6 py-4 flex flex-col gap-y-4">
+          {navs.map((nav, i) =>
+            nav.title === "Pages" ? (
+              <NavBarPagesItem key={i} />
+            ) : (
+              <NavLink
+                to={nav.route}
+                key={i}
+                onClick={() => setIsMenuOpen(false)} // Close menu on click
+                className="text-white text-lg"
+              >
+                {nav.title}
+              </NavLink>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 };

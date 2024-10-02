@@ -13,7 +13,7 @@ export const NavBarPagesItem = () => {
       <HoverCardTrigger asChild>
         <Button
           variant="link"
-          className="p-0 h-0 gap-2 flex items-center hover:underline"
+          className="p-0 h-0 gap-2 flex hover:underline"
         >
           Pages <LuChevronDown />
         </Button>
