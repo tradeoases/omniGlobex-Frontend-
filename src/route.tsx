@@ -34,7 +34,7 @@ export default function RoutesConfig() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/supplier-dashboard" element={<ProfilePage />} />
+
       <Route path="/about" element={<AboutPage />} />
       <Route path="/blogs" element={<BlogPage />} />
       <Route path="/blog/:id" element={<BlogDetails />} />
@@ -58,10 +58,11 @@ export default function RoutesConfig() {
 
       {/* <Route path="/all-products" element={<AllProductsPage />} /> */}
       <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+      <Route path="/supplier-dashboard" element={<ProfilePage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Overview />} />
-        <Route path="supplier-dashboard" element={<ProfilePage />} />
+        {/* <Route path="supplier-dashboard" element={<ProfilePage />} /> */}
 
         {/* <Route path="buyer" element={<BuyerDashboard />} /> */}
 
