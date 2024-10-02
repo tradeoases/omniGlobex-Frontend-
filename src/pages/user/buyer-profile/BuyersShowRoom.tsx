@@ -35,16 +35,37 @@ const BuyersShowRoom: React.FC<Props> = () => {
     isError: productIsError,
     error: productError,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: [
+      "products",
+      searchParams.get("country"),
+      searchParams.get("userCurrency"),
+      searchParams.get("pageSize"),
+      searchParams.get("page"),
+      searchParams.get("search"),
+      searchParams.get("category"),
+    ],
     queryFn: async () => {
+      const params = `?page=${page}&pageSize=${pageSize}&userCurrency=${
+        preferences?.currency
+      }&countryId=${
+        searchParams.get("country")
+          ? searchParams.get("country")
+          : preferences?.country_id
+      }`;
+
       const response: AxiosResponse<any, any> = await getAllProducts(
-        `?page=${page}&pageSize=${pageSize}&userCurrency=${preferences?.currency}&countryId=${preferences?.country_id}`
+        `${params}${
+          searchParams.get("search")
+            ? `&search=${searchParams.get("search")}`
+            : ""
+        }${
+          searchParams.get("category")
+            ? `&category=${searchParams.get("category")}`
+            : ""
+        }`
       );
 
       if (response.status === HttpStatusCode.Ok) {
-        console.log(response.data.data);
-        // setProducts(response.data.data);
-        // setTotalResults(response.data.data.totalCount || 53); //Set total count from API or use fallback
         return response.data.data as {
           products: IProduct[];
           pageSize: number;
@@ -61,12 +82,11 @@ const BuyersShowRoom: React.FC<Props> = () => {
     const pageSize = searchParams.get("pageSize");
 
     if (!countryParam) {
-      // Set a default country if it's not present
       setSearchParams({
         ...Object.fromEntries(searchParams),
         country: countryParam || preferences?.country_id || "",
-        page: page || "15",
-        pageSize: pageSize || "1",
+        page: page || "1",
+        pageSize: pageSize || "15",
       });
     }
   }, []);
@@ -112,17 +132,16 @@ const BuyersShowRoom: React.FC<Props> = () => {
           </div>
         )}
 
-        {productSuccess && products ? (
-          products.products.length === 0 ? (
+        
+
+        {productSuccess &&
+          (products?.products.length === 0 ? (
             <div>No Products</div>
           ) : (
-            products.products.map((product) => (
+            products?.products.map((product) => (
               <ProductCard key={product.product_id} {...product} />
             ))
-          )
-        ) : (
-          <div>loading...</div>
-        )}
+          ))}
       </div>
       <div className="paginator flex items-center justify-center mt-6 space-x-4">
         <button
