@@ -83,7 +83,7 @@ const ProfilePage = () => {
   };
 
   const handleNavClick = (navTitle: string) => {
-    setActiveMenu(navTitle as TActiveMenu);
+    setActiveMenu(navTitle);
     setIsSidebarOpen(false); // Close the sidebar after clicking any item
     if (navTitle === `Logout`) handleLogout();
   };
