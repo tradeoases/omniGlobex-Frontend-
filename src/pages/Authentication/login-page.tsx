@@ -91,7 +91,10 @@ const LoginPage = () => {
       }
     } catch (error) {
       if (isAxiosError(error)) {
-        setEmailData({ email: values.email, id: null });
+        setEmailData({
+          email: values.email,
+          id: error.response?.data?.data?.id,
+        });
         setErrorMessage(error.response?.data.message);
       }
     } finally {

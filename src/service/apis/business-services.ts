@@ -17,6 +17,10 @@ export const getBusinessById = async (businessId: string) => {
   return response;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const addBusinessUser = async (businessId: string, userData: any) => {
   await request.post(`/business/${businessId}/users`, userData);
 };
+
+export const saveSubscription = async () =>
+  await request.post("/subscription/save-subscription");
