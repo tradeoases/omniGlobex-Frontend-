@@ -9,6 +9,7 @@ import { ThemeProvider } from "./components/theme-provider.tsx";
 import RoutesConfig from "./route.tsx";
 // import { GlobalProvider } from "./context/GlobalContext";
 import "./i18n";
+// import Chatbot from "./components/chatbot";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
 // import { getLocaleInfo } from "./utils/localeDetection";

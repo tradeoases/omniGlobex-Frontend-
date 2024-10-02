@@ -78,9 +78,9 @@ const LoginPage = () => {
 
         setUserData(userData);
         localStorage.setItem("token", token);
-        localStorage.setItem("profile", JSON.stringify(userData));
+        localStorage.setItem("supplier-dashboard", JSON.stringify(userData));
         setLoading(false);
-        navigate(`/`);
+        navigate(`/supplier-dashboard`);
         setSuccessMessage(true);
 
         timeoutKey = setTimeout(() => {

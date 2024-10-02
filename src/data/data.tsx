@@ -129,6 +129,7 @@ export const mainMenu: IMainMenu[] = [
   { name: "About", route: "/about" },
   { name: "Blogs", route: "/blogs" },
   { name: "Contact", route: "/contact" },
+  { name: "Signin/Signout", route: "/signin" },
 ];
 
 export interface IBankAccount {
