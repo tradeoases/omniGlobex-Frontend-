@@ -21,7 +21,7 @@ import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
 import { IoBagHandle, IoLogOut } from "react-icons/io5";
-import {  MdReviews } from "react-icons/md";
+import { MdReviews } from "react-icons/md";
 import card1 from "@/assets/card-1.svg";
 import card2 from "@/assets/card-2.svg";
 import card3 from "@/assets/card-3.svg";
