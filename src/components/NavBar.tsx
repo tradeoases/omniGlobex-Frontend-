@@ -1,4 +1,4 @@
-import { LuChevronDown, LuChevronRight } from "react-icons/lu";
+import { LuChevronRight } from "react-icons/lu";
 import { CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SlHandbag } from "react-icons/sl";
@@ -64,7 +64,7 @@ const NavBar = () => {
                   }
                 >
                   <span className="whitespace-nowrap">{nav.title}</span>
-                  {nav.icon && <LuChevronDown />}
+                  {nav.icon}
                 </NavLink>
               )
             )}
@@ -118,7 +118,7 @@ const NavBar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-fit">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate(`/profile`)}>
+                  <DropdownMenuItem onClick={() => navigate(`/dashboard`)}>
                     {userData.fullname}
                   </DropdownMenuItem>
                   <DropdownMenuItem

@@ -3,10 +3,8 @@ import { LuAlignLeft } from "react-icons/lu";
 import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
 import { Link } from "react-router-dom";
-import { SearchBar } from "./search-bar";
 import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
-import { SelectShowroom } from "./select-show-room";
 import CurrencySelector from "./CurrencySelector";
 import LanguageSelector from "./LanguageSelector";
 
@@ -60,14 +58,14 @@ const TopBar = () => {
           <Link to="/" aria-label="Go to Home">
             <Logo />
           </Link>
-          <SearchBar />
+          {/* <SearchBar /> */}
         </div>
 
         <div className="flex items-center ml-14 justify-end gap-4">
-          <Link to="/track-order" className="whitespace-nowrap hover:underline">
+          {/* <Link to="/track-order" className="whitespace-nowrap hover:underline">
             Track Order
-          </Link>
-          <SelectShowroom />
+          </Link> */}
+          {/* <SelectShowroom /> */}
           <CurrencySelector />
           <LanguageSelector />
         </div>

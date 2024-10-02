@@ -11,12 +11,17 @@ import {
   MdOutlineSportsBaseball,
 } from "react-icons/md";
 import { PiBowlFood } from "react-icons/pi";
-import { TbBabyBottle, TbTruckReturn, TbSubscript } from "react-icons/tb";
+import {
+  TbBabyBottle,
+  TbTruckReturn,
+  TbSubscript,
+  TbMessageCircle2Filled,
+} from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
-import {  FaUser } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
-import { IoBagHandle,  IoLogOut } from "react-icons/io5";
-import { MdDashboard, MdReviews } from "react-icons/md";
+import { IoBagHandle, IoLogOut } from "react-icons/io5";
+import {  MdReviews } from "react-icons/md";
 import card1 from "@/assets/card-1.svg";
 import card2 from "@/assets/card-2.svg";
 import card3 from "@/assets/card-3.svg";
@@ -31,6 +36,7 @@ import sellerImg3 from "@/assets/saller-3.png";
 import sellerImg4 from "@/assets/saller-4.png";
 import sellerImg5 from "@/assets/saller-5.png";
 import sellerImg6 from "@/assets/saller-6.png";
+import NotificationsIcon from "@/pages/user/buyer-profile/NotificationsIcon";
 
 export const categories: ICategory[] = [
   { name: "Mobile & Laptops", icon: <MdDevices /> },
@@ -53,7 +59,7 @@ export enum MessageText {
 
 export type TActiveMenu =
   | "Dashboard"
-  | "Personal"
+  | "Supplier Profile"
   | "Products"
   | "Payment Method"
   | "Order"
@@ -63,7 +69,13 @@ export type TActiveMenu =
   | "Business"
   | "Change Password"
   | "Support Ticket"
-  | "Logout";
+  | "Logout"
+  | "Personal Info"
+  | "Messages"
+  | "Supplier Dashboard"
+  | "Analytics"
+  | "Notifications"
+  | "Buyer's Dashboard";
 
 export interface IDashboardNav {
   icon: JSX.Element;
@@ -71,16 +83,19 @@ export interface IDashboardNav {
 }
 
 export const dashboardNavs: IDashboardNav[] = [
-  { icon: <MdDashboard />, title: "Dashboard" },
-  { icon: <FaUser />, title: "Personal" },
+  // { icon: <MdDashboard />, title: "Dashboard" },
+  { icon: <FaUser />, title: "Supplier Profile" },
   { icon: <IoBagHandle />, title: "Products" },
   // { icon: <IoCard />, title: "Payment Method" },
   { icon: <BsFillCartCheckFill />, title: "Order" },
   // { icon: <FaHeart />, title: "Cart" },
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
-  { icon: <TbSubscript />, title: 'Subscription'},
+  { icon: <TbSubscript />, title: "Subscription" },
+  { icon: <NotificationsIcon />, title: "Notifications" },
+  { icon: <TbMessageCircle2Filled />, title: "Messages" },
   { icon: <MdReviews />, title: "Business" },
+  { icon: <MdReviews />, title: "Analytics" },
   { icon: <HiLockClosed />, title: "Change Password" },
   { icon: <IoLogOut />, title: "Logout" },
 ];
@@ -97,7 +112,8 @@ export interface IMainMenu {
 
 export const mainMenu: IMainMenu[] = [
   { name: "Home", route: "/" },
-  { name: "Shop", route: "/all-products" },
+  { name: "Supplier", route: "/supplier-dashboard" },
+  { name: "Shop", route: "/buyer-dashboard" },
   {
     name: "Pages",
     route: "",
@@ -288,7 +304,8 @@ export const wishlistData: IWishLists[] = [
 
 export type TTopbarNav =
   | "Home"
-  | "Shop"
+  | "Supplier"
+  | "Buyers Dashboard"
   | "Pages"
   | "About"
   | "Blogs"
@@ -302,7 +319,8 @@ export interface ITopbarNav {
 
 export const navs: ITopbarNav[] = [
   { title: "Home", route: "/" },
-  { title: "Shop", icon: true, route: "/all-products" },
+  // { title: "Supplier", route: "/supplier-dashboard" },
+  { title: "Buyers Dashboard", icon: true, route: "/buyer-dashboard" },
   { title: "Pages", icon: true, route: "" },
   { title: "About", route: "/about" },
   { title: "Blogs", route: "/blogs" },

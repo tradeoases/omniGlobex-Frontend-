@@ -16,7 +16,6 @@ import BlogPage from "./pages/Blogs/blog-page";
 import ContactPage from "./pages/staticpages/contact-page";
 import FaqPage from "./pages/staticpages/faq-page";
 import ShowRoomPage from "./pages/products/show-room-page";
-import AllProductsPage from "./pages/products/all-products-page";
 import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
 import CreateBusiness from "./pages/BusinessInformation/CreateBusiness";
 import { TermsPage } from "./pages/privacy-policy/terms-page";
@@ -25,11 +24,16 @@ import BlogDetails from "./pages/Blogs/components/blog-details";
 import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
 import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
 import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
+import DashboardLayout from "./pages/user/DashboardLayout";
+import { Overview } from "./components/profile-dashboard/overview";
+
+import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 
 export default function RoutesConfig() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/supplier-dashboard" element={<ProfilePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/blogs" element={<BlogPage />} />
       <Route path="/blog/:id" element={<BlogDetails />} />
@@ -51,9 +55,18 @@ export default function RoutesConfig() {
         element={<AddBusinessLocation />}
       />
 
-      <Route path="/all-products" element={<AllProductsPage />} />
+      {/* <Route path="/all-products" element={<AllProductsPage />} /> */}
+      <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<Overview />} />
+        {/* <Route path="supplier-dashboard" element={<ProfilePage />} /> */}
+
+        {/* <Route path="buyer" element={<BuyerDashboard />} /> */}
+
+        {/* <Route path="supplier" element={<ProfilePage />} /> */}
+        
+      </Route>
       <Route path="/single-product" element={<SingleProduct />} />
       <Route path="/show-room" element={<ShowRoomPage />} />
       <Route path="cookie-policy" element={<CookiesPolicyPage />} />
