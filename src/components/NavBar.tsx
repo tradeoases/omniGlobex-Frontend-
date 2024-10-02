@@ -51,6 +51,22 @@ const NavBar = () => {
             {navs.map((nav, i) =>
               nav.title === "Pages" ? (
                 <NavBarPagesItem key={i} />
+              ) : nav.title === "Supplier" &&
+                !userData?.roles?.includes("Supplier") ? (
+                <NavLink
+                  to={nav.route}
+                  key={i}
+                  className={({ isActive }) =>
+                    `flex cursor-pointer items-center gap-x-2 ${
+                      isActive
+                        ? "text-yellow-700 font-bold border-b-2 border-yellow-700"
+                        : ""
+                    }`
+                  }
+                >
+                  <span className="whitespace-nowrap">{nav.title}</span>
+                  {nav.icon}
+                </NavLink>
               ) : (
                 <NavLink
                   to={nav.route}
@@ -121,6 +137,13 @@ const NavBar = () => {
                   <DropdownMenuItem onClick={() => navigate(`/dashboard`)}>
                     {userData.fullname}
                   </DropdownMenuItem>
+                  {!userData?.roles?.includes("Supplier") && (
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/create-business`)}
+                    >
+                      Become a seller
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);

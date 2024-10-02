@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,21 +12,21 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import { PageHeader } from "@/components/PageHeader";
+// import { PageHeader } from "@/components/PageHeader";
 import { useRecoilState } from "recoil";
 import { getAllProducts, IProduct } from "@/service/apis/product-services";
 import { ProductStore } from "@/store/product-store";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { Header } from "@/components/header";
-import AllProductsPage from "./all-products-page";
+// import AllProductsPage from "./all-products-page";
 
 const ShowRoomPage = () => {
   // const [activeCategory, setActiveCategory] = useState<string>(
   //   categories[0].name
   // );
   // const sliderRef = useRef<HTMLDivElement>(null);
-  const [searchParams] = useSearchParams();
-  const country = searchParams.get(`country`);
+  // const [searchParams] = useSearchParams();
+  // const country = searchParams.get(`country`);
   const [products, setProducts] = useRecoilState<IProduct[] | null>(
     ProductStore
   );
@@ -52,40 +52,17 @@ const ShowRoomPage = () => {
 
   return (
     <div className="w-full">
-      <PageHeader
-        name={`Show Room: ${country || ``}`}
-        route={`/ ${country || ``}`}
-      />
+      
       <div className="w-10/12 mt-8 xl:w-8/12 mx-auto">
         <Header products={products} />
       </div>
-      <AllProductsPage />
     </div>
   );
 };
 
 export default ShowRoomPage;
 
-export const categories = [
-  { id: 1, name: "Technology" },
-  { id: 2, name: "Health" },
-  { id: 3, name: "Finance" },
-  { id: 4, name: "Education" },
-  { id: 5, name: "Travel" },
-  { id: 6, name: "Food" },
-  { id: 7, name: "Lifestyle" },
-  { id: 8, name: "Entertainment" },
-  { id: 9, name: "Sports" },
-  { id: 10, name: "Science" },
-  { id: 11, name: "Fashion" },
-  { id: 9, name: "Sports" },
-  { id: 10, name: "Science" },
-  { id: 11, name: "Fashion" },
-  { id: 9, name: "Sports" },
-  { id: 10, name: "Science" },
-  { id: 11, name: "Fashion" },
-  { id: 12, name: "Business" },
-];
+
 
 export function CarouselPlugin() {
   const plugin = React.useRef(Autoplay({ delay: 2000 }));

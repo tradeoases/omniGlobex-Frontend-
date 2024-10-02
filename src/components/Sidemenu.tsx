@@ -7,12 +7,15 @@ import { RiSearchLine } from "react-icons/ri";
 
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
-import { IMainMenu, categories, mainMenu } from "@/data/data";
+import { IMainMenu, mainMenu } from "@/data/data";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { getAllProductCategories } from "@/service/apis/product-services";
 
 export interface ICategory {
+  category_id: string;
   name: string;
-  icon: JSX.Element;
 }
 
 const Sidemenu = () => {
@@ -106,11 +109,11 @@ const Sidemenu = () => {
 
 export default Sidemenu;
 
-const MenuItem: React.FC<ICategory> = ({ icon, name }) => {
+const MenuItem: React.FC<ICategory> = ({  name }) => {
   return (
     <div className="flex items-center justify-between px-6 py-3 hover:bg-main">
       <div className="flex items-center gap-x-4">
-        <span className="text-lg text-gray-700">{icon}</span>
+        {/* <span className="text-lg text-gray-700">{icon}</span> */}
         <span className="text-sm">{name}</span>
       </div>
       <LuChevronRight className="text-base" />
@@ -119,11 +122,21 @@ const MenuItem: React.FC<ICategory> = ({ icon, name }) => {
 };
 
 const SideMenuCategories = () => {
+  const { data: categories, isSuccess: categorySuccess } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response: AxiosResponse<any, any> = await getAllProductCategories();
+
+      if (response.status === HttpStatusCode.Ok) {
+        return response.data.data as ICategory[];
+      }
+    },
+  });
   return (
     <div className="w-full">
-      {categories.map((cat, i) => (
-        <MenuItem key={i} {...cat} />
-      ))}
+      {categorySuccess &&
+        categories?.map((cat, i) => <MenuItem key={i} {...cat} />)}
     </div>
   );
 };

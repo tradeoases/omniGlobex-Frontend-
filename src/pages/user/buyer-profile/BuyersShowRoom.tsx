@@ -1,176 +1,147 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useEffect, useRef, useState } from "react";
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
-import { HeaderProductCard } from "@/components/header-product-card";
-import { IProduct } from "@/service/apis/product-services";
-import { Button } from "@/components/ui/button";
-// import { ProductSkeleton } from "@/components/product-skeleton";
+import { getAllProducts, IProduct } from "@/service/apis/product-services";
+import { useQuery } from "@tanstack/react-query";
+import { ProductSkeleton } from "@/components/product-skeleton";
+import { getUserPreferences } from "@/service/apis/user-services";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { ProductCard } from "@/components/product-card";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
-interface Props {
-}
+interface Props {}
 
 const BuyersShowRoom: React.FC<Props> = () => {
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [localProducts] = useState<IProduct[] | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollIntervalRef = useRef<number | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // useEffect(() => {
-  //   if (products) {
-  //     setLocalProducts(products.slice(0, 5));
-  //   }
-  // }, [products]);
+  const { data: preferences, isSuccess } = useQuery({
+    queryKey: ["userpreference"],
+    queryFn: async () => {
+      const response = await getUserPreferences();
+      if (response.status === 200) {
+        return response.data.data as {
+          country_id: string;
+          currency: string;
+          language: string;
+        };
+      }
+    },
+  });
 
-  // const loadMore = useCallback(() => {
-  //   products && localProducts && setLocalProducts((prev) => {
-  //     const updatedProducts = prev
-  //       ? [...prev, ...products.slice(5, 20)]
-  //       : products.slice(5, 20);
-  //     return updatedProducts;
-  //   });
-  // }, [localProducts]);
+  const {
+    data: products,
+    isLoading: productIsLoading,
+    isSuccess: productSuccess,
+    isError: productIsError,
+    error: productError,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const response: AxiosResponse<any, any> = await getAllProducts(
+        `?page=${page}&pageSize=${pageSize}&userCurrency=${preferences?.currency}&countryId=${preferences?.country_id}`
+      );
 
-  // const handleScroll = useCallback(() => {
-  //   if (containerRef.current) {
-  //     const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-  //     if (scrollLeft + clientWidth >= scrollWidth - 50) {
-  //       loadMore();
-  //     }
-  //   }
-  // }, [loadMore]);
+      if (response.status === HttpStatusCode.Ok) {
+        console.log(response.data.data);
+        // setProducts(response.data.data);
+        // setTotalResults(response.data.data.totalCount || 53); //Set total count from API or use fallback
+        return response.data.data as {
+          products: IProduct[];
+          pageSize: number;
+          page: number;
+          showRoom: string;
+        };
+      }
+    },
+    enabled: isSuccess,
+  });
+  useEffect(() => {
+    const countryParam = searchParams.get("country");
+    const page = searchParams.get("page");
+    const pageSize = searchParams.get("pageSize");
 
-  // useEffect(() => {
-  //   const container = containerRef.current;
-  //   if (container) {
-  //     container.addEventListener("scroll", handleScroll);
-  //   }
-  //   return () => {
-  //     if (container) {
-  //       container.removeEventListener("scroll", handleScroll);
-  //     }
-  //   };
-  // }, [handleScroll]);
-
-  const updateScrollButtons = () => {
-    if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+    if (!countryParam) {
+      // Set a default country if it's not present
+      setSearchParams({
+        ...Object.fromEntries(searchParams),
+        country: countryParam || preferences?.country_id || "",
+        page: page || "15",
+        pageSize: pageSize || "1",
+      });
     }
+  }, []);
+
+  const handlePageChange = (newPage: number) => {
+    setSearchParams({
+      ...Object.fromEntries(searchParams), // Retain other params
+      page: newPage.toString(),
+    });
   };
 
-  const scrollLeft = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({ left: -256, behavior: "smooth" });
-    }
+  const handlePageSizeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSearchParams({
+      ...Object.fromEntries(searchParams), // Retain other params
+      pageSize: event.target.value,
+      page: "1", // Reset to page 1 on pageSize change
+    });
   };
 
-  const scrollRight = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({ left: 256, behavior: "smooth" });
-    }
-  };
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
 
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.addEventListener("scroll", updateScrollButtons);
-    }
-    updateScrollButtons();
-    return () => {
-      if (containerRef.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        containerRef.current.removeEventListener("scroll", updateScrollButtons);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const scrollInterval = setInterval(() => {
-      if (containerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-        if (scrollLeft + clientWidth < scrollWidth) {
-          containerRef.current.scrollBy({ left: 256, behavior: "smooth" });
-        } else {
-          containerRef.current.scrollTo({ left: 0, behavior: "smooth" });
-        }
-      }
-    }, 3000);
-
-    return () => clearInterval(scrollInterval);
-  }, []);
-
-  const stopAutoScroll = useCallback(() => {
-    if (scrollIntervalRef.current) {
-      clearInterval(scrollIntervalRef.current);
-      scrollIntervalRef.current = null;
-    }
-  }, []);
-
-  const startAutoScroll = useCallback(() => {
-    stopAutoScroll();
-    scrollIntervalRef.current = window.setInterval(() => {
-      if (containerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-        if (scrollLeft + clientWidth < scrollWidth) {
-          containerRef.current.scrollBy({ left: 256, behavior: "smooth" });
-        } else {
-          containerRef.current.scrollTo({ left: 0, behavior: "smooth" });
-        }
-      }
-    }, 3000);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    startAutoScroll();
-    return () => stopAutoScroll();
-  }, [startAutoScroll, stopAutoScroll]);
-
-  // if (!products) {
-  //   return (
-  //     <div className="bg-white py-12">
-  //       <div className="no-scrollbars flex w-full items-center gap-x-2 overflow-x-scroll scroll-smooth p-4">
-  //         {Array.from({ length: 4 }).map((_, i) => (
-  //           <ProductSkeleton key={i} />
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
-  // }
-  
   return (
-    <div className="bg-white py-8">
-      <div className="space-y-8 p-4 md:px-12">
-        <div className="relative flex w-full items-center justify-center">
-          <Button
-            onClick={scrollLeft}
-            size="icon"
-            variant="outline"
-            className={`absolute left-0 z-10 rounded-full ${!canScrollLeft && 'invisible'}`}
-          >
-            <HiOutlineChevronLeft />
-          </Button>
-          <div
-            ref={containerRef}
-            onMouseEnter={stopAutoScroll}
-            onMouseLeave={startAutoScroll}
-            className="no-scrollbars flex w-full items-center space-x-4 overflow-x-scroll scroll-smooth p-2"
-          >
-            {localProducts &&
-              localProducts.map((product, i) => (
-                <HeaderProductCard {...product} key={i} />
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {productIsLoading && (
+          <div className="bg-white py-12">
+            <div className="no-scrollbars flex w-full items-center gap-x-2 overflow-x-scroll scroll-smooth p-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <ProductSkeleton key={i} />
               ))}
+            </div>
           </div>
-          <Button
-            onClick={scrollRight}
-            size="icon"
-            variant="outline"
-            className={`absolute right-0 z-10 rounded-full ${!canScrollRight && 'invisible'}`}
-          >
-            <HiOutlineChevronRight />
-          </Button>
-        </div>
+        )}
+
+        {productIsError && (
+          <div>
+            <h1>An error has occured while fetching the products</h1>
+            <p>{productError.message}</p>
+            <p>{(productError as any)?.data?.message}</p>
+          </div>
+        )}
+
+        {productSuccess && products ? (
+          products.products.length === 0 ? (
+            <div>No Products</div>
+          ) : (
+            products.products.map((product) => (
+              <ProductCard key={product.product_id} {...product} />
+            ))
+          )
+        ) : (
+          <div>loading...</div>
+        )}
+      </div>
+      <div className="paginator flex items-center justify-center mt-6 space-x-4">
+        <button
+          disabled={page === 1}
+          onClick={() => handlePageChange(page - 1)}
+        >
+          Previous
+        </button>
+
+        <span>Page {page}</span>
+
+        <button onClick={() => handlePageChange(page + 1)}>Next</button>
+
+        <select value={pageSize} onChange={handlePageSizeChange}>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
       </div>
     </div>
   );

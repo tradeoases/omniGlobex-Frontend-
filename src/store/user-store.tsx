@@ -21,6 +21,7 @@ export interface IUser {
   is_verified: number;
   createdAt: string;
   updatedAt: string;
+  roles: IUserRole[],
   Roles: [
     {
       name: IUserRole;
@@ -37,13 +38,12 @@ export interface IUser {
 }
 
 export type IUserRole =
-  | "buyer"
-  | "admin"
-  | "admin"
-  | "supplier"
-  | "localMarketing"
-  | "localLogistic"
-  | "internationalSupplier";
+  | "Buyer"
+  | "Admin"
+  | "Supplier"
+  | "LocalMarketing"
+  | "LocalLogistic"
+  | "InternationalSupplier";
 
 export const RoleStore: RecoilState<IRole[] | null> = atom<IRole[] | null>({
   key: "role-store",

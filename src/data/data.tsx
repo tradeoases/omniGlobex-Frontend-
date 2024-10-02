@@ -1,18 +1,21 @@
-import { ICategory } from "@/components/Sidemenu";
-import { BsMinecartLoaded, BsPaintBucket } from "react-icons/bs";
-import { IoGameControllerOutline } from "react-icons/io5";
-import { LuCar } from "react-icons/lu";
+// import { ICategory } from "@/components/Sidemenu";
 import {
-  MdDevices,
-  MdOutlineChair,
-  MdOutlinePhotoCamera,
-  MdOutlineSanitizer,
+  BsMinecartLoaded,
+  // BsPaintBucket
+} from "react-icons/bs";
+// import { IoGameControllerOutline } from "react-icons/io5";
+// import { LuCar } from "react-icons/lu";
+import {
+  // MdDevices,
+  // MdOutlineChair,
+  // MdOutlinePhotoCamera,
+  // MdOutlineSanitizer,
   MdOutlineSecurity,
-  MdOutlineSportsBaseball,
+  // MdOutlineSportsBaseball,
 } from "react-icons/md";
-import { PiBowlFood } from "react-icons/pi";
+// import { PiBowlFood } from "react-icons/pi";
 import {
-  TbBabyBottle,
+  // TbBabyBottle,
   TbTruckReturn,
   TbSubscript,
   TbMessageCircle2Filled,
@@ -21,7 +24,7 @@ import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
 import { IoBagHandle, IoLogOut } from "react-icons/io5";
-import {  MdReviews } from "react-icons/md";
+import { MdReviews } from "react-icons/md";
 import card1 from "@/assets/card-1.svg";
 import card2 from "@/assets/card-2.svg";
 import card3 from "@/assets/card-3.svg";
@@ -38,18 +41,18 @@ import sellerImg5 from "@/assets/saller-5.png";
 import sellerImg6 from "@/assets/saller-6.png";
 import NotificationsIcon from "@/pages/user/buyer-profile/NotificationsIcon";
 
-export const categories: ICategory[] = [
-  { name: "Mobile & Laptops", icon: <MdDevices /> },
-  { name: "Gamming Entertainment", icon: <IoGameControllerOutline /> },
-  { name: "Image & Video", icon: <MdOutlinePhotoCamera /> },
-  { name: "Vehicles", icon: <LuCar /> },
-  { name: "Furnitures", icon: <MdOutlineChair /> },
-  { name: "Sports", icon: <MdOutlineSportsBaseball /> },
-  { name: "Food & Accessories", icon: <PiBowlFood /> },
-  { name: "Toilet & Sanitation", icon: <MdOutlineSanitizer /> },
-  { name: "Makeup Corner", icon: <BsPaintBucket /> },
-  { name: "Baby items", icon: <TbBabyBottle /> },
-];
+// export const categories: ICategory[] = [
+//   { category_id: '', name: "Mobile & Laptops", icon: <MdDevices /> },
+//   { name: "Gamming Entertainment", icon: <IoGameControllerOutline /> },
+//   { name: "Image & Video", icon: <MdOutlinePhotoCamera /> },
+//   { name: "Vehicles", icon: <LuCar /> },
+//   { name: "Furnitures", icon: <MdOutlineChair /> },
+//   { name: "Sports", icon: <MdOutlineSportsBaseball /> },
+//   { name: "Food & Accessories", icon: <PiBowlFood /> },
+//   { name: "Toilet & Sanitation", icon: <MdOutlineSanitizer /> },
+//   { name: "Makeup Corner", icon: <BsPaintBucket /> },
+//   { name: "Baby items", icon: <TbBabyBottle /> },
+// ];
 
 export enum MessageText {
   Default = "A confirmation email has been sent to your inbox. Please open the email and follow the instructions to confirm your email address.",
@@ -319,7 +322,7 @@ export interface ITopbarNav {
 
 export const navs: ITopbarNav[] = [
   { title: "Home", route: "/" },
-  // { title: "Supplier", route: "/supplier-dashboard" },
+  { title: "Supplier", route: "/supplier-dashboard" },
   { title: "Buyers Dashboard", icon: true, route: "/buyer-dashboard" },
   { title: "Pages", icon: true, route: "" },
   { title: "About", route: "/about" },
