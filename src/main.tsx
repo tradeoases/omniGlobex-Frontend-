@@ -10,7 +10,7 @@ import AppLayout from "./components/app-layout.tsx";
 import RoutesConfig from "./route.tsx";
 import { GlobalProvider } from "./context/GlobalContext";
 import "./i18n";
-import Chatbot from "./components/chatbot";
+// import Chatbot from "./components/chatbot";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -26,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                 <AppLayout>
                   <RoutesConfig />
-                  <Chatbot /> {/* Chatbot component here */}
+                  {/* <Chatbot />  */}
                 </AppLayout>
               </ThemeProvider>
             </QueryClientProvider>

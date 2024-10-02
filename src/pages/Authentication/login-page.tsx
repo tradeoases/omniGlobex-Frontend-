@@ -54,7 +54,7 @@ const LoginPage = () => {
     }
 
     return () => clearTimeout(timeoutKey);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorMessage]);
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -78,9 +78,9 @@ const LoginPage = () => {
 
         setUserData(userData);
         localStorage.setItem("token", token);
-        localStorage.setItem("profile", JSON.stringify(userData));
+        localStorage.setItem("supplier-dashboard", JSON.stringify(userData));
         setLoading(false);
-        navigate(`/profile`);
+        navigate(`/supplier-dashboard`);
         setSuccessMessage(true);
 
         timeoutKey = setTimeout(() => {

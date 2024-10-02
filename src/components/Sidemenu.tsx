@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { LuChevronRight } from "react-icons/lu";
-
 import { RiSearchLine } from "react-icons/ri";
-
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/sidemenuStore";
 import { IMainMenu, mainMenu } from "@/data/data";
@@ -80,27 +78,17 @@ const Sidemenu = () => {
 
         <div className="w-full flex items-center justify-center gap-x-2">
           <button
-            onClick={() => setMenu(1)}
-            type="button"
-            className={`text-base font-medium ${
-              menu === 1 ? "text-black" : "text-gray-500"
-            }`}
-          >
-            Categories
-          </button>
-          <div className="h-4 w-[1.5px] bg-slate-800" />
-          <button
             onClick={() => setMenu(2)}
             type="button"
             className={`text-base font-medium ${
               menu === 2 ? "text-black" : "text-gray-500"
             }`}
           >
-            Main Menu
+            <span className="">☰</span>
           </button>
         </div>
 
-        {menu === 1 && <SideMenuCategories />}
+        {/* {menu === 1 && <SideMenuCategories />} */}
         {menu === 2 && <MainMenu />}
       </div>
     </div>
@@ -109,7 +97,7 @@ const Sidemenu = () => {
 
 export default Sidemenu;
 
-const MenuItem: React.FC<ICategory> = ({  name }) => {
+const MenuItem: React.FC<ICategory> = ({ name }) => {
   return (
     <div className="flex items-center justify-between px-6 py-3 hover:bg-main">
       <div className="flex items-center gap-x-4">
@@ -121,7 +109,7 @@ const MenuItem: React.FC<ICategory> = ({  name }) => {
   );
 };
 
-const SideMenuCategories = () => {
+export const SideMenuCategories = () => {
   const { data: categories, isSuccess: categorySuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -159,7 +147,7 @@ const MainMenuItem: React.FC<IMainMenu> = ({ name, route }) => {
   );
 };
 
-const MainMenu = () => {
+export const MainMenu = () => {
   return (
     <div className="w-full">
       {mainMenu.map((menu, i) => (
