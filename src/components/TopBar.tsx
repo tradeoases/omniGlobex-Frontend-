@@ -11,7 +11,7 @@ const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
     useSetRecoilState<boolean>(SidemenuStore);
   const onOpen = () => {
-    console.log('Hello')rrencySelector from "./CurrencySelector";
+    // console.log('Hello')rrencySelector from "./CurrencySelector";
     // import La
     setSidemenu(true);
   };
