@@ -1,4 +1,4 @@
-import { LuChevronRight } from "react-icons/lu";
+import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SlHandbag } from "react-icons/sl";
