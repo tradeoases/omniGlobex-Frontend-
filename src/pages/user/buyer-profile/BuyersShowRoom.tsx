@@ -1,56 +1,56 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
 import { HeaderProductCard } from "@/components/header-product-card";
 import { IProduct } from "@/service/apis/product-services";
 import { Button } from "@/components/ui/button";
-import { ProductSkeleton } from "@/components/product-skeleton";
+// import { ProductSkeleton } from "@/components/product-skeleton";
 
 interface Props {
-  products: IProduct[] | null;
 }
 
-const BuyersShowRoom: React.FC<Props> = ({ products }) => {
+const BuyersShowRoom: React.FC<Props> = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const [localProducts, setLocalProducts] = useState<IProduct[] | null>(null);
+  const [localProducts] = useState<IProduct[] | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollIntervalRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (products) {
-      setLocalProducts(products.slice(0, 5));
-    }
-  }, [products]);
+  // useEffect(() => {
+  //   if (products) {
+  //     setLocalProducts(products.slice(0, 5));
+  //   }
+  // }, [products]);
 
-  const loadMore = useCallback(() => {
-    products && localProducts && setLocalProducts((prev) => {
-      const updatedProducts = prev
-        ? [...prev, ...products.slice(5, 20)]
-        : products.slice(5, 20);
-      return updatedProducts;
-    });
-  }, [localProducts]);
+  // const loadMore = useCallback(() => {
+  //   products && localProducts && setLocalProducts((prev) => {
+  //     const updatedProducts = prev
+  //       ? [...prev, ...products.slice(5, 20)]
+  //       : products.slice(5, 20);
+  //     return updatedProducts;
+  //   });
+  // }, [localProducts]);
 
-  const handleScroll = useCallback(() => {
-    if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      if (scrollLeft + clientWidth >= scrollWidth - 50) {
-        loadMore();
-      }
-    }
-  }, [loadMore]);
+  // const handleScroll = useCallback(() => {
+  //   if (containerRef.current) {
+  //     const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+  //     if (scrollLeft + clientWidth >= scrollWidth - 50) {
+  //       loadMore();
+  //     }
+  //   }
+  // }, [loadMore]);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [handleScroll]);
+  // useEffect(() => {
+  //   const container = containerRef.current;
+  //   if (container) {
+  //     container.addEventListener("scroll", handleScroll);
+  //   }
+  //   return () => {
+  //     if (container) {
+  //       container.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, [handleScroll]);
 
   const updateScrollButtons = () => {
     if (containerRef.current) {
@@ -79,6 +79,7 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
     updateScrollButtons();
     return () => {
       if (containerRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         containerRef.current.removeEventListener("scroll", updateScrollButtons);
       }
     };
@@ -118,6 +119,7 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
         }
       }
     }, 3000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -125,17 +127,17 @@ const BuyersShowRoom: React.FC<Props> = ({ products }) => {
     return () => stopAutoScroll();
   }, [startAutoScroll, stopAutoScroll]);
 
-  if (!products) {
-    return (
-      <div className="bg-white py-12">
-        <div className="no-scrollbars flex w-full items-center gap-x-2 overflow-x-scroll scroll-smooth p-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <ProductSkeleton key={i} />
-          ))}
-        </div>
-      </div>
-    );
-  }
+  // if (!products) {
+  //   return (
+  //     <div className="bg-white py-12">
+  //       <div className="no-scrollbars flex w-full items-center gap-x-2 overflow-x-scroll scroll-smooth p-4">
+  //         {Array.from({ length: 4 }).map((_, i) => (
+  //           <ProductSkeleton key={i} />
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // }
   
   return (
     <div className="bg-white py-8">

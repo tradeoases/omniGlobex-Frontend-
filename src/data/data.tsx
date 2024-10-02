@@ -305,7 +305,7 @@ export const wishlistData: IWishLists[] = [
 export type TTopbarNav =
   | "Home"
   | "Supplier"
-  | "Shop"
+  | "Buyers Dashboard"
   | "Pages"
   | "About"
   | "Blogs"
@@ -319,8 +319,8 @@ export interface ITopbarNav {
 
 export const navs: ITopbarNav[] = [
   { title: "Home", route: "/" },
-  { title: "Supplier", route: "/supplier-dashboard" },
-  { title: "Shop", icon: true, route: "/buyer-dashboard" },
+  // { title: "Supplier", route: "/supplier-dashboard" },
+  { title: "Buyers Dashboard", icon: true, route: "/buyer-dashboard" },
   { title: "Pages", icon: true, route: "" },
   { title: "About", route: "/about" },
   { title: "Blogs", route: "/blogs" },

@@ -1,6 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FiMenu } from "react-icons/fi";
 
-const Sidebar = ({ activeSection, setActiveSection, isOpen, setIsOpen }) => {
+const Sidebar = ({
+  activeSection,
+  setActiveSection,
+  isOpen,
+  setIsOpen,
+}: {
+  activeSection: any;
+  setActiveSection: any;
+  isOpen: any;
+  setIsOpen: any;
+}) => {
   const sections = [
     "Dashboard",
     "Show room",
