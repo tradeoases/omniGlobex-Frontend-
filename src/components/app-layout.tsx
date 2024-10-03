@@ -1,5 +1,5 @@
-import React from 'react';
-import { GlobalProvider } from '@/context/GlobalContext'; 
+import React from "react";
+import { GlobalProvider } from "@/context/GlobalContext";
 // import TopBanner from "@/components/TopBanner";
 import TopBar from "@/components/TopBar";
 import NavBar from "@/components/NavBar";
@@ -7,6 +7,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { DashboardSideMenu } from "./dashboard-side-menu";
 import useScrollToTop from "@/hooks/use-scroll-top";
+import Sidemenu from "./Sidemenu";
 
 interface Props {
   children: React.ReactNode;
@@ -14,7 +15,7 @@ interface Props {
 
 const AppLayout: React.FC<Props> = ({ children }) => {
   useScrollToTop();
-  
+
   return (
     <GlobalProvider>
       <main
@@ -25,7 +26,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
         {/* The Page Content */}
         <section className="relative flex w-full flex-col items-start justify-start">
           {/* <TopBanner /> */}
-          {/* <Sidemenu /> */}
+          <Sidemenu />
           <DashboardSideMenu />
           <NavBar />
           <TopBar />
