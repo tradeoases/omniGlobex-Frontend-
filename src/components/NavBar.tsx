@@ -30,8 +30,10 @@ const NavBar = () => {
 
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
 
+
   useEffect(() => {
     const unparsed = localStorage.getItem("profile");
+    console.log('Unparsed Profile:', unparsed); 
     if (!unparsed) return;
     const profile = JSON.parse(unparsed);
     setUserData(profile);
@@ -91,8 +93,10 @@ const NavBar = () => {
           {userData && (
             <Link to="/wishlist" className="relative">
               <span className="w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
+              <span className="w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
                 <Badge count={0} />
                 <IoIosNotificationsOutline
+                  className="text-3xl text-white"
                   className="text-3xl text-white"
                   data-tooltip-id="notificationTooltip"
                   data-tooltip-content={t("Notifications")} 
@@ -106,6 +110,7 @@ const NavBar = () => {
           {!userData && !isAuthenticating && (
             <Button
               asChild
+              className={`bg-gradient-to-r from-yellow-200 to-yellow-700 text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
               className={`bg-gradient-to-r from-yellow-200 to-yellow-700 text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
             >
               <NavLink to="/signin">

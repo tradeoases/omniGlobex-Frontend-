@@ -25,7 +25,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
         {/* The Page Content */}
         <section className="relative flex w-full flex-col items-start justify-start">
           {/* <TopBanner /> */}
-          {/* <Sidemenu /> */}
+          <Sidemenu />
           <DashboardSideMenu />
           <NavBar />
           <TopBar />

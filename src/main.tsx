@@ -13,10 +13,10 @@ import "./i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getLocaleInfo } from "./utils/localeDetection"; 
 
-
+// Define atoms for currency and language
 const currencyState = atom({
-  key: 'currencyState', 
-  default: 'USD', 
+  key: 'currencyState', // unique ID (with respect to other atoms/selectors)
+  default: 'USD', // default value (aka initial value)
 });
 
 const languageState = atom({
@@ -40,7 +40,7 @@ const AppInitializer: React.FC = () => {
     fetchLocale();
   }, [setCurrency, setLanguage]);
 
-  return null; 
+  return null; // This component does not render anything
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -50,7 +50,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <GlobalProvider>
             <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-              <AppInitializer /> 
+              <AppInitializer /> {/* Add this component here */}
               <AppLayout>
                 <RoutesConfig />
               </AppLayout>
