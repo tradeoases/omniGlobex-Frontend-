@@ -80,7 +80,6 @@ const NavBar = () => {
               />
             )}
           </div>
-
           {/* Hamburger Menu Icon for Mobile */}
           <button className="lg:hidden" onClick={toggleMenu}>
             {isMenuOpen ? (
