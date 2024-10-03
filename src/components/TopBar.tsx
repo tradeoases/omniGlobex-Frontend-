@@ -3,12 +3,25 @@ import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
 import CurrencySelector from "./CurrencySelector";
 import LanguageSelector from "./LanguageSelector";
+import { LuAlignLeft } from "react-icons/lu";
+import { SetterOrUpdater, useSetRecoilState } from "recoil";
+import { SidemenuStore } from "@/store/side-menu-store";
 
 const TopBar = () => {
+  const setSidemenu: SetterOrUpdater<boolean> =
+    useSetRecoilState<boolean>(SidemenuStore);
+  const onOpen = () => {
+    console.log('Hello')
+    setSidemenu(true);
+  };
+
   return (
     <header className="w-full border-b py-4">
       {/* Mobile / Tablet View */}
-      <div className="w-10/12 xl:w-8/12 mx-auto flex flex-col items-center lg:hidden">
+      <div className="w-10/12 xl:w-8/12 mx-auto flex  items-center lg:hidden">
+        <div onClick={onOpen}>
+          <LuAlignLeft className="text-2xl" />
+        </div>
         <Link to="/" aria-label="Go to Home">
           <Logo />
         </Link>

@@ -3,7 +3,7 @@ import { ProductCard } from "./product-card";
 import { SectionHeader } from "./section-header";
 
 interface Props {
-  products: IProduct[] | null;
+  products?: IProduct[] | null;
 }
 
 const NewArrivalSection: React.FC<Props> = ({ products }) => {

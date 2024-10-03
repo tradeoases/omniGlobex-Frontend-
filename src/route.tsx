@@ -29,6 +29,7 @@ import { Overview } from "./components/profile-dashboard/overview";
 
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import StripeSuccessPage from "./pages/BusinessInformation/StripeSuccessPage";
+import AllProductsPage from "./pages/products/all-products-page";
 
 export default function RoutesConfig() {
   return (
@@ -70,6 +71,7 @@ export default function RoutesConfig() {
       </Route>
       <Route path="/subscription/success" element={<StripeSuccessPage />} />
       <Route path="/single-product" element={<SingleProduct />} />
+      <Route path="/products" element={<AllProductsPage />} />
       <Route path="/show-room" element={<ShowRoomPage />} />
       <Route path="cookie-policy" element={<CookiesPolicyPage />} />
       <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
