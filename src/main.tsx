@@ -25,24 +25,6 @@ import App from "./App.tsx";
 // });
 
 const queryClient = new QueryClient();
-
-// const AppInitializer: React.FC = () => {
-//   const setCurrency = useSetRecoilState(currencyState);
-//   const setLanguage = useSetRecoilState(languageState);
-
-//   useEffect(() => {
-//     const fetchLocale = async () => {
-//       const { currency, language } = await getLocaleInfo();
-//       setCurrency(currency);
-//       setLanguage(language);
-//     };
-
-//     fetchLocale();
-//   }, [setCurrency, setLanguage]);
-
-//   return null;
-// };
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RecoilRoot>
