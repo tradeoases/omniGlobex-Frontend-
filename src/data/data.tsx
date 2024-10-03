@@ -96,8 +96,9 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <MdReviews />, title: "Reviews" },
   { icon: <TbSubscript />, title: "Subscription" },
   { icon: <NotificationsIcon />, title: "Notifications" },
-  { icon: <NotificationsIcon />, title: "Messages" },
+
   { icon: <TbMessage2 />, title: "Messages" },
+
   { icon: <MdReviews />, title: "Business" },
   { icon: <MdReviews />, title: "Analytics" },
   { icon: <HiLockClosed />, title: "Change Password" },

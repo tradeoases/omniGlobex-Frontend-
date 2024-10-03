@@ -1,10 +1,4 @@
-// /* eslint-disable react-hooks/exhaustive-deps */
-// import { LuChevronRight } from "react-icons/lu";
-// // import { ICategory } from "./Sidemenu";
-// import { useEffect, useRef } from "react";
-// import { useQuery } from "@tanstack/react-query";
-// import { AxiosResponse, HttpStatusCode } from "axios";
-// import { getAllProductCategories, IProductCategory } from "@/service/apis/product-services";
+
 /* eslint-disable react-hooks/exhaustive-deps */
 // import { ICategory } from "./Sidemenu";
 import { useEffect, useRef } from "react";

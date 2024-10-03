@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { LuChevronRight } from "react-icons/lu";
+
 import { RiSearchLine } from "react-icons/ri";
+
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { IMainMenu, mainMenu } from "@/data/data";
 import { Link } from "react-router-dom";
@@ -116,6 +118,8 @@ const Sidemenu = () => {
   const [menu, setMenu] = useState<number>(1);
   const [sidemenu, setSidemenu] = useRecoilState<boolean>(SidemenuStore);
 
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   const onClose = () => {
     setSidemenu(false);
   };
@@ -159,6 +163,8 @@ const Sidemenu = () => {
           <div className="grid grid-cols-12 border">
             <div className="col-span-9">
               <input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 className="pl-2 py-2 text-xs outline-none"
                 placeholder="Search Product..."
@@ -166,7 +172,11 @@ const Sidemenu = () => {
             </div>
             <div className="bg-main flex items-center justify-center col-span-3 py-2 px-3">
               <p className="font-bold text-sm">
-                <RiSearchLine />
+                <RiSearchLine
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                />
               </p>
             </div>
           </div>
@@ -203,6 +213,12 @@ const Sidemenu = () => {
 
 export default Sidemenu;
 
+const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
+  const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
+  console.log(category_id);
+  const onClose = () => {
+    setSidemenu(false);
+  };
 
 const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
   const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
@@ -265,7 +281,7 @@ const MainMenuItem: React.FC<IMainMenu> = ({ name, route }) => {
   );
 };
 
-export const MainMenu = () => {
+const MainMenu = () => {
   return (
     <div className="w-full">
       {mainMenu.map((menu, i) => (
