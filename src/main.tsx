@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { RecoilRoot, atom, useSetRecoilState } from "recoil";
+import { RecoilRoot, atom } from "recoil";
 import "./index.css";
 import "./styles/custom.module.css";
 import { ThemeProvider } from "./components/theme-provider.tsx";
-import AppLayout from "./components/app-layout.tsx";
+// import AppLayout from "./components/app-layout.tsx";
 import RoutesConfig from "./route.tsx";
 import { GlobalProvider } from "./context/GlobalContext";
 import "./i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import App from "./App.tsx";
 // import { getLocaleInfo } from "./utils/localeDetection";
 
 const currencyState = atom({
@@ -49,9 +50,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <GlobalProvider>
             <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
               {/* <AppInitializer /> */}
-              <AppLayout>
+
+              <App>
                 <RoutesConfig />
-              </AppLayout>
+                {/* <Chatbot />  */}
+              </App>
             </ThemeProvider>
           </GlobalProvider>
         </BrowserRouter>

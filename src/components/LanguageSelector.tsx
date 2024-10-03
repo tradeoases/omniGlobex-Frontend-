@@ -13,6 +13,7 @@ const LanguageSelector: React.FC = () => {
   const { t } = useTranslation();
   const { languages, selectedLanguage, setLanguage } = useGlobalContext();
 
+  
   const options = useMemo(() => {
     return languages.map((lang) => ({
       value: lang.code, // language code
@@ -70,6 +71,6 @@ const LanguageSelector: React.FC = () => {
       />
     </div>
   );
-};
+}
 
 export default LanguageSelector;

@@ -18,6 +18,7 @@ import {
   // TbBabyBottle,
   TbTruckReturn,
   TbSubscript,
+  TbMessage2,
 } from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
@@ -96,6 +97,7 @@ export const dashboardNavs: IDashboardNav[] = [
   { icon: <TbSubscript />, title: "Subscription" },
   { icon: <NotificationsIcon />, title: "Notifications" },
   { icon: <NotificationsIcon />, title: "Messages" },
+  { icon: <TbMessage2 />, title: "Messages" },
   { icon: <MdReviews />, title: "Business" },
   { icon: <MdReviews />, title: "Analytics" },
   { icon: <HiLockClosed />, title: "Change Password" },
@@ -114,8 +116,7 @@ export interface IMainMenu {
 
 export const mainMenu: IMainMenu[] = [
   { name: "Home", route: "/" },
-  { name: "Supplier", route: "/supplier-dashboard" },
-  { name: "Shop", route: "/buyer-dashboard" },
+  { name: "Shop", route: "/products" },
   {
     name: "Pages",
     route: "",
@@ -306,7 +307,7 @@ export const wishlistData: IWishLists[] = [
 
 export type TTopbarNav =
   | "Home"
-  | "Supplier"
+  | "Shop"
   | "Buyers Dashboard"
   | "Pages"
   | "About"
@@ -321,8 +322,8 @@ export interface ITopbarNav {
 
 export const navs: ITopbarNav[] = [
   { title: "Home", route: "/" },
-  { title: "Supplier", route: "/supplier-dashboard" },
-  { title: "Buyers Dashboard", icon: true, route: "/buyer-dashboard" },
+  { title: "Shop", route: "/products" },
+  // { title: "Buyers Dashboard", icon: true, route: "/buyer-dashboard" },
   { title: "Pages", icon: true, route: "" },
   { title: "About", route: "/about" },
   { title: "Blogs", route: "/blogs" },

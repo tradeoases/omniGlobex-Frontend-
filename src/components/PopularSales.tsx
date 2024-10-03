@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { SectionHeader } from "./section-header";
 
 interface Props {
-  products: IProduct[] | null;
+  products?: IProduct[] | null;
 }
 
 const PopularSales: React.FC<Props> = ({ products }) => {

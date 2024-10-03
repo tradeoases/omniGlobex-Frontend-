@@ -1,96 +1,10 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  ReactNode,
-  useContext,
-} from "react";
-import { useTranslation } from "react-i18next";
-import { fetchCurrencies } from "../utils/api";
-// import { getLocaleInfo } from "../utils/localeDetection";
-import en from "../locales/en.json";
-import es from "../locales/es.json";
-import ar from "../locales/ar.json";
-import de from "../locales/de.json";
-import he from "../locales/he.json";
-import ko from "../locales/ko.json";
-import pt from "../locales/pt.json";
-import zhHans from "../locales/zh-Hans.json";
-import zhHant from "../locales/zh-Hant.json";
-import { atom, useRecoilState } from "recoil";
+import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { fetchCurrencies } from '../utils/api';
+import { getLocaleInfo } from '../utils/localeDetection';
+import axios from 'axios';
 
-// Define Recoil atoms
-const currencyAtom = atom({
-  key: "currencyAtom", // unique ID (with respect to other atoms/selectors)
-  default: "USD", // default value (aka initial value)
-});
-
-const languageAtom = atom({
-  key: "languageAtom",
-  default: "en",
-});
-
-const languages = {
-  en,
-  es,
-  ar,
-  de,
-  he,
-  ko,
-  pt,
-  "zh-Hans": zhHans,
-  "zh-Hant": zhHant,
-};
-
-const supportedLanguages = [
-  {
-    code: "en",
-    name: "English",
-    nativeName: "English",
-    flag: "./flags/us.png",
-  },
-  {
-    code: "es",
-    name: "Español",
-    nativeName: "Español",
-    flag: "./flags/es.png",
-  },
-  {
-    code: "ar",
-    name: "العربية",
-    nativeName: "العربية",
-    flag: "./flags/ae.png",
-  },
-  {
-    code: "de",
-    name: "Deutsch",
-    nativeName: "Deutsch",
-    flag: "./flags/de.png",
-  },
-  { code: "he", name: "עברית", nativeName: "עברית", flag: "./flags/il.png" },
-  { code: "ko", name: "한국어", nativeName: "한국어", flag: "./flags/kr.png" },
-  {
-    code: "pt",
-    name: "Português",
-    nativeName: "Português",
-    flag: "./flags/pt.png",
-  },
-  {
-    code: "zh-Hans",
-    name: "中文 (简体)",
-    nativeName: "中文 (简体)",
-    flag: "./flags/cn.png",
-  },
-  {
-    code: "zh-Hant",
-    name: "中文 (繁體)",
-    nativeName: "中文 (繁體)",
-    flag: "./flags/tw.png",
-  },
-];
-
-const rtlLanguages = ["ar", "he"];
-
+// Types
 interface CurrencyRates {
   [key: string]: number;
 }
@@ -121,9 +35,8 @@ export const useGlobalContext = () => {
   return context;
 };
 
-export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+// GlobalProvider component
+export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
   const [selectedCurrency, setSelectedCurrency] = useRecoilState(currencyAtom);
   const [selectedLanguage, setSelectedLanguage] = useRecoilState(languageAtom);
@@ -134,24 +47,17 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const init = async () => {
       try {
-        // const { currency, language } = await getLocaleInfo();
-        // const userLanguage = availableLanguages.includes(language)
-        //   ? language
-        //   : "en";
+        // Get locale info (currency and language)
+        const { currency, language } = await getLocaleInfo();
+        setSelectedCurrency(currency);
+        setSelectedLanguage(language);
 
-        // Set the selected language from local storage if available
-        const storedLanguage = localStorage.getItem("selectedLanguage");
-        if (storedLanguage && availableLanguages.includes(storedLanguage)) {
-          setSelectedLanguage(storedLanguage);
-          i18n.changeLanguage(storedLanguage);
+        // Initialize language with i18n
+        if (i18n.isInitialized) {
+          i18n.changeLanguage(language);
         } else {
-          // setSelectedLanguage(userLanguage);
-          // i18n.changeLanguage(userLanguage);
+          i18n.on('initialized', () => i18n.changeLanguage(language));
         }
-
-        // Update selected currency from locale info
-        // setSelectedCurrency(currency);
-        // localStorage.setItem("selectedCurrency", currency);
 
         // Fetch available currencies
         const availableCurrencies = await fetchCurrencies();
@@ -164,15 +70,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
     };
 
     init();
-  }, [i18n, setSelectedLanguage, setSelectedCurrency, availableLanguages]);
-
-  // Set the direction attribute based on selected language
-  useEffect(() => {
-    document.documentElement.setAttribute(
-      "dir",
-      rtlLanguages.includes(selectedLanguage) ? "rtl" : "ltr"
-    );
-  }, [selectedLanguage]);
+  }, [i18n]);
 
   const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language);

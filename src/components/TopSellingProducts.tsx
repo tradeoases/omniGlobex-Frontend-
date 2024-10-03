@@ -3,7 +3,7 @@ import { TopSellingCard } from "./top-selling-card";
 import { SectionHeader } from "./section-header";
 
 interface Props {
-  products: IProduct[] | null;
+  products?: IProduct[] | null;
 }
 
 const TopSellingProducts: React.FC<Props> = ({ products }) => {

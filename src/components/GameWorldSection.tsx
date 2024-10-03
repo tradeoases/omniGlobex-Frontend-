@@ -7,10 +7,13 @@ import { SectionHeader } from "./section-header";
 interface Props {
   name: string;
   route?: string;
-  products: IProduct[] | null;
+  products?: IProduct[] | null;
 }
 
 const GameWorldSection: React.FC<Props> = ({ name, products }) => {
+
+  
+
   return (
     <div className="w-full pt-8 space-y-3 bg-slate-950 p-8">
       <SectionHeader classList="text-white" name={name} view={true} />

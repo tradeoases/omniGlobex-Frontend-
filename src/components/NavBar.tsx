@@ -1,5 +1,5 @@
-import { LuChevronRight } from "react-icons/lu";
-import { CiUser } from "react-icons/ci";
+import { LuChevronDown, LuChevronRight } from "react-icons/lu";
+import { CiMenuFries, CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SlHandbag } from "react-icons/sl";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -9,11 +9,18 @@ import { useRecoilState } from "recoil";
 import { IUser, userStore } from "@/store/user-store";
 import { Button } from "./ui/button";
 import { Tooltip } from "react-tooltip";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { HeaderCartNav } from "./header-cart-nav";
 import { navs } from "@/data/data";
 import { NavBarPagesItem } from "./navbar-page-item";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
+import { CategoriesPopup } from "./CategoriesPopup";
 
 const Badge = ({ count }: { count: number }) => (
   <span className="bg-white w-4 h-4 rounded-full text-xs hover:bg-yellow-700 flex items-center justify-center absolute -top-3 -right-2">
@@ -22,10 +29,11 @@ const Badge = ({ count }: { count: number }) => (
 );
 
 const NavBar = () => {
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle mobile menu
   const location = useLocation();
-  const isAuthenticating = location.pathname === "/signup" || location.pathname === "/signin";
+  const isAuthenticating =
+    location.pathname === "/signup" || location.pathname === "/signin";
   const navigate = useNavigate();
 
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -41,13 +49,45 @@ const NavBar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const [showCategory, setShowCategory] = useState<boolean>(false);
+
+  const onToggleCategory = () => {
+    setShowCategory(!showCategory);
+  };
+
+  const handleShowCat = () => {
+    showCategory ? setShowCategory(false) : setShowCategory(true);
+  };
+
   return (
-    <div className="w-full border-b py-2 bg-main">
+    <div className="hidden lg:block w-full border-b py-2 bg-main">
       <div className="w-10/12 xl:w-8/12 mx-auto flex items-center justify-between">
         <div className="flex items-center gap-x-6 font-semibold text-sm relative">
+          <div className="flex items-center cursor-pointer gap-x-10 p-4 rounded-t-lg bg-white relative -bottom-2 left-0 right-0">
+            <p onClick={handleShowCat} className="flex items-center gap-x-2">
+              <CiMenuFries
+                className="text-lg text-black"
+                style={{ transform: "scaleX(-1)" }}
+              />
+              <span className="whitespace-nowrap">All Categories</span>
+            </p>
+            <LuChevronDown onClick={handleShowCat} className="text-sm" />
+
+            {showCategory && (
+              <CategoriesPopup
+                onToggle={onToggleCategory}
+                isOpen={showCategory}
+              />
+            )}
+          </div>
+
           {/* Hamburger Menu Icon for Mobile */}
           <button className="lg:hidden" onClick={toggleMenu}>
-            {isMenuOpen ? <HiX className="text-white text-3xl" /> : <HiMenu className="text-white text-3xl" />}
+            {isMenuOpen ? (
+              <HiX className="text-white text-3xl" />
+            ) : (
+              <HiMenu className="text-white text-3xl" />
+            )}
           </button>
 
           {/* Navigation Links for Desktop */}
@@ -67,7 +107,8 @@ const NavBar = () => {
                     }`
                   }
                 >
-                  <span className="whitespace-nowrap">{t(nav.title)}</span> {/* Translate title */}
+                  <span className="whitespace-nowrap">{t(nav.title)}</span>{" "}
+                  {/* Translate title */}
                   {nav.icon}
                 </NavLink>
               )
@@ -83,7 +124,7 @@ const NavBar = () => {
               <SlHandbag
                 className="text-sm text-white"
                 data-tooltip-id="cartTooltip"
-                data-tooltip-content={t("View Cart")} 
+                data-tooltip-content={t("View Cart")}
               />
               <Tooltip id="cartTooltip" place="top" />
             </Link>
@@ -95,7 +136,7 @@ const NavBar = () => {
                 <IoIosNotificationsOutline
                   className="text-3xl text-white"
                   data-tooltip-id="notificationTooltip"
-                  data-tooltip-content={t("Notifications")} 
+                  data-tooltip-content={t("Notifications")}
                 />
               </span>
               <Tooltip id="notificationTooltip" />
@@ -154,7 +195,7 @@ const NavBar = () => {
                 onClick={() => setIsMenuOpen(false)}
                 className="text-white text-lg"
               >
-                {t(nav.title)} 
+                {t(nav.title)}
               </NavLink>
             )
           )}
