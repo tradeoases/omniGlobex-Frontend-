@@ -1,3 +1,5 @@
+import React from 'react';
+import { GlobalProvider } from '@/context/GlobalContext'; 
 // import TopBanner from "@/components/TopBanner";
 import TopBar from "@/components/TopBar";
 import NavBar from "@/components/NavBar";
@@ -12,22 +14,26 @@ interface Props {
 
 const AppLayout: React.FC<Props> = ({ children }) => {
   useScrollToTop();
+  
   return (
-    <main
-      className={
-        "relative flex min-h-screen flex-col items-start justify-start bg-light text-neutral-800"
-      }
-    >
-      {/* The Page Content */}
-      <section className="relative flex w-full flex-col items-start justify-start">
-        <Sidemenu />
-        <DashboardSideMenu />
-        <NavBar />
-        <TopBar />
-        {children}
-        <Footer />
-      </section>
-    </main>
+    <GlobalProvider>
+      <main
+        className={
+          "relative flex min-h-screen flex-col items-start justify-start bg-light text-neutral-800"
+        }
+      >
+        {/* The Page Content */}
+        <section className="relative flex w-full flex-col items-start justify-start">
+          {/* <TopBanner /> */}
+          <Sidemenu />
+          <DashboardSideMenu />
+          <NavBar />
+          <TopBar />
+          {children}
+          <Footer />
+        </section>
+      </main>
+    </GlobalProvider>
   );
 };
 

@@ -1,60 +1,64 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGlobalContext } from '../context/GlobalContext';
-import ConfirmationModal from './ConfirmationModal';
+import Select, { SingleValue } from 'react-select';
 
 const LanguageSelector: React.FC = () => {
   const { t } = useTranslation();
   const { languages, selectedLanguage, setLanguage } = useGlobalContext();
-  const [showModal, setShowModal] = useState(false);
-  const [pendingLanguage, setPendingLanguage] = useState<string | null>(null);
 
+  // Convert languages into the format required by react-select
   const options = useMemo(() => {
-    return languages.map(lang => (
-      <option key={lang.code} value={lang.code}>
-        {lang.name} 
-      </option>
-    ));
+    return languages.map(lang => ({
+      value: lang.code,
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {lang.flag && (
+            <img
+              src={lang.flag}
+              alt={`${lang.name} flag`}
+              style={{ width: '24px', height: '16px', marginRight: '8px' }}
+            />
+          )}
+          {lang.name}
+        </div>
+      ),
+    }));
   }, [languages]);
 
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLanguage = e.target.value;
-    setPendingLanguage(newLanguage);
-    setShowModal(true);
-  };
-
-  const confirmChange = () => {
-    if (pendingLanguage) {
-      setLanguage(pendingLanguage);
+  const handleLanguageChange = (newValue: SingleValue<{ value: string; label: JSX.Element }>) => {
+    if (newValue) {
+      const newLanguage = newValue.value;
+      setLanguage(newLanguage);
+      localStorage.setItem('selectedLanguage', newLanguage);
     }
-    setShowModal(false);
   };
-
-  const selectedLang = languages.find(lang => lang.code === selectedLanguage);
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      {selectedLang && (
-        <img
-          src={selectedLang.flag}
-          alt={`${selectedLang.name} flag`}
-          style={{ width: '24px', height: '16px', marginRight: '8px' }}
-        />
-      )}
-      <select
-        value={selectedLanguage}
+    <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+      <Select
+        options={options}
+        value={options.find(option => option.value === selectedLanguage) || null} // Provide null if no match
         onChange={handleLanguageChange}
         aria-label={t('selectLanguage')}
-      >
-        {options}
-      </select>
-      {showModal && (
-        <ConfirmationModal
-          message={t('Confirm Language Change')}
-          onCancel={() => setShowModal(false)}
-          onConfirm={confirmChange}
-        />
-      )}
+        styles={{
+          control: (base) => ({
+            ...base,
+            border: '1px solid #ccc',
+            boxShadow: 'none',
+            '&:hover': {
+              border: '1px solid #aaa',
+            },
+            minWidth: '120px', // Minimum width for the dropdown
+            maxWidth: '250px', // Maximum width to prevent overflow
+            width: '100%', // Make it responsive
+          }),
+          menu: (base) => ({
+            ...base,
+            zIndex: 100, // Make sure the dropdown is on top
+          }),
+        }}
+      />
     </div>
   );
 };
