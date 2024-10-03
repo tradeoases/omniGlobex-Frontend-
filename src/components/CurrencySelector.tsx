@@ -8,12 +8,12 @@
 //   // const { currencies, selectedCurrency, setCurrency } = useGlobalContext(); 
 
   
-//   const options = useMemo(() => {
-//     return Object.keys(currencies).map(currencyCode => ({
-//       value: currencyCode,
-//       label: currencyCode.toUpperCase(), 
-//     }));
-//   }, [currencies]);
+// //   const options = useMemo(() => {
+// //     return Object.keys(currencies).map(currencyCode => ({
+// //       value: currencyCode,
+// //       label: currencyCode.toUpperCase(), 
+// //     }));
+// //   }, [currencies]);
 
 //   const handleCurrencyChange = (newValue: SingleValue<{ value: string; label: string }>) => {
     
@@ -53,4 +53,4 @@
 //   );
 // };
 
-// export default CurrencySelector;
+// // export default CurrencySelector;

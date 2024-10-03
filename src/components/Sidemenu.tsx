@@ -118,8 +118,6 @@ const Sidemenu = () => {
   const [menu, setMenu] = useState<number>(1);
   const [sidemenu, setSidemenu] = useRecoilState<boolean>(SidemenuStore);
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
   const onClose = () => {
     setSidemenu(false);
   };
@@ -163,8 +161,6 @@ const Sidemenu = () => {
           <div className="grid grid-cols-12 border">
             <div className="col-span-9">
               <input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 className="pl-2 py-2 text-xs outline-none"
                 placeholder="Search Product..."
@@ -172,11 +168,7 @@ const Sidemenu = () => {
             </div>
             <div className="bg-main flex items-center justify-center col-span-3 py-2 px-3">
               <p className="font-bold text-sm">
-                <RiSearchLine
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
-                />
+                <RiSearchLine />
               </p>
             </div>
           </div>
@@ -212,6 +204,7 @@ const Sidemenu = () => {
 };
 
 export default Sidemenu;
+
 
 const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
   const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
