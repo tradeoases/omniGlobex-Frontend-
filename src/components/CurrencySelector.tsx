@@ -1,70 +1,52 @@
-// src/components/CurrencySelector.tsx
-import React, { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import Select from "react-select"; // Import react-select
-import { useGlobalContext } from "../context/GlobalContext";
-import ConfirmationModal from "./ConfirmationModal";
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useGlobalContext } from '../context/GlobalContext';
+import Select, { SingleValue } from 'react-select';
 
 const CurrencySelector: React.FC = () => {
   const { t } = useTranslation();
-  const { currencies, selectedCurrency, setCurrency } = useGlobalContext();
-  const [showModal, setShowModal] = useState(false);
-  const [pendingCurrency, setPendingCurrency] = useState<string | null>(null);
-
+  const { currencies, selectedCurrency, setCurrency } = useGlobalContext(); 
   const options = useMemo(() => {
-    return Object.keys(currencies).map((currencyCode) => ({
+    return Object.keys(currencies).map(currencyCode => ({
       value: currencyCode,
-      label: currencyCode,
+      label: currencyCode.toUpperCase(), 
     }));
   }, [currencies]);
 
-  const handleCurrencyChange = (selectedOption: any) => {
-    const newCurrency = selectedOption.value;
-    setPendingCurrency(newCurrency);
-    setShowModal(true); // Show confirmation modal
-  };
-
-  const confirmChange = () => {
-    if (pendingCurrency) {
-      setCurrency(pendingCurrency); // Apply the change
+  const handleCurrencyChange = (newValue: SingleValue<{ value: string; label: string }>) => {
+    if (newValue) {
+      const newCurrency = newValue.value;
+      setCurrency(newCurrency);
+      localStorage.setItem('selectedCurrency', newCurrency);
     }
-    setShowModal(false);
   };
 
   return (
-    <>
-      <div className="w-full lg:w-auto">
-        <Select
-          options={options}
-          defaultValue={options.find(
-            (option) => option.value === selectedCurrency
-          )}
-          onChange={handleCurrencyChange}
-          aria-label={t("selectCurrency")}
-          styles={{
-            container: (base) => ({
-              ...base,
-              width: "100%", // Full width for mobile
-              maxWidth: "150px", // Adjust as needed for desktop
-            }),
-            menu: (base) => ({
-              ...base,
-              maxHeight: "150px", // Limit the dropdown height
-              maxWidth: "80px",
-              overflowY: "auto", // Enable scrolling for long lists
-            }),
-          }}
-        />
-      </div>
-
-      {showModal && (
-        <ConfirmationModal
-          message={t("confirmCurrencyChange")}
-          onCancel={() => setShowModal(false)}
-          onConfirm={confirmChange}
-        />
-      )}
-    </>
+    <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+      <Select
+        options={options}
+        value={options.find(option => option.value === selectedCurrency) || null} 
+        onChange={handleCurrencyChange}
+        aria-label={t('selectCurrency')}
+        styles={{
+          control: (base) => ({
+            ...base,
+            border: '1px solid #ccc',
+            boxShadow: 'none',
+            '&:hover': {
+              border: '1px solid #aaa',
+            },
+            minWidth: '120px', 
+            maxWidth: '250px', 
+            width: '100%', 
+          }),
+          menu: (base) => ({
+            ...base,
+            zIndex: 100, 
+          }),
+        }}
+      />
+    </div>
   );
 };
 
