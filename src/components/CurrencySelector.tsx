@@ -5,18 +5,18 @@ import Select, { SingleValue } from 'react-select';
 
 const CurrencySelector: React.FC = () => {
   const { t } = useTranslation();
-  const { currencies, selectedCurrency, setCurrency } = useGlobalContext(); // Ensure this is used correctly
+  const { currencies, selectedCurrency, setCurrency } = useGlobalContext(); 
 
-  // Convert currencies into the format required by react-select
+  
   const options = useMemo(() => {
     return Object.keys(currencies).map(currencyCode => ({
       value: currencyCode,
-      label: currencyCode.toUpperCase(), // Display the currency code in uppercase
+      label: currencyCode.toUpperCase(), 
     }));
   }, [currencies]);
 
   const handleCurrencyChange = (newValue: SingleValue<{ value: string; label: string }>) => {
-    // Check if newValue is not null and handle the currency change
+    
     if (newValue) {
       const newCurrency = newValue.value;
       setCurrency(newCurrency);
@@ -28,7 +28,7 @@ const CurrencySelector: React.FC = () => {
     <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
       <Select
         options={options}
-        value={options.find(option => option.value === selectedCurrency) || null} // Provide null if no match
+        value={options.find(option => option.value === selectedCurrency) || null} 
         onChange={handleCurrencyChange}
         aria-label={t('selectCurrency')}
         styles={{
