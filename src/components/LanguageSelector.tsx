@@ -1,102 +1,44 @@
-// import React, { useMemo } from "react";
-// import { useTranslation } from "react-i18next";
-// import Select from "react-select";
-// import { useGlobalContext } from "../context/GlobalContext";
-
-// const LanguageSelector: React.FC = () => {
-//   const { t } = useTranslation();
-//   const { languages, selectedLanguage } = useGlobalContext();
-
-//   // Map language options with label and value for react-select
-//   const options = useMemo(() => {
-//     return languages.map((lang) => ({
-//       value: lang.code,
-//       label: (
-//         <div style={{ display: "flex", alignItems: "center" }}>
-//           <img
-//             src={lang.flag}
-//             alt={`${lang.name} flag`}
-//             style={{ width: "20px", height: "14px", marginRight: "8px" }}
-//           />
-//           {lang.name}
-//         </div>
-//       ),
-//     }));
-//   }, [languages]);
-
-//   return (
-//     <>
-//       <div className="w-full lg:w-auto">
-//         <Select
-//           options={options}
-//           defaultValue={options.find(
-//             (option) => option.value === selectedLanguage
-//           )}
-//           aria-label={t("selectLanguage")}
-//           styles={{
-//             container: (base) => ({
-//               ...base,
-//               width: "100%",
-//               maxWidth: "150px",
-//             }),
-//             menu: (base) => ({
-//               ...base,
-//               maxHeight: "150px",
-//               overflowY: "auto",
-//               zIndex: 999,
-//             }),
-//             control: (base) => ({
-//               ...base,
-//               padding: "4px",
-//             }),
-//             valueContainer: (base) => ({
-//               ...base,
-//               overflow: "visible",
-//             }),
-//           }}
-//         />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default LanguageSelector;
-
 import { useMemo, useState } from "react";
-import Select from "react-select";
+import Select, { SingleValue } from "react-select";
 import { useGlobalContext } from "../context/GlobalContext";
 
-// const options = [
-//   { value: "chocolate", label: "Chocolate" },
-//   { value: "strawberry", label: "Strawberry" },
-//   { value: "vanilla", label: "Vanilla" },
-// ];
+// Define the type for the options
+type OptionType = {
+  value: string; // language code
+  label: JSX.Element; // JSX for language name and flag
+};
 
 export default function LanguageSelector() {
-  const [selectedOption, setSelectedOption] = useState(null);
-  const { languages, selectedLanguage } = useGlobalContext();
+  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // Correctly typed state
+  const { languages } = useGlobalContext();
+
   const options = useMemo(() => {
-        return languages.map((lang) => ({
-          value: lang.code,
-          label: (
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <img
-                src={lang.flag}
-                alt={`${lang.name} flag`}
-                style={{ width: "20px", height: "14px", marginRight: "8px" }}
-              />
-              {lang.name}
-            </div>
-          ),
-        }));
-      }, [languages]);
+    return languages.map((lang) => ({
+      value: lang.code, // language code
+      label: (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={lang.flag}
+            alt={`${lang.name} flag`}
+            style={{ width: "20px", height: "14px", marginRight: "8px" }}
+          />
+          {lang.name}
+        </div>
+      ),
+    }));
+  }, [languages]);
+
+  // Handle change event correctly with the correct types
+  const handleChange = (newValue: SingleValue<OptionType>) => {
+    setSelectedOption(newValue); // Update the state with the new selection
+  };
 
   return (
     <div className="App">
       <Select
-        defaultValue={selectedOption}
-        onChange={setSelectedOption}
-        options={options}
+        value={selectedOption} // Controlled component
+        onChange={handleChange} // Pass the handleChange function
+        options={options} // Options generated from the languages array
       />
     </div>
   );
