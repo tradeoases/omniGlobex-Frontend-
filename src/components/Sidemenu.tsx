@@ -1,24 +1,33 @@
-// import React, { useState } from "react";
-// import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
-// import { IoIosHeartEmpty } from "react-icons/io";
-// import { LuChevronRight } from "react-icons/lu";
-// import { RiSearchLine } from "react-icons/ri";
-// import { useRecoilState, useSetRecoilState } from "recoil";
-// import { SidemenuStore } from "@/store/sidemenuStore";
-// import { IMainMenu, mainMenu } from "@/data/data";
-// import { Link } from "react-router-dom";
-// import { useQuery } from "@tanstack/react-query";
-// import { AxiosResponse, HttpStatusCode } from "axios";
-// import { getAllProductCategories } from "@/service/apis/product-services";
 
-// export interface ICategory {
-//   category_id: string;
-//   name: string;
-// }
+import React, { useState } from "react";
+import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
+import { IoIosHeartEmpty } from "react-icons/io";
+import { LuChevronRight } from "react-icons/lu";
+import { RiSearchLine } from "react-icons/ri";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { IMainMenu, mainMenu } from "@/data/data";
+import { Link } from "react-router-dom";
+import {
+  getAllProductCategories,
+  IProductCategory,
+} from "@/service/apis/product-services";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { SidemenuStore } from "@/store/side-menu-store";
+import { NavLink } from "react-router-dom";
+// import { Input } from "./ui/input";
+
+export interface ICategory {
+  name: string;
+  category_id: string;
+  // icon: JSX.Element;
+}
 
 // const Sidemenu = () => {
 //   const [menu, setMenu] = useState<number>(1);
 //   const [sidemenu, setSidemenu] = useRecoilState<boolean>(SidemenuStore);
+
+//   const [searchTerm, setSearchTerm] = useState<string>("");
 
 //   const onClose = () => {
 //     setSidemenu(false);
@@ -63,6 +72,8 @@
 //           <div className="grid grid-cols-12 border">
 //             <div className="col-span-9">
 //               <input
+//                 value={searchTerm}
+//                 onChange={(e) => setSearchTerm(e.target.value)}
 //                 type="text"
 //                 className="pl-2 py-2 text-xs outline-none"
 //                 placeholder="Search Product..."
@@ -70,7 +81,11 @@
 //             </div>
 //             <div className="bg-main flex items-center justify-center col-span-3 py-2 px-3">
 //               <p className="font-bold text-sm">
-//                 <RiSearchLine />
+//                 <RiSearchLine
+//                   onClick={(e) => {
+//                     e.preventDefault();
+//                   }}
+//                 />
 //               </p>
 //             </div>
 //           </div>
@@ -88,7 +103,7 @@
 //           </button>
 //         </div>
 
-//         {/* {menu === 1 && <SideMenuCategories />} */}
+//         {menu === 1 && <SideMenuCategories />}
 //         {menu === 2 && <MainMenu />}
 //       </div>
 //     </div>
@@ -97,103 +112,9 @@
 
 // export default Sidemenu;
 
-// const MenuItem: React.FC<ICategory> = ({ name }) => {
-//   return (
-//     <div className="flex items-center justify-between px-6 py-3 hover:bg-main">
-//       <div className="flex items-center gap-x-4">
-//         {/* <span className="text-lg text-gray-700">{icon}</span> */}
-//         <span className="text-sm">{name}</span>
-//       </div>
-//       <LuChevronRight className="text-base" />
-//     </div>
-//   );
-// };
-
-// export const SideMenuCategories = () => {
-//   const { data: categories, isSuccess: categorySuccess } = useQuery({
-//     queryKey: ["categories"],
-//     queryFn: async () => {
-//       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//       const response: AxiosResponse<any, any> = await getAllProductCategories();
-
-//       if (response.status === HttpStatusCode.Ok) {
-//         return response.data.data as ICategory[];
-//       }
-//     },
-//   });
-//   return (
-//     <div className="w-full">
-//       {categorySuccess &&
-//         categories?.map((cat, i) => <MenuItem key={i} {...cat} />)}
-//     </div>
-//   );
-// };
-
-// const MainMenuItem: React.FC<IMainMenu> = ({ name, route }) => {
-//   const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
-
-//   const onClose = () => {
-//     setSidemenu(false);
-//   };
-//   return (
-//     <Link
-//       to={route}
-//       onClick={onClose}
-//       className="flex items-center justify-between px-6 py-3 hover:bg-main"
-//     >
-//       <span className="text-sm">{name}</span>
-//       <LuChevronRight className="text-base" />
-//     </Link>
-//   );
-// };
-
-// export const MainMenu = () => {
-//   return (
-//     <div className="w-full">
-//       {mainMenu.map((menu, i) => (
-//         <>
-//           <MainMenuItem key={i} {...menu} />
-//           {menu.subMenu && (
-//             <div className="ml-7">
-//               {menu.subMenu.map((nav, j) => (
-//                 <MainMenuItem key={j} {...nav} />
-//               ))}
-//             </div>
-//           )}
-//         </>
-//       ))}
-//     </div>
-//   );
-// };
-import React, { useState } from "react";
-import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { LuChevronRight } from "react-icons/lu";
-import { RiSearchLine } from "react-icons/ri";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { IMainMenu, mainMenu } from "@/data/data";
-import { Link } from "react-router-dom";
-import {
-  getAllProductCategories,
-  IProductCategory,
-} from "@/service/apis/product-services";
-import { AxiosResponse, HttpStatusCode } from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { SidemenuStore } from "@/store/side-menu-store";
-import { NavLink } from "react-router-dom";
-// import { Input } from "./ui/input";
-
-export interface ICategory {
-  name: string;
-  category_id: string;
-  // icon: JSX.Element;
-}
-
 const Sidemenu = () => {
   const [menu, setMenu] = useState<number>(1);
   const [sidemenu, setSidemenu] = useRecoilState<boolean>(SidemenuStore);
-
-  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const onClose = () => {
     setSidemenu(false);
@@ -238,8 +159,6 @@ const Sidemenu = () => {
           <div className="grid grid-cols-12 border">
             <div className="col-span-9">
               <input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 className="pl-2 py-2 text-xs outline-none"
                 placeholder="Search Product..."
@@ -247,11 +166,7 @@ const Sidemenu = () => {
             </div>
             <div className="bg-main flex items-center justify-center col-span-3 py-2 px-3">
               <p className="font-bold text-sm">
-                <RiSearchLine
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
-                />
+                <RiSearchLine />
               </p>
             </div>
           </div>
@@ -259,17 +174,27 @@ const Sidemenu = () => {
 
         <div className="w-full flex items-center justify-center gap-x-2">
           <button
+            onClick={() => setMenu(1)}
+            type="button"
+            className={`text-base font-medium ${
+              menu === 1 ? "text-black" : "text-gray-500"
+            }`}
+          >
+            Categories
+          </button>
+          <div className="h-4 w-[1.5px] bg-slate-800" />
+          <button
             onClick={() => setMenu(2)}
             type="button"
             className={`text-base font-medium ${
               menu === 2 ? "text-black" : "text-gray-500"
             }`}
           >
-            <span className="">☰</span>
+            Main Menu
           </button>
         </div>
 
-        {/* {menu === 1 && <SideMenuCategories />} */}
+        {menu === 1 && <SideMenuCategories />}
         {menu === 2 && <MainMenu />}
       </div>
     </div>
@@ -277,6 +202,7 @@ const Sidemenu = () => {
 };
 
 export default Sidemenu;
+
 
 const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
   const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);

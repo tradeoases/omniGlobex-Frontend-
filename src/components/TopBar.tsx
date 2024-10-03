@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
-import CurrencySelector from "./CurrencySelector";
-import LanguageSelector from "./LanguageSelector";
+// import CurrencySelector from "./CurrencySelector";
+// import LanguageSelector from "./LanguageSelector";
 import { LuAlignLeft } from "react-icons/lu";
 import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/side-menu-store";
@@ -26,8 +26,8 @@ const TopBar = () => {
           <Logo />
         </Link>
         <div className="flex flex-row items-center gap-4 mt-4">
-          <CurrencySelector />
-          <LanguageSelector />
+          {/* <CurrencySelector />
+          <LanguageSelector /> */}
         </div>
       </div>
 
@@ -48,8 +48,8 @@ const TopBar = () => {
         </div>
 
         <div className="flex items-center ml-14 justify-end gap-4">
-          <CurrencySelector />
-          <LanguageSelector />
+          {/* <CurrencySelector />
+          <LanguageSelector /> */}
         </div>
       </div>
     </header>
