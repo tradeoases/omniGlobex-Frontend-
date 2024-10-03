@@ -7,7 +7,7 @@ const LanguageSelector: React.FC = () => {
   const { t } = useTranslation();
   const { languages, selectedLanguage, setLanguage } = useGlobalContext();
 
-  // Convert languages into the format required by react-select
+  
   const options = useMemo(() => {
     return languages.map(lang => ({
       value: lang.code,
@@ -38,7 +38,7 @@ const LanguageSelector: React.FC = () => {
     <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
       <Select
         options={options}
-        value={options.find(option => option.value === selectedLanguage) || null} // Provide null if no match
+        value={options.find(option => option.value === selectedLanguage) || null}
         onChange={handleLanguageChange}
         aria-label={t('selectLanguage')}
         styles={{
@@ -49,13 +49,13 @@ const LanguageSelector: React.FC = () => {
             '&:hover': {
               border: '1px solid #aaa',
             },
-            minWidth: '120px', // Minimum width for the dropdown
-            maxWidth: '250px', // Maximum width to prevent overflow
-            width: '100%', // Make it responsive
+            minWidth: '120px', 
+            maxWidth: '250px', 
+            width: '100%', 
           }),
           menu: (base) => ({
             ...base,
-            zIndex: 100, // Make sure the dropdown is on top
+            zIndex: 100, 
           }),
         }}
       />
