@@ -26,17 +26,50 @@ import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
 import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
-
+import Messages from "./pages/user/buyer-profile/Messages";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
+import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
+import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
+import OrderTracking from "./pages/user/buyer-profile/OrderTracking";
+import Ratings from "./pages/user/buyer-profile/Ratings";
+import BuyerAccount from "./pages/user/buyer-profile/BuyerAccount";
+import MyFavorites from "./pages/user/buyer-profile/MyFavorite";
+import SourcingPreferences from "./pages/user/buyer-profile/SourcingPreferences";
+import SecuritySettings from "./pages/user/buyer-profile/SecuritySettings";
+import BuyerSettings from "./pages/user/buyer-profile/BuyerSettings";
+import ChangePassword from "./pages/user/buyer-profile/ChangePassword";
+import Notifications from "./pages/user/buyer-profile/Notifications";
+import QuickMessage from "./pages/user/buyer-profile/QuickMessage";
+import BuyersProfile from "./pages/user/buyer-profile/BuyersProfile";
 
 export default function RoutesConfig() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-
       <Route path="/about" element={<AboutPage />} />
       <Route path="/blogs" element={<BlogPage />} />
       <Route path="/blog/:id" element={<BlogDetails />} />
+
+      {/* Buyer Dashboard Route */}
+      <Route path="buyer-dashboard" element={<BuyerDashboard />}>
+        <Route path="home" element={<Messages />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="showRoom" element={<BuyersShowRoom />} />
+        <Route path="rfq" element={<RFQManagement />} />
+        <Route path="orders" element={<OrderTracking />} />
+        <Route path="ratings" element={<Ratings />} />
+        <Route path="settings" element={<BuyerSettings />}>
+          <Route path="security" element={<SecuritySettings />} />
+          <Route path="change-password" element={<ChangePassword />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="quick-messages" element={<QuickMessage />} />
+        </Route>
+        <Route path="myAccount" element={<BuyerAccount />}>
+          <Route path="favorites" element={<MyFavorites />} />
+          <Route path="profile" element={<BuyersProfile />} />
+          <Route path="preferences" element={<SourcingPreferences />} />
+        </Route>
+      </Route>
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="terms-condition" element={<TermsPage />} />
@@ -54,18 +87,10 @@ export default function RoutesConfig() {
         path="/business/:businessId/add-location"
         element={<AddBusinessLocation />}
       />
-
-      {/* <Route path="/all-products" element={<AllProductsPage />} /> */}
-      <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
       <Route path="/supplier-dashboard" element={<ProfilePage />} />
       <Route path="/track-order" element={<TrackOrderPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Overview />} />
-        {/* <Route path="supplier-dashboard" element={<ProfilePage />} /> */}
-
-        {/* <Route path="buyer" element={<BuyerDashboard />} /> */}
-
-        {/* <Route path="supplier" element={<ProfilePage />} /> */}
       </Route>
       <Route path="/single-product" element={<SingleProduct />} />
       <Route path="/show-room" element={<ShowRoomPage />} />

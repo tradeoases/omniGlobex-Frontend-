@@ -1,34 +1,15 @@
-
-import { useState } from "react";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
-import MainContent from "./MainContent";
+import { Outlet } from 'react-router-dom';
+import SideBar from './Sidebar';
 
 const BuyerDashboard = () => {
-  const [activeSection, setActiveSection] = useState("Dashboard");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // For toggling sidebar on mobile
-
   return (
-    <div className="w-full flex flex-col md:flex-row overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar
-        activeSection={activeSection}
-        setActiveSection={setActiveSection}
-        isOpen={isSidebarOpen} // Pass isOpen state to Sidebar
-        setIsOpen={setIsSidebarOpen} // To toggle sidebar visibility
-      />
-
-      {/* Main Content */}
-      <div className="flex-1 p-4">
-        {/* Header with a hamburger menu for mobile */}
-        <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-
-        {/* Main content */}
-        <MainContent activeSection={activeSection} />
+    <div className="flex w-full">
+      <SideBar />
+      <div className="flex-grow p-4 w-full">
+        <Outlet /> {/* This will render the nested route's component */}
       </div>
     </div>
   );
 };
 
 export default BuyerDashboard;
-

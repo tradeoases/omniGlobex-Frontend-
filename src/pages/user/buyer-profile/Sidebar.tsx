@@ -1,66 +1,80 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { FiMenu } from "react-icons/fi";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { menuItems } from "./constants"; // Import your menu items
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // For dropdown arrow icons
 
-const Sidebar = ({
-  activeSection,
-  setActiveSection,
-  isOpen,
-  setIsOpen,
-}: {
-  activeSection: any;
-  setActiveSection: any;
-  isOpen: any;
-  setIsOpen: any;
-}) => {
-  const sections = [
-    "Dashboard",
-    "Show room",
-    "RFQ",
-    "Messages",
-    "Ratings",
-    "Orders",
-  ];
+const SideBar = () => {
+  const [openDropdown, setOpenDropdown] = useState(null); // State to control dropdown visibility
+  const location = useLocation(); // Get the current path
+
+  const toggleDropdown = (index) => {
+    setOpenDropdown(openDropdown === index ? null : index);
+  };
 
   return (
-    <div>
-      {/* Hamburger icon for mobile */}
-      <div className="md:hidden p-4 bg-gray-800 text-white flex justify-between items-center">
-        <h1 className="text-lg font-bold">Menu</h1>
-        <button onClick={() => setIsOpen(!isOpen)}>
-          <FiMenu size={24} />
-        </button>
+    <div className="h-full bg-gray-800 text-white flex flex-col w-64">
+      <div className="p-4 text-center font-bold text-xl border-b border-gray-600">
+        {/* Sidebar Header */}
+        My Dashboard
       </div>
+      <ul className="p-4 flex-grow">
+        {menuItems.map(({ title, path, icon, subItems }, index) => {
+          const hasSubItems = Array.isArray(subItems) && subItems.length > 0;
+          const isActive = location.pathname.startsWith(path); // Check if the current path matches the item's path
 
-      {/* Sidebar content */}
-      <div
-        className={`bg-gray-800 min-h-screen p-6 fixed inset-y-0 left-0 transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:block`}
-      >
-        <nav>
-          <ul className="space-y-2">
-            {sections.map((section) => (
-              <li
-                key={section}
-                className={`cursor-pointer p-3 rounded-lg text-gray-300 transition-all duration-300 
-              ${
-                activeSection === section
-                  ? "bg-gray-700 text-white font-semibold shadow-lg"
-                  : "hover:bg-gray-700 hover:text-white"
-              }`}
-                onClick={() => {
-                  setActiveSection(section);
-                  setIsOpen(false); // Close sidebar on mobile after clicking
-                }}
+          return (
+            <li key={title} className="my-2">
+              <div
+                className={`flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors duration-200 ${
+                  isActive ? "bg-main" : "hover:bg-main"
+                }`}
+                onClick={hasSubItems ? () => toggleDropdown(index) : null}
               >
-                {section}
-              </li>
-            ))}
-          </ul>
-        </nav>
+                <div className="flex items-center">
+                  <span className="mr-3">{icon}</span>
+                  <Link to={path} className="flex-grow">
+                    {title}
+                  </Link>
+                </div>
+                {hasSubItems && (
+                  <span>
+                    {openDropdown === index ? (
+                      <FaChevronUp className="ml-2" />
+                    ) : (
+                      <FaChevronDown className="ml-2" />
+                    )}
+                  </span>
+                )}
+              </div>
+
+              {/* Submenu items */}
+              {hasSubItems && openDropdown === index && (
+                <ul className="ml-4 mt-2 bg-gray-700 rounded-md shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+                  {subItems.map(({ title, path }) => (
+                    <li key={title} className="my-1">
+                      <Link
+                        to={path}
+                        className={`block p-2 pl-6 rounded-md transition-colors duration-200 hover:bg-main ${
+                          location.pathname === path ? "bg-main" : ""
+                        }`}
+                      >
+                        {title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Sidebar Footer */}
+      <div className="p-4 text-center text-gray-400 border-t border-gray-600">
+        © 2024 Globex
       </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default SideBar;
