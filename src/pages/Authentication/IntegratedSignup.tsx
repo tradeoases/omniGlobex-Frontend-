@@ -18,7 +18,10 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { getAllCountries, ICountry } from "@/service/apis/countries-services";
+import {
+  getAllCountriesByContinent,
+  ICountry,
+} from "@/service/apis/countries-services";
 import { signupSchema } from "@/data/schemas/users-schema";
 import {
   Form,
@@ -32,17 +35,29 @@ import { IUserSignup, signup } from "@/service/apis/user-services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { EmailStore } from "@/store/user-store";
+import { useState } from "react";
 
 const IntegratedSignup = () => {
+  const [continent, setContinent] = useState<
+    | "NORTH AMERICA"
+    | "SOUTH AMERICA"
+    | "EUROPE"
+    | "AFRICA"
+    | "ASIA"
+    | "AUSTRALIA"
+  >("EUROPE");
+
   const {
     data: countries,
     isError: isCountryError,
     error: countryError,
     isLoading: countryLoading,
+    isSuccess: countrySuccess,
   } = useQuery({
-    queryKey: ["countries"],
+    queryKey: ["countries", continent],
     queryFn: async () => {
-      const response: AxiosResponse<any, any> = await getAllCountries();
+      const response: AxiosResponse<any, any> =
+        await getAllCountriesByContinent(continent);
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data;
       }
@@ -115,7 +130,7 @@ const IntegratedSignup = () => {
   // });
 
   const [, setEmail] = useRecoilState(EmailStore);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     mutate: onSubmit,
     error: mutationError,
@@ -159,26 +174,13 @@ const IntegratedSignup = () => {
       setTimeout(() => {
         form.reset();
       }, 2000);
-      navigate('/verify-email')
+      navigate("/verify-email");
     },
     onError: (e: any) => {
       console.log(e);
       return new Error(e.response?.data?.message || e.message);
     },
   });
-
-  if (countryLoading) {
-    return <div>Countries Loading...</div>;
-  }
-
-  if (isCountryError) {
-    return (
-      <div>
-        <h1>{countryError.name}</h1>
-        <p>{countryError.message}</p>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full space-y-8 mb-10">
@@ -327,38 +329,93 @@ const IntegratedSignup = () => {
                 </div>
               </div>
 
-              <div className="w-full">
-                <FormField
-                  control={form.control}
-                  name="country_id"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Country</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a Country" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {countries &&
-                              countries.map((country: ICountry) => (
-                                <SelectItem
-                                  key={country.country_id}
-                                  value={country.country_id}
-                                >
-                                  {country.name}
-                                </SelectItem>
-                              ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <div>
+                {countryLoading && <div>Countries Loading...</div>}
+
+                {isCountryError && (
+                  <div>
+                    <h1>{countryError.name}</h1>
+                    <p>{countryError.message}</p>
+                  </div>
+                )}
+
+                {countrySuccess && (
+                  <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                      <FormItem>
+                        <FormLabel>Continent</FormLabel>
+                        <Select
+                          onValueChange={(
+                            e:
+                              | "NORTH AMERICA"
+                              | "SOUTH AMERICA"
+                              | "EUROPE"
+                              | "AFRICA"
+                              | "ASIA"
+                              | "AUSTRALIA"
+                          ) => {
+                            setContinent(e);
+                            form.setValue("country_id", "");
+                          }}
+                          defaultValue={continent}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a Country" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectItem value="NORTH AMERICA">
+                                NORTH AMERICA
+                              </SelectItem>
+                              <SelectItem value="SOUTH AMERICA">
+                                SOUTH AMERICA
+                              </SelectItem>
+                              <SelectItem value="EUROPE">EUROPE</SelectItem>
+                              <SelectItem value="AFRICA">AFRICA</SelectItem>
+                              <SelectItem value="ASIA">ASIA</SelectItem>
+                              <SelectItem value="AUSTRALIA" disabled>
+                                AUSTRALIA
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                      <FormField
+                        control={form.control}
+                        name="country_id"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Country</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select a Country" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {countries &&
+                                    countries.map((country: ICountry) => (
+                                      <SelectItem
+                                        key={country.country_id}
+                                        value={country.country_id}
+                                      >
+                                        {country.name}
+                                      </SelectItem>
+                                    ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">

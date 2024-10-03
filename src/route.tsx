@@ -41,6 +41,7 @@ import ChangePassword from "./pages/user/buyer-profile/ChangePassword";
 import Notifications from "./pages/user/buyer-profile/Notifications";
 import QuickMessage from "./pages/user/buyer-profile/QuickMessage";
 import BuyersProfile from "./pages/user/buyer-profile/BuyersProfile";
+import StripeSuccessPage from "./pages/BusinessInformation/StripeSuccessPage";
 
 export default function RoutesConfig() {
   return (
@@ -92,6 +93,7 @@ export default function RoutesConfig() {
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Overview />} />
       </Route>
+      <Route path="/subscription/success" element={<StripeSuccessPage />} />
       <Route path="/single-product" element={<SingleProduct />} />
       <Route path="/show-room" element={<ShowRoomPage />} />
       <Route path="cookie-policy" element={<CookiesPolicyPage />} />
