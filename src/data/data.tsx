@@ -18,7 +18,6 @@ import {
   // TbBabyBottle,
   TbTruckReturn,
   TbSubscript,
-  TbMessageCircle2Filled,
 } from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
@@ -96,7 +95,7 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <MdReviews />, title: "Reviews" },
   { icon: <TbSubscript />, title: "Subscription" },
   { icon: <NotificationsIcon />, title: "Notifications" },
-  { icon: <TbMessageCircle2Filled />, title: "Messages" },
+  { icon: <NotificationsIcon />, title: "Messages" },
   { icon: <MdReviews />, title: "Business" },
   { icon: <MdReviews />, title: "Analytics" },
   { icon: <HiLockClosed />, title: "Change Password" },
