@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -8,111 +7,16 @@ import { RiSearchLine } from "react-icons/ri";
 
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { IMainMenu, mainMenu } from "@/data/data";
-import { Link } from "react-router-dom";
-import {
-  getAllProductCategories,
-  IProductCategory,
-} from "@/service/apis/product-services";
-import { AxiosResponse, HttpStatusCode } from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { Link, NavLink } from "react-router-dom";
 import { SidemenuStore } from "@/store/side-menu-store";
-import { NavLink } from "react-router-dom";
-// import { Input } from "./ui/input";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { getAllProductCategories, IProductCategory } from "@/service/apis/product-services";
 
 export interface ICategory {
   name: string;
-  category_id: string;
-  // icon: JSX.Element;
+  category_id:string
 }
-
-// const Sidemenu = () => {
-//   const [menu, setMenu] = useState<number>(1);
-//   const [sidemenu, setSidemenu] = useRecoilState<boolean>(SidemenuStore);
-
-//   const [searchTerm, setSearchTerm] = useState<string>("");
-
-//   const onClose = () => {
-//     setSidemenu(false);
-//   };
-
-//   return (
-//     <div
-//       className={`lg:hidden overflow-hidden w-[100vw] h-full bg-black/45 fixed left-0 top-0 bottom-0 z-20 transition-transform duration-400 ease-in-out ${
-//         sidemenu ? "translate-x-0" : "-translate-x-full"
-//       }`}
-//     >
-//       <div
-//         className={`lg:hidden w-[70vw] md:w-[40vw] h-full fixed left-0 top-0 bottom-0 bg-white z-50 space-y-10 transition-transform duration-300 ${
-//           sidemenu ? "translate-x-0" : "-translate-x-full"
-//         }`}
-//       >
-//         <div className="flex items-center justify-between p-6 pb-0">
-//           <div className="flex items-center gap-4">
-//             <p className="relative">
-//               <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-//                 2
-//               </span>
-//               <HiArrowPath className="text-xl" />
-//             </p>
-
-//             <p className="relative">
-//               <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-//                 9
-//               </span>
-//               <IoIosHeartEmpty className="text-xl" />
-//             </p>
-//           </div>
-//           <span
-//             onClick={onClose}
-//             className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center"
-//           >
-//             <HiOutlineXMark className="text-xl text-gray-300" />
-//           </span>
-//         </div>
-
-//         <div className="px-6 w-full">
-//           <div className="grid grid-cols-12 border">
-//             <div className="col-span-9">
-//               <input
-//                 value={searchTerm}
-//                 onChange={(e) => setSearchTerm(e.target.value)}
-//                 type="text"
-//                 className="pl-2 py-2 text-xs outline-none"
-//                 placeholder="Search Product..."
-//               />
-//             </div>
-//             <div className="bg-main flex items-center justify-center col-span-3 py-2 px-3">
-//               <p className="font-bold text-sm">
-//                 <RiSearchLine
-//                   onClick={(e) => {
-//                     e.preventDefault();
-//                   }}
-//                 />
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className="w-full flex items-center justify-center gap-x-2">
-//           <button
-//             onClick={() => setMenu(2)}
-//             type="button"
-//             className={`text-base font-medium ${
-//               menu === 2 ? "text-black" : "text-gray-500"
-//             }`}
-//           >
-//             <span className="">☰</span>
-//           </button>
-//         </div>
-
-//         {menu === 1 && <SideMenuCategories />}
-//         {menu === 2 && <MainMenu />}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Sidemenu;
 
 const Sidemenu = () => {
   const [menu, setMenu] = useState<number>(1);
@@ -203,15 +107,9 @@ const Sidemenu = () => {
   );
 };
 
-export default Sidemenu;
+export default Sidemenu
 
 
-const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
-  const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
-  console.log(category_id);
-  const onClose = () => {
-    setSidemenu(false);
-  };
 
 const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
   const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
