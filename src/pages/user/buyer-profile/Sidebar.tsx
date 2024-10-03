@@ -4,10 +4,10 @@ import { menuItems } from "./constants"; // Import your menu items
 import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // For dropdown arrow icons
 
 const SideBar = () => {
-  const [openDropdown, setOpenDropdown] = useState(null); // State to control dropdown visibility
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null); // State to control dropdown visibility
   const location = useLocation(); // Get the current path
 
-  const toggleDropdown = (index) => {
+  const toggleDropdown = (index: number) => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
 
@@ -20,7 +20,7 @@ const SideBar = () => {
       <ul className="p-4 flex-grow">
         {menuItems.map(({ title, path, icon, subItems }, index) => {
           const hasSubItems = Array.isArray(subItems) && subItems.length > 0;
-          const isActive = location.pathname.startsWith(path); // Check if the current path matches the item's path
+          const isActive = location.pathname.startsWith(path || ""); // Check if the current path matches the item's path
 
           return (
             <li key={title} className="my-2">
@@ -28,11 +28,13 @@ const SideBar = () => {
                 className={`flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors duration-200 ${
                   isActive ? "bg-main" : "hover:bg-main"
                 }`}
-                onClick={hasSubItems ? () => toggleDropdown(index) : null}
+                onClick={() =>
+                  hasSubItems ? () => toggleDropdown(index) : null
+                }
               >
                 <div className="flex items-center">
                   <span className="mr-3">{icon}</span>
-                  <Link to={path} className="flex-grow">
+                  <Link to={path || ""} className="flex-grow">
                     {title}
                   </Link>
                 </div>
