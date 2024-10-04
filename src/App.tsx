@@ -4,12 +4,13 @@ import NavBar from "./components/NavBar";
 import TopBar from "./components/TopBar";
 import Footer from "./components/Footer";
 import Sidemenu from "./components/Sidemenu";
+import { Outlet } from "react-router-dom";
 
 interface Props {
-  children: React.ReactNode;
+ 
 }
 
-const App: React.FC<Props> = ({ children }) => {
+const App: React.FC<Props> = () => {
   return (
     <>
       <main
@@ -26,7 +27,7 @@ const App: React.FC<Props> = ({ children }) => {
           {/* <ModeToggle /> */}
           <NavBar />
           <TopBar />
-          {children}
+            <Outlet />
           <Footer />
         </section>
       </main>

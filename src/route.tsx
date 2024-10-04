@@ -4,7 +4,6 @@ import HomePage from "./pages/home-page";
 import { AboutPage } from "./pages/about-us/about-page";
 import LoginPage from "./pages/Authentication/login-page";
 import TrackOrderPage from "./pages/cartandcheckout/track-order-page";
-import ProfilePage from "./pages/user/profile-page";
 import SingleProduct from "./pages/products/single-product-page";
 import { PrivacyPolicyPage } from "./pages/privacy-policy/privacy-policy-page";
 import VerifyEmailPage from "./pages/Authentication/verify-email-page";
@@ -27,7 +26,7 @@ import AddBusinessLocation from "./pages/BusinessInformation/add-business-locati
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
 import Messages from "./pages/user/buyer-profile/Messages";
-import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
+// import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
 import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
 import OrderTracking from "./pages/user/buyer-profile/OrderTracking";
@@ -43,19 +42,65 @@ import QuickMessage from "./pages/user/buyer-profile/QuickMessage";
 import BuyersProfile from "./pages/user/buyer-profile/BuyersProfile";
 import StripeSuccessPage from "./pages/BusinessInformation/StripeSuccessPage";
 import AllProductsPage from "./pages/products/all-products-page";
+import { ProductManagement } from "./pages/user/pages/product-management";
+import SupplierProfile from "./pages/user/supplier-profile/SupplierProfile";
+import { BuyerOrder } from "./components/buyer-order";
+import AnalyticsAndReporting from "./pages/user/supplier-profile/Analytics";
+import { ReviewsDashboard } from "./components/reviews-dashbaord";
+import Subscriptions from "./pages/user/pages/Subscriptions";
+import BusinessPage from "./pages/user/pages/BusinessPage";
+import App from "./App";
+import SuppliersDashboard from "./pages/user/profile-page";
+import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 
-export default function RoutesConfig() {
+const RoutesConfig =()=> {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<App />}>
+        <Route index element={<HomePage />} />
 
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/blogs" element={<BlogPage />} />
-      <Route path="/blog/:id" element={<BlogDetails />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="blogs">
+          <Route index element={<BlogPage />} />
+          <Route path=":id" element={<BlogDetails />} />
+        </Route>
 
-      {/* Buyer Dashboard Route */}
-      <Route path="buyer-dashboard" element={<BuyerDashboard />}>
-        <Route path="home" element={<Messages />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="faq" element={<FaqPage />} />
+        <Route path="terms-condition" element={<TermsPage />} />
+        <Route path="signin" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="signup" element={<IntegratedSignup />} />
+        <Route path="create-business" element={<CreateBusiness />} />
+        <Route path="business/:businessId" element={<BusinessDetailPage />} />
+        <Route
+          path="business/:businessId/add-user"
+          element={<AddBusinessUserPage />}
+        />
+        <Route
+          path="business/:businessId/add-location"
+          element={<AddBusinessLocation />}
+        />
+
+        <Route path="track-order" element={<TrackOrderPage />} />
+        <Route path="profile" element={<DashboardLayout />}>
+          <Route index element={<Overview />} />
+        </Route>
+        <Route path="subscription/success" element={<StripeSuccessPage />} />
+        <Route path="single-product" element={<SingleProduct />} />
+        <Route path="products" element={<AllProductsPage />} />
+        <Route path="show-room" element={<ShowRoomPage />} />
+        <Route path="cookie-policy" element={<CookiesPolicyPage />} />
+        <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="verify-email" element={<VerifyEmailPage />} />
+        <Route path="wishlist" element={<WishListPage />} />
+        <Route path="cart" element={<ShoppingCartPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+      <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
+        {/* All these paths are relative to "/buyer-dashboard" */}
         <Route path="messages" element={<Messages />} />
         <Route path="showRoom" element={<BuyersShowRoom />} />
         <Route path="rfq" element={<RFQManagement />} />
@@ -73,47 +118,20 @@ export default function RoutesConfig() {
           <Route path="preferences" element={<SourcingPreferences />} />
         </Route>
       </Route>
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/faq" element={<FaqPage />} />
-      <Route path="terms-condition" element={<TermsPage />} />
-      <Route path="/signin" element={<LoginPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="signup" element={<IntegratedSignup />} />
-      <Route path="/create-business" element={<CreateBusiness />} />
-      <Route path="/business/:businessId" element={<BusinessDetailPage />} />
-      <Route
-        path="/business/:businessId/add-user"
-        element={<AddBusinessUserPage />}
-      />
-      <Route
-        path="/business/:businessId/add-location"
-        element={<AddBusinessLocation />}
-      />
-
-      {/* <Route path="/all-products" element={<AllProductsPage />} /> */}
-      <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-      <Route path="/supplier-dashboard" element={<ProfilePage />} />
-      <Route path="/track-order" element={<TrackOrderPage />} />
-      <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<Overview />} />
-        {/* <Route path="supplier-dashboard" element={<ProfilePage />} /> */}
-
-        {/* <Route path="buyer" element={<BuyerDashboard />} /> */}
-
-        {/* <Route path="supplier" element={<ProfilePage />} /> */}
+      <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
+        <Route path="products" element={<ProductManagement />} />
+        <Route path="supplier-profile" element={<SupplierProfile />} />
+        <Route path="order" element={<BuyerOrder />} />
+        <Route path="analytics" element={<AnalyticsAndReporting />} />
+        <Route path="change-password" element={<ChangePassword />} />
+        <Route path="reviews" element={<ReviewsDashboard />} />
+        <Route path="subscription" element={<Subscriptions />} />
+        <Route path="business" element={<BusinessPage />} />
+        <Route path="messages" element={<Messages />} />
       </Route>
-      <Route path="/subscription/success" element={<StripeSuccessPage />} />
-      <Route path="/single-product" element={<SingleProduct />} />
-      <Route path="/products" element={<AllProductsPage />} />
-      <Route path="/show-room" element={<ShowRoomPage />} />
-      <Route path="cookie-policy" element={<CookiesPolicyPage />} />
-      <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
-      <Route path="/verify-email" element={<VerifyEmailPage />} />
-      <Route path="/wishlist" element={<WishListPage />} />
-      <Route path="/cart" element={<ShoppingCartPage />} />
-      <Route path="/checkout" element={<CheckoutPage />} />
-      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
+
+
+export default RoutesConfig

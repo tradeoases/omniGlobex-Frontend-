@@ -1,26 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
-import { ProductManagement } from "@/pages/user/pages/product-management";
 import { IUser, userStore } from "@/store/user-store";
 import { INewOrder, NewOrderStore } from "@/store/order-store";
 import { IDashboardNav, TActiveMenu, dashboardNavs } from "@/data/data";
 import { DashboardMenuStore } from "@/store/side-menu-store";
-import { BuyerOrder } from "@/components/buyer-order";
 import { getUserInfo } from "@/service/apis/user-services";
 import { getAllUserOrders } from "@/service/apis/order-service";
-import { ReviewsDashboard } from "@/components/reviews-dashbaord";
-import ChangePassword from "@/components/change-password";
-import BusinessPage from "./pages/BusinessPage";
-import Subscriptions from "./pages/Subscriptions";
-import Messages from "./supplier-profile/Messages";
-import SupplierProfile from "./supplier-profile/SupplierProfile";
-import AnalyticsAndReporting from "./supplier-profile/Analytics";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
-const ProfilePage = () => {
+const SuppliersDashboard = () => {
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [newOrderData, setNewOrderData] =
     useRecoilState<INewOrder[]>(NewOrderStore);
@@ -30,7 +22,6 @@ const ProfilePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
-  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -74,21 +65,6 @@ const ProfilePage = () => {
     }
   }, [isMounted, userData, newOrderData.length]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUserData(null);
-    setNewOrderData([]);
-
-    setActiveMenu("Dashboard");
-    navigate(`/`);
-  };
-
-  const handleNavClick = (navTitle: TActiveMenu) => {
-    setActiveMenu(navTitle);
-    setIsSidebarOpen(false); // Close the sidebar after clicking any item
-    if (navTitle === `Logout`) handleLogout();
-  };
-
   if (!userData || !newOrderData) {
     return <div>Loading...</div>;
   }
@@ -115,70 +91,25 @@ const ProfilePage = () => {
           </button>
         </div>
 
-        {navigations.map((nav, i) => (
-          <div
-            key={i}
-            onClick={() => handleNavClick(nav.title)} // Close sidebar after clicking any nav item
+        {navigations.map((nav) => (
+          <NavLink
+            to={nav.path}
+            key={nav.path}
             className={`w-full text-xs cursor-pointer py-4 flex items-center gap-x-5 ${
               activeMenu === nav.title ? "text-black" : "text-gray-500"
             }`}
           >
             <span>{nav.icon}</span>
             <span>{nav.title}</span>
-          </div>
+          </NavLink>
         ))}
       </div>
 
-      {/* Active Component Area */}
       <div className="w-full px-6 space-y-4 lg:ml-64">
-        {activeMenu === "Products" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <ProductManagement />
-          </div>
-        )}
-        {activeMenu === "Supplier Profile" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <SupplierProfile />
-          </div>
-        )}
-        {activeMenu === "Order" && (
-          <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
-            <BuyerOrder />
-          </div>
-        )}
-        {activeMenu === "Analytics" && (
-          <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
-            <AnalyticsAndReporting />
-          </div>
-        )}
-        {activeMenu === "Change Password" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <ChangePassword />
-          </div>
-        )}
-        {activeMenu === "Reviews" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <ReviewsDashboard />
-          </div>
-        )}
-        {activeMenu === "Subscription" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <Subscriptions />
-          </div>
-        )}
-        {activeMenu === "Business" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <BusinessPage />
-          </div>
-        )}
-        {activeMenu === "Messages" && (
-          <div className="p-6 bg-white rounded shadow-sm">
-            <Messages />
-          </div>
-        )}
+        <Outlet />
       </div>
     </div>
   );
 };
 
-export default ProfilePage;
+export default SuppliersDashboard;
