@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const getLocaleInfo = async () => {
   try {
-    const response = await axios.get('https://api.ipgeolocation.io/ipgeo?apiKey=4547ead891fe44ddb40ae9039236ea00');
+    const response = await axios.get('https://');
     const { country_code2, languages } = response.data;
 
     let language = 'en'; // default to english

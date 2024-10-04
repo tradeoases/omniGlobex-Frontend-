@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
 import { AxiosResponse, HttpStatusCode } from "axios";
 
 import AnnounceBanner from "@/components/AnnounceBanner";
@@ -11,34 +9,41 @@ import { OurServiceSection } from "@/components/our-service-section";
 import PopularSales from "@/components/PopularSales";
 import ShopBrandSection from "@/components/ShopBrandSection";
 import TopSellingProducts from "@/components/TopSellingProducts";
-import { IProduct, getAllProducts } from "@/service/apis/product-services";
-import { ProductStore } from "@/store/product-store";
+
 import { HeaderSection } from "@/components/header-section";
 import { useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllProducts, IProduct } from "@/service/apis/product-services";
 
 export default function HomePage() {
-  const [products, setProducts] = useRecoilState<IProduct[] | null>(
-    ProductStore
-  );
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  const fetchProducts = async () => {
-    try {
+  const {
+    data: products,
+    // isLoading: productIsLoading,
+    // isSuccess: productSuccess,
+    // isError: productIsError,
+    // error: productError,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const params = ``;
+
       const response: AxiosResponse<any, any> = await getAllProducts(
-        `?page=1&pageSize=25`
+        `${params}
+        `
       );
 
       if (response.status === HttpStatusCode.Ok) {
-        setProducts(response.data.data);
+        return response.data.data as {
+          products: IProduct[];
+          pageSize: number;
+          page: number;
+          showRoom: string;
+        };
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    !products && fetchProducts();
-  }, []);
+    },
+  });
 
   const scrollToSection = () => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -48,14 +53,14 @@ export default function HomePage() {
     <main className=" mx-auto py-8 space-y-10">
       <HeaderSection onScroll={() => scrollToSection()} />
       <OurServiceSection sectionRef={sectionRef} />
-      <GameWorldSection products={products} name="Country showrooms" route="" />
+      <GameWorldSection products={products?.products} name="Country showrooms" route="" />
       <ShopBrandSection />
       <AnnounceBanner />
-      <TopSellingProducts products={products} />
+      <TopSellingProducts products={products?.products} />
       <BestSeller />
-      <GameWorldSection products={products} name="Popular Sales" route="" />
-      <NewArrivalSection products={products} />
-      <PopularSales products={products} />
+      <GameWorldSection products={products?.products} name="Popular Sales" route="" />
+      <NewArrivalSection products={products?.products} />
+      <PopularSales products={products?.products} />
     </main>
   );
 }

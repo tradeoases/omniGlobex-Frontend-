@@ -1,40 +1,35 @@
-// import { SetterOrUpdater, useSetRecoilState } from "recoil";
-// import { SidemenuStore } from "@/store/sidemenuStore";
 import { Link } from "react-router-dom";
 import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
-import CurrencySelector from "./CurrencySelector";
-import LanguageSelector from "./LanguageSelector";
-
-// Badge Component for displaying numbers on icons (like cart items)
-// const Badge = ({ count }: { count: number }) => (
-//   <span className="bg-main w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -top-2 -right-3">
-//     {count}
-//   </span>
-// );
+// import CurrencySelector from "./CurrencySelector";
+// import LanguageSelector from "./LanguageSelector";
+import { LuAlignLeft } from "react-icons/lu";
+import { SetterOrUpdater, useSetRecoilState } from "recoil";
+import { SidemenuStore } from "@/store/side-menu-store";
+import { SearchBar } from "./search-bar";
 
 const TopBar = () => {
-  // const setSidemenu: SetterOrUpdater<boolean> =
-  //   useSetRecoilState<boolean>(SidemenuStore);
-
-  // const onOpen = () => {
-  //   setSidemenu(true);
-  // };
+  const setSidemenu: SetterOrUpdater<boolean> =
+    useSetRecoilState<boolean>(SidemenuStore);
+  const onOpen = () => {
+    // console.log('Hello')rrencySelector from "./CurrencySelector";
+    // import La
+    setSidemenu(true);
+  };
 
   return (
     <header className="w-full border-b py-4">
       {/* Mobile / Tablet View */}
-      <div className="w-10/12 xl:w-8/12 mx-auto flex items-center lg:hidden">
-        {/* <Link to="/" aria-label="Go to Home">
+      <div className="w-10/12 xl:w-8/12 mx-auto flex  items-center lg:hidden">
+        <div onClick={onOpen}>
+          <LuAlignLeft className="text-2xl" />
+        </div>
+        <Link to="/" aria-label="Go to Home">
           <Logo />
-        </Link> */}
-        <div className="flex items-center gap-4">
-          <CurrencySelector />
-          <LanguageSelector />
-          {/* <Link to="/cart" aria-label="View Cart" className="relative">
-            <Badge count={3} />
-            <SlHandbag className="text-lg" />
-          </Link> */}
+        </Link>
+        <div className="flex flex-row items-center gap-4 mt-4">
+          {/* <CurrencySelector />
+          <LanguageSelector /> */}
         </div>
       </div>
 
@@ -53,10 +48,11 @@ const TopBar = () => {
             <Logo />
           </Link>
         </div>
+        <SearchBar />
 
         <div className="flex items-center ml-14 justify-end gap-4">
-          <CurrencySelector />
-          <LanguageSelector />
+          {/* <CurrencySelector />
+          <LanguageSelector /> */}
         </div>
       </div>
     </header>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
@@ -82,8 +83,8 @@ const ProfilePage = () => {
     navigate(`/`);
   };
 
-  const handleNavClick = (navTitle: string) => {
-    setActiveMenu(navTitle as TActiveMenu);
+  const handleNavClick = (navTitle: TActiveMenu) => {
+    setActiveMenu(navTitle);
     setIsSidebarOpen(false); // Close the sidebar after clicking any item
     if (navTitle === `Logout`) handleLogout();
   };
