@@ -77,32 +77,53 @@ export type TActiveMenu =
   | "Messages"
   | "Supplier Dashboard"
   | "Analytics"
-  | "Notifications"
-  | "Buyer's Dashboard";
+  | "Notifications";
+
+export type TActivePath =
+  | ""
+  | "supplier-profile"
+  | "products"
+  | "payment Method"
+  | "order"
+  | "cart"
+  | "subscription"
+  | "reviews"
+  | "business"
+  | "change-password"
+  | "logout"
+  | "messages"
+  | "supplier-dashboard"
+  | "analytics"
+  | "notifications";
 
 export interface IDashboardNav {
   icon: JSX.Element;
   title: TActiveMenu;
+  path: TActivePath;
 }
 
 export const dashboardNavs: IDashboardNav[] = [
   // { icon: <MdDashboard />, title: "Dashboard" },
-  { icon: <FaUser />, title: "Supplier Profile" },
-  { icon: <IoBagHandle />, title: "Products" },
+  { icon: <FaUser />, title: "Supplier Profile", path: "supplier-profile" },
+  { icon: <IoBagHandle />, title: "Products", path: "products" },
   // { icon: <IoCard />, title: "Payment Method" },
-  { icon: <BsFillCartCheckFill />, title: "Order" },
+  { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
   // { icon: <FaHeart />, title: "Cart" },
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
-  { icon: <TbSubscript />, title: "Subscription" },
-  { icon: <NotificationsIcon />, title: "Notifications" },
+  { icon: <TbSubscript />, title: "Subscription", path: "subscription" },
+  {
+    icon: <NotificationsIcon />,
+    title: "Notifications",
+    path: "notifications",
+  },
 
-  { icon: <TbMessage2 />, title: "Messages" },
+  { icon: <TbMessage2 />, title: "Messages", path: "messages" },
 
-  { icon: <MdReviews />, title: "Business" },
-  { icon: <MdReviews />, title: "Analytics" },
-  { icon: <HiLockClosed />, title: "Change Password" },
-  { icon: <IoLogOut />, title: "Logout" },
+  { icon: <MdReviews />, title: "Business", path: "business" },
+  { icon: <MdReviews />, title: "Analytics", path: "analytics" },
+  { icon: <HiLockClosed />, title: "Change Password", path: "change-password" },
+  { icon: <IoLogOut />, title: "Logout", path: "logout" },
 ];
 
 export const productNavs: TProductNav[] = [`Products`, `Orders`, `Other info`];

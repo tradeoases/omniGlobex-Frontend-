@@ -17,46 +17,46 @@ export const menuItems = [
   },
   {
     title: "Messages",
-    path: "/buyer-dashboard/messages",
+    path: "messages",
     icon: <FaUsers />,
   },
   {
     title: "Show Room",
-    path: "/buyer-dashboard/showRoom",
+    path: "showRoom",
     icon: <FaBook />,
   },
   {
     title: "RFQs",
-    path: "/buyer-dashboard/rfq",
+    path: "rfq",
     icon: <FaUserPlus />,
   },
   {
     title: "Orders",
-    path: "/buyer-dashboard/orders",
+    path: "orders",
     icon: <FaBookReader />,
   },
   {
     title: "Ratings",
-    path: "/buyer-dashboard/ratings",
+    path: "ratings",
     icon: <FaBookOpen />,
   },
   {
     title: "My Account",
     icon: <FaChartLine />,
     subItems: [
-      { title: "My Favorite", path: "/buyer-dashboard/myAccount/favorites" },
-      { title: "User Profile", path: "/buyer-dashboard/myAccount/profile" },
-      { title: "Sourcing Preferences", path: "/buyer-dashboard/myAccount/preferences" },
+      { title: "My Favorite", path: "myAccount/favorites" },
+      { title: "User Profile", path: "myAccount/profile" },
+      { title: "Sourcing Preferences", path: "myAccount/preferences" },
     ],
   },
   {
     title: "Settings",
     icon: <FaChartBar />,
     subItems: [
-      { title: "Security Settings", path: "/buyer-dashboard/settings/security" },
-      { title: "Change Password", path: "/buyer-dashboard/settings/change-password" },
-      { title: "Notifications", path: "/buyer-dashboard/settings/notifications" },
-      { title: "Quick Messages", path: "/buyer-dashboard/settings/quick-messages" },
+      { title: "Security Settings", path: "settings/security" },
+      { title: "Change Password", path: "settings/change-password" },
+      { title: "Notifications", path: "settings/notifications" },
+      { title: "Quick Messages", path: "settings/quick-messages" },
     ],
   },
 ];
