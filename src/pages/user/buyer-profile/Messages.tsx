@@ -6,7 +6,7 @@ const Messages = () => {
   return (
     <div className="p-4 w-full">
       {/* Message container with fixed height and full width */}
-      <div className="bg-white p-4 w-full shadow rounded mt-4 h-64">
+      <div className="bg-white p-4 w-full shadow rounded mt-4">
         {/* Links for All, Unread, Read with boundary line */}
         <div className="flex flex-col">
           <h2 className="text-lg font-semibold mb-4">My Messages</h2>
@@ -55,6 +55,51 @@ const Messages = () => {
         </div>
 
         {/* Message content, make it responsive and full width */}
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
+        <div className="flex items-center justify-between w-full">
+          <h3 className="flex-1">Supplier X</h3>
+          <span className="text-xs text-gray-500">2 hours ago</span>
+        </div>
+        <p className="mt-2">Hi, we're interested in your RFQ...</p>
         <div className="flex items-center justify-between w-full">
           <h3 className="flex-1">Supplier X</h3>
           <span className="text-xs text-gray-500">2 hours ago</span>
