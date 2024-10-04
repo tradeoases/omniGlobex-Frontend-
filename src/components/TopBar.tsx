@@ -6,6 +6,7 @@ import img from "../assets/omniGlobexlogo.png";
 import { LuAlignLeft } from "react-icons/lu";
 import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/side-menu-store";
+import { SearchBar } from "./search-bar";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
@@ -47,6 +48,7 @@ const TopBar = () => {
             <Logo />
           </Link>
         </div>
+        <SearchBar />
 
         <div className="flex items-center ml-14 justify-end gap-4">
           {/* <CurrencySelector />
