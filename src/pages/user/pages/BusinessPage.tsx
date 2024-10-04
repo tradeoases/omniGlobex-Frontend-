@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getBusinesses } from "@/service/apis/business-services";

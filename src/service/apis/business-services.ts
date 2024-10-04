@@ -24,3 +24,10 @@ export const addBusinessUser = async (businessId: string, userData: any) => {
 
 export const saveSubscription = async () =>
   await request.post("/subscription/save-subscription");
+
+export const getSubscriptionDetails = async () =>
+  await request.get("/subscription/get-subscriptions");
+export const createClientSecret = async () =>
+  await request.post("/subscription/add-payment-methods");
+export const getAllPaymentMethods = async () =>
+  await request.get("/subscription/get-payment-methods");
