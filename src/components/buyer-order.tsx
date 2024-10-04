@@ -2,8 +2,10 @@ import { Button } from "./ui/button";
 
 export const BuyerOrder = () => {
   return (
-    <div className="container w-full p-6 overflow-x-auto"> 
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <div className="overflow-x-auto">
+      {" "}
+      {/* Added scrollable container */}
+      <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead>
           <tr className="text-base text-gray-700 border-t border-b default-border-bottom">
             {orderHeader.map((header, i) => (
