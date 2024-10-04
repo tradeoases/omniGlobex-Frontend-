@@ -21,8 +21,8 @@ import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
 import BlogDetails from "./pages/Blogs/components/blog-details";
 import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
-import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
-import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
+// import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
+// import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
 import Messages from "./pages/user/buyer-profile/Messages";
@@ -72,7 +72,7 @@ const RoutesConfig = () => {
         <Route path="login" element={<LoginPage />} />
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="signup" element={<IntegratedSignup />} />
-
+        {/* 
         <Route
           path="business/:businessId/add-user"
           element={<AddBusinessUserPage />}
@@ -80,7 +80,7 @@ const RoutesConfig = () => {
         <Route
           path="business/:businessId/add-location"
           element={<AddBusinessLocation />}
-        />
+        /> */}
 
         <Route path="track-order" element={<TrackOrderPage />} />
         <Route path="profile" element={<DashboardLayout />}>
@@ -119,8 +119,13 @@ const RoutesConfig = () => {
       <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
         <Route path="products" element={<ProductManagement />} />
         <Route path="supplier-profile" element={<SupplierProfile />} />
+        <Route index element={<SupplierProfile />} />
         <Route path="order" element={<BuyerOrder />} />
         <Route path="analytics" element={<AnalyticsAndReporting />} />
+        <Route
+          path="notifications"
+          element={<div>Still under construction</div>}
+        />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />
@@ -128,6 +133,7 @@ const RoutesConfig = () => {
           <Route path=":businessId" element={<BusinessDetailPage />} />
         </Route>
         <Route path="messages" element={<Messages />} />
+        <Route path="logout" element={<div>Unhandled</div>} />
       </Route>
     </Routes>
   );

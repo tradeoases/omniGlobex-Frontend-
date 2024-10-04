@@ -80,7 +80,9 @@ const LoginPage = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("profile", JSON.stringify(userData));
         setLoading(false);
-        navigate(`/`);
+        if (userData.roles.includes("Supplier"))
+          navigate(`/supplier-dashboard`);
+        else navigate(`/buyer-dashboard`);
         setSuccessMessage(true);
 
         timeoutKey = setTimeout(() => {

@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { SearchBar } from "@/components/search-bar";
 
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -12,12 +13,13 @@ const SuppliersDashboard = () => {
   };
 
   return (
-    <div className="flex  bg-amber-300 h-screen flex-col lg:flex-row w-full">
+    <div className="flex  bg-amber-300 min-h-screen flex-col lg:flex-row w-full">
       <div>
-        <div className="fixed lg:hidden top-0 p-4 bg-white left-0 w-full z-50 shadow">
+        <div className="fixed lg:hidden top-0 p-4 bg-white left-0 w-full z-50 shadow flex justify-between">
           <button onClick={toggleSidebar} className="text-xl">
             <FaBars />
           </button>
+        <NavLink className={'text-black'} to={'/products'}>Shopping</NavLink>
         </div>
         <div
           className={`lg:block bg-slate-900 overflow-scroll flex flex-col justify-start items-center text-xl lg:static fixed top-0 left-0 z-40 w-64 transition-transform duration-300 ease-in-out ${
@@ -29,6 +31,7 @@ const SuppliersDashboard = () => {
               <FaTimes />
             </button>
           </div>
+          <SearchBar />
 
           {navigations.map((nav) => (
             <NavLink
@@ -48,7 +51,7 @@ const SuppliersDashboard = () => {
         </div>
       </div>
 
-      <div className="">
+      <div className="mt-14 p-4">
         <Outlet />
       </div>
     </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getBusinessById } from "@/service/apis/business-services";
@@ -5,13 +6,11 @@ import { getBusinessById } from "@/service/apis/business-services";
 const BusinessDetailPage = () => {
   const navigate = useNavigate();
   const { businessId } = useParams();
-  if (!businessId) {
-    return <div>Invalid business ID</div>;
-  }
 
   const { data, isError, isLoading, error } = useQuery({
     queryKey: ["businessDetail", businessId],
-    queryFn: () => getBusinessById(businessId),
+    queryFn: () => getBusinessById(businessId || ""),
+    enabled: !!businessId,
   });
   console.log("single business info", data);
 
@@ -34,9 +33,9 @@ const BusinessDetailPage = () => {
     navigate(`/business/${businessId}/add-user`);
   };
 
- const handleBusinessLocation = () => {
-navigate((`/business/${businessId}/add-location`));
- }
+  const handleBusinessLocation = () => {
+    navigate(`/business/${businessId}/add-location`);
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 pt-10">
@@ -105,7 +104,10 @@ navigate((`/business/${businessId}/add-location`));
             <h3 className=" flex-1 max-w-sm text-xl font-semibold mb-4">
               Business Locations
             </h3>
-            <span onClick={handleBusinessLocation} className="ml-4 underline px-2 py-2 rounded-sm hover:text-main cursor-pointer">
+            <span
+              onClick={handleBusinessLocation}
+              className="ml-4 underline px-2 py-2 rounded-sm hover:text-main cursor-pointer"
+            >
               Add Location
             </span>
           </div>

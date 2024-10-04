@@ -173,65 +173,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
     }
   }, [countryIsSuccess, countries]);
 
-  // const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();
-  // };
-
-  // const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();
-  //   const newFiles = Array.from(e.dataTransfer.files);
-  //   setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-
-  //   newFiles.forEach((file) => {
-  //     const fileReader = new FileReader();
-  //     fileReader.readAsDataURL(file);
-
-  //     const interval = setInterval(() => {
-  //       setFileProgress((prevProgress) => {
-  //         const newProgress = prevProgress[file.name]
-  //           ? prevProgress[file.name] + 10
-  //           : 10;
-  //         if (newProgress >= 100) clearInterval(interval);
-  //         return { ...prevProgress, [file.name]: newProgress };
-  //       });
-  //     }, 100);
-  //   });
-  // };
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newFiles = Array.from(e.target.files || []);
-  //   setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-
-  //   newFiles.forEach((file) => {
-  //     const fileReader = new FileReader();
-  //     fileReader.readAsDataURL(file);
-
-  //     const interval = setInterval(() => {
-  //       setFileProgress((prevProgress) => {
-  //         const newProgress = prevProgress[file.name]
-  //           ? prevProgress[file.name] + 10
-  //           : 10;
-  //         if (newProgress >= 100) clearInterval(interval);
-  //         return { ...prevProgress, [file.name]: newProgress };
-  //       });
-  //     }, 100);
-  //   });
-  // };
-
-  // const removeFile = (fileName: string) => {
-  //   setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
-  //   setFileProgress((prevProgress) => {
-  //     const { [fileName]: _, ...rest } = prevProgress;
-  //     return rest;
-  //   });
-  // };
-
-  // const handleBoxClick = () => {
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.click();
-  //   }
-  // };
-
+ 
   return (
     <div className="fixed cursor-pointer top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
       <div className="bg-white relative w-full lg:w-4/5 xl:w-2/5 mx-auto h-full rounded-xl p-4 py-8 md:p-8 ">
@@ -244,7 +186,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
           </span>
         </div>
         {successMessage && (
-          <div className="mt-4 text-red-500">{successMessage}</div>
+          <div className="mt-4 text-green-500">{successMessage}</div>
         )}
         <p className="text-lg font-semibold">New Product</p>
         <div className="scrollbar pl-1 pr-3 md:px-3 overflow-y-scroll h-[73vh] w-full">
