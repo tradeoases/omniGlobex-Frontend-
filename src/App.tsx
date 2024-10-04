@@ -6,32 +6,27 @@ import Footer from "./components/Footer";
 import Sidemenu from "./components/Sidemenu";
 import { Outlet } from "react-router-dom";
 
-interface Props {
- 
-}
+interface Props {}
 
 const App: React.FC<Props> = () => {
   return (
-    <>
-      <main
-        className={
-          "relative flex min-h-screen flex-col items-start justify-start bg-light text-neutral-800"
-        }
-      >
-        
-        <section className="relative flex w-full flex-col items-start justify-start">
-          <Sidemenu />
-          {/* <TopBanner /> */}
-          <DashboardSideMenu />
-          {/* <Button variant="destructive">Destructive</Button> */}
-          {/* <ModeToggle /> */}
-          <NavBar />
-          <TopBar />
-            <Outlet />
-          <Footer />
-        </section>
-      </main>
-    </>
+    <main
+      className={
+        "relative flex min-h-screen flex-col items-start justify-start bg-light text-neutral-800"
+      }
+    >
+      <section className="relative flex w-full flex-col items-start justify-start">
+        <Sidemenu />
+        {/* <TopBanner /> */}
+        <DashboardSideMenu />
+        {/* <Button variant="destructive">Destructive</Button> */}
+        {/* <ModeToggle /> */}
+        <NavBar />
+        <TopBar />
+        <Outlet />
+        <Footer />
+      </section>
+    </main>
   );
 };
 

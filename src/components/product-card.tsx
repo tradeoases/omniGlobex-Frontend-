@@ -115,13 +115,17 @@ export const ProductCard: React.FC<IProduct> = ({
         />
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
         {Array.from({ length: 4 }).map((_, i) => (
           <span key={i} className="text-xl text-main">
             ★
           </span>
         ))}
-      </div>
+      </div> */}
+
+      <p className="font-bold line-clamp-2 text-lg hover:text-main relative">
+        {name}
+      </p>
 
       <p className="font-bold line-clamp-2 text-sm hover:text-main relative">
         {description}

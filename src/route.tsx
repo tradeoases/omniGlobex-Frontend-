@@ -53,12 +53,12 @@ import App from "./App";
 import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 
-const RoutesConfig =()=> {
+const RoutesConfig = () => {
   return (
     <Routes>
       <Route path="/" element={<App />}>
         <Route index element={<HomePage />} />
-
+        <Route path="create-business" element={<CreateBusiness />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="blogs">
           <Route index element={<BlogPage />} />
@@ -72,8 +72,7 @@ const RoutesConfig =()=> {
         <Route path="login" element={<LoginPage />} />
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="signup" element={<IntegratedSignup />} />
-        <Route path="create-business" element={<CreateBusiness />} />
-        <Route path="business/:businessId" element={<BusinessDetailPage />} />
+
         <Route
           path="business/:businessId/add-user"
           element={<AddBusinessUserPage />}
@@ -100,7 +99,6 @@ const RoutesConfig =()=> {
         <Route path="*" element={<NotFoundPage />} />
       </Route>
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
-        {/* All these paths are relative to "/buyer-dashboard" */}
         <Route path="messages" element={<Messages />} />
         <Route path="showRoom" element={<BuyersShowRoom />} />
         <Route path="rfq" element={<RFQManagement />} />
@@ -126,12 +124,13 @@ const RoutesConfig =()=> {
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />
-        <Route path="business" element={<BusinessPage />} />
+        <Route path="business" element={<BusinessPage />}>
+          <Route path=":businessId" element={<BusinessDetailPage />} />
+        </Route>
         <Route path="messages" element={<Messages />} />
       </Route>
     </Routes>
   );
-}
+};
 
-
-export default RoutesConfig
+export default RoutesConfig;
