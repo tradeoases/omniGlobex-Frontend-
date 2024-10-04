@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
 // import CurrencySelector from "./CurrencySelector";
@@ -10,6 +10,8 @@ import { SearchBar } from "./search-bar";
 import { Button } from "./ui/button";
 import { IUser, userStore } from "@/store/user-store";
 import { useTranslation } from "react-i18next";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { CiUser } from "react-icons/ci";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
@@ -19,6 +21,8 @@ const TopBar = () => {
     // import La
     setSidemenu(true);
   };
+
+  const navigate = useNavigate()
 
   const { t } = useTranslation();
   const location = useLocation();
@@ -52,6 +56,32 @@ const TopBar = () => {
             </NavLink>
           </Button>
         )}
+        {userData && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="link" className="p-0 m-0">
+                  <CiUser className="text-2xl" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-fit">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => navigate(`/dashboard`)}>
+                    {userData.fullname}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      // setUserData(null);
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("profile");
+                      navigate(0)
+                    }}
+                  >
+                    {t("Logout")} {/* Translate logout */}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
       </div>
 
       {/* Desktop View */}

@@ -170,6 +170,7 @@ const NavBar = () => {
                       setUserData(null);
                       localStorage.removeItem("token");
                       localStorage.removeItem("profile");
+                      navigate(0)
                     }}
                   >
                     {t("Logout")} {/* Translate logout */}
