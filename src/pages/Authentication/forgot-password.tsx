@@ -4,6 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { forgotPasswordSchema } from "@/data/schemas/forgot-password-schema";
+import { AxiosResponse, HttpStatusCode } from "axios";
+import { startPasswordReset } from "@/service/apis/user-services";
+import { useNavigate } from "react-router-dom";
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
@@ -15,12 +18,20 @@ const ForgotPasswordPage = () => {
   } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
-      // Implement your password reset logic here
-      console.log("Password reset requested for:", data.email);
-      // Show success message or redirect
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response: AxiosResponse<any, any> = await startPasswordReset(
+        data.email
+      );
+      if (
+        response.status === HttpStatusCode.Ok ||
+        response.status === HttpStatusCode.Created
+      ) {
+        navigate(`/reset-password/?id=${response.data.data.id}`);
+      }
     } catch (error) {
       console.error("Password reset failed", error);
     }

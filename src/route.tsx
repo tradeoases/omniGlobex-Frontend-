@@ -52,6 +52,7 @@ import BusinessPage from "./pages/user/pages/BusinessPage";
 import App from "./App";
 import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
+import ResetPassword from "./pages/Authentication/reset-page";
 
 const RoutesConfig = () => {
   return (
@@ -71,6 +72,7 @@ const RoutesConfig = () => {
         <Route path="signin" element={<LoginPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route path="signup" element={<IntegratedSignup />} />
         {/* 
         <Route
