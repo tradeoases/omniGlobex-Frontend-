@@ -43,6 +43,12 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+export const resetSchema = z.object({
+  password: z.string().min(8, "Please enter password"),
+  confirmPassword: z.string().min(8, "Please enter Confirm Password"),
+  key: z.string().length(6, 'Code is required')
+});
+
 export const signupSchema = z
   .object({
     fullname: z.string().min(2, {
@@ -103,5 +109,4 @@ export const passwordResetSchema = z.object({
 export const addBusinessUser = z.object({
   username: z.string().min(1, "User name is required"),
   useremail: z.string().min(1, "User email is required"),
-
 });

@@ -75,12 +75,30 @@ export const userLogin = async (data: IUserSignin) =>
 export const signup = async (data: IUserSignup) =>
   await request.post(`${PATH}signup`, data);
 
-export const emailVerification = async (data?: {key?: string, token?:string, id?:string}) =>
-  await request.post(`${PATH}verify-email`, data);
+export const emailVerification = async (data?: {
+  key?: string;
+  token?: string;
+  id?: string;
+}) => await request.post(`${PATH}verify-email`, data);
 
 export const resendVerificationEmail = async (email: string) =>
   request.get(`${PATH}verification/email/${email}`);
 
-export const getUserInfo = async () => await request.get(`user/details/userinfo`);
+export const getUserInfo = async () =>
+  await request.get(`${PATH}details/userinfo`);
 
-export const getUserPreferences = async () => await request.get('user/preferences/all')
+export const getUserPreferences = async () =>
+  await request.get(`${PATH}preferences/all`);
+
+export const startPasswordReset= async (email: string) =>
+  await request.post(`${PATH}reset-password/start/${email}`);
+
+export const completePasswordResetComplete = async (data: {
+  id: string;
+  key: string;
+  confirmPassword: string;
+  password: string;
+}) =>
+  await request.post(`${PATH}reset-password/complete/`, data, {
+    headers: { "Content-Type": "application/json" },
+  });
