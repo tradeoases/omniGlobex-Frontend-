@@ -28,7 +28,7 @@ import { Overview } from "./components/profile-dashboard/overview";
 import Messages from "./pages/user/buyer-profile/Messages";
 // import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
-import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
+// import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
 import OrderTracking from "./pages/user/buyer-profile/OrderTracking";
 import Ratings from "./pages/user/buyer-profile/Ratings";
 import BuyerAccount from "./pages/user/buyer-profile/BuyerAccount";
@@ -105,7 +105,7 @@ const RoutesConfig = () => {
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
         <Route path="messages" element={<Messages />} />
         <Route path="showRoom" element={<BuyersShowRoom />} />
-        <Route path="rfq" element={<RFQManagement />} />
+        {/* <Route path="rfq" element={<RFQManagement />} /> */}
         <Route path="orders" element={<OrderTracking />} />
         <Route path="ratings" element={<Ratings />} />
         <Route path="settings" element={<BuyerSettings />}>

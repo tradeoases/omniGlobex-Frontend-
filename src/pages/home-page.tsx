@@ -6,7 +6,7 @@ import BestSeller from "@/components/BestSeller";
 import GameWorldSection from "@/components/GameWorldSection";
 import NewArrivalSection from "@/components/NewArrivalSection";
 import { OurServiceSection } from "@/components/our-service-section";
-import PopularSales from "@/components/PopularSales";
+// import PopularSales from "@/components/PopularSales";
 import ShopBrandSection from "@/components/ShopBrandSection";
 import TopSellingProducts from "@/components/TopSellingProducts";
 
@@ -60,7 +60,7 @@ export default function HomePage() {
       <BestSeller />
       <GameWorldSection products={products?.products} name="Popular Sales" route="" />
       <NewArrivalSection products={products?.products} />
-      <PopularSales products={products?.products} />
+      {/* <PopularSales products={products?.products} /> */}
     </main>
   );
 }

@@ -26,7 +26,7 @@ export const ProductCard: React.FC<IProduct> = ({
   product_id,
   cover_image,
   price_currency,
-  product_price
+  product_price,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [fav, setFav] = useState<boolean>(false);
@@ -136,7 +136,9 @@ export const ProductCard: React.FC<IProduct> = ({
 
       <p className="text-base font-semibold flex gap-x-4">
         {/* <span className="text-gray-400 line-through">$28.27</span> */}
-        <span className="text-red-600">{price_currency} {product_price}</span>
+        <span className="text-red-600">
+          {price_currency} {product_price}
+        </span>
       </p>
 
       <div>
@@ -155,6 +157,7 @@ export const ProductCard: React.FC<IProduct> = ({
         >
           <div className="absolute bottom-6 w-full right-0 left-0 px-6 ">
             <Button
+              disabled
               onClick={() => {
                 isAddedToCart ? removeToCart() : addToCart();
               }}

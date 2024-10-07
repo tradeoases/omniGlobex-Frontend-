@@ -6,16 +6,16 @@ import React, {
   useState, // { useState }
 } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MdKeyboardArrowDown } from "react-icons/md";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuRadioGroup,
+//   DropdownMenuRadioItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { MdKeyboardArrowDown } from "react-icons/md";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import {
@@ -30,7 +30,7 @@ import { useSearchParams } from "react-router-dom";
 
 // import { Input } from "@/components/ui/input";
 const AllProductsPage = () => {
-  const [position, setPosition] = useState<string>("bottom");
+  // const [position, setPosition] = useState<string>("bottom");
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1", 10);
@@ -91,7 +91,6 @@ const AllProductsPage = () => {
     },
   });
 
-  console.log({products})
   // useEffect(()=> {
   //   const fet = async()=> {
   //     const res = await fetch('https://ipapi.co/json/');
@@ -113,15 +112,14 @@ const AllProductsPage = () => {
             <span className="text-gray-400">Showing</span>{" "}
             {products && products.products.length > 0 ? (
               <>
-                {pageSize * (page - 1) + 1}-{pageSize * page}
-                Products
+                {pageSize * (page - 1) + 1}-{pageSize * page} Products
               </>
             ) : (
               "0 results"
             )}
           </p>
 
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <p>Sort by:</p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -146,7 +144,7 @@ const AllProductsPage = () => {
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
+          </div> */}
           <button
             onClick={() => setOpenMenu(true)}
             type="button"

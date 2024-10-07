@@ -30,7 +30,7 @@ export const HeaderSection: React.FC<Props> = ({ onScroll }) => {
 
         <div className="flex items-center justify-between w-full">
           <Link
-            to="/all-products"
+            to="/products"
             className="py-3 px-6 bg-yellow-500 hover:bg-yellow-600 text-black rounded-full font-semibold shadow-lg transition-colors"
           >
             Browse Products
