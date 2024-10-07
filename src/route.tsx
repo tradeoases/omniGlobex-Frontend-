@@ -28,7 +28,7 @@ import { Overview } from "./components/profile-dashboard/overview";
 import Messages from "./pages/user/buyer-profile/Messages";
 // import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
-import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
+// import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
 import OrderTracking from "./pages/user/buyer-profile/OrderTracking";
 import Ratings from "./pages/user/buyer-profile/Ratings";
 import BuyerAccount from "./pages/user/buyer-profile/BuyerAccount";
@@ -53,11 +53,13 @@ import App from "./App";
 import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import ResetPassword from "./pages/Authentication/reset-page";
+import MultipleImageUpload from "./components/ui/MultipleImageUploadArea";
 
 const RoutesConfig = () => {
   return (
     <Routes>
       <Route path="/" element={<App />}>
+        <Route path="image" element={<MultipleImageUpload />} />
         <Route index element={<HomePage />} />
         <Route path="create-business" element={<CreateBusiness />} />
         <Route path="about" element={<AboutPage />} />
@@ -92,6 +94,7 @@ const RoutesConfig = () => {
         <Route path="single-product" element={<SingleProduct />} />
         <Route path="products" element={<AllProductsPage />} />
         <Route path="show-room" element={<ShowRoomPage />} />
+        <Route path="show-room" element={<ShowRoomPage />} />
         <Route path="cookie-policy" element={<CookiesPolicyPage />} />
         <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="verify-email" element={<VerifyEmailPage />} />
@@ -103,7 +106,7 @@ const RoutesConfig = () => {
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
         <Route path="messages" element={<Messages />} />
         <Route path="showRoom" element={<BuyersShowRoom />} />
-        <Route path="rfq" element={<RFQManagement />} />
+        {/* <Route path="rfq" element={<RFQManagement />} /> */}
         <Route path="orders" element={<OrderTracking />} />
         <Route path="ratings" element={<Ratings />} />
         <Route path="settings" element={<BuyerSettings />}>

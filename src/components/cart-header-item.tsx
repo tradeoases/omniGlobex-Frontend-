@@ -18,7 +18,7 @@ export const CartHeaderItem: React.FC<Props> = ({
       <div className="flex gap-x-2">
         <div>
           <img
-            src={Product.image_url}
+            src={Product.cover_image?.thumbnail_url}
             alt={Product.name}
             className="w-16 h-16 object-cover"
           />

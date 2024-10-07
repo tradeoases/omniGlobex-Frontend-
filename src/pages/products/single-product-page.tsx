@@ -51,6 +51,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     !product && fetchProduct();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!product)
@@ -67,7 +68,7 @@ const SingleProduct = () => {
           <div className="w-full border p-8">
             <div className="w-full h-96 flex items-center justify-center bg-gray-400">
               <img
-                src={product.image_url}
+                src={product.cover_image?.thumbnail_url}
                 alt={product.name}
                 className="object-cover h-full w-full"
               />
@@ -79,7 +80,7 @@ const SingleProduct = () => {
               <div key={i} className="w-full p-4 border">
                 <div className="h-20 bg-gray-400">
                   <img
-                    src={product.image_url}
+                    src={product.cover_image?.thumbnail_url}
                     alt={product.name}
                     className="object-cover h-full w-full"
                   />

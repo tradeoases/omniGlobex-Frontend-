@@ -20,10 +20,12 @@ import {
 } from "@/service/apis/order-service";
 
 export const TopSellingCard: React.FC<IProduct> = ({
-  image_url,
+  cover_image,
   product_id,
   name,
   description,
+  price_currency,
+  product_price
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [fav, setFav] = useState<boolean>(false);
@@ -107,7 +109,7 @@ export const TopSellingCard: React.FC<IProduct> = ({
     >
       <div className="col-span-5 h-32 md:h-40 lg:h-48 p-2 flex items-center justify-center lg:text-3xl">
         <img
-          src={image_url}
+          src={cover_image?.thumbnail_url}
           alt={name}
           className="object-cover w-52 rounded-xl lg:w-32 xl:w-48 h-32 md:h-40 xl:h-48"
         />
@@ -126,8 +128,8 @@ export const TopSellingCard: React.FC<IProduct> = ({
           {description}
         </p>
         <p className="text-sm lg:text-base font-bold flex items-center gap-x-3">
-          <span className="text-gray-400 line-through">$20.64</span>{" "}
-          <span className="text-red-600">$27.61</span>
+          {/* <span className="text-gray-400 line-through">$20.64</span>{" "} */}
+          <span className="text-red-600">{price_currency} {product_price}</span>
         </p>
         {!open && (
           <Button className=" bg-main text-xs h-8 text-black">
@@ -145,8 +147,9 @@ export const TopSellingCard: React.FC<IProduct> = ({
           onMouseLeave={() => setOpen(false)}
           className="absolute top-0 rounded-xl left-0 w-full bg-black/5 border h-full p-6"
         >
-          <div className="absolute ml-7 bottom-4 md:bottom-6 lg:bottom-10 xl:bottom-6 w-full flex items-center md:ml-4 lg:ml-8 xl:ml-3 justify-center right-0 left-0 px-6">
+          <div onClick={()=> navigate('/products')} className="absolute ml-7 bottom-4 md:bottom-6 lg:bottom-10 xl:bottom-6 w-full flex items-center md:ml-4 lg:ml-8 xl:ml-3 justify-center right-0 left-0 px-6">
             <Button
+              disabled
               onClick={() => {
                 isAddedToCart ? removeToCart() : addToCart();
               }}

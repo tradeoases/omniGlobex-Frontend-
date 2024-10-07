@@ -3,7 +3,7 @@ import { Link } from "lucide-react";
 
 export const PopularSaleItem: React.FC<IProduct> = ({
   description,
-  image_url,
+  cover_image,
   product_id,
   name,
 }) => {
@@ -14,7 +14,7 @@ export const PopularSaleItem: React.FC<IProduct> = ({
     >
       <img
         className="object-cover rounded-xl col-span-3"
-        src={image_url}
+        src={cover_image?.thumbnail_url}
         alt={name}
       />
 

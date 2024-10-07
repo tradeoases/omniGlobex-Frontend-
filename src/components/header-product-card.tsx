@@ -16,7 +16,7 @@ import {
 } from "@/service/apis/order-service";
 
 export const HeaderProductCard: React.FC<IProduct> = ({
-  image_url,
+  cover_image,
   description,
   name,
   product_id,
@@ -98,7 +98,7 @@ export const HeaderProductCard: React.FC<IProduct> = ({
   return (
     <div className="flex w-[200px] flex-col items-center rounded-md border p-2 shadow-md transition-all duration-300 hover:scale-105">
       <img
-        src={image_url}
+        src={cover_image?.thumbnail_url}
         alt={name}
         className="h-40 w-full object-cover rounded-t-md"
       />

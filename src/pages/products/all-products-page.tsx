@@ -2,20 +2,21 @@
 import { ICategory } from "@/components/Sidemenu";
 import { Checkbox } from "@/components/ui/checkbox";
 import React, {
+  useEffect,
   // useEffect,
   useState, // { useState }
 } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MdKeyboardArrowDown } from "react-icons/md";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuRadioGroup,
+//   DropdownMenuRadioItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { MdKeyboardArrowDown } from "react-icons/md";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import {
@@ -30,7 +31,7 @@ import { useSearchParams } from "react-router-dom";
 
 // import { Input } from "@/components/ui/input";
 const AllProductsPage = () => {
-  const [position, setPosition] = useState<string>("bottom");
+  // const [position, setPosition] = useState<string>("bottom");
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1", 10);
@@ -42,7 +43,6 @@ const AllProductsPage = () => {
     }
   });
 
-  console.log({ catParams });
   const {
     data: products,
     isLoading: productIsLoading,
@@ -92,18 +92,17 @@ const AllProductsPage = () => {
     },
   });
 
-  // console.log({products})
-  // useEffect(()=> {
-  //   const fet = async()=> {
-  //     const res = await fetch('https://ipapi.co/json/');
-  //     if(res.ok) {
-  //       const country = await res.json()
+  useEffect(()=> {
+    const fet = async()=> {
+      const res = await fetch('https://ipapi.co/json/');
+      if(res.ok) {
+        const country = await res.json()
 
-  //       console.log({country})
-  //     }
-  //   }
-  //   fet()
-  // },[])
+        console.log({country})
+      }
+    }
+    fet()
+  },[])
 
   return (
     <div className="w-full   grid grid-cols-1 lg:grid-cols-4 gap-x-8">
@@ -114,15 +113,14 @@ const AllProductsPage = () => {
             <span className="text-gray-400">Showing</span>{" "}
             {products && products.products.length > 0 ? (
               <>
-                {pageSize * (page - 1) + 1}-{pageSize * page}
-                Products
+                {pageSize * (page - 1) + 1}-{pageSize * page} Products
               </>
             ) : (
               "0 results"
             )}
           </p>
 
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <p>Sort by:</p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -147,7 +145,7 @@ const AllProductsPage = () => {
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
+          </div> */}
           <button
             onClick={() => setOpenMenu(true)}
             type="button"
@@ -180,71 +178,6 @@ const AllProductsPage = () => {
 
 export default AllProductsPage;
 
-// const ProductCategoryItem: React.FC<ICategory> = ({ category_id, name }) => {
-//   const [searchParams, setSearchParams] = useSearchParams();
-
-//   // Helper function to get all category key-value pairs from searchParams
-//   const getCategoriesFromSearchParams = () => {
-//     const categories = [];
-//     // Iterate over searchParams to find all category keys (cat1, cat2, ...)
-//     for (const [key, value] of searchParams.entries()) {
-//       if (key.startsWith("cat")) {
-//         categories.push({ key, value });
-//       }
-//     }
-//     return categories;
-//   };
-
-//   // Function to add a category
-//   const addCategory = (newCategory: string) => {
-//     const categories = getCategoriesFromSearchParams();
-//     const nextCategoryNumber = categories.length + 1;
-//     const newCategoryKey = `cat${nextCategoryNumber}`;
-
-//     // Update search params with the new category
-//     setSearchParams((prev) => {
-//       prev.set(newCategoryKey, newCategory); // Add new category
-//       return prev;
-//     });
-//   };
-
-//   // Function to delete a category and renumber the remaining categories
-//   const deleteCategory = (categoryKey: string) => {
-//     const categories = getCategoriesFromSearchParams();
-
-//     // Remove the selected category
-//     const updatedCategories = categories.filter(
-//       ({ key }) => key !== categoryKey
-//     );
-
-//     // Renumber the remaining categories
-//     const renumberedCategories = updatedCategories.reduce(
-//       (acc, { value }, index) => {
-//         acc.set(`cat${index + 1}`, value); // Renumber categories (cat1, cat2, ...)
-//         return acc;
-//       },
-//       new URLSearchParams()
-//     );
-
-//     // Update search params with renumbered categories
-//     setSearchParams(renumberedCategories);
-//   };
-
-//   return (
-//     <div className="flex py-2 items-center justify-between">
-//       <div className="flex items-center gap-4">
-//         <Checkbox id="terms" checked={true} className="" />
-//         <label
-//           htmlFor="terms"
-//           className="line-clamp-1 text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-//         >
-//           {name}
-//         </label>
-//       </div>
-//       <FaPlus className="text-gray-400 text-xs" />
-//     </div>
-//   );
-// };
 
 const ProductCategoryItem: React.FC<ICategory> = ({ category_id, name }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -378,6 +311,7 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
             ))}
         </div>
       </div>
+      
     </div>
   );
 };

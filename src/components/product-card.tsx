@@ -21,10 +21,12 @@ import {
 import { IOrder, OrdersStore } from "@/store/order-store";
 
 export const ProductCard: React.FC<IProduct> = ({
-  image_url,
   name,
   description,
   product_id,
+  cover_image,
+  price_currency,
+  product_price,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [fav, setFav] = useState<boolean>(false);
@@ -111,7 +113,7 @@ export const ProductCard: React.FC<IProduct> = ({
       <div className="w-full h-52 rounded-xl flex items-center justify-center bg-gray-300">
         <img
           className="object-cover rounded-xl w-full h-full"
-          src={image_url}
+          src={cover_image?.thumbnail_url}
           alt={name}
         />
       </div>
@@ -133,8 +135,10 @@ export const ProductCard: React.FC<IProduct> = ({
       </p>
 
       <p className="text-base font-semibold flex gap-x-4">
-        <span className="text-gray-400 line-through">$28.27</span>
-        <span className="text-red-600">$18.72</span>
+        {/* <span className="text-gray-400 line-through">$28.27</span> */}
+        <span className="text-red-600">
+          {price_currency} {product_price}
+        </span>
       </p>
 
       <div>
@@ -153,6 +157,7 @@ export const ProductCard: React.FC<IProduct> = ({
         >
           <div className="absolute bottom-6 w-full right-0 left-0 px-6 ">
             <Button
+              disabled
               onClick={() => {
                 isAddedToCart ? removeToCart() : addToCart();
               }}

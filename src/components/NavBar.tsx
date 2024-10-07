@@ -162,7 +162,7 @@ const NavBar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-fit">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate(`/dashboard`)}>
+                  <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard`)}>
                     {userData.fullname}
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -170,6 +170,7 @@ const NavBar = () => {
                       setUserData(null);
                       localStorage.removeItem("token");
                       localStorage.removeItem("profile");
+                      // navigate('/')
                       navigate(0)
                     }}
                   >

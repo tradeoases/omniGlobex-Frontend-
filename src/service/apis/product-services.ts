@@ -1,7 +1,7 @@
 import { ICreateProduct } from "@/data/product-data";
 import request from "../base.service";
 
-const PATH = "product/";
+const PATH = "/product/";
 export interface IPage {
   page: number;
   pageSize: number;
@@ -10,12 +10,15 @@ export interface IPage {
 export interface IProduct {
   product_id: string;
   name: string;
-  UnitPrice: string;
+  product_price: number;
+  price_currency: string
   description: string;
   products: string;
   category_id: string;
-  image_url: string;
-  image_id: string;
+  cover_image?: {
+    image_url: string;
+    thumbnail_url: string
+  }
   user_id: string;
   slug: string;
   tags: string;
@@ -51,7 +54,7 @@ export const getAllProductByUser = async () =>
   await request.get(`${PATH}/user`);
 
 export const getAllProductCategories = async () =>
-  await request.get(`category`);
+  await request.get(`/category`);
 
 export const createProduct = async (data: ICreateProduct) =>
-  await request.post(`product/`, data);
+  await request.post(`/product/`, data);
