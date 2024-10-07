@@ -53,11 +53,13 @@ import App from "./App";
 import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import ResetPassword from "./pages/Authentication/reset-page";
+import MultipleImageUpload from "./components/ui/MultipleImageUploadArea";
 
 const RoutesConfig = () => {
   return (
     <Routes>
       <Route path="/" element={<App />}>
+        <Route path="image" element={<MultipleImageUpload />} />
         <Route index element={<HomePage />} />
         <Route path="create-business" element={<CreateBusiness />} />
         <Route path="about" element={<AboutPage />} />

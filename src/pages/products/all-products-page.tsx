@@ -42,7 +42,6 @@ const AllProductsPage = () => {
     }
   });
 
-  console.log({ catParams });
   const {
     data: products,
     isLoading: productIsLoading,
@@ -92,7 +91,7 @@ const AllProductsPage = () => {
     },
   });
 
-  // console.log({products})
+  console.log({products})
   // useEffect(()=> {
   //   const fet = async()=> {
   //     const res = await fetch('https://ipapi.co/json/');

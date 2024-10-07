@@ -33,8 +33,8 @@ export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
       <div className="w-full grid md:grid-cols-2 xl:grid-cols-3 gap-8">
         {products ? (
           products
-            .slice(0, 8)
-            .map((product: IProduct) => <ProductCard {...product} />)
+            ?.slice(0, 8)
+            ?.map((product: IProduct) => <ProductCard {...product} />)
         ) : (
           <div>no product</div>
         )}
