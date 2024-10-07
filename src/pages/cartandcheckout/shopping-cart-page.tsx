@@ -124,7 +124,7 @@ export const ShoppingCartPage = () => {
                       <div className="w-[80px] h-[80px] overflow-hidden flex justify-center items-center border border-[#EDEDED] relative">
                         <span className="box-border block overflow-hidden w-auto h-auto opacity-100 border-none m-0 p-0 absolute inset-0">
                           <img
-                            src={item.Product.image_url}
+                            src={item.Product.cover_image?.thumbnail_url}
                             alt={item.Product.name}
                             className="w-full h-full object-contain absolute inset-0 box-border p-0 border-none m-auto block min-w-[100%] min-h-[100%] max-h-[100%]"
                           />

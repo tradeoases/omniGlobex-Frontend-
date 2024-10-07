@@ -94,6 +94,7 @@ const RoutesConfig = () => {
         <Route path="single-product" element={<SingleProduct />} />
         <Route path="products" element={<AllProductsPage />} />
         <Route path="show-room" element={<ShowRoomPage />} />
+        <Route path="show-room" element={<ShowRoomPage />} />
         <Route path="cookie-policy" element={<CookiesPolicyPage />} />
         <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="verify-email" element={<VerifyEmailPage />} />
