@@ -33,6 +33,8 @@ const BlogPage = () => {
     );
   }
 
+  console.log({blogs})
+
   return (
     <div className="w-full">
       <PageHeader name="Our Blogs" route="/ blogs" />

@@ -165,6 +165,11 @@ const NavBar = () => {
                   <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard`)}>
                     {userData.fullname}
                   </DropdownMenuItem>
+
+                  <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard/messages`)}>
+                    Message
+                  </DropdownMenuItem>
+                  
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);

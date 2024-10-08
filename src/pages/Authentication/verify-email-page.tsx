@@ -62,7 +62,7 @@ const VerifyEmailPage = () => {
     }
 
     handleConfirmEmail(token);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -102,9 +102,12 @@ const VerifyEmailPage = () => {
         setVerified(true);
         const data = response.data.data;
         localStorage.setItem("token", data.token);
-        localStorage.setItem("profile", JSON.stringify(data.user));
-        console.log(data)
-        navigate("/create-business");
+        localStorage.setItem("profile", JSON.stringify(data.data));
+        if (data.data.roles.includes("Supplier"))
+          if (data.data.businessNames.length === 0)
+            navigate(`/create-business`);
+          else navigate(`/supplier-dashboard`);
+        else navigate(`/buyer-dashboard`);
       }
     } catch (error) {
       if (isAxiosError(error)) {
