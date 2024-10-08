@@ -67,6 +67,7 @@ const RoutesConfig = () => {
     if (!unparsed) return;
     const profile = JSON.parse(unparsed);
     setUserData(profile);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Routes>
