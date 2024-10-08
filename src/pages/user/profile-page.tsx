@@ -71,21 +71,31 @@ const SuppliersDashboard = () => {
               >
                 Switch to buyer
               </Link>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                Manage account
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                Create a business
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                Business Verification
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                My purchases
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                Request for Quotation
-              </div>
+              <Link to="/supplier-dashboard">
+                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                  Manage account
+                </div>
+              </Link>
+              <Link to="/create-business">
+                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                  Create a business
+                </div>
+              </Link>
+              <Link to="subscription">
+                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                  Subscription
+                </div>
+              </Link>
+              <Link to="order">
+                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                  My purchases
+                </div>
+              </Link>
+              <Link to="supplier-rfq">
+                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                  Request for Quotation
+                </div>
+              </Link>
               <Link
                 to="/products"
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
