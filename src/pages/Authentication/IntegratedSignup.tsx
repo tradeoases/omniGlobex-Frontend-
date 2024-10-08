@@ -78,57 +78,6 @@ const IntegratedSignup = () => {
     },
   });
 
-  // const {
-  //   mutate: onSubmit,
-
-  //   error: mutationError,
-  //   isError: isMutationError,
-  //   isSuccess: mutationSuccess,
-
-  // } = useMutation({
-  //   mutationKey: [],
-  //   mutationFn: async (values: z.infer<typeof signupSchema>) => {
-  //     let timeoutKey: NodeJS.Timeout | undefined;
-  //     const {
-  //       address,
-  //       email,
-  //       fullname,
-  //       city,
-  //       password,
-  //       phonenumber,
-  //       country_id,
-  //     } = values;
-  //     const data: IUserSignup = {
-  //       address,
-  //       fullname: fullname,
-  //       email,
-  //       password,
-  //       phoneNumber: phonenumber,
-  //       city,
-  //       countryId: country_id,
-  //     };
-
-  //     const response: AxiosResponse<any, any> = await signup(data);
-
-  //     if (response.status === HttpStatusCode.Created) {
-  //       form.reset();
-
-  //       timeoutKey = setTimeout(() => {
-  //         form.reset();
-  //       }, 2000);
-
-  //       return () => clearTimeout(timeoutKey);
-  //     }
-  //   },
-  //   onSuccess: (data) => {
-  //     console.log(data)
-  //   },
-  //   onError: (e: any) => {
-  //     console.log(e);
-  //     return new Error(e.response?.data?.message || e.message);
-  //   },
-  // });
-
   const [, setEmail] = useRecoilState(EmailStore);
   const navigate = useNavigate();
   const {
@@ -215,7 +164,7 @@ const IntegratedSignup = () => {
               className="space-y-8 mt-10"
             >
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
-                <div className="w-full">
+                <div className="grid w-full max-w-sm items-center gap-1.5">
                   <FormField
                     control={form.control}
                     name="fullname"
@@ -235,9 +184,6 @@ const IntegratedSignup = () => {
                     )}
                   />
                 </div>
-              </div>
-
-              <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <FormField
                     control={form.control}
@@ -259,7 +205,9 @@ const IntegratedSignup = () => {
                     )}
                   />
                 </div>
+              </div>
 
+              <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <FormField
                     control={form.control}
@@ -275,6 +223,37 @@ const IntegratedSignup = () => {
                             placeholder="Phone Number"
                             {...field}
                           />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <FormField
+                    control={form.control}
+                    name="role"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Role *</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value="Buyer">Buyer</SelectItem>
+                                <SelectItem value="Supplier">
+                                  Supplier
+                                </SelectItem>
+                                <SelectItem value="Both">Both</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -463,13 +442,27 @@ const IntegratedSignup = () => {
               </div>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Accept terms and conditions
-                </label>
+                <FormField
+                  control={form.control}
+                  name="acceptTerms"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className='flex items-center space-x-2'>
+                          <Checkbox
+                            onClick={() => field.onChange(!field.value)}
+                            checked={field.value}
+                            id="terms"
+                          />
+                          <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            Accept terms and conditions *
+                          </FormLabel>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
