@@ -109,7 +109,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
           imageResponse.status === HttpStatusCode.Created
         ) {
           data.coverImage = imageResponse.data.data[0].image_id;
-          console.log(data);
         }
       }
       // image_url:
@@ -117,7 +116,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
 
       const response: AxiosResponse<any, any> = await createProduct(data);
       if (response.status === HttpStatusCode.Ok) {
-        console.log(response.data);
         form.reset();
         setSuccessMessage("Product added successfully!");
         setTimeout(() => {
@@ -180,7 +178,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
           countryId: country.country_id,
           country: country.name,
           selected: false,
-          currency: country.currencyName,
+          currency: country.currency_name,
         }));
       }
     },
@@ -191,65 +189,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
       setShowRooms(countries);
     }
   }, [countryIsSuccess, countries]);
-
-  // const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();
-  // };
-
-  // const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();
-  //   const newFiles = Array.from(e.dataTransfer.files);
-  //   setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-
-  //   newFiles.forEach((file) => {
-  //     const fileReader = new FileReader();
-  //     fileReader.readAsDataURL(file);
-
-  //     const interval = setInterval(() => {
-  //       setFileProgress((prevProgress) => {
-  //         const newProgress = prevProgress[file.name]
-  //           ? prevProgress[file.name] + 10
-  //           : 10;
-  //         if (newProgress >= 100) clearInterval(interval);
-  //         return { ...prevProgress, [file.name]: newProgress };
-  //       });
-  //     }, 100);
-  //   });
-  // };
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newFiles = Array.from(e.target.files || []);
-  //   setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-
-  //   newFiles.forEach((file) => {
-  //     const fileReader = new FileReader();
-  //     fileReader.readAsDataURL(file);
-
-  //     const interval = setInterval(() => {
-  //       setFileProgress((prevProgress) => {
-  //         const newProgress = prevProgress[file.name]
-  //           ? prevProgress[file.name] + 10
-  //           : 10;
-  //         if (newProgress >= 100) clearInterval(interval);
-  //         return { ...prevProgress, [file.name]: newProgress };
-  //       });
-  //     }, 100);
-  //   });
-  // };
-
-  // const removeFile = (fileName: string) => {
-  //   setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
-  //   setFileProgress((prevProgress) => {
-  //     const { [fileName]: _, ...rest } = prevProgress;
-  //     return rest;
-  //   });
-  // };
-
-  // const handleBoxClick = () => {
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.click();
-  //   }
-  // };
 
   return (
     <div className="fixed mt-11 cursor-pointer top-0 left-0 w-full z-10 h-full bg-black/45 p-8">

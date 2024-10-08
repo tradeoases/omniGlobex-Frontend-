@@ -54,6 +54,7 @@ import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import ResetPassword from "./pages/Authentication/reset-page";
 import MultipleImageUpload from "./components/ui/MultipleImageUploadArea";
+import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
 
 const RoutesConfig = () => {
   return (
@@ -106,7 +107,7 @@ const RoutesConfig = () => {
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
         <Route path="messages" element={<Messages />} />
         <Route path="showRoom" element={<BuyersShowRoom />} />
-        {/* <Route path="rfq" element={<RFQManagement />} /> */}
+        <Route path="rfq" element={<RFQManagement />} />
         <Route path="orders" element={<OrderTracking />} />
         <Route path="ratings" element={<Ratings />} />
         <Route path="settings" element={<BuyerSettings />}>

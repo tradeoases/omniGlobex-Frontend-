@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiMenuFries, CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -162,21 +163,33 @@ const NavBar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-fit">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard`)}>
+                  <DropdownMenuItem
+                    onClick={() => navigate(`/buyer-dashboard`)}
+                  >
                     {userData.fullname}
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard/messages`)}>
+                  <DropdownMenuItem
+                    onClick={() => navigate(`/buyer-dashboard/messages`)}
+                  >
                     Message
                   </DropdownMenuItem>
-                  
+
+                  {userData.roles.includes("Supplier") && (
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/buyer-dashboard/messages`)}
+                    >
+                      Manage supplies
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);
                       localStorage.removeItem("token");
                       localStorage.removeItem("profile");
                       // navigate('/')
-                      navigate(0)
+                      navigate(0);
                     }}
                   >
                     {t("Logout")} {/* Translate logout */}

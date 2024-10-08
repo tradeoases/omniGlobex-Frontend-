@@ -80,7 +80,6 @@ const LoginPage = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("profile", JSON.stringify(userData));
         setLoading(false);
-        console.log(userData);
         if (userData.roles.includes("Supplier"))
           if (userData.businessNames.length === 0)
             navigate(`/create-business`);

@@ -21,7 +21,7 @@ const BlogCard = ({ blog }: { blog: BlogType }) => {
   const navigate = useNavigate();
 
   const handleViewMore = () => {
-    navigate(`/blog/${blog.id}`);
+    navigate(`/blogs/${blog.id}`);
   };
 
   return (
