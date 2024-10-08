@@ -103,6 +103,7 @@ const VerifyEmailPage = () => {
         const data = response.data.data;
         localStorage.setItem("token", data.token);
         localStorage.setItem("profile", JSON.stringify(data.user));
+        console.log(data)
         navigate("/create-business");
       }
     } catch (error) {
