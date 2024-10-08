@@ -1,7 +1,7 @@
 // src/components/Navbar.tsx
 import { Logo } from "@/components/logo";
 import { useEffect, useRef, useState } from "react";
-import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
