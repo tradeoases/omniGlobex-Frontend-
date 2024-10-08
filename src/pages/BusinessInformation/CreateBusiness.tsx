@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { z } from "zod";
@@ -32,6 +32,7 @@ import {
 import { createBusiness } from "@/service/apis/business-services";
 import { getStripe } from "@/service/stripe";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 // Define the schema for validation using Zod
 const createBusinessSchema = z.object({
@@ -71,6 +72,18 @@ const CreateBusiness = () => {
       }
     },
   });
+  const navigate = useNavigate()
+  useEffect(() => {
+    const data = localStorage.getItem("profile");
+    if(!data) {
+      return navigate('/signin')
+    }
+    const jData = JSON.parse(data)
+    if(jData.businessNames.length > 0) {
+      navigate('/supplier-dashboard')
+    }
+    console.log({ jData });
+  }, []);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

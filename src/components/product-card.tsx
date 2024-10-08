@@ -44,14 +44,13 @@ export const ProductCard: React.FC<IProduct> = ({
         ? setIsAddToCart(true)
         : setIsAddToCart(false);
     }
-  }, [cartItems]);
+  }, [cartItems, product_id]);
 
   const addToCart = async () => {
     if (!userData) {
       navigate("/login");
       return;
     }
-
     try {
       setLoading(true);
       const data: ICreateOrder = {

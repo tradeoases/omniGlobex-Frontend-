@@ -1,3 +1,6 @@
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
@@ -7,6 +10,9 @@ import { NavLink } from "react-router-dom";
 import SupplierNavBar from "./supplier-profile/SupplierNavBar";
 import { Logo } from "@/components/logo";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userStore } from "@/store/user-store";
+import ProtectedRoute from "@/components/ProtectedRoutes";
 
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -30,6 +36,8 @@ const SuppliersDashboard = () => {
       setDropdownOpen(false);
     }
   };
+
+  const [profile] = useRecoilState(userStore);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -133,7 +141,13 @@ const SuppliersDashboard = () => {
       </div>
 
       <div className="mt-14 p-4">
-        <Outlet />
+        <ProtectedRoute
+          isAuthenticated={!!profile}
+          userRole={profile?.roles || []}
+          requiredRoles={["Supplier"]}
+        >
+          <Outlet />
+        </ProtectedRoute>
       </div>
     </div>
   );

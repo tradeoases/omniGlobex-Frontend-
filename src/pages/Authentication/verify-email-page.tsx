@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
 import { useEffect, useState } from "react";
@@ -27,11 +27,11 @@ const VerifyEmailPage = () => {
   const [resendError, setResendError] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [resendSuccess, setResendSuccess] = useState<boolean>(false);
-  const userData = useRecoilValue<IUser | null>(userStore);
+  const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
   const [searchParams] = useSearchParams();
   const previousRoute = usePreviousRoute();
   const navigate = useNavigate();
-
+  
   const email = useRecoilValue<{ email: string | null; id: string | null }>(
     EmailStore
   );
@@ -102,6 +102,7 @@ const VerifyEmailPage = () => {
         setVerified(true);
         const data = response.data.data;
         localStorage.setItem("token", data.token);
+        setUserData(userData);
         localStorage.setItem("profile", JSON.stringify(data.data));
         if (data.data.roles.includes("Supplier"))
           if (data.data.businessNames.length === 0)

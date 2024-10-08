@@ -22,6 +22,8 @@ export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
     },
   });
 
+  console.log({products})
+
   return (
     <div className="space-y-10 w-full">
       <div className="w-full">
@@ -32,7 +34,7 @@ export const ProductManagementProductTab: React.FC<Props> = ({ onOpen }) => {
 
       <div className="w-full grid md:grid-cols-2 xl:grid-cols-3 gap-8">
         {products ? (
-          products
+          products?.products
             ?.slice(0, 8)
             ?.map((product: IProduct) => <ProductCard {...product} />)
         ) : (

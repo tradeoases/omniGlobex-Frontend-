@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@/components/logo";
 import img from "../../../assets/omniGlobexlogo.png";
-import { FaUserCircle } from "react-icons/fa"; // Importing profile icon
+import { FaUserCircle } from "react-icons/fa";
 
 const BuyersNavBar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
+  const navigate = useNavigate();
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
@@ -53,13 +53,13 @@ const BuyersNavBar = () => {
         <div className="ml-auto flex items-center space-x-6">
           {/* Navigation Buttons (aligned to the right) */}
           <div className="hidden md:flex space-x-6">
-            <Link to="/create-business">
+            <Link to={"/create-business"}>
               <button className="bg-white text-main border border-main px-5 py-2 rounded-full hover:bg-main hover:text-white transition duration-300 shadow-md hover:shadow-lg">
                 Start Selling Now
               </button>
             </Link>
 
-            <Link to="#">
+            <Link to="/buyer-dashboard/messages">
               <button className=" text-gary-400 px-5 py-2 rounded-full hover:text-main transition duration-300 ">
                 Messages
               </button>
@@ -82,7 +82,7 @@ const BuyersNavBar = () => {
             {/* Dropdown Content */}
             <div
               ref={dropdownRef}
-              className={`absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 border border-gray-200 ${
+              className={`absolute flex flex-col right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 border border-gray-200 ${
                 dropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
               } transition-opacity duration-300 z-50`}
             >
@@ -96,19 +96,39 @@ const BuyersNavBar = () => {
               >
                 Start Selling Now
               </Link>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+              <Link
+                to={"/buyer-dashboard/rfq"}
+                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
+              >
                 My RFQ
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+              </Link>
+              <Link
+                to={"/buyer-dashboard/orders"}
+                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
+              >
                 My Orders
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+              </Link>
+              <Link
+                to={"/buyer-dashboard/messages"}
+                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
+              >
                 Messages
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+              </Link>
+              <Link
+                to={"/buyer-dashboard/myAccount/profile"}
+                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
+              >
                 My Account
-              </div>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+              </Link>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("profile");
+                  localStorage.removeItem("token");
+                  navigate("/");
+                  navigate(0);
+                }}
+                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
+              >
                 Sign out
               </div>
             </div>

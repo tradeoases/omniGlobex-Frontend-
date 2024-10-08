@@ -33,7 +33,6 @@ const BlogPage = () => {
     );
   }
 
-  console.log({blogs})
 
   return (
     <div className="w-full">

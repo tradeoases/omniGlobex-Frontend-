@@ -54,8 +54,21 @@ import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import ResetPassword from "./pages/Authentication/reset-page";
 import MultipleImageUpload from "./components/ui/MultipleImageUploadArea";
+import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { IUser, userStore } from "./store/user-store";
 
 const RoutesConfig = () => {
+  const [, setUserData] = useRecoilState<IUser | null>(userStore);
+
+  useEffect(() => {
+    const unparsed = localStorage.getItem("profile");
+    if (!unparsed) return;
+    const profile = JSON.parse(unparsed);
+    setUserData(profile);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<App />}>
@@ -106,7 +119,7 @@ const RoutesConfig = () => {
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
         <Route path="messages" element={<Messages />} />
         <Route path="showRoom" element={<BuyersShowRoom />} />
-        {/* <Route path="rfq" element={<RFQManagement />} /> */}
+        <Route path="rfq" element={<RFQManagement />} />
         <Route path="orders" element={<OrderTracking />} />
         <Route path="ratings" element={<Ratings />} />
         <Route path="settings" element={<BuyerSettings />}>

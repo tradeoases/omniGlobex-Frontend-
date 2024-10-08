@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { CiMenuFries, CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SlHandbag } from "react-icons/sl";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { HiMenu, HiX } from "react-icons/hi"; // Add icons for mobile menu
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { IUser, userStore } from "@/store/user-store";
 import { Button } from "./ui/button";
@@ -38,12 +39,6 @@ const NavBar = () => {
 
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
 
-  useEffect(() => {
-    const unparsed = localStorage.getItem("profile");
-    if (!unparsed) return;
-    const profile = JSON.parse(unparsed);
-    setUserData(profile);
-  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -162,21 +157,33 @@ const NavBar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-fit">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard`)}>
+                  <DropdownMenuItem
+                    onClick={() => navigate(`/buyer-dashboard`)}
+                  >
                     {userData.fullname}
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard/messages`)}>
+                  <DropdownMenuItem
+                    onClick={() => navigate(`/buyer-dashboard/messages`)}
+                  >
                     Message
                   </DropdownMenuItem>
-                  
+
+                  {userData.roles.includes("Supplier") && (
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/buyer-dashboard/messages`)}
+                    >
+                      Manage supplies
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);
                       localStorage.removeItem("token");
                       localStorage.removeItem("profile");
                       // navigate('/')
-                      navigate(0)
+                      navigate(0);
                     }}
                   >
                     {t("Logout")} {/* Translate logout */}
