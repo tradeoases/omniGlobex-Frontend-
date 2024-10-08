@@ -252,7 +252,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
   // };
 
   return (
-    <div className="fixed cursor-pointer top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
+    <div className="fixed mt-11 cursor-pointer top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
       <div className="bg-white relative w-full lg:w-4/5 xl:w-2/5 mx-auto h-full rounded-xl p-4 py-8 md:p-8 ">
         <div className="flex justify-end">
           <span
