@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/Navbar.tsx
 import { Logo } from "@/components/logo";
 import { useEffect, useRef, useState } from "react";
