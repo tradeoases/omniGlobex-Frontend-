@@ -63,6 +63,7 @@ export interface IUserSignup {
   address: string;
   phoneNumber: string;
   city: string;
+  role: 'Supplier' | 'Buyer' | 'Both'
 }
 
 export interface IVerifyEmail {

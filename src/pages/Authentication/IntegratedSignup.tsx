@@ -96,6 +96,7 @@ const IntegratedSignup = () => {
         password,
         phonenumber,
         country_id,
+        role
       } = values;
 
       const data: IUserSignup = {
@@ -106,6 +107,7 @@ const IntegratedSignup = () => {
         phoneNumber: phonenumber,
         city,
         countryId: country_id,
+        role
       };
 
       const response: AxiosResponse<any, any> = await signup(data);

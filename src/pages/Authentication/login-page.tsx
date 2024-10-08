@@ -80,8 +80,11 @@ const LoginPage = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("profile", JSON.stringify(userData));
         setLoading(false);
+        console.log(userData);
         if (userData.roles.includes("Supplier"))
-          navigate(`/supplier-dashboard`);
+          if (userData.businessNames.length === 0)
+            navigate(`/create-business`);
+          else navigate(`/supplier-dashboard`);
         else navigate(`/buyer-dashboard`);
         setSuccessMessage(true);
 

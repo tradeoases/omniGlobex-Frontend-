@@ -96,7 +96,6 @@ const CreateBusiness = () => {
       if (response.status === HttpStatusCode.Created) {
         form.reset();
         const stripe = await getStripe();
-        console.log(response.data.data);
         await stripe?.redirectToCheckout({
           sessionId: response.data?.data?.businessSubscription?.stripeSessionId,
         });
@@ -113,7 +112,6 @@ const CreateBusiness = () => {
     <div className="w-full space-y-8 mb-10">
       <div className="w-10/12 xl:w-8/12 mx-auto flex flex-col items-center px-7 py-10 bg-white">
         <p className="text-4xl font-extrabold text-center">Create Business</p>
-        <p className="text-xl font-extrabold text-center">Not you can skip this step but then you will not be able to participate as a supplier and get all the full benefits of the site.</p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

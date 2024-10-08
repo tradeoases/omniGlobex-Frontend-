@@ -79,9 +79,10 @@ const ResetPassword = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("profile", JSON.stringify(userData));
         setLoading(false);
-        if (userData.roles.includes("Supplier"))
+        if (userData.roles.includes("Supplier")) {
+          console.log(userData)
           navigate(`/supplier-dashboard`);
-        else navigate(`/buyer-dashboard`);
+        } else navigate(`/buyer-dashboard`);
         setSuccessMessage(true);
 
         timeoutKey = setTimeout(() => {
@@ -91,7 +92,7 @@ const ResetPassword = () => {
         return () => clearTimeout(timeoutKey);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (isAxiosError(error)) {
         setErrorMessage(error.response?.data.message);
       }
