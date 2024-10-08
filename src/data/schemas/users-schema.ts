@@ -1,39 +1,50 @@
 import { z } from "zod";
 
-export const createSellerSchema = z
+export const signupSchema = z
   .object({
     fullname: z.string().min(2, {
-      message: "first name must be at least 2 characters.",
+      message: "First name must be at least 2 characters.",
     }),
-    country_id: z.string().uuid({ message: "invalid" }),
 
-    email: z.string().email("Invalid email"),
+    terms: z.boolean().default(false).optional(),
+
+    country_id: z.string().uuid({ message: "Invalid country ID" }),
 
     address: z.string().min(2, {
-      message: "address must be at least 2 characters.",
+      message: "Address must be at least 2 characters.",
     }),
 
     city: z.string().min(2, {
-      message: "city must be at least 2 characters.",
+      message: "City must be at least 2 characters.",
     }),
 
     phonenumber: z.string().min(10, {
-      message: "phone number must be at least 10 characters.",
-    }),
-    shopName: z.string().min(3, {
-      message: "Shop name must be at least 3 characters.",
+      message: "Phone number must be at least 10 characters.",
     }),
 
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    email: z.string().email({ message: "Invalid email" }),
 
-    confirmPassword: z
+    password: z
       .string()
-      .min(8, "password must be at least 8 characters"),
+      .min(8, { message: "Password must be at least 8 characters" }),
+
+    role: z.enum(["Supplier", "Buyer", "Both"], {
+      message: "Role must be one of Supplier, Buyer, or Both",
+    }),
+
+    acceptTerms: z.literal(true, {
+      errorMap: () => ({ message: "You must accept the terms and conditions" }),
+    }), // enforce that acceptTerms must be true
+
+    confirmPassword: z.string().min(8, {
+      message: "Confirm password must be at least 8 characters",
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
 
 export const loginSchema = z.object({
   email: z
@@ -46,43 +57,8 @@ export const loginSchema = z.object({
 export const resetSchema = z.object({
   password: z.string().min(8, "Please enter password"),
   confirmPassword: z.string().min(8, "Please enter Confirm Password"),
-  key: z.string().length(6, 'Code is required')
+  key: z.string().length(6, "Code is required"),
 });
-
-export const signupSchema = z
-  .object({
-    fullname: z.string().min(2, {
-      message: "first name must be at least 2 characters.",
-    }),
-
-    terms: z.boolean().default(false).optional(),
-
-    country_id: z.string().uuid({ message: "invalid" }),
-
-    address: z.string().min(2, {
-      message: "address must be at least 2 characters.",
-    }),
-
-    city: z.string().min(2, {
-      message: "city must be at least 2 characters.",
-    }),
-
-    phonenumber: z.string().min(10, {
-      message: "phone number must be at least 10 characters.",
-    }),
-
-    email: z.string().email("Invalid email"),
-
-    password: z.string().min(8, "Password must be at least 8 characters"),
-
-    confirmPassword: z
-      .string()
-      .min(8, "password must be at least 8 characters"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
 
 export const personalInfoSchema = z.object({
   fullname: z.string().min(10, {
