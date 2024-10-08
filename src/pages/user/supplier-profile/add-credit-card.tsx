@@ -54,7 +54,7 @@ const AddPaymentMethod = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="fixed cursor-pointer top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
+    <div className="fixed cursor-pointer mt-11 top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
       <div className="bg-white relative w-full lg:w-4/5 xl:w-2/5 mx-auto h-full rounded-xl p-4 py-8 md:p-8 ">
         <div className="flex justify-end">
           <span

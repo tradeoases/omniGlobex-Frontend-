@@ -1,14 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   getAllPaymentMethods,
   getSubscriptionDetails,
 } from "@/service/apis/business-services";
-
-import // PaymentElement,
-// useStripe,
-// useElements
-"@stripe/react-stripe-js";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useState } from "react";
@@ -47,77 +41,91 @@ const Subscriptions = () => {
       }
     },
   });
+  console.log({ paymentMethods });
+
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
-  console.log({paymentMethods})
+
   return (
-    <div>
-      <h1 className="w-full text-center font-bold text-4xl">Subscriptions</h1>
+    <div className="p-6 max-w-7xl mx-auto">
+      <h1 className="text-center text-4xl font-bold mb-8">Subscriptions</h1>
 
       {openCreateModal && (
         <AddPaymentMethod onClose={() => setOpenCreateModal(false)} />
       )}
-      <div>
-        <h1 className="font-semibold text-lg">Subscription Details</h1>
+
+      <div className="mb-8">
+        <h2 className="font-semibold text-xl mb-4">Subscription Details</h2>
 
         {subscriptionSuccess &&
           BusinessSubscription.map((sub: any) => (
-            <div>
-              {/* {JSON.stringify(BusinessSubscription)} */}
-              <h1>{sub.plan.productName}</h1>
-              <h3>{sub.plan.productDescription}</h3>
-              <p>
-                {sub.plan.interval}ly charges: {sub.plan.currency}:{" "}
+            <Card key={sub.id} className="p-6 mb-4 shadow-lg">
+              <h3 className="text-lg font-semibold">{sub.plan.productName}</h3>
+              <p className="text-gray-600">{sub.plan.productDescription}</p>
+              <p className="mt-2">
+                {sub.plan.interval}ly charges: {sub.plan.currency}{" "}
                 {sub.plan.amount}
               </p>
-              <p>Status: {sub.trial}</p>
+              <p>Status: {sub.trial ? "On Trial" : "Active"}</p>
               <p>
                 Period Started: {moment.unix(sub.start).format("Do MMMM YYYY")}
               </p>
               <p>Period Ends: {moment.unix(sub.end).format("Do MMMM YYYY")}</p>
-            </div>
+            </Card>
           ))}
+
         {isSubscriptionError && (
-          <div>
-            <div>An error occured while loading subscriptions</div>
-            <div>
+          <div className="text-red-600">
+            <p>An error occurred while loading subscriptions.</p>
+            <p>
               {subscriptionError.name} - {subscriptionError.message}
-            </div>
+            </p>
           </div>
         )}
-        {subscriptionLoading && <div>Loading subscription...</div>}
+
+        {subscriptionLoading && <p>Loading subscription details...</p>}
       </div>
-      <div>
-        <h1>Payment Details</h1>
+
+      <div className="mb-8">
+        <h2 className="font-semibold text-xl mb-4">Payment Methods</h2>
+
         {isMethodsError && (
-          <div>
-            <div>An error occured while loading subscriptions</div>
-            <div>
+          <div className="text-red-600">
+            <p>An error occurred while loading payment methods.</p>
+            <p>
               {methodError.name} - {methodError.message}
-            </div>
+            </p>
           </div>
         )}
-        {methodsLoading && <div>Loading subscription...</div>}
+
+        {methodsLoading && <p>Loading payment methods...</p>}
+
         {methodsSuccess &&
           paymentMethods.map((meth: any) => (
-            <Card>
-              <h1>Brand: {meth.brand}</h1>
-              <h2>Last four digits: {meth.last4}</h2>
-              <h2>
-                expiry date: {meth.expMonth}/{meth.expYear}
-              </h2>
-              <h2>Name: {meth.billingName}</h2>
-              <h1>Email: {meth.billingEmail}</h1>
+            <Card key={meth.id} className="p-6 mb-4 shadow-lg">
+              <h3 className="text-lg font-semibold">Brand: {meth.brand}</h3>
+              <p>Last four digits: **** {meth.last4}</p>
+              <p>
+                Expiry date: {meth.expMonth}/{meth.expYear}
+              </p>
+              <p>Name: {meth.billingName}</p>
+              <p>Email: {meth.billingEmail}</p>
             </Card>
           ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Button onClick={() => setOpenCreateModal(true)}>
-          Add payment Method
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Button className="w-full" onClick={() => setOpenCreateModal(true)}>
+          Add Payment Method
         </Button>
-        <Button disabled>Upgrade subscription</Button>
-        <Button disabled>Downgrade Subscription</Button>
-        <Button disabled>Cancel Subscription</Button>
+        <Button className="w-full" disabled>
+          Upgrade Subscription
+        </Button>
+        <Button className="w-full" disabled>
+          Downgrade Subscription
+        </Button>
+        <Button className="w-full" disabled>
+          Cancel Subscription
+        </Button>
       </div>
     </div>
   );
