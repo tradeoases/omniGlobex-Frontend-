@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { SearchBar } from "@/components/search-bar";
+import SupplierNavBar from "./supplier-profile/SupplierNavBar";
+import { Logo } from "@/components/logo";
+import { Link } from "react-router-dom";
 
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -12,17 +15,95 @@ const SuppliersDashboard = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  const handleClickOutside = (event: any) => {
+    if (
+      dropdownRef.current &&
+      !(dropdownRef.current as any).contains(event.target)
+    ) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="flex  bg-amber-300 min-h-screen flex-col lg:flex-row w-full">
+    <div className="flex min-h-screen flex-col lg:flex-row w-full">
+      <SupplierNavBar />
       <div>
         <div className="fixed lg:hidden top-0 p-4 bg-white left-0 w-full z-50 shadow flex justify-between">
           <button onClick={toggleSidebar} className="text-xl">
             <FaBars />
           </button>
-        <NavLink className={'text-black'} to={'/products'}>Shopping</NavLink>
+          <NavLink to="/" className="text-2xl font-bold text-black">
+            <Logo />
+          </NavLink>
+          <div className="relative group">
+            {/* Profile Icon */}
+            <div onClick={toggleDropdown}>
+              <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
+            </div>
+
+            {/* Dropdown Content */}
+            <div
+              ref={dropdownRef}
+              className={`absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 border border-gray-200 ${
+                dropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
+              } transition-opacity duration-300 z-50`}
+            >
+              {/* <div className="text-gray-900 font-semibold px-4 py-2">
+                Buyer Center
+              </div> */}
+              {/* <div className="border-t border-gray-100"></div> */}
+              <Link
+                to="/buyer-dashboard"
+                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
+              >
+                Switch to buyer
+              </Link>
+              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                Manage account
+              </div>
+              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                Create a business
+              </div>
+              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                Business Verification
+              </div>
+              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                My purchases
+              </div>
+              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                Request for Quotation
+              </div>
+              <Link
+                to="/products"
+                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
+              >
+                Shopping
+              </Link>
+              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
+                Log out
+              </div>
+            </div>
+          </div>
+
+          {/* <NavLink className={"text-black"} to={"/products"}>
+            Shopping
+          </NavLink> */}
         </div>
         <div
-          className={`lg:block bg-slate-900 overflow-scroll flex flex-col justify-start items-center text-xl lg:static fixed top-0 left-0 z-40 w-64 transition-transform duration-300 ease-in-out ${
+          className={`lg:block bg-gray-600 overflow-scroll flex flex-col justify-start items-center text-xl lg:static fixed top-0 left-0 z-40 w-64 transition-transform duration-300 ease-in-out ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 h-full lg:h-full pt-16`}
         >
@@ -31,7 +112,7 @@ const SuppliersDashboard = () => {
               <FaTimes />
             </button>
           </div>
-          <SearchBar />
+          {/* <SearchBar /> */}
 
           {navigations.map((nav) => (
             <NavLink
@@ -39,7 +120,7 @@ const SuppliersDashboard = () => {
               key={nav.path}
               className={({ isActive }) =>
                 `w-full text-xs cursor-pointer flex justify-start px-6 py-4 items-center gap-x-5 ${
-                  isActive ? "text-black" : "text-gray-500"
+                  isActive ? "text-black" : "text-white"
                 }`
               }
               onClick={toggleSidebar}
