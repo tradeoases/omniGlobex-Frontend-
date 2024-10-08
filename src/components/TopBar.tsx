@@ -35,7 +35,7 @@ const TopBar = () => {
   const location = useLocation();
   const isAuthenticating =
     location.pathname === "/signup" || location.pathname === "/signin";
-  const [userData] = useRecoilState<IUser | null>(userStore);
+  const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
 
   return (
     <header className="w-full border-b py-4">
@@ -63,31 +63,59 @@ const TopBar = () => {
           </div>
         )}
         {userData && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="link" className="p-0 m-0">
-                <CiUser className="text-2xl" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-fit">
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => navigate(`/dashboard`)}>
-                  {userData.fullname}
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    // setUserData(null);
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("profile");
-                    navigate(0);
-                  }}
-                >
-                  {t("Logout")} {/* Translate logout */}
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="link" className="p-0 m-0">
+                  <CiUser className="text-2xl" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-fit">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={() => navigate(`/buyer-dashboard`)}
+                  >
+                    {userData.fullname}
+                  </DropdownMenuItem>
+
+                  {userData.roles.includes("Buyer") && (
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/buyer-dashboard/messages`)}
+                    >
+                      My store
+                    </DropdownMenuItem>
+                  )}
+
+                  {userData.roles.includes("Supplier") && (
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/supplier-dashboard/messages`)}
+                    >
+                      Manage supplies
+                    </DropdownMenuItem>
+                  )}
+
+                  <DropdownMenuItem
+                    onClick={() => navigate(`/buyer-dashboard/messages`)}
+                  >
+                    Message
+                  </DropdownMenuItem>
+
+                  
+
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setUserData(null);
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("profile");
+                      // navigate('/')
+                      navigate(0);
+                    }}
+                  >
+                    {t("Logout")} {/* Translate logout */}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
       </div>
 
       {/* Desktop View */}
