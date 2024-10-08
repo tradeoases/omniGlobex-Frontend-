@@ -14,7 +14,6 @@ import { useRecoilState } from "recoil";
 import { userStore } from "@/store/user-store";
 import ProtectedRoute from "@/components/ProtectedRoutes";
 
-
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
@@ -37,7 +36,6 @@ const SuppliersDashboard = () => {
       setDropdownOpen(false);
     }
   };
-
 
   const [profile] = useRecoilState(userStore);
 
