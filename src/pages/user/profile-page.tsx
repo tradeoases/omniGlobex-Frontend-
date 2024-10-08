@@ -1,4 +1,6 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
@@ -11,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userStore } from "@/store/user-store";
 import ProtectedRoute from "@/components/ProtectedRoutes";
+
 
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -34,6 +37,7 @@ const SuppliersDashboard = () => {
       setDropdownOpen(false);
     }
   };
+
 
   const [profile] = useRecoilState(userStore);
 
