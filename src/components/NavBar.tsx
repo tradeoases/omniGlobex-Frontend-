@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { LuChevronDown, LuChevronRight } from "react-icons/lu";
+import { LuChevronDown } from "react-icons/lu";
 import { CiMenuFries, CiUser } from "react-icons/ci";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SlHandbag } from "react-icons/sl";
@@ -22,6 +22,7 @@ import { navs } from "@/data/data";
 import { NavBarPagesItem } from "./navbar-page-item";
 import { useTranslation } from "react-i18next";
 import { CategoriesPopup } from "./CategoriesPopup";
+import { FaUserCircle } from "react-icons/fa";
 
 const Badge = ({ count }: { count: number }) => (
   <span className="bg-white w-4 h-4 rounded-full text-xs hover:bg-yellow-700 flex items-center justify-center absolute -top-3 -right-2">
@@ -38,7 +39,6 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
-
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -139,14 +139,13 @@ const NavBar = () => {
 
           {userData && <HeaderCartNav />}
           {!userData && !isAuthenticating && (
-            <Button
-              asChild
-              className={`bg-gradient-to-r from-yellow-200 to-yellow-700 text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
+            <div
+              className={` to-yellow-700 text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
             >
               <NavLink to="/signin">
-                <span>{t("SIGNIN/SIGNUP")}</span> <LuChevronRight />
+                <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
               </NavLink>
-            </Button>
+            </div>
           )}
           {userData && (
             <DropdownMenu>

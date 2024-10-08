@@ -26,6 +26,9 @@ const SuppliersDashboard = () => {
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+  };
 
   const handleClickOutside = (event: any) => {
     if (
@@ -72,39 +75,41 @@ const SuppliersDashboard = () => {
                 Buyer Center
               </div> */}
               {/* <div className="border-t border-gray-100"></div> */}
-             <Link to="/create-business">
+              <Link to="/create-business" onClick={closeDropdown}>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                   Create a business
                 </div>
-                </Link>
+              </Link>
               <Link
                 to="/supplier-dashboard"
+                onClick={closeDropdown}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
                 Manage account
               </Link>
-              <Link to="/create-business">
+              <Link to="/create-business" onClick={closeDropdown}>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                   Create a business
                 </div>
               </Link>
-              <Link to="subscription">
+              <Link to="subscription" onClick={closeDropdown}>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                   Subscription
                 </div>
               </Link>
-              <Link to="order">
+              <Link to="order" onClick={closeDropdown}>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                   My purchases
                 </div>
               </Link>
-              <Link to="supplier-rfq">
+              <Link to="supplier-rfq" onClick={closeDropdown}>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                   Request for Quotation
                 </div>
               </Link>
               <Link
                 to="/products"
+                onClick={closeDropdown}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
                 Shopping
