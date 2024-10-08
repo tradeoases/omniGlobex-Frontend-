@@ -163,19 +163,29 @@ const NavBar = () => {
                     {userData.fullname}
                   </DropdownMenuItem>
 
+                  {userData.roles.includes("Buyer") && (
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/buyer-dashboard/messages`)}
+                    >
+                      My store
+                    </DropdownMenuItem>
+                  )}
+
+                  {userData.roles.includes("Supplier") && (
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/supplier-dashboard/messages`)}
+                    >
+                      Manage supplies
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuItem
                     onClick={() => navigate(`/buyer-dashboard/messages`)}
                   >
                     Message
                   </DropdownMenuItem>
 
-                  {userData.roles.includes("Supplier") && (
-                    <DropdownMenuItem
-                      onClick={() => navigate(`/buyer-dashboard/messages`)}
-                    >
-                      Manage supplies
-                    </DropdownMenuItem>
-                  )}
+                  
 
                   <DropdownMenuItem
                     onClick={() => {
