@@ -4,17 +4,17 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 
 i18n
-  .use(Backend) 
-  .use(LanguageDetector) 
-  .use(initReactI18next) 
+  .use(Backend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
-    fallbackLng: 'en', 
+    fallbackLng: 'en',
     supportedLngs: ['en', 'es', 'ar', 'de', 'he', 'ko', 'pt', 'zh-Hans', 'zh-Hant'],
     backend: {
-        loadPath: '/src/locales/{{lng}}.json'
+      loadPath: '/locales/{{lng}}.json',  
     },
     interpolation: {
-      escapeValue: false 
+      escapeValue: false, 
     },
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],

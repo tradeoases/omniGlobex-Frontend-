@@ -1,0 +1,20 @@
+{
+  "selectLanguage": "اختر اللغة",
+  "selectCurrency": "اختر العملة",
+  "trackOrder": "تتبع الطلب",
+  "account": "الحساب",
+  "support": "الدعم",
+  "navs": {
+    "Home": "الرئيسية",
+    "Supplier": "المورد",
+    "Buyers Dashboard": "لوحة المشترين",
+    "Pages": "الصفحات",
+    "About": "حول",
+    "Blogs": "المدونات",
+    "Contact": "اتصل"
+  },
+  "viewCart": "عرض السلة",
+  "notifications": "الإشعارات",
+  "signinSignup": "تسجيل الدخول/التسجيل",
+  "logout": "تسجيل الخروج"
+}

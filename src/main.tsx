@@ -8,9 +8,11 @@ import { ThemeProvider } from "./components/theme-provider.tsx";
 import AppLayout from "./components/app-layout.tsx";
 import RoutesConfig from "./route.tsx";
 import { GlobalProvider } from "./context/GlobalContext";
-import "./i18n"; 
+import "./i18n";  
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getLocaleInfo } from "./utils/localeDetection"; 
+import { useTranslation } from "react-i18next";  
+
 
 
 const currencyState = atom({
@@ -28,16 +30,22 @@ const queryClient = new QueryClient();
 const AppInitializer: React.FC = () => {
   const setCurrency = useSetRecoilState(currencyState);
   const setLanguage = useSetRecoilState(languageState);
+  const { i18n } = useTranslation(); 
 
   useEffect(() => {
     const fetchLocale = async () => {
-      const { currency, language } = await getLocaleInfo();
-      setCurrency(currency);
-      setLanguage(language);
+      try {
+        const { currency, language } = await getLocaleInfo();
+        setCurrency(currency);
+        setLanguage(language);
+        i18n.changeLanguage(language); // Change the language for translations
+      } catch (error) {
+        console.error("Failed to fetch locale information:", error);
+      }
     };
 
     fetchLocale();
-  }, [setCurrency, setLanguage]);
+  }, [setCurrency, setLanguage, i18n]); 
 
   return null; 
 };

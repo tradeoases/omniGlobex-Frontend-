@@ -1,0 +1,20 @@
+{
+  "selectLanguage": "언어 선택",
+  "selectCurrency": "통화 선택",
+  "trackOrder": "주문 추적",
+  "account": "계정",
+  "support": "지원",
+  "navs": {
+    "Home": "홈",
+    "Supplier": "공급자",
+    "Buyers Dashboard": "구매자 대시보드",
+    "Pages": "페이지",
+    "About": "정보",
+    "Blogs": "블로그",
+    "Contact": "연락처"
+  },
+  "viewCart": "장바구니 보기",
+  "notifications": "알림",
+  "signinSignup": "로그인/회원가입",
+  "logout": "로그아웃"
+}

@@ -1,0 +1,20 @@
+{
+  "selectLanguage": "Selecionar Idioma",
+  "selectCurrency": "Selecionar Moeda",
+  "trackOrder": "Rastrear Pedido",
+  "account": "Conta",
+  "support": "Suporte",
+  "navs": {
+    "Home": "Início",
+    "Supplier": "Fornecedor",
+    "Buyers Dashboard": "Painel de Compradores",
+    "Pages": "Páginas",
+    "About": "Sobre",
+    "Blogs": "Blogs",
+    "Contact": "Contato"
+  },
+  "viewCart": "Ver Carrinho",
+  "notifications": "Notificações",
+  "signinSignup": "Entrar/Cadastrar",
+  "logout": "Sair"
+}

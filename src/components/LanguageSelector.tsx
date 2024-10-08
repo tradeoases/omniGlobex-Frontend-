@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGlobalContext } from '../context/GlobalContext';
 import Select, { SingleValue } from 'react-select';
+import i18n from 'i18next'; 
 
 const LanguageSelector: React.FC = () => {
   const { t } = useTranslation();
   const { languages, selectedLanguage, setLanguage } = useGlobalContext();
 
-  
   const options = useMemo(() => {
     return languages.map(lang => ({
       value: lang.code,
@@ -31,6 +31,7 @@ const LanguageSelector: React.FC = () => {
       const newLanguage = newValue.value;
       setLanguage(newLanguage);
       localStorage.setItem('selectedLanguage', newLanguage);
+      i18n.changeLanguage(newLanguage); 
     }
   };
 
@@ -49,13 +50,13 @@ const LanguageSelector: React.FC = () => {
             '&:hover': {
               border: '1px solid #aaa',
             },
-            minWidth: '120px', 
-            maxWidth: '250px', 
-            width: '100%', 
+            minWidth: '120px',
+            maxWidth: '250px',
+            width: '100%',
           }),
           menu: (base) => ({
             ...base,
-            zIndex: 100, 
+            zIndex: 100,
           }),
         }}
       />

@@ -2,48 +2,14 @@ import React, { createContext, useState, useEffect, ReactNode, useContext } from
 import { useTranslation } from 'react-i18next';
 import { fetchCurrencies } from '../utils/api';
 import { getLocaleInfo } from '../utils/localeDetection';
-import en from '../locales/en.json';
-import es from '../locales/es.json';
-import ar from '../locales/ar.json';
-import de from '../locales/de.json';
-import he from '../locales/he.json';
-import ko from '../locales/ko.json';
-import pt from '../locales/pt.json';
-import zhHans from '../locales/zh-Hans.json';
-import zhHant from '../locales/zh-Hant.json';
-import { atom, useRecoilState } from 'recoil';
-
-// Define Recoil atoms
-const currencyAtom = atom({
-  key: 'currencyAtom', // unique ID (with respect to other atoms/selectors)
-  default: 'USD', // default value (aka initial value)
-});
-
-const languageAtom = atom({
-  key: 'languageAtom',
-  default: 'en',
-});
-
-const languages = {
-  en,
-  es,
-  ar,
-  de,
-  he,
-  ko,
-  pt,
-  'zh-Hans': zhHans,
-  'zh-Hant': zhHant,
-};
+import { useRecoilState } from 'recoil';
+import { currencyAtom, languageAtom } from '../context/atmos';
 
 const supportedLanguages = [
   { code: 'en', name: 'English', nativeName: 'English', flag: './flags/us.png' },
   { code: 'es', name: 'Español', nativeName: 'Español', flag: './flags/es.png' },
   { code: 'ar', name: 'العربية', nativeName: 'العربية', flag: './flags/ae.png' },
   { code: 'de', name: 'Deutsch', nativeName: 'Deutsch', flag: './flags/de.png' },
-  { code: 'he', name: 'עברית', nativeName: 'עברית', flag: './flags/il.png' },
-  { code: 'ko', name: '한국어', nativeName: '한국어', flag: './flags/kr.png' },
-  { code: 'pt', name: 'Português', nativeName: 'Português', flag: './flags/pt.png' },
   { code: 'zh-Hans', name: '中文 (简体)', nativeName: '中文 (简体)', flag: './flags/cn.png' },
   { code: 'zh-Hant', name: '中文 (繁體)', nativeName: '中文 (繁體)', flag: './flags/tw.png' },
 ];
@@ -86,42 +52,35 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [selectedLanguage, setSelectedLanguage] = useRecoilState(languageAtom);
   const [currencies, setCurrencies] = useState<CurrencyRates>({});
 
-  const availableLanguages = Object.keys(languages);
-
   useEffect(() => {
     const init = async () => {
       try {
         const { currency, language } = await getLocaleInfo();
-        const userLanguage = availableLanguages.includes(language) ? language : 'en';
+        const userLanguage = supportedLanguages.some(lang => lang.code === language) ? language : 'en';
 
-        // Set the selected language from local storage if available
+        // Check localStorage for stored language
         const storedLanguage = localStorage.getItem('selectedLanguage');
-        if (storedLanguage && availableLanguages.includes(storedLanguage)) {
-          setSelectedLanguage(storedLanguage);
-          i18n.changeLanguage(storedLanguage);
-        } else {
-          setSelectedLanguage(userLanguage);
-          i18n.changeLanguage(userLanguage);
-        }
+        const languageToSet = storedLanguage || userLanguage;
 
-        // Update selected currency from locale info
+        // Set the language and change it in i18next
+        setSelectedLanguage(languageToSet);
+        i18n.changeLanguage(languageToSet);
+
+        // Set currency and store in localStorage
         setSelectedCurrency(currency);
         localStorage.setItem('selectedCurrency', currency);
 
-        // Fetch available currencies
+        // Fetch currencies
         const availableCurrencies = await fetchCurrencies();
-        if (availableCurrencies) {
-          setCurrencies(availableCurrencies);
-        }
+        setCurrencies(availableCurrencies);
       } catch (error) {
         console.error('Error during initialization:', error);
       }
     };
 
     init();
-  }, [i18n, setSelectedLanguage, setSelectedCurrency, availableLanguages]);
+  }, [i18n, setSelectedLanguage, setSelectedCurrency]);
 
-  // Set the direction attribute based on selected language
   useEffect(() => {
     document.documentElement.setAttribute('dir', rtlLanguages.includes(selectedLanguage) ? 'rtl' : 'ltr');
   }, [selectedLanguage]);

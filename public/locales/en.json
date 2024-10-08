@@ -1,0 +1,20 @@
+{
+  "selectLanguage": "Select Language",
+  "selectCurrency": "Select Currency",
+  "trackOrder": "Track Order",
+  "account": "Account",
+  "support": "Support",
+  "navs": {
+    "Home": "Home",
+    "Supplier": "Supplier",
+    "Buyers Dashboard": "Buyers Dashboard",
+    "Pages": "Pages",
+    "About": "About",
+    "Blogs": "Blogs",
+    "Contact": "Contact"
+  },
+  "viewCart": "View Cart",
+  "notifications": "Notifications",
+  "signinSignup": "Sign In/Sign Up",
+  "logout": "Log Out"
+}

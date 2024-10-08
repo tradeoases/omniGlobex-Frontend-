@@ -67,7 +67,7 @@ const NavBar = () => {
                     }`
                   }
                 >
-                  <span className="whitespace-nowrap">{t(nav.title)}</span> {/* Translate title */}
+                  <span className="whitespace-nowrap">{t(nav.title)}</span> 
                   {nav.icon}
                 </NavLink>
               )
@@ -132,7 +132,7 @@ const NavBar = () => {
                       localStorage.removeItem("profile");
                     }}
                   >
-                    {t("Logout")} {/* Translate logout */}
+                    {t("Logout")} 
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>

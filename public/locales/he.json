@@ -1,0 +1,20 @@
+{
+  "selectLanguage": "בחר שפה",
+  "selectCurrency": "בחר מטבע",
+  "trackOrder": "עקוב אחר הזמנה",
+  "account": "חשבון",
+  "support": "תמיכה",
+  "navs": {
+    "Home": "בית",
+    "Supplier": "ספק",
+    "Buyers Dashboard": "לוח בקרים של קונים",
+    "Pages": "עמודים",
+    "About": "עלינו",
+    "Blogs": "בלוגים",
+    "Contact": "צור קשר"
+  },
+  "viewCart": "הצג עגלת קניות",
+  "notifications": "התראות",
+  "signinSignup": "התחבר/הרשמה",
+  "logout": "יציאה"
+}

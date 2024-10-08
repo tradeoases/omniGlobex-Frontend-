@@ -14,7 +14,7 @@ interface Props {
 
 const AppLayout: React.FC<Props> = ({ children }) => {
   useScrollToTop();
-  
+
   return (
     <GlobalProvider>
       <main

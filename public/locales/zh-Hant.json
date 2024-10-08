@@ -1,0 +1,20 @@
+{
+  "selectLanguage": "選擇語言",
+  "selectCurrency": "選擇貨幣",
+  "trackOrder": "追蹤訂單",
+  "account": "帳戶",
+  "support": "支援",
+  "navs": {
+    "Home": "首頁",
+    "Supplier": "供應商",
+    "Buyers Dashboard": "買家儀表板",
+    "Pages": "頁面",
+    "About": "關於",
+    "Blogs": "部落格",
+    "Contact": "聯絡"
+  },
+  "viewCart": "查看購物車",
+  "notifications": "通知",
+  "signinSignup": "登入/註冊",
+  "logout": "登出"
+}

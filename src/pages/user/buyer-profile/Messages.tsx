@@ -1,4 +1,3 @@
-// Messages.js
 const Messages = () => (
     <div className="p-4 w-full">
       <h2 className="text-lg font-semibold">Messages</h2>

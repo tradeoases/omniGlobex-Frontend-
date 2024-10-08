@@ -5,6 +5,7 @@ import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
 import CurrencySelector from "./CurrencySelector";
 import LanguageSelector from "./LanguageSelector";
+import { useTranslation } from "react-i18next";
 
 // Badge Component for displaying numbers on icons (like cart items)
 // const Badge = ({ count }: { count: number }) => (
@@ -20,10 +21,11 @@ const TopBar = () => {
   // const onOpen = () => {
   //   setSidemenu(true);
   // };
+  const { t } = useTranslation(); 
 
   return (
     <header className="w-full border-b py-4">
-      {/* Mobile / Tablet View */}
+      {/* Mobile / Tablet View */} 
       <div className="w-10/12 xl:w-8/12 mx-auto flex items-center lg:hidden">
         {/* <Link to="/" aria-label="Go to Home">
           <Logo />
@@ -43,13 +45,13 @@ const TopBar = () => {
         <div className="flex items-center gap-x-4">
           <img
             src={img}
-            alt="Omniglobex logo"
+            alt={t('omniglobexLogo', 'Omniglobex logo')}
             onError={(e) => {
               e.currentTarget.src = "path-to-fallback-logo.png";
             }}
             className="h-12 w-auto cursor-pointer"
           />
-          <Link to="/" aria-label="Go to Home">
+          <Link to="/" aria-label={t('goHome', 'Go to Home')}>
             <Logo />
           </Link>
         </div>
