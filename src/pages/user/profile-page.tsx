@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { SearchBar } from "@/components/search-bar";
+// import { SearchBar } from "@/components/search-bar";
 import SupplierNavBar from "./supplier-profile/SupplierNavBar";
 import { Logo } from "@/components/logo";
 import { Link } from "react-router-dom";
