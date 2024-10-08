@@ -11,6 +11,7 @@ export interface IRole {
 export interface IUser {
   user_id: string;
   country_id: string;
+  businessNames: string[]
   city: string;
   email: string;
   active: number;

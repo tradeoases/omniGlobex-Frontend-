@@ -48,14 +48,15 @@ const LoginPage = () => {
     }
 
     if (userData) {
-      timeoutKey = setTimeout(() => {
-        navigate(`/profile`);
-      }, 3000);
+      if (userData.roles.includes("Supplier"))
+        if (userData.businessNames.length === 0) navigate(`/create-business`);
+        else navigate(`/supplier-dashboard`);
+      else navigate(`/buyer-dashboard`);
     }
 
     return () => clearTimeout(timeoutKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errorMessage]);
+  }, [errorMessage, userData]);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -81,8 +82,7 @@ const LoginPage = () => {
         localStorage.setItem("profile", JSON.stringify(userData));
         setLoading(false);
         if (userData.roles.includes("Supplier"))
-          if (userData.businessNames.length === 0)
-            navigate(`/create-business`);
+          if (userData.businessNames.length === 0) navigate(`/create-business`);
           else navigate(`/supplier-dashboard`);
         else navigate(`/buyer-dashboard`);
         setSuccessMessage(true);

@@ -55,8 +55,19 @@ import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import ResetPassword from "./pages/Authentication/reset-page";
 import MultipleImageUpload from "./components/ui/MultipleImageUploadArea";
 import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { IUser, userStore } from "./store/user-store";
 
 const RoutesConfig = () => {
+  const [, setUserData] = useRecoilState<IUser | null>(userStore);
+
+  useEffect(() => {
+    const unparsed = localStorage.getItem("profile");
+    if (!unparsed) return;
+    const profile = JSON.parse(unparsed);
+    setUserData(profile);
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<App />}>

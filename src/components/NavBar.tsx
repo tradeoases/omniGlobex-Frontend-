@@ -5,7 +5,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SlHandbag } from "react-icons/sl";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { HiMenu, HiX } from "react-icons/hi"; // Add icons for mobile menu
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { IUser, userStore } from "@/store/user-store";
 import { Button } from "./ui/button";
@@ -39,12 +39,6 @@ const NavBar = () => {
 
   const [userData, setUserData] = useRecoilState<IUser | null>(userStore);
 
-  useEffect(() => {
-    const unparsed = localStorage.getItem("profile");
-    if (!unparsed) return;
-    const profile = JSON.parse(unparsed);
-    setUserData(profile);
-  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
