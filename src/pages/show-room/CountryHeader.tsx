@@ -1,11 +1,11 @@
 import { getOneCountry } from "@/service/apis/countries-services";
 import { useQuery } from "@tanstack/react-query";
 
-const CountryHeader = ({ country_id }) => {
+const CountryHeader = () => {
   // Use TanStack Query to fetch country data
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["fetchCountry", country_id],
-    queryFn: () => getOneCountry(country_id), // Pass country_id to the function
+    queryKey: ["fetchCountry"],
+    queryFn: () => getOneCountry(), // Pass country_id to the function
   });
   console.log({ data });
   // Handle loading state

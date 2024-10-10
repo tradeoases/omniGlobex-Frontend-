@@ -9,11 +9,11 @@ import CountryNews from "./CountryNews";
 import AIRecommendations from "./AIRecommendations";
 import CountryHeader from "./CountryHeader";
 
-const CountryShowroom = ({ country_id }: { country_id: string }) => {
+const CountryShowroom = () => {
   return (
     <div className="country-showroom px-4 lg:px-12 py-8 bg-gray-50">
       {/* Country-specific Header */}
-      <CountryHeader country_id={country_id} />
+      <CountryHeader />
 
       {/* Advertisement Section */}
       <div className="my-8">
