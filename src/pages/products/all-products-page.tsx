@@ -76,7 +76,7 @@ const AllProductsPage = () => {
             : ""
         }${catParams.length > 0 ? `&categories=${catParams.join(",")}` : ""} 
         ${
-           searchParams.get("ccurrency")
+           searchParams.get("currency")
             ? `&currency=${searchParams.get("currency")}`
             : ""
         }

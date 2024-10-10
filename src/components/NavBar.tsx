@@ -23,7 +23,6 @@ import { NavBarPagesItem } from "./navbar-page-item";
 import { useTranslation } from "react-i18next";
 import { CategoriesPopup } from "./CategoriesPopup";
 import { FaUserCircle } from "react-icons/fa";
-import BuyersShowRoom from "@/pages/user/buyer-profile/BuyersShowRoom";
 
 const Badge = ({ count }: { count: number }) => (
   <span className="bg-white w-4 h-4 rounded-full text-xs hover:bg-yellow-700 flex items-center justify-center absolute -top-3 -right-2">
