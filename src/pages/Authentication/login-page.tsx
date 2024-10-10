@@ -48,9 +48,7 @@ const LoginPage = () => {
     }
 
     if (userData) {
-      if (userData.roles.includes("Supplier"))
-        if (userData.businessNames.length === 0) navigate(`/create-business`);
-        else navigate(`/supplier-dashboard`);
+      if (userData.roles.includes("Supplier")) navigate(`/supplier-dashboard`);
       else navigate(`/buyer-dashboard`);
     }
 
