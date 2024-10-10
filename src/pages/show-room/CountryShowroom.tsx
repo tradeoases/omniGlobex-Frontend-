@@ -23,12 +23,10 @@ const CountryShowroom = () => {
         </div>
       </div>
 
-      {/* Advertisement Section */}
       <div className="my-8">
         <Advertisements country_id={country_id} />
       </div>
 
-      {/* Trends Section */}
       <div className="my-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
           Trending Products
@@ -36,17 +34,15 @@ const CountryShowroom = () => {
         <Trends />
       </div>
 
-      {/* Supplier List Section */}
       <div className="my-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Suppliers</h2>
-        <SupplierList />
+        <SupplierList country={country_id} />
       </div>
       <div className="my-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Products</h2>
         <AllProductsPage />
       </div>
 
-      {/* Country News Section */}
       <div className="my-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
           Country News & Updates
@@ -54,7 +50,6 @@ const CountryShowroom = () => {
         <CountryNews />
       </div>
 
-      {/* AI Recommendations Section */}
       <div className="my-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
           Recommended for You
