@@ -54,7 +54,7 @@ import { IUser, userStore } from "./store/user-store";
 import SupplierRFQ from "./pages/user/supplier-profile/SupplierRFQ";
 import CountryShowroom from "./pages/show-room/CountryShowroom";
 
-const RoutesConfig = ({ country_id }: { country_id: string }) => {
+const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const RoutesConfig = ({ country_id }: { country_id: string }) => {
         <Route path="products" element={<AllProductsPage />} />
         <Route
           path="show-room"
-          element={<CountryShowroom country_id={country_id} />}
+          element={<CountryShowroom />}
         />
         <Route path="cookie-policy" element={<CookiesPolicyPage />} />
         <Route path="privacy-policy" element={<PrivacyPolicyPage />} />

@@ -1,7 +1,10 @@
+import { UnderConstruction } from "@/components/under-construction"
 
 const CountryNews = () => {
   return (
-    <div>CountryNews</div>
+    <div>
+      <UnderConstruction />
+    </div>
   )
 }
 

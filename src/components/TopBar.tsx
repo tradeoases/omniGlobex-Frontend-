@@ -19,7 +19,8 @@ import {
 } from "./ui/dropdown-menu";
 import { CiUser } from "react-icons/ci";
 import { FaUserCircle } from "react-icons/fa";
-import ShowRoomPage from "@/pages/products/show-room-page";
+import { SelectShowroom } from "./select-show-room";
+import CurrencySelector from "./CurrencySelector";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
@@ -51,8 +52,9 @@ const TopBar = () => {
           </Link>
         </div>
         <div className="flex flex-row items-center gap-4 mt-4">
-          {/* <CurrencySelector />
+          {/* 
           <LanguageSelector /> */}
+          <CurrencySelector />
         </div>
         {!userData && !isAuthenticating && (
           <div
@@ -64,59 +66,55 @@ const TopBar = () => {
           </div>
         )}
         {userData && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="link" className="p-0 m-0">
-                  <CiUser className="text-2xl" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-fit">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onClick={() => navigate(`/buyer-dashboard`)}
-                  >
-                    {userData.fullname}
-                  </DropdownMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="link" className="p-0 m-0">
+                <CiUser className="text-2xl" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-fit">
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={() => navigate(`/buyer-dashboard`)}>
+                  {userData.fullname}
+                </DropdownMenuItem>
 
-                  {userData.roles.includes("Buyer") && (
-                    <DropdownMenuItem
-                      onClick={() => navigate(`/buyer-dashboard/messages`)}
-                    >
-                      My store
-                    </DropdownMenuItem>
-                  )}
-
-                  {userData.roles.includes("Supplier") && (
-                    <DropdownMenuItem
-                      onClick={() => navigate(`/supplier-dashboard/messages`)}
-                    >
-                      Manage supplies
-                    </DropdownMenuItem>
-                  )}
-
+                {userData.roles.includes("Buyer") && (
                   <DropdownMenuItem
                     onClick={() => navigate(`/buyer-dashboard/messages`)}
                   >
-                    Message
+                    My store
                   </DropdownMenuItem>
+                )}
 
-                  
-
+                {userData.roles.includes("Supplier") && (
                   <DropdownMenuItem
-                    onClick={() => {
-                      setUserData(null);
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("profile");
-                      // navigate('/')
-                      navigate(0);
-                    }}
+                    onClick={() => navigate(`/supplier-dashboard/messages`)}
                   >
-                    {t("Logout")} {/* Translate logout */}
+                    Manage supplies
                   </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+                )}
+
+                <DropdownMenuItem
+                  onClick={() => navigate(`/buyer-dashboard/messages`)}
+                >
+                  Message
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => {
+                    setUserData(null);
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("profile");
+                    // navigate('/')
+                    navigate(0);
+                  }}
+                >
+                  {t("Logout")} {/* Translate logout */}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       {/* Desktop View */}
@@ -135,11 +133,11 @@ const TopBar = () => {
           </Link>
         </div>
         <SearchBar />
-        
 
         <div className="flex items-center ml-14 justify-end gap-4">
-          {/* <CurrencySelector />
-          <LanguageSelector /> */}
+          {/* <LanguageSelector /> */}
+          <CurrencySelector />
+          <SelectShowroom />
         </div>
       </div>
     </header>

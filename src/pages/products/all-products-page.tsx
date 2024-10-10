@@ -28,6 +28,8 @@ import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductCard } from "@/components/product-card";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 // import { Input } from "@/components/ui/input";
 const AllProductsPage = () => {
@@ -53,7 +55,7 @@ const AllProductsPage = () => {
     queryKey: [
       "products",
       searchParams.get("country"),
-      searchParams.get("userCurrency"),
+      searchParams.get("currency"),
       searchParams.get("pageSize"),
       searchParams.get("page"),
       searchParams.get("search"),
@@ -74,9 +76,9 @@ const AllProductsPage = () => {
             : ""
         }${catParams.length > 0 ? `&categories=${catParams.join(",")}` : ""} 
         ${
-          "" // searchParams.get("category")
-          //   ? `&category=${searchParams.get("category")}`
-          //   : ""
+           searchParams.get("ccurrency")
+            ? `&currency=${searchParams.get("currency")}`
+            : ""
         }
         `
       );
@@ -92,17 +94,17 @@ const AllProductsPage = () => {
     },
   });
 
-  useEffect(()=> {
-    const fet = async()=> {
-      const res = await fetch('https://ipapi.co/json/');
-      if(res.ok) {
-        const country = await res.json()
+  useEffect(() => {
+    const fet = async () => {
+      const res = await fetch("https://ipapi.co/json/");
+      if (res.ok) {
+        const country = await res.json();
 
-        console.log({country})
+        console.log({ country });
       }
-    }
-    fet()
-  },[])
+    };
+    fet();
+  }, []);
 
   return (
     <div className="w-full   grid grid-cols-1 lg:grid-cols-4 gap-x-8">
@@ -178,51 +180,67 @@ const AllProductsPage = () => {
 
 export default AllProductsPage;
 
-
 const ProductCategoryItem: React.FC<ICategory> = ({ category_id, name }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const getCategoriesFromSearchParams = () => {
     const categories: { key: string; value: string }[] = [];
+    const nonCategories: { key: string; value: string }[] = [];
+
     for (const [key, value] of searchParams.entries()) {
       if (key.startsWith("cat")) {
         categories.push({ key, value });
+      } else {
+        nonCategories.push({ key, value });
       }
     }
-    return categories;
+    return { categories, nonCategories };
   };
 
   const addCategory = (newCategory: string) => {
-    const categories = getCategoriesFromSearchParams();
+    const { categories, nonCategories } = getCategoriesFromSearchParams();
     const nextCategoryNumber = categories.length + 1;
     const newCategoryKey = `cat${nextCategoryNumber}`;
 
-    setSearchParams((prev) => {
-      prev.set(newCategoryKey, newCategory);
-      return prev;
-    });
+    const updatedSearchParams = new URLSearchParams();
+
+    // Add the new category
+    updatedSearchParams.set(newCategoryKey, newCategory);
+
+    // Keep the rest of the existing params
+    nonCategories.forEach(({ key, value }) =>
+      updatedSearchParams.set(key, value)
+    );
+    categories.forEach(({ key, value }) => updatedSearchParams.set(key, value));
+
+    setSearchParams(updatedSearchParams);
   };
 
   const deleteCategory = (categoryName: string) => {
-    const categories = getCategoriesFromSearchParams();
+    const { categories, nonCategories } = getCategoriesFromSearchParams();
 
+    // Filter out the category we want to delete
     const updatedCategories = categories.filter(
       ({ value }) => value !== categoryName
     );
 
-    const renumberedCategories = updatedCategories.reduce(
-      (acc, { value }, index) => {
-        acc.set(`cat${index + 1}`, value);
-        return acc;
-      },
-      new URLSearchParams()
+    // Renumber categories and update the search params
+    const updatedSearchParams = new URLSearchParams();
+
+    updatedCategories.forEach(({ value }, index) => {
+      updatedSearchParams.set(`cat${index + 1}`, value);
+    });
+
+    // Keep the rest of the existing params
+    nonCategories.forEach(({ key, value }) =>
+      updatedSearchParams.set(key, value)
     );
 
-    setSearchParams(renumberedCategories);
+    setSearchParams(updatedSearchParams);
   };
 
   const isCategorySelected = () => {
-    return getCategoriesFromSearchParams().some(
+    return getCategoriesFromSearchParams().categories.some(
       ({ value }) => value === category_id
     );
   };
@@ -240,7 +258,6 @@ const ProductCategoryItem: React.FC<ICategory> = ({ category_id, name }) => {
       <div className="flex items-center gap-4">
         {/* Checkbox toggles the category */}
         <Checkbox
-          // type="checkbox"
           id={category_id}
           checked={isCategorySelected()}
           onClick={handleCheckboxChange}
@@ -311,7 +328,20 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
             ))}
         </div>
       </div>
-      
+
+      <div className="space-y-6 border-b">
+        <p className="text-lg font-bold ">Price</p>
+
+        <div className="pb-8 gap-x-4 flex">
+          <Label>
+            Min <Input placeholder="min" />
+          </Label>
+          <Label>
+            Max
+            <Input placeholder="max" />
+          </Label>
+        </div>
+      </div>
     </div>
   );
 };
