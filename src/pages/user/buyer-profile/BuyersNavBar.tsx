@@ -22,6 +22,10 @@ const BuyersNavBar = () => {
     }
   };
 
+  const onClose = () => {
+    setDropdownOpen(false);
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -86,36 +90,37 @@ const BuyersNavBar = () => {
                 dropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
               } transition-opacity duration-300 z-50`}
             >
-              {/* <div className="text-gray-900 font-semibold px-4 py-2">
-                Buyer Center
-              </div> */}
-              {/* <div className="border-t border-gray-100"></div> */}
               <Link
                 to="/create-business"
+                onClick={onClose}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
                 Start Selling Now
               </Link>
               <Link
                 to={"/buyer-dashboard/rfq"}
+                onClick={onClose}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
                 My RFQ
               </Link>
               <Link
                 to={"/buyer-dashboard/orders"}
+                onClick={onClose}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
                 My Orders
               </Link>
               <Link
                 to={"/buyer-dashboard/messages"}
+                onClick={onClose}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
                 Messages
               </Link>
               <Link
                 to={"/buyer-dashboard/myAccount/profile"}
+                onClick={onClose}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
                 My Account
