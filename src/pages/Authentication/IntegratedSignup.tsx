@@ -36,6 +36,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { EmailStore } from "@/store/user-store";
 import { useState } from "react";
+import SingleImageUpload from "@/components/ui/SingleImageUploadArea";
+import { uploadImages } from "@/service/apis/image-service";
 
 const IntegratedSignup = () => {
   const [continent, setContinent] = useState<
@@ -64,10 +66,14 @@ const IntegratedSignup = () => {
     },
   });
 
+  const [profile, setProfile] = useState<string | null>(null);
+  const [logo, setLogo] = useState<string | null>(null);
+  const [cover, setCover] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      fullname: "",
+      business_name: "",
       address: "",
       email: "",
       password: "",
@@ -91,24 +97,64 @@ const IntegratedSignup = () => {
       const {
         address,
         email,
-        fullname,
+        business_name,
         city,
         password,
         phonenumber,
         country_id,
-        role
+        role,
+        acceptTerms,
       } = values;
 
       const data: IUserSignup = {
         address,
-        fullname,
+        business_name,
         email,
         password,
         phoneNumber: phonenumber,
         city,
         countryId: country_id,
-        role
+        role,
+        acceptTerms,
       };
+      if (profile) {
+        const imageResponse: AxiosResponse<any, any> = await uploadImages({
+          images: [profile],
+        });
+
+        if (
+          imageResponse.status === HttpStatusCode.Ok ||
+          imageResponse.status === HttpStatusCode.Created
+        ) {
+          data.profile = imageResponse.data.data[0].image_id;
+        }
+      }
+
+      if (cover) {
+        const imageResponse: AxiosResponse<any, any> = await uploadImages({
+          images: [cover],
+        });
+
+        if (
+          imageResponse.status === HttpStatusCode.Ok ||
+          imageResponse.status === HttpStatusCode.Created
+        ) {
+          data.cover = imageResponse.data.data[0].image_id;
+        }
+      }
+
+      if (logo) {
+        const imageResponse: AxiosResponse<any, any> = await uploadImages({
+          images: [logo],
+        });
+
+        if (
+          imageResponse.status === HttpStatusCode.Ok ||
+          imageResponse.status === HttpStatusCode.Created
+        ) {
+          data.logo = imageResponse.data.data[0].image_id;
+        }
+      }
 
       const response: AxiosResponse<any, any> = await signup(data);
 
@@ -135,31 +181,28 @@ const IntegratedSignup = () => {
 
   return (
     <div className="w-full space-y-8 mb-10">
-      <div className="w-10/12 xl:w-8/12 mx-auto flex flex-col-reverse lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-7 px-7 py-10 bg-white">
+      <div className="flex flex-col items-center">
+        <p className="text-4xl font-extrabold text-center">Create Account</p>
+        <div className="-mt-2">
+          <svg
+            className="w-80"
+            width="354"
+            height="30"
+            viewBox="0 0 354 30"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 28.8027C17.6508 20.3626 63.9476 8.17089 113.509 17.8802C166.729 28.3062 341.329 42.704 353 1"
+              stroke="#FFBB38"
+              strokeWidth="2"
+              strokeLinecap="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div className="w-full lg:w-8/12 mx-auto flex flex-col-reverse lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-7 px-7 py-10 bg-white">
         <div className="col-span-2 mt-14 lg:m-0">
-          <div className="flex flex-col items-center">
-            <p className="text-4xl font-extrabold text-center">
-              Create Account
-            </p>
-            <div className="-mt-2">
-              <svg
-                className="w-80"
-                width="354"
-                height="30"
-                viewBox="0 0 354 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1 28.8027C17.6508 20.3626 63.9476 8.17089 113.509 17.8802C166.729 28.3062 341.329 42.704 353 1"
-                  stroke="#FFBB38"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                ></path>
-              </svg>
-            </div>
-          </div>
-
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit((e) => onSubmit(e))}
@@ -169,15 +212,15 @@ const IntegratedSignup = () => {
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <FormField
                     control={form.control}
-                    name="fullname"
+                    name="business_name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Full Name *</FormLabel>
+                        <FormLabel>Business Name *</FormLabel>
                         <FormControl>
                           <Input
                             type="text"
                             className="focus:outline-none"
-                            placeholder="Full Name"
+                            placeholder="Business Name"
                             {...field}
                           />
                         </FormControl>
@@ -450,7 +493,7 @@ const IntegratedSignup = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <div className='flex items-center space-x-2'>
+                        <div className="flex items-center space-x-2">
                           <Checkbox
                             onClick={() => field.onChange(!field.value)}
                             checked={field.value}
@@ -498,6 +541,23 @@ const IntegratedSignup = () => {
               </div>
             </form>
           </Form>
+        </div>
+        <div>
+          <SingleImageUpload
+            image={profile}
+            fieldName="Profile Image"
+            setImage={(image: string | null) => setProfile(image)}
+          />
+          <SingleImageUpload
+            image={cover}
+            fieldName="Cover Image"
+            setImage={(image: string | null) => setCover(image)}
+          />
+          <SingleImageUpload
+            image={logo}
+            fieldName="Logo Image"
+            setImage={(image: string | null) => setLogo(image)}
+          />
         </div>
       </div>
     </div>

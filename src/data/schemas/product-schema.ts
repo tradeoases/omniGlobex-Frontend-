@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const createProductSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -6,7 +6,9 @@ export const createProductSchema = z.object({
   categoryId: z.string().min(1, "The category is required"),
   productPrice: z.string().min(1, "Price is required"),
   priceCurrency: z.string().min(1, "The currency is required"),
-  businessId: z.string().min(1, "You need to select the business that this product belongs to."),
+  deliveryTerms: z
+    .string()
+    .min(1, "You are required to enter the delivery terms"),
   // showRooms: z.array(z.string().uuid("Must be a valid UUID")).optional(),
   // brandId: z.string().uuid().optional(),
 });

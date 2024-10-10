@@ -4,7 +4,6 @@ export interface ICreateProduct {
   categoryId: string;
   productPrice: string;
   priceCurrency: string;
-  businessId: string;
   showRooms?: string[];
   brandId?: string;
   productImages?: string[];
