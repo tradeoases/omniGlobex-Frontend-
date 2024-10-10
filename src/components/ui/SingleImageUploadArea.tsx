@@ -13,11 +13,13 @@ const toBase64 = (file: File): Promise<string> => {
 interface SingleImageUploadProps {
   image: string | null;
   setImage: (image: string | null) => void;
+  fieldName?: string;
 }
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   image,
   setImage,
+  fieldName
 }: SingleImageUploadProps) => {
   const [dragging, setDragging] = useState(false);
   const [imageData, setImageData] = useState<{
@@ -88,7 +90,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
 
   return (
     <div>
-      <h2>Upload an Image</h2>
+      <h2>{fieldName? fieldName :'Upload an Image'}</h2>
 
       {/* Drag and drop zone */}
       <div

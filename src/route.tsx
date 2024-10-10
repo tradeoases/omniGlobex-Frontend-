@@ -16,19 +16,14 @@ import ContactPage from "./pages/staticpages/contact-page";
 import FaqPage from "./pages/staticpages/faq-page";
 import ShowRoomPage from "./pages/products/show-room-page";
 import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
-import CreateBusiness from "./pages/BusinessInformation/CreateBusiness";
 import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
 import BlogDetails from "./pages/Blogs/components/blog-details";
 import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
-// import AddBusinessUserPage from "./pages/BusinessInformation/add-business-user";
-// import AddBusinessLocation from "./pages/BusinessInformation/add-business-location";
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
 import Messages from "./pages/user/buyer-profile/Messages";
-// import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
-// import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
 import OrderTracking from "./pages/user/buyer-profile/OrderTracking";
 import Ratings from "./pages/user/buyer-profile/Ratings";
 import BuyerAccount from "./pages/user/buyer-profile/BuyerAccount";
@@ -53,7 +48,6 @@ import App from "./App";
 import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
 import ResetPassword from "./pages/Authentication/reset-page";
-import MultipleImageUpload from "./components/ui/MultipleImageUploadArea";
 import RFQManagement from "./pages/user/buyer-profile/RFQManagement";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -73,10 +67,15 @@ const RoutesConfig = ({ country_id }) => {
   }, []);
   return (
     <Routes>
+      <Route path="/">
+        <Route path="signin" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="reset-password" element={<ResetPassword />} />
+        <Route path="signup" element={<IntegratedSignup />} />
+      </Route>
       <Route path="/" element={<App />}>
-        <Route path="image" element={<MultipleImageUpload />} />
         <Route index element={<HomePage />} />
-        <Route path="create-business" element={<CreateBusiness />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="blogs">
           <Route index element={<BlogPage />} />
@@ -86,25 +85,6 @@ const RoutesConfig = ({ country_id }) => {
         <Route path="contact" element={<ContactPage />} />
         <Route path="faq" element={<FaqPage />} />
         <Route path="terms-condition" element={<TermsPage />} />
-        <Route path="signin" element={<LoginPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="reset-password" element={<ResetPassword />} />
-        <Route path="signup" element={<IntegratedSignup />} />
-        <Route
-          path="country-showroom"
-          element={<CountryShowroom country_id={country_id} />}
-        />
-        {/* 
-        <Route
-          path="business/:businessId/add-user"
-          element={<AddBusinessUserPage />}
-        />
-        <Route
-          path="business/:businessId/add-location"
-          element={<AddBusinessLocation />}
-        /> */}
-
         <Route path="track-order" element={<TrackOrderPage />} />
         <Route path="profile" element={<DashboardLayout />}>
           <Route index element={<Overview />} />

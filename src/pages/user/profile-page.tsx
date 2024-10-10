@@ -75,11 +75,7 @@ const SuppliersDashboard = () => {
                 Buyer Center
               </div> */}
               {/* <div className="border-t border-gray-100"></div> */}
-              <Link to="/create-business" onClick={closeDropdown}>
-                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                  Create a business
-                </div>
-              </Link>
+
               <Link
                 to="/supplier-dashboard"
                 onClick={closeDropdown}

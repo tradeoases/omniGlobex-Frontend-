@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const signupSchema = z
   .object({
-    fullname: z.string().min(2, {
+    business_name: z.string().min(2, {
       message: "First name must be at least 2 characters.",
     }),
 

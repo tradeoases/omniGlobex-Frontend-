@@ -2,18 +2,7 @@ import request from "../base.service";
 
 const PATH = "user/";
 
-export interface IUserSignup {
-  countryId: string;
-  password: string;
-  email: string;
-  fullname: string;
-}
 
-export interface ISellerSignup extends IUserSignup {
-  address: string;
-  phonenumber: string;
-  city: string;
-}
 
 export interface IUserSignin {
   email: string;
@@ -59,11 +48,15 @@ export interface IUserSignup {
   countryId: string;
   password: string;
   email: string;
-  fullname: string;
+  business_name: string;
   address: string;
   phoneNumber: string;
   city: string;
-  role: 'Supplier' | 'Buyer' | 'Both'
+  role: "Supplier" | "Buyer" | "Both";
+  acceptTerms: boolean;
+  logo?: string;
+  profile?: string;
+  cover?: string;
 }
 
 export interface IVerifyEmail {
@@ -91,7 +84,7 @@ export const getUserInfo = async () =>
 export const getUserPreferences = async () =>
   await request.get(`${PATH}preferences/all`);
 
-export const startPasswordReset= async (email: string) =>
+export const startPasswordReset = async (email: string) =>
   await request.post(`${PATH}reset-password/start/${email}`);
 
 export const completePasswordResetComplete = async (data: {

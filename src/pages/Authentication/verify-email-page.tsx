@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { HiOutlineCheck } from "react-icons/hi2";
 
+// OmniGlobex
+//       POSTGRES_PASSWORD: 8gjFgIfodstz0zIdlrwR7sfghC2098ZYvvA4mkq50ew=
+//       POSTGRES_DB: OmniGlobexProdDB
+
 import emailSentImg from "@/assets/email-sent.png";
 import emailVerifiedImg from "@/assets/email-verified.png";
 import { Button } from "@/components/ui/button";
@@ -18,6 +22,7 @@ import { EmailStore, IUser, userStore } from "@/store/user-store";
 import { MessageText } from "@/data/data";
 import { LOGIN_TO_RESEND_EMAIL } from "@/utils/constants/constants";
 import { Input } from "@/components/ui/input";
+import { getStripe } from "@/service/stripe";
 
 const VerifyEmailPage = () => {
   const [resendBtn, setResendBtn] = useState<boolean>(true);
@@ -31,7 +36,7 @@ const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();
   const previousRoute = usePreviousRoute();
   const navigate = useNavigate();
-  
+
   const email = useRecoilValue<{ email: string | null; id: string | null }>(
     EmailStore
   );
@@ -98,17 +103,25 @@ const VerifyEmailPage = () => {
           };
       response = await emailVerification(body);
 
-      if (response.status === HttpStatusCode.Ok) {
+      if (
+        response.status === HttpStatusCode.Ok ||
+        response.status === HttpStatusCode.Created
+      ) {
         setVerified(true);
         const data = response.data.data;
+        console.log({ data });
         localStorage.setItem("token", data.token);
         setUserData(userData);
         localStorage.setItem("profile", JSON.stringify(data.data));
-        if (data.data.roles.includes("Supplier"))
-          if (data.data.businessNames.length === 0)
-            navigate(`/create-business`);
-          else navigate(`/supplier-dashboard`);
-        else navigate(`/buyer-dashboard`);
+        if (data.data.roles.includes("Supplier")) {
+          const stripe = await getStripe();
+          await stripe?.redirectToCheckout({
+            sessionId:
+              response.data?.data?.businessSubscription?.stripeSessionId,
+          });
+        } else {
+          navigate(`/buyer-dashboard`);
+        }
       }
     } catch (error) {
       if (isAxiosError(error)) {
