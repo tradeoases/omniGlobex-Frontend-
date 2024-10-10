@@ -14,7 +14,6 @@ import CheckoutPage from "./pages/cartandcheckout/checkout-page";
 import BlogPage from "./pages/Blogs/blog-page";
 import ContactPage from "./pages/staticpages/contact-page";
 import FaqPage from "./pages/staticpages/faq-page";
-import ShowRoomPage from "./pages/products/show-room-page";
 import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
 import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
@@ -55,7 +54,7 @@ import { IUser, userStore } from "./store/user-store";
 import SupplierRFQ from "./pages/user/supplier-profile/SupplierRFQ";
 import CountryShowroom from "./pages/show-room/CountryShowroom";
 
-const RoutesConfig = ({ country_id }) => {
+const RoutesConfig = ({ country_id }: { country_id: string }) => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
 
   useEffect(() => {
@@ -92,8 +91,10 @@ const RoutesConfig = ({ country_id }) => {
         <Route path="subscription/success" element={<StripeSuccessPage />} />
         <Route path="single-product" element={<SingleProduct />} />
         <Route path="products" element={<AllProductsPage />} />
-        <Route path="show-room" element={<ShowRoomPage />} />
-        <Route path="show-room" element={<ShowRoomPage />} />
+        <Route
+          path="show-room"
+          element={<CountryShowroom country_id={country_id} />}
+        />
         <Route path="cookie-policy" element={<CookiesPolicyPage />} />
         <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="verify-email" element={<VerifyEmailPage />} />
