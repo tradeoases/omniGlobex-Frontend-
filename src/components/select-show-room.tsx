@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAllCountries, ICountry } from "@/service/apis/countries-services";
 import {
   Select,
@@ -10,7 +10,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 
 export const SelectShowroom = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate()
+  // const [searchParams, setSearchParams] = useSearchParams();
   const {
     data: countries,
     isSuccess,
@@ -31,9 +32,11 @@ export const SelectShowroom = () => {
       const country = countries?.find(
         (country) => country.country_id === value
       )?.country_id;
-      if (country) {
-        setSearchParams({ ...Object.fromEntries(searchParams), country });
-      }
+      // if (country) {
+      //   setSearchParams({ ...Object.fromEntries(searchParams), country });
+      // }
+
+      navigate('/show-room?country='+country)
     }
   };
 
@@ -42,8 +45,8 @@ export const SelectShowroom = () => {
 
   return (
     <Select onValueChange={handleSelectChange}>
-      <SelectTrigger className="w-48 p-4 h-10 md:h-8 lg:h-6 px-4 md:px-3 lg:px-2 text-sm md:text-xs bg-light border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
-        <SelectValue placeholder="Select Showroom" />
+      <SelectTrigger className="w-content p-4 md:h-8 lg:h-6 px-4 md:px-3 lg:px-2 text-sm md:text-xs bg-light border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
+        <SelectValue placeholder="Showrooms" />
       </SelectTrigger>
       <SelectContent className="bg-white shadow-lg rounded-md">
         {countries && countries.length > 0 ? (

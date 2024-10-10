@@ -184,8 +184,6 @@ const NavBar = () => {
                     Message
                   </DropdownMenuItem>
 
-                  
-
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);
