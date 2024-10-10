@@ -38,7 +38,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { getBusinesses } from "@/service/apis/business-services";
 import SingleImageUpload from "@/components/ui/SingleImageUploadArea";
 import { uploadImages } from "@/service/apis/image-service";
 // import { FileDisplayItem } from "@/components/file-display-item";
@@ -85,7 +84,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
       categoryId: "",
       productPrice: "",
       priceCurrency: "",
-      businessId: "",
     },
   });
 
@@ -145,23 +143,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
   });
 
   const [image, setImage] = useState<string | null>(null);
-
-  const {
-    isLoading: businessLoading,
-    isError: businessIsError,
-    // error: businessError,
-    data: businesses,
-    isSuccess: businessSuccess,
-  } = useQuery({
-    queryKey: ["business"],
-    queryFn: async () => {
-      const response: AxiosResponse<any, any> = await getBusinesses();
-
-      if (response.status === HttpStatusCode.Ok) {
-        return response.data.data;
-      }
-    },
-  });
 
   const {
     isLoading: countryLoading,
@@ -269,55 +250,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
                     )}
                   /> */}
                 </div>
-
-                {businessLoading && (
-                  <div>Your registered business are still loading...</div>
-                )}
-                {businessIsError && (
-                  <div>
-                    Failed to load your business. Please refresh or add a
-                    business before you can add a product
-                  </div>
-                )}
-
-                {businessSuccess && (
-                  <FormField
-                    control={form.control}
-                    name="businessId"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select a Business" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                {businesses.map(
-                                  (business: {
-                                    businessId: string;
-                                    businessName: string;
-                                  }) => (
-                                    <SelectItem
-                                      key={business.businessId}
-                                      value={business.businessId}
-                                    >
-                                      {business.businessName}
-                                    </SelectItem>
-                                  )
-                                )}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
 
                 <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                   {categoryIsError && (
@@ -488,6 +420,24 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
                         )}
                       />
                     </div>
+                  </div>
+                  <div className="w-full">
+                    <FormField
+                      control={form.control}
+                      name="deliveryTerms"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <Textarea
+                              placeholder="Enter the Delivery terms"
+                              className="resize-none"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
                 {/* <div className="">
