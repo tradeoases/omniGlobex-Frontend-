@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { menuItems } from "./constants"; // Import your menu items
 import { FaChevronDown, FaChevronUp, FaBars, FaTimes } from "react-icons/fa"; // For dropdown arrow icons
+import { SelectShowroom } from "@/components/select-show-room";
 
 const SideBar = ({
   isOpen,
@@ -40,7 +41,10 @@ const SideBar = ({
           overflowY: "auto",
         }} // Add top offset for mobile view
       >
-        <ul className="p-4 flex-grow">
+        {/* <SelectShowroom className="text-red-700" /> */}
+        <ul className="p-4 flex-grow  border-gray-300 rounded-lg shadow-lg">
+          <SelectShowroom />
+
           {menuItems.map(({ title, path, icon, subItems }, index) => {
             const hasSubItems = Array.isArray(subItems) && subItems.length > 0;
             const isActive = location.pathname.startsWith(path || ""); // Check if the current path matches the item's path

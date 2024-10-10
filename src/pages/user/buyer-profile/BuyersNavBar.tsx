@@ -57,7 +57,7 @@ const BuyersNavBar = () => {
         <div className="ml-auto flex items-center space-x-6">
           {/* Navigation Buttons (aligned to the right) */}
           <div className="hidden md:flex space-x-6">
-            <Link to={"/create-business"}>
+            <Link to={"/supplier-dashboard"}>
               <button className="bg-white text-main border border-main px-5 py-2 rounded-full hover:bg-main hover:text-white transition duration-300 shadow-md hover:shadow-lg">
                 Start Selling Now
               </button>
@@ -69,7 +69,7 @@ const BuyersNavBar = () => {
               </button>
             </Link>
 
-            <Link to="#">
+            <Link to="/buyer-dashboard/rfq">
               <button className=" text-gary-400 px-5 py-2 rounded-full hover:text-main transition duration-300">
                 Request for Quotations
               </button>
@@ -91,7 +91,7 @@ const BuyersNavBar = () => {
               } transition-opacity duration-300 z-50`}
             >
               <Link
-                to="/create-business"
+                to="/supplier-dashboard"
                 onClick={onClose}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
