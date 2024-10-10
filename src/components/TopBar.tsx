@@ -19,6 +19,7 @@ import {
 } from "./ui/dropdown-menu";
 import { CiUser } from "react-icons/ci";
 import { FaUserCircle } from "react-icons/fa";
+import ShowRoomPage from "@/pages/products/show-room-page";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
@@ -134,6 +135,7 @@ const TopBar = () => {
           </Link>
         </div>
         <SearchBar />
+        
 
         <div className="flex items-center ml-14 justify-end gap-4">
           {/* <CurrencySelector />

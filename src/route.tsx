@@ -59,8 +59,9 @@ import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { IUser, userStore } from "./store/user-store";
 import SupplierRFQ from "./pages/user/supplier-profile/SupplierRFQ";
+import CountryShowroom from "./pages/show-room/CountryShowroom";
 
-const RoutesConfig = () => {
+const RoutesConfig = ({ country_id }) => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
 
   useEffect(() => {
@@ -90,6 +91,10 @@ const RoutesConfig = () => {
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="signup" element={<IntegratedSignup />} />
+        <Route
+          path="country-showroom"
+          element={<CountryShowroom country_id={country_id} />}
+        />
         {/* 
         <Route
           path="business/:businessId/add-user"
@@ -137,7 +142,7 @@ const RoutesConfig = () => {
       </Route>
       <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
         <Route path="products" element={<ProductManagement />} />
-        <Route path="supplier-rfq" element={<SupplierRFQ/>}/>
+        <Route path="supplier-rfq" element={<SupplierRFQ />} />
         <Route path="supplier-profile" element={<SupplierProfile />} />
         <Route index element={<SupplierProfile />} />
         <Route path="order" element={<BuyerOrder />} />
