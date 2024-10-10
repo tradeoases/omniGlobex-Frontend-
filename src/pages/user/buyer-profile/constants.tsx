@@ -1,6 +1,5 @@
 import {
   FaTachometerAlt,
-  FaBook,
   FaUserPlus,
   FaUsers,
   FaChartBar,
