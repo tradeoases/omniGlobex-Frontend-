@@ -51,7 +51,7 @@ export const getOneProduct = async (productId: string) =>
   await request.get(`${PATH}${productId}`);
 
 export const getAllProductByUser = async () =>
-  await request.get(`${PATH}/user`);
+  await request.get(`${PATH}user`);
 
 export const getAllProductCategories = async () =>
   await request.get(`/category`);

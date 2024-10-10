@@ -2,8 +2,6 @@ import request from "../base.service";
 
 const PATH = "user/";
 
-
-
 export interface IUserSignin {
   email: string;
   password: string;
@@ -96,3 +94,8 @@ export const completePasswordResetComplete = async (data: {
   await request.post(`${PATH}reset-password/complete/`, data, {
     headers: { "Content-Type": "application/json" },
   });
+
+export const getAllUsersInCountry = async (id: string) =>
+  await request.get(
+    `${PATH}/businesses/all?roleId=0dcfd36b-6f08-4dfa-a31d-55df5ce06be4&countryId=${id}`
+  );
