@@ -88,7 +88,6 @@ export type TActivePath =
   | "cart"
   | "subscription"
   | "reviews"
-  | "business"
   | "change-password"
   | "logout"
   | "messages"
@@ -120,7 +119,7 @@ export const dashboardNavs: IDashboardNav[] = [
 
   { icon: <TbMessage2 />, title: "Messages", path: "messages" },
 
-  { icon: <MdReviews />, title: "Business", path: "business" },
+  // { icon: <MdReviews />, title: "Business", path: "business" },
   { icon: <MdReviews />, title: "Analytics", path: "analytics" },
   { icon: <HiLockClosed />, title: "Change Password", path: "change-password" },
   { icon: <IoLogOut />, title: "Logout", path: "logout" },

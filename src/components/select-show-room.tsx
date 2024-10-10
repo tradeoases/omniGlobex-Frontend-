@@ -10,7 +10,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 
 export const SelectShowroom = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const [searchParams, setSearchParams] = useSearchParams();
   const {
     data: countries,
@@ -36,7 +36,7 @@ export const SelectShowroom = () => {
       //   setSearchParams({ ...Object.fromEntries(searchParams), country });
       // }
 
-      navigate('/show-room?country='+country)
+      navigate("/show-room?country=" + country);
     }
   };
 
@@ -45,7 +45,7 @@ export const SelectShowroom = () => {
 
   return (
     <Select onValueChange={handleSelectChange}>
-      <SelectTrigger className="w-content p-4 md:h-8 lg:h-6 px-4 md:px-3 lg:px-2 text-sm md:text-xs bg-light border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
+      <SelectTrigger className="w-content text-gray-700 p-4 md:h-8 lg:h-6 px-4 md:px-3 lg:px-2 text-sm md:text-sm bg-light border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
         <SelectValue placeholder="Showrooms" />
       </SelectTrigger>
       <SelectContent className="bg-white shadow-lg rounded-md">

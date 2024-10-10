@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userStore } from "@/store/user-store";
 import ProtectedRoute from "@/components/ProtectedRoutes";
+import { SelectShowroom } from "@/components/select-show-room";
 
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -131,7 +132,7 @@ const SuppliersDashboard = () => {
             </button>
           </div>
           {/* <SearchBar /> */}
-
+          <SelectShowroom />
           {navigations.map((nav) => (
             <NavLink
               to={nav.path}
