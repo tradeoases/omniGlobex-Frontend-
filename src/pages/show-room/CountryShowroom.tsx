@@ -1,44 +1,31 @@
 import Advertisements from "./Advertisement";
-import ProductCategories from "./ProductCategories";
 import Trends from "./Trends";
 import SupplierList from "./SupplierList";
 import LocalPromotions from "./LocalPromotions";
-import FilterBar from "./FilterBar";
-import SearchBar from "./SearchBar";
 import CountryNews from "./CountryNews";
 import AIRecommendations from "./AIRecommendations";
 import CountryHeader from "./CountryHeader";
+import { useSearchParams } from "react-router-dom";
+import AllProductsPage from "../products/all-products-page";
 
 const CountryShowroom = () => {
+  const [searchParams] = useSearchParams();
+  const country_id =
+    searchParams.get("country") || searchParams.get("countryId") || "";
+
   return (
-    <div className="country-showroom px-4 lg:px-12 py-8 bg-gray-50">
-      {/* Country-specific Header */}
-      <CountryHeader />
-
-      {/* Advertisement Section */}
-      <div className="my-8">
-        <Advertisements />
-      </div>
-
-      {/* Filters and Search Section */}
+    <div className=" w-full px-4 lg:px-12 py-8 bg-gray-50">
+      <CountryHeader country_id={country_id} />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10">
         <div className="lg:col-span-1">
-          <FilterBar />
-        </div>
-        <div className="lg:col-span-2">
-          <SearchBar />
-        </div>
-        <div className="lg:col-span-1">
+          <h1 className="text-3xl font-bold">Promotions</h1>
           <LocalPromotions />
         </div>
       </div>
 
-      {/* Product Categories Section */}
+      {/* Advertisement Section */}
       <div className="my-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Product Categories
-        </h2>
-        <ProductCategories />
+        <Advertisements country_id={country_id} />
       </div>
 
       {/* Trends Section */}
@@ -53,6 +40,10 @@ const CountryShowroom = () => {
       <div className="my-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Suppliers</h2>
         <SupplierList />
+      </div>
+      <div className="my-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Products</h2>
+        <AllProductsPage />
       </div>
 
       {/* Country News Section */}

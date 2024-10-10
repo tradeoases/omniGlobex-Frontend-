@@ -19,7 +19,8 @@ import {
 } from "./ui/dropdown-menu";
 import { CiUser } from "react-icons/ci";
 import { FaUserCircle } from "react-icons/fa";
-import ShowRoomPage from "@/pages/products/show-room-page";
+import { SelectShowroom } from "./select-show-room";
+import CurrencySelector from "./CurrencySelector";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
@@ -50,20 +51,23 @@ const TopBar = () => {
             <Logo />
           </Link>
         </div>
-        <div className="flex flex-row items-center gap-4 mt-4">
-          {/* <CurrencySelector />
+        <div className="flex flex-row justify-between w-content items-center gap-4 mt-4">
+          {/* 
           <LanguageSelector /> */}
-        </div>
-        {!userData && !isAuthenticating && (
-          <div
-            className={` text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
-          >
-            <NavLink to="/signin">
-              <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
-            </NavLink>
-          </div>
-        )}
-        {userData && (
+
+          <SelectShowroom />
+          {/* <CurrencySelector /> */}
+
+          {!userData && !isAuthenticating && (
+            <div
+              className={` text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
+            >
+              <NavLink to="/signin">
+                <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
+              </NavLink>
+            </div>
+          )}
+          {userData && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="link" className="p-0 m-0">
@@ -100,8 +104,6 @@ const TopBar = () => {
                     Message
                   </DropdownMenuItem>
 
-                  
-
                   <DropdownMenuItem
                     onClick={() => {
                       setUserData(null);
@@ -117,10 +119,11 @@ const TopBar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+        </div>
       </div>
 
       {/* Desktop View */}
-      <div className="hidden lg:flex lg:items-center lg:justify-between w-10/12 xl:w-8/12 mx-auto">
+      <div className="hidden lg:flex lg:items-center lg:justify-between gap-2 w-10/12 xl:w-8/12 mx-auto">
         <div className="flex items-center gap-x-4">
           <img
             src={img}
@@ -134,12 +137,13 @@ const TopBar = () => {
             <Logo />
           </Link>
         </div>
-        <SearchBar />
-        
 
-        <div className="flex items-center ml-14 justify-end gap-4">
-          {/* <CurrencySelector />
-          <LanguageSelector /> */}
+        <SearchBar />
+
+        <div className="flex items-center ml-14 justify-end gap-2">
+          {/* <LanguageSelector /> */}
+          <CurrencySelector />
+          <SelectShowroom />
         </div>
       </div>
     </header>
