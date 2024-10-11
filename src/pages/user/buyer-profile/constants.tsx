@@ -1,5 +1,4 @@
 import {
-  FaTachometerAlt,
   FaUserPlus,
   FaUsers,
   FaChartBar,
@@ -10,20 +9,11 @@ import {
 
 export const menuItems = [
   {
-    title: "Dashboard",
-    path: "/buyer-dashboard",
-    icon: <FaTachometerAlt />,
-  },
-  {
     title: "Messages",
     path: "messages",
     icon: <FaUsers />,
   },
-  // {
-  //   title: "Show Room",
-  //   path: "showRoom",
-  //   icon: <FaBook />,
-  // },
+
   {
     title: "RFQs",
     path: "rfq",

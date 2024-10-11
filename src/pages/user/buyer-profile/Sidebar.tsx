@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { menuItems } from "./constants"; // Import your menu items
-import { FaChevronDown, FaChevronUp, FaBars, FaTimes } from "react-icons/fa"; // For dropdown arrow icons
+import { menuItems } from "./constants";
+import { FaChevronDown, FaChevronUp, FaBars, FaTimes } from "react-icons/fa";
 import { SelectShowroom } from "@/components/select-show-room";
 
 const SideBar = ({
@@ -11,12 +11,29 @@ const SideBar = ({
   isOpen: boolean;
   toggleSidebar: () => void;
 }) => {
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null); // State to control dropdown visibility
-  const location = useLocation(); // Get the current path
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const location = useLocation();
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = (index: number) => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      sidebarRef.current &&
+      !sidebarRef.current.contains(event.target as Node)
+    ) {
+      if (isOpen) toggleSidebar();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <div>
@@ -26,12 +43,13 @@ const SideBar = ({
           className="text-gray-600 focus:outline-none"
           onClick={toggleSidebar}
         >
-          {isOpen ? <FaTimes /> : <FaBars />} {/* Toggle Button */}
+          {isOpen ? <FaTimes /> : <FaBars />}
         </button>
       </div>
 
       {/* Sidebar */}
       <div
+        ref={sidebarRef}
         className={`fixed inset-y-0 left-0 h-full w-64 bg-gray-600 p-4 text-white z-50 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:w-64`}
@@ -39,15 +57,16 @@ const SideBar = ({
           maxHeight: "calc(100vh - 64px)",
           top: "80px",
           overflowY: "auto",
-        }} // Add top offset for mobile view
+        }}
       >
-        {/* <SelectShowroom className="text-red-700" /> */}
-        <ul className="p-4 flex-grow  border-gray-300 rounded-lg shadow-lg">
-          <SelectShowroom />
+        <ul className="p-4 flex-grow border-gray-300 rounded-lg shadow-lg">
+          <div className="text-gray-700">
+            <SelectShowroom />
+          </div>
 
           {menuItems.map(({ title, path, icon, subItems }, index) => {
             const hasSubItems = Array.isArray(subItems) && subItems.length > 0;
-            const isActive = location.pathname.startsWith(path || ""); // Check if the current path matches the item's path
+            const isActive = location.pathname.startsWith(path || "");
 
             return (
               <li key={title} className="my-2">
@@ -56,7 +75,7 @@ const SideBar = ({
                     isActive ? "" : ""
                   }`}
                   onClick={
-                    hasSubItems ? () => toggleDropdown(index) : toggleSidebar // Close sidebar on menu click in mobile
+                    hasSubItems ? () => toggleDropdown(index) : toggleSidebar
                   }
                 >
                   <div className="flex items-center">
@@ -83,7 +102,7 @@ const SideBar = ({
 
                 {/* Submenu */}
                 {hasSubItems && openDropdown === index && (
-                  <ul className="ml-4 mt-2  rounded-md shadow-lg transition-all duration-300 ease-in-out">
+                  <ul className="ml-4 mt-2 rounded-md shadow-lg transition-all duration-300 ease-in-out">
                     {subItems.map(({ title, path }) => (
                       <li key={title} className="my-1 hover:text-main">
                         <Link
@@ -91,7 +110,7 @@ const SideBar = ({
                           className={`block p-2 pl-6 rounded-md transition-colors duration-200 ${
                             location.pathname === path ? "" : ""
                           }`}
-                          onClick={toggleSidebar} // Close sidebar on submenu click
+                          onClick={toggleSidebar}
                         >
                           {title}
                         </Link>

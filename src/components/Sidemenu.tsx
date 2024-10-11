@@ -1,30 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { HiArrowPath, HiOutlineXMark } from "react-icons/hi2";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { LuChevronRight } from "react-icons/lu";
-
 import { RiSearchLine } from "react-icons/ri";
-
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { IMainMenu, mainMenu } from "@/data/data";
 import { Link, NavLink } from "react-router-dom";
 import { SidemenuStore } from "@/store/side-menu-store";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse, HttpStatusCode } from "axios";
-import { getAllProductCategories, IProductCategory } from "@/service/apis/product-services";
+import {
+  getAllProductCategories,
+  IProductCategory,
+} from "@/service/apis/product-services";
 
 export interface ICategory {
   name: string;
-  category_id:string
+  category_id: string;
 }
 
 const Sidemenu = () => {
   const [menu, setMenu] = useState<number>(1);
   const [sidemenu, setSidemenu] = useRecoilState<boolean>(SidemenuStore);
 
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+
   const onClose = () => {
     setSidemenu(false);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      sidebarRef.current &&
+      !sidebarRef.current.contains(event.target as Node)
+    ) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div
@@ -33,6 +52,7 @@ const Sidemenu = () => {
       }`}
     >
       <div
+        ref={sidebarRef}
         className={`lg:hidden w-[70vw] md:w-[40vw] h-full fixed left-0 top-0 bottom-0 bg-white z-50 space-y-10 transition-transform duration-300 ${
           sidemenu ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -107,13 +127,11 @@ const Sidemenu = () => {
   );
 };
 
-export default Sidemenu
-
-
+export default Sidemenu;
 
 const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
   const setSidemenu = useSetRecoilState<boolean>(SidemenuStore);
-  console.log(category_id);
+
   const onClose = () => {
     setSidemenu(false);
   };
@@ -124,7 +142,6 @@ const MenuItem: React.FC<ICategory> = ({ category_id, name }) => {
       className="flex items-center justify-between px-6 py-3 hover:bg-main"
     >
       <div className="flex items-center gap-x-4">
-        {/* <span className="text-lg text-gray-700">{icon}</span> */}
         <span className="text-sm">{name}</span>
       </div>
       <LuChevronRight className="text-base" />
@@ -136,7 +153,6 @@ const SideMenuCategories = () => {
   const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response: AxiosResponse<any, any> = await getAllProductCategories();
 
       if (response.status === HttpStatusCode.Ok) {
@@ -176,8 +192,8 @@ const MainMenu = () => {
   return (
     <div className="w-full">
       {mainMenu.map((menu, i) => (
-        <>
-          <MainMenuItem key={i} {...menu} />
+        <React.Fragment key={i}>
+          <MainMenuItem {...menu} />
           {menu.subMenu && (
             <div className="ml-7">
               {menu.subMenu.map((nav, j) => (
@@ -185,7 +201,7 @@ const MainMenu = () => {
               ))}
             </div>
           )}
-        </>
+        </React.Fragment>
       ))}
     </div>
   );

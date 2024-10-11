@@ -17,10 +17,7 @@ const App: React.FC<Props> = () => {
     >
       <section className="relative flex w-full flex-col items-start justify-start">
         <Sidemenu />
-        {/* <TopBanner /> */}
         <DashboardSideMenu />
-        {/* <Button variant="destructive">Destructive</Button> */}
-        {/* <ModeToggle /> */}
         <NavBar />
         <TopBar />
         <Outlet />

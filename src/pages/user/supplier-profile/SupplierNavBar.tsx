@@ -49,12 +49,6 @@ const SupplierNavBar = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            {/* <Link
-              className="border  px-2  rounded-lg cursor-pointerbg-white text-main  border-main hover:bg-main hover:text-white transition duration-300 shadow-md hover:shadow-lg "
-              to="/buyer-dashboard"
-            >
-              Return to buyer site
-            </Link> */}
             <div className="relative group">
               {/* Profile Icon */}
               <div onClick={toggleDropdown}>
@@ -75,11 +69,7 @@ const SupplierNavBar = () => {
                 >
                   Manage account
                 </Link>
-                <Link to="/supplier-dashboard" onClick={closeDropdown}>
-                  <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                    Create a business
-                  </div>
-                </Link>
+
                 <Link to="subscription" onClick={closeDropdown}>
                   <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                     Subscription
@@ -87,7 +77,7 @@ const SupplierNavBar = () => {
                 </Link>
                 <Link to="order" onClick={closeDropdown}>
                   <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                    My purchases
+                    Sales Performance
                   </div>
                 </Link>
                 <Link to="supplier-rfq" onClick={closeDropdown}>
@@ -100,7 +90,7 @@ const SupplierNavBar = () => {
                   onClick={closeDropdown}
                   className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
                 >
-                  Shopping
+                  Storefront Preview
                 </Link>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                   Log out

@@ -73,9 +73,6 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
     }[]
   >([]);
 
-  // const fileInputRef = useRef<HTMLInputElement | null>(null);
-  // const [files, setFiles] = useState<File[]>([]);
-
   const form = useForm<z.infer<typeof createProductSchema>>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {
@@ -429,7 +426,7 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
                         <FormItem className="w-full">
                           <FormControl>
                             <Textarea
-                              placeholder="Enter the Delivery terms"
+                              placeholder="Enter the Payment & Delivery Terms"
                               className="resize-none"
                               {...field}
                             />

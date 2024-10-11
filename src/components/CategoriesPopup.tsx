@@ -1,4 +1,3 @@
-
 /* eslint-disable react-hooks/exhaustive-deps */
 // import { ICategory } from "./Sidemenu";
 import { useEffect, useRef } from "react";
@@ -39,10 +38,6 @@ export const CategoriesPopup: React.FC<IAllCategory> = ({
     },
   });
 
-  // const handleClickInside = () => {
-  //   onToggle();
-  // };
-
   useEffect(() => {
     if (isOpen) {
       document.addEventListener("mousedown", onClose);
@@ -56,7 +51,6 @@ export const CategoriesPopup: React.FC<IAllCategory> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    // Add or remove animation classes based on isOpen state
     if (!isOpen) {
       catRef.current?.classList.add("closed");
     } else {
@@ -75,15 +69,13 @@ export const CategoriesPopup: React.FC<IAllCategory> = ({
         maxHeight: isOpen ? "1000px" : "0",
       }}
     >
-      {categoriesSuccess && categories?.map((cat) => (
-        <CategoryItem key={cat.category_id} {...cat} />
-      ))}
+      {categoriesSuccess &&
+        categories?.map((cat) => (
+          <CategoryItem key={cat.category_id} {...cat} />
+        ))}
     </div>
   );
 };
-
-
-
 
 const CategoryItem = ({
   name,
@@ -92,15 +84,14 @@ const CategoryItem = ({
   category_id: string;
   name: string;
 }) => {
-  const [searchParams] = useSearchParams(); // Access the current search params
+  const [searchParams] = useSearchParams();
 
-  // Create a new search params object by copying the current ones and adding the category param
   const updatedSearchParams = new URLSearchParams(searchParams.toString());
-  updatedSearchParams.set("category", category_id); // Add the category parameter
+  updatedSearchParams.set("category", category_id);
 
   return (
     <NavLink
-      to={`/products?${updatedSearchParams.toString()}`} // Spread the search params into the NavLink URL
+      to={`/products?${updatedSearchParams.toString()}`}
       className="flex items-center justify-between px-6 py-3 border-t border-light bg-white hover:bg-main"
     >
       <div className="flex items-center gap-x-4">
