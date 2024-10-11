@@ -32,7 +32,7 @@ const Badge = ({ count }: { count: number }) => (
 
 const NavBar = () => {
   const { t } = useTranslation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle mobile menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isAuthenticating =
     location.pathname === "/signup" || location.pathname === "/signin";
@@ -166,7 +166,7 @@ const NavBar = () => {
                     <DropdownMenuItem
                       onClick={() => navigate(`/buyer-dashboard/messages`)}
                     >
-                      My store
+                      Buyer Dashboard
                     </DropdownMenuItem>
                   )}
 

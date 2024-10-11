@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-// import { SearchBar } from "@/components/search-bar";
 import SupplierNavBar from "./supplier-profile/SupplierNavBar";
 import { Logo } from "@/components/logo";
 import { Link } from "react-router-dom";
@@ -23,6 +20,7 @@ const SuppliersDashboard = () => {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const sidebarRef = useRef(null); // Reference for the sidebar
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -32,11 +30,15 @@ const SuppliersDashboard = () => {
   };
 
   const handleClickOutside = (event: any) => {
+    // Check if click is outside both dropdown and sidebar
     if (
       dropdownRef.current &&
-      !(dropdownRef.current as any).contains(event.target)
+      !(dropdownRef.current as any).contains(event.target) &&
+      sidebarRef.current &&
+      !(sidebarRef.current as any).contains(event.target)
     ) {
       setDropdownOpen(false);
+      setIsSidebarOpen(false); // Close sidebar on outside click
     }
   };
 
@@ -48,6 +50,7 @@ const SuppliersDashboard = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
     <div className="flex min-h-screen flex-col lg:flex-row w-full">
       <SupplierNavBar />
@@ -60,23 +63,16 @@ const SuppliersDashboard = () => {
             <Logo />
           </NavLink>
           <div className="relative group">
-            {/* Profile Icon */}
             <div onClick={toggleDropdown}>
               <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
             </div>
 
-            {/* Dropdown Content */}
             <div
               ref={dropdownRef}
               className={`absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 border border-gray-200 ${
                 dropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
               } transition-opacity duration-300 z-50`}
             >
-              {/* <div className="text-gray-900 font-semibold px-4 py-2">
-                Buyer Center
-              </div> */}
-              {/* <div className="border-t border-gray-100"></div> */}
-
               <Link
                 to="/supplier-dashboard"
                 onClick={closeDropdown}
@@ -84,11 +80,7 @@ const SuppliersDashboard = () => {
               >
                 Manage account
               </Link>
-              <Link to="/create-business" onClick={closeDropdown}>
-                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                  Create a business
-                </div>
-              </Link>
+
               <Link to="subscription" onClick={closeDropdown}>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                   Subscription
@@ -96,7 +88,7 @@ const SuppliersDashboard = () => {
               </Link>
               <Link to="order" onClick={closeDropdown}>
                 <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                  My purchases
+                  Sales Performance
                 </div>
               </Link>
               <Link to="supplier-rfq" onClick={closeDropdown}>
@@ -109,19 +101,17 @@ const SuppliersDashboard = () => {
                 onClick={closeDropdown}
                 className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
               >
-                Shopping
+                Storefront Preview
               </Link>
               <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
                 Log out
               </div>
             </div>
           </div>
-
-          {/* <NavLink className={"text-black"} to={"/products"}>
-            Shopping
-          </NavLink> */}
         </div>
+
         <div
+          ref={sidebarRef} // Sidebar reference
           className={`lg:block bg-gray-600 overflow-scroll flex flex-col justify-start items-center text-xl lg:static fixed top-0 left-0 z-40 w-64 transition-transform duration-300 ease-in-out ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 h-full lg:h-full pt-16`}
@@ -131,7 +121,6 @@ const SuppliersDashboard = () => {
               <FaTimes />
             </button>
           </div>
-          {/* <SearchBar /> */}
           <SelectShowroom />
           {navigations.map((nav) => (
             <NavLink

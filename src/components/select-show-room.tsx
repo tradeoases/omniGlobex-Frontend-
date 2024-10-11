@@ -1,17 +1,34 @@
-import { useNavigate } from "react-router-dom";
-import { getAllCountries, ICountry } from "@/service/apis/countries-services";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
-import { useQuery } from "@tanstack/react-query";
+"use client";
 
-export const SelectShowroom = () => {
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCountries, ICountry } from "@/service/apis/countries-services";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+export function SelectShowroom() {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const [isFixed, setIsFixed] = React.useState(false); // New state to track fixed status
   const navigate = useNavigate();
-  // const [searchParams, setSearchParams] = useSearchParams();
+
+  // Fetch countries using react-query
   const {
     data: countries,
     isSuccess,
@@ -27,40 +44,73 @@ export const SelectShowroom = () => {
     },
   });
 
-  const handleSelectChange = (value: string) => {
-    if (isSuccess) {
-      const country = countries?.find(
-        (country) => country.country_id === value
-      )?.country_id;
-      // if (country) {
-      //   setSearchParams({ ...Object.fromEntries(searchParams), country });
-      // }
+  // Handle selection of a country
+  const handleSelectChange = (currentValue: string) => {
+    const country = countries?.find(
+      (country) => country.country_id === currentValue
+    );
+    setValue(currentValue === value ? "" : currentValue);
+    setOpen(false);
 
-      navigate("/show-room?country=" + country);
+    if (country) {
+      setIsFixed(true); // Set the button to fixed when an item is selected
+      navigate(`/show-room?country=${country.country_id}`);
     }
   };
 
-  if (isLoading) return <div></div>;
-  if (isError) return <div></div>;
-
   return (
-    <Select onValueChange={handleSelectChange}>
-      <SelectTrigger className="w-content text-gray-700 p-4 md:h-8 lg:h-6 px-4 md:px-3 lg:px-2 text-sm md:text-sm bg-light border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
-        <SelectValue placeholder="Showrooms" />
-      </SelectTrigger>
-      <SelectContent className="bg-white shadow-lg rounded-md">
-        {countries && countries.length > 0 ? (
-          countries.map((country) => (
-            <SelectItem key={country.country_id} value={country.country_id}>
-              {country.name}
-            </SelectItem>
-          ))
-        ) : (
-          <SelectItem value="none" disabled>
-            No Showrooms available
-          </SelectItem>
-        )}
-      </SelectContent>
-    </Select>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className={`w-[170px] justify-between ${
+            isFixed ? "fixed top-10 left-10 z-10" : ""
+          }`} // Add fixed class conditionally
+        >
+          {value
+            ? countries?.find((country) => country.name === value)?.name
+            : "Select showroom..."}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandInput
+            placeholder="Search showroom..."
+            className="text-gray-700"
+          />
+          <CommandList>
+            {isLoading ? (
+              <CommandEmpty>Loading...</CommandEmpty>
+            ) : isError ||
+              !isSuccess ||
+              !countries ||
+              countries.length === 0 ? (
+              <CommandEmpty>No showroom found.</CommandEmpty>
+            ) : (
+              <CommandGroup>
+                {countries.map((country) => (
+                  <CommandItem
+                    key={country.country_id} // Changed to country_id for uniqueness
+                    value={country.name} // Ensure value is unique and matches selection logic
+                    onSelect={handleSelectChange}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === country.name ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {country.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
-};
+}

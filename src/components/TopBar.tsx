@@ -1,8 +1,6 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
-// import CurrencySelector from "./CurrencySelector";
-// import LanguageSelector from "./LanguageSelector";
 import { LuAlignLeft } from "react-icons/lu";
 import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
 import { SidemenuStore } from "@/store/side-menu-store";
@@ -21,15 +19,32 @@ import { CiUser } from "react-icons/ci";
 import { FaUserCircle } from "react-icons/fa";
 import { SelectShowroom } from "./select-show-room";
 import CurrencySelector from "./CurrencySelector";
+import { useEffect, useRef } from "react";
 
 const TopBar = () => {
   const setSidemenu: SetterOrUpdater<boolean> =
     useSetRecoilState<boolean>(SidemenuStore);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+
   const onOpen = () => {
-    // console.log('Hello')rrencySelector from "./CurrencySelector";
-    // import La
     setSidemenu(true);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      sidebarRef.current &&
+      !(sidebarRef.current as any).contains(event.target)
+    ) {
+      setSidemenu(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const navigate = useNavigate();
 
@@ -42,83 +57,87 @@ const TopBar = () => {
   return (
     <header className="w-full border-b py-4">
       {/* Mobile / Tablet View */}
-      <div className="w-10/12 xl:w-8/12 mx-auto flex justify-between items-center lg:hidden">
-        <div className="flex gap-2 items-center">
-          <div onClick={onOpen}>
-            <LuAlignLeft className="text-2xl" />
-          </div>
-          <Link to="/" aria-label="Go to Home">
-            <Logo />
-          </Link>
-        </div>
-        <div className="flex flex-row justify-between w-content items-center gap-4 mt-4">
-          {/* 
-          <LanguageSelector /> */}
 
-          <SelectShowroom />
-          {/* <CurrencySelector /> */}
-
-          {!userData && !isAuthenticating && (
-            <div
-              className={` text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
-            >
-              <NavLink to="/signin">
-                <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
-              </NavLink>
+      <div className="w-10/12 xl:w-8/12 mx-auto flex flex-col items-center lg:hidden mb-4">
+        {" "}
+        <div className="flex items-center justify-between w-full mb-2">
+          {" "}
+          <div className="flex items-center gap-2">
+            {" "}
+            <div onClick={onOpen}>
+              <LuAlignLeft className="text-2xl" />
             </div>
-          )}
-          {userData && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="link" className="p-0 m-0">
-                  <CiUser className="text-2xl" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-fit">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onClick={() => navigate(`/buyer-dashboard`)}
-                  >
-                    {userData.fullname}
-                  </DropdownMenuItem>
+            <Link to="/" aria-label="Go to Home" className="flex-shrink-0">
+              <Logo />
+            </Link>
+          </div>
+          <div className="flex items-center">
+            {" "}
+            {!userData && !isAuthenticating && (
+              <div
+                className={`text-black py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-gradient-to-l hover:shadow-lg transition-transform hover:scale-105`}
+              >
+                <NavLink to="/signin">
+                  <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
+                </NavLink>
+              </div>
+            )}
+            {userData && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="link" className="p-0 m-0">
+                    <CiUser className="text-2xl" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-fit">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/buyer-dashboard`)}
+                    >
+                      {userData.fullname}
+                    </DropdownMenuItem>
 
-                  {userData.roles.includes("Buyer") && (
+                    {userData.roles.includes("Buyer") && (
+                      <DropdownMenuItem
+                        onClick={() => navigate(`/buyer-dashboard/messages`)}
+                      >
+                        Buyer Dashboard
+                      </DropdownMenuItem>
+                    )}
+
+                    {userData.roles.includes("Supplier") && (
+                      <DropdownMenuItem
+                        onClick={() => navigate(`/supplier-dashboard/messages`)}
+                      >
+                        Manage supplies
+                      </DropdownMenuItem>
+                    )}
+
                     <DropdownMenuItem
                       onClick={() => navigate(`/buyer-dashboard/messages`)}
                     >
-                      My store
+                      Message
                     </DropdownMenuItem>
-                  )}
 
-                  {userData.roles.includes("Supplier") && (
                     <DropdownMenuItem
-                      onClick={() => navigate(`/supplier-dashboard/messages`)}
+                      onClick={() => {
+                        setUserData(null);
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("profile");
+                        navigate(0);
+                      }}
                     >
-                      Manage supplies
+                      {t("Logout")} {/* Translate logout */}
                     </DropdownMenuItem>
-                  )}
-
-                  <DropdownMenuItem
-                    onClick={() => navigate(`/buyer-dashboard/messages`)}
-                  >
-                    Message
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setUserData(null);
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("profile");
-                      // navigate('/')
-                      navigate(0);
-                    }}
-                  >
-                    {t("Logout")} {/* Translate logout */}
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </div>
+        <div className="w-full mx-2">
+          {" "}
+          <SelectShowroom />
         </div>
       </div>
 
@@ -141,7 +160,6 @@ const TopBar = () => {
         <SearchBar />
 
         <div className="flex items-center ml-14 justify-end gap-2">
-          {/* <LanguageSelector /> */}
           <CurrencySelector />
           <SelectShowroom />
         </div>
