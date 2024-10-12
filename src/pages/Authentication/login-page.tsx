@@ -295,9 +295,9 @@ const LoginPage = () => {
       // Redirect after login based on roles
       if (userData.roles.includes("Supplier")) {
         
-        navigate(from || 'supplier-dashboard');  // Use the captured 'from' route
+        navigate(from || '/supplier-dashboard');  // Use the captured 'from' route
       } else {
-        navigate(from || 'buyer-dashboard');  // Use the captured 'from' route
+        navigate(from || '/buyer-dashboard');  // Use the captured 'from' route
       }
     }
 

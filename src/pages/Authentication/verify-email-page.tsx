@@ -129,10 +129,10 @@ const VerifyEmailPage = () => {
                 response.data?.data?.businessSubscription?.stripeSessionId,
             });
           }else {
-            navigate(from || "supplier-dashboard");  
+            navigate(from || "/supplier-dashboard");  
           }
         } else {
-          navigate(from || "buyer-dashboard");
+          navigate(from || "/buyer-dashboard");
         }
       }
     } catch (error) {
