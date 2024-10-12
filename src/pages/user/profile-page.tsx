@@ -140,7 +140,7 @@ const SuppliersDashboard = () => {
         </div>
       </div>
 
-      <div className="mt-14 p-4">
+      <div className="mt-14 w-full p-4">
         <ProtectedRoute
           isAuthenticated={!!profile}
           userRole={profile?.roles || []}

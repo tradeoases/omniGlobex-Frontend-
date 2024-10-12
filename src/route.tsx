@@ -21,7 +21,6 @@ import BlogDetails from "./pages/Blogs/components/blog-details";
 import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
-import Messages from "./pages/user/buyer-profile/Messages";
 import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
 import OrderTracking from "./pages/user/buyer-profile/OrderTracking";
 import Ratings from "./pages/user/buyer-profile/Ratings";
@@ -53,6 +52,8 @@ import { useRecoilState } from "recoil";
 import { IUser, userStore } from "./store/user-store";
 import SupplierRFQ from "./pages/user/supplier-profile/SupplierRFQ";
 import CountryShowroom from "./pages/show-room/CountryShowroom";
+import MessagePage from "./components/messageing/MessagePage";
+import ConversationMessageDisplay from "./components/messageing/ConversationMessageDisplay";
 
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -91,10 +92,7 @@ const RoutesConfig = () => {
         <Route path="subscription/success" element={<StripeSuccessPage />} />
         <Route path="single-product" element={<SingleProduct />} />
         <Route path="products" element={<AllProductsPage />} />
-        <Route
-          path="show-room"
-          element={<CountryShowroom />}
-        />
+        <Route path="show-room" element={<CountryShowroom />} />
         <Route path="cookie-policy" element={<CookiesPolicyPage />} />
         <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="verify-email" element={<VerifyEmailPage />} />
@@ -104,7 +102,9 @@ const RoutesConfig = () => {
         <Route path="*" element={<NotFoundPage />} />
       </Route>
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
-        <Route path="messages" element={<Messages />} />
+        <Route path="messages" element={<MessagePage />}>
+          <Route path=":convId" element={<ConversationMessageDisplay />} />
+        </Route>
         <Route path="showRoom" element={<BuyersShowRoom />} />
         <Route path="rfq" element={<RFQManagement />} />
         <Route path="orders" element={<OrderTracking />} />
@@ -138,7 +138,9 @@ const RoutesConfig = () => {
         <Route path="business" element={<BusinessPage />}>
           <Route path=":businessId" element={<BusinessDetailPage />} />
         </Route>
-        <Route path="messages" element={<Messages />} />
+        <Route path="messages" element={<MessagePage />}>
+          <Route path=":convId" element={<ConversationMessageDisplay />} />
+        </Route>
         <Route path="logout" element={<div>Unhandled</div>} />
       </Route>
     </Routes>

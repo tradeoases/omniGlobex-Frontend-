@@ -9,9 +9,9 @@ export interface IRole {
 }
 
 export interface IUser {
-  user_id: string;
+  business_id: string;
   country_id: string;
-  businessNames: string[]
+  business_names: string[]
   city: string;
   email: string;
   active: number;
