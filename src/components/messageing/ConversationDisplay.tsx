@@ -22,10 +22,10 @@ const ConversationDisplay = () => {
         return res.data.data as IConversation[];
       }
     },
-    staleTime: 1000 * 30,
+    staleTime: 1000,
   });
 
-  console.log({ data: conversations, isSuccess, isError, error });
+  console.log({ error });
 
   return (
     <div>

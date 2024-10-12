@@ -1,73 +1,3 @@
-// import { Button } from "@/components/ui/button";
-// import { getOneCountry } from "@/service/apis/countries-services";
-// import { useQuery } from "@tanstack/react-query";
-// import { HttpStatusCode } from "axios";
-// import React from "react";
-
-// interface ISupplier {
-//   business_id: string;
-//   business_name: string;
-//   location: { country_id: string; city: string };
-//   images: {
-//     image_url: string;
-//     thumbnail_url: string;
-//     image_for: "LOGO" | "PROFILE" | "COVER";
-//   }[];
-// }
-
-// const SupplierCard: React.FC<{ supplier: ISupplier }> = ({ supplier }) => {
-//   const { data: country, isSuccess: isCountrySuccess } = useQuery({
-//     queryKey: ["country", supplier.location.country_id],
-//     queryFn: async () => {
-//       const res = await getOneCountry(supplier.location.country_id);
-//       if (
-//         res.status === HttpStatusCode.Ok ||
-//         res.status === HttpStatusCode.Created
-//       ) {
-//         return res.data.data;
-//       }
-//     },
-//   });
-//   console.log({ supplier });
-
-//   return (
-//     <div className="max-w-sm rounded p-2 my-2 overflow-hidden shadow-lg bg-white">
-//       <div className="flex">
-//         <div>
-//           {supplier.images.length > 0 &&
-//             supplier.images.find((i) => i.image_for === "PROFILE")
-//               ?.thumbnail_url && (
-//               <img
-//                 className="w-1/3 rounded-full h-48 object-contain bg-slate-400"
-//                 src={`${
-//                   supplier.images.find((i) => i.image_for === "PROFILE")
-//                     ?.thumbnail_url
-//                 }`}
-//                 alt={`${
-//                   supplier.images.find((i) => i.image_for === "PROFILE")
-//                     ?.thumbnail_url
-//                 }`}
-//               />
-//             )}
-//           {}
-//         </div>
-
-//         <div className="p-4">
-//           <h2 className="font-bold text-xl mb-2">{supplier.business_name}</h2>
-//           <p className="text-gray-700">
-//             Location: {supplier.location.city},{" "}
-//             {isCountrySuccess && country.name}
-//           </p>
-//         </div>
-//       </div>
-//       <Button className="mx-4 w-full" disabled>
-//         Start A conversation
-//       </Button>
-//     </div>
-//   );
-// };
-
-// export default SupplierCard;
 import { Button } from "@/components/ui/button";
 import { getOneCountry } from "@/service/apis/countries-services";
 import { createConversation } from "@/service/apis/message-service";
@@ -111,8 +41,9 @@ const SupplierCard: React.FC<{ supplier: ISupplier }> = ({ supplier }) => {
       res.status === HttpStatusCode.Created ||
       res.status === HttpStatusCode.Ok
     ) {
-      console.log(res.data.data);
-      navigate("buyer-dashboard/message");
+      const r = res.data.data
+      console.log({r})
+      navigate(`/buyer-dashboard/messages/${r.id}`);
     }
   };
 

@@ -47,7 +47,7 @@ export function SelectShowroom() {
   // Handle selection of a country
   const handleSelectChange = (currentValue: string) => {
     const country = countries?.find(
-      (country) => country.country_id === currentValue
+      (country) => country.name === currentValue
     );
     setValue(currentValue === value ? "" : currentValue);
     setOpen(false);

@@ -16,7 +16,7 @@ const BuyerDashboard = () => {
 
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex  flex-col h-screen">
       {/* Navbar */}
       <BuyersNavBar />
 
@@ -28,7 +28,7 @@ const BuyerDashboard = () => {
         <div
           className={`flex flex-col flex-1 p-4 transition-all duration-300 bg-white`}
         >
-          <main className="flex-1 overflow-y-auto">
+          <main className="flex-1 w-full overflow-y-auto">
             <ProtectedRoute
               isAuthenticated={!!profile}
               userRole={profile?.roles || []}
