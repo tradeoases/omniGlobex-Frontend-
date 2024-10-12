@@ -6,7 +6,7 @@ import { HttpStatusCode } from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-interface ISupplier {
+export interface ISupplier {
   business_id: string;
   business_name: string;
   location: { country_id: string; city: string };

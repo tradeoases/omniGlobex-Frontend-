@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Form,
   FormControl,
@@ -28,6 +28,10 @@ const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
 
+
+  const location = useLocation();
+  const from = location.state?.from;
+  
   const [searchParams] = useSearchParams();
   const form = useForm<z.infer<typeof resetSchema>>({
     resolver: zodResolver(resetSchema),
@@ -52,10 +56,14 @@ const ResetPassword = () => {
     }
 
     if (userData) {
-      if (userData.roles.includes("Supplier"))
-        if (userData.businessNames.length === 0) navigate(`/create-business`);
-        else navigate(`/supplier-dashboard`);
-      else navigate(`/buyer-dashboard`);
+      if (userData.roles.includes("Supplier")){
+
+        navigate(from || 'supplier-dashboard');
+      }
+      else{
+        navigate(from || 'buyer-dashboard'); 
+
+      } 
     }
 
     return () => clearTimeout(timeoutKey);

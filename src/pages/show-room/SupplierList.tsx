@@ -2,14 +2,9 @@
 import { getAllUsersInCountry } from "@/service/apis/user-services";
 import { useQuery } from "@tanstack/react-query";
 import { HttpStatusCode } from "axios";
-import SupplierCard from "./componets/SupplierCard";
+import SupplierCard, { ISupplier } from "./componets/SupplierCard";
 
-interface ISupplier {
-  business_id: string;
-  business_name: string;
-  location: { country_id: string; city: string };
-  images: { image_id: string; image_for: "LOGO" | "PROFILE" | "COVER" }[];
-}
+
 const SupplierList = ({ country }: { country: string }) => {
   const { data, isSuccess, isError, isLoading } = useQuery({
     queryKey: ["suppliers", country],

@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { AxiosResponse, HttpStatusCode, isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -37,6 +42,8 @@ const VerifyEmailPage = () => {
   const previousRoute = usePreviousRoute();
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const from = location.state?.from;
   const email = useRecoilValue<{ email: string | null; id: string | null }>(
     EmailStore
   );
@@ -115,12 +122,17 @@ const VerifyEmailPage = () => {
         localStorage.setItem("profile", JSON.stringify(data.data));
         if (data.data.roles.includes("Supplier")) {
           const stripe = await getStripe();
-          await stripe?.redirectToCheckout({
-            sessionId:
-              response.data?.data?.businessSubscription?.stripeSessionId,
-          });
+          if(response.data?.data?.businessSubscription?.stripeSessionId) {
+
+            await stripe?.redirectToCheckout({
+              sessionId:
+                response.data?.data?.businessSubscription?.stripeSessionId,
+            });
+          }else {
+            navigate(from || "supplier-dashboard");  
+          }
         } else {
-          navigate(`/buyer-dashboard`);
+          navigate(from || "buyer-dashboard");
         }
       }
     } catch (error) {

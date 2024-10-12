@@ -276,9 +276,7 @@ const LoginPage = () => {
     id: string | null;
   }> = useSetRecoilState(EmailStore);
   const navigate = useNavigate();
-  const location = useLocation();  // Get the location object
-
-  // Extract the route the user was trying to visit (default to /buyer-dashboard)
+  const location = useLocation();
   const from = location.state?.from;
 
   useEffect(() => {
