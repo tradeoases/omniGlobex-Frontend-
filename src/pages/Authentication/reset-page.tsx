@@ -58,10 +58,10 @@ const ResetPassword = () => {
     if (userData) {
       if (userData.roles.includes("Supplier")){
 
-        navigate(from || 'supplier-dashboard');
+        navigate(from || '/supplier-dashboard');
       }
       else{
-        navigate(from || 'buyer-dashboard'); 
+        navigate(from || '/buyer-dashboard'); 
 
       } 
     }
@@ -90,8 +90,8 @@ const ResetPassword = () => {
         setLoading(false);
         if (userData.roles.includes("Supplier")) {
           console.log(userData);
-          navigate(`/supplier-dashboard`);
-        } else navigate(`/buyer-dashboard`);
+          navigate(from || `/supplier-dashboard`);
+        } else navigate(from || `/buyer-dashboard`);
         setSuccessMessage(true);
 
         timeoutKey = setTimeout(() => {
