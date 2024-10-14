@@ -20,7 +20,7 @@ import {
   TbSubscript,
   TbMessage2,
 } from "react-icons/tb";
-import { BsFillCartCheckFill } from "react-icons/bs";
+// import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
 import { IoBagHandle, IoLogOut } from "react-icons/io5";
@@ -106,7 +106,7 @@ export const dashboardNavs: IDashboardNav[] = [
   { icon: <FaUser />, title: "Supplier Profile", path: "supplier-profile" },
   { icon: <IoBagHandle />, title: "Products", path: "products" },
   // { icon: <IoCard />, title: "Payment Method" },
-  { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
+  // { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
   // { icon: <FaHeart />, title: "Cart" },
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
@@ -125,10 +125,13 @@ export const dashboardNavs: IDashboardNav[] = [
   { icon: <IoLogOut />, title: "Logout", path: "logout" },
 ];
 
-export const productNavs: TProductNav[] = [`Products`, `Orders`, `Other info`];
-
 export type TProductNav = "Products" | "Orders" | "Other info";
 
+export const productNavs: { name: TProductNav; route: string }[] = [
+  { name: `Products`, route: "" },
+  { name: `Orders`, route: "orders" },
+  { name: `Other info`, route: "other-info" },
+];
 export interface IMainMenu {
   name: string;
   route: string;
@@ -334,7 +337,6 @@ export type TTopbarNav =
   | "About"
   | "Blogs"
   | "Contact";
-
 
 export interface ITopbarNav {
   title: TTopbarNav;

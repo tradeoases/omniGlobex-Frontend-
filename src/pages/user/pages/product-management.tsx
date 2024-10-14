@@ -1,14 +1,13 @@
 import { useState } from "react";
 
-import { TProductNav, productNavs } from "@/data/data";
-import { UnderConstruction } from "@/components/under-construction";
+import { productNavs } from "@/data/data";
 import { AddProductModal } from "../components/add-product-modal";
-import { ProductManagementProductTab } from "../components/product-management-product-tab";
+import { Outlet } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 interface ProductProps {}
 
 export const ProductManagement: React.FC<ProductProps> = () => {
-  const [activeTab, setActiveTab] = useState<TProductNav>(productNavs[0]);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
   return (
@@ -19,27 +18,25 @@ export const ProductManagement: React.FC<ProductProps> = () => {
       <div className="w-full  space-y-6 lg:p-8 rounded-xl  border-black">
         <div className="border-b w-full">
           <div className="w-10/12 xl:w-8/12 mx-auto flex items-center">
-            {productNavs.map((nav, i) => (
-              <p
-                onClick={() => setActiveTab(nav)}
-                key={i}
-                className={`py-3 text-xs px-2 whitespace-nowrap md:px-7 border-b cursor-pointer ${
-                  activeTab === nav ? " border-main " : " border-zinc-100 "
-                }`}
+            {productNavs.map((nav) => (
+              <NavLink
+                to={nav.route}
+                key={nav.route}
+                className={({ isActive }) =>
+                  `py-3 text-xs px-2 whitespace-nowrap md:px-7 border-b cursor-pointer ${
+                    isActive ? " border-main" : " border-zinc-100 "
+                  }`
+                }
               >
-                {nav}
-              </p>
+                {nav.name}
+              </NavLink>
             ))}
           </div>
         </div>
 
-        {activeTab === "Products" && (
-          <ProductManagementProductTab
-            onOpen={() => setOpenCreateModal(true)}
-          />
-        )}
-        {activeTab === "Orders" && <UnderConstruction />}
-        {activeTab === "Other info" && <UnderConstruction />}
+        <div className="w-full">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

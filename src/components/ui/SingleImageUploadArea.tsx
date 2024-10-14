@@ -1,4 +1,4 @@
-import React, { useState, DragEvent, ChangeEvent } from "react";
+import React, { useState, useRef, DragEvent, ChangeEvent } from "react";
 
 // Convert file to base64 string
 const toBase64 = (file: File): Promise<string> => {
@@ -14,18 +14,23 @@ interface SingleImageUploadProps {
   image: string | null;
   setImage: (image: string | null) => void;
   fieldName?: string;
+  image_url?: string;
 }
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   image,
   setImage,
-  fieldName
+  fieldName,
+  image_url,
 }: SingleImageUploadProps) => {
   const [dragging, setDragging] = useState(false);
   const [imageData, setImageData] = useState<{
     name: string;
     type: string;
   } | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleFile = async (file: File) => {
     const base64Image = await toBase64(file);
     setImageData({
@@ -35,7 +40,6 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
     setImage(base64Image);
   };
 
-  console.log({ image });
   // Handle drag and drop events
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -65,67 +69,54 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
 
   const removeImage = () => {
     setImage(null);
+    setImageData(null);
   };
 
-  const uploadToBackend = async () => {
-    try {
-      const response = await fetch("/api/imagekit/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ image }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload image");
-      }
-
-      const data = await response.json();
-      console.log("Uploaded successfully:", data);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
+  const handleImageClick = () => {
+    fileInputRef.current?.click(); // Simulate click on file input when the image is clicked
   };
 
   return (
-    <div>
-      <h2>{fieldName? fieldName :'Upload an Image'}</h2>
+    <div className="border-blue-400">
+      <h2 className="mb-4 text-lg font-semibold">
+        {fieldName ? fieldName : "Upload an Image"}
+      </h2>
 
       {/* Drag and drop zone */}
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        style={{
-          border: "2px dashed #ccc",
-          padding: "20px",
-          textAlign: "center",
-          marginBottom: "20px",
-          backgroundColor: dragging ? "#f0f8ff" : "#fff",
-        }}
+        className={`relative border-2 ${
+          dragging ? "border-blue-200 bg-blue-50" : "border-gray-300 bg-white"
+        } 
+          p-0 flex flex-col w-52 h-52 items-center justify-center rounded-full`}
       >
-        {image ? (
-          <>
-            <img
-              src={image}
-              alt={imageData?.name}
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
-            />
-            <p>{imageData?.name}</p>
-            <button onClick={removeImage}>Remove</button>
-          </>
-        ) : (
-          <>
-            <p>Drag and drop an image here</p>
-            <p>or</p>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-          </>
-        )}
-      </div>
+        <div className="relative w-full h-full m-0">
+          <img
+            src={image || image_url}
+            alt={imageData?.name}
+            className="w-full h-full rounded-full  object-cover cursor-pointer border-2 p-0 m-0"
+            onClick={handleImageClick}
+          />
 
-      {/* Upload button */}
-      {image && <button onClick={uploadToBackend}>Upload Image</button>}
+          {image && (
+            <button
+              className="absolute bottom-0 right-0 mb-4 mr-4 bg-red-500 text-white p-1 rounded-full text-xl"
+              onClick={removeImage}
+            >
+              ✕
+            </button>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden max-w-0 max-h-0 p-0 m-0"
+          />
+        </div>
+      </div>
     </div>
   );
 };

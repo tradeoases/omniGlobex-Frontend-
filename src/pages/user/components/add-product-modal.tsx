@@ -21,7 +21,7 @@ import {
   getAllProductCategories,
 } from "@/service/apis/product-services";
 import { getAllCountries, ICountry } from "@/service/apis/countries-services";
-import { HiOutlineXMark } from "react-icons/hi2";
+// import { HiOutlineXMark } from "react-icons/hi2";
 import { ICreateProduct } from "@/data/product-data";
 import {
   Select,
@@ -44,10 +44,9 @@ import { uploadImages } from "@/service/apis/image-service";
 // import { Label } from "@/components/ui/label";
 
 interface Props {
-  onClose: () => void;
 }
 
-export const AddProductModal: React.FC<Props> = ({ onClose }) => {
+export const AddProductModal: React.FC<Props> = () => {
   // const [fileProgress, setFileProgress] = useState<{ [key: string]: number }>(
   //   {}
   // );
@@ -171,14 +170,14 @@ export const AddProductModal: React.FC<Props> = ({ onClose }) => {
   return (
     <div className="fixed mt-11 cursor-pointer top-0 left-0 w-full z-10 h-full bg-black/45 p-8">
       <div className="bg-white relative w-full lg:w-4/5 xl:w-2/5 mx-auto h-full rounded-xl p-4 py-8 md:p-8 ">
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <span
             onClick={onClose}
             className="cursor-pointer hover:text-red-700 transition ease-in-out duration-200 text-lg"
           >
             <HiOutlineXMark />
           </span>
-        </div>
+        </div> */}
         {successMessage && (
           <div className="mt-4 text-green-500">{successMessage}</div>
         )}

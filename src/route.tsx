@@ -54,6 +54,11 @@ import SupplierRFQ from "./pages/user/supplier-profile/SupplierRFQ";
 import CountryShowroom from "./pages/show-room/CountryShowroom";
 import MessagePage from "./components/messageing/MessagePage";
 import ConversationMessageDisplay from "./components/messageing/ConversationMessageDisplay";
+import { UnderConstruction } from "./components/under-construction";
+import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
+import ProductEntry from "./pages/user/components/ProductEntry";
+import ProductDetails from "./pages/user/components/ProductDetails";
+import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
 
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -122,16 +127,22 @@ const RoutesConfig = () => {
         </Route>
       </Route>
       <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
-        <Route path="products" element={<ProductManagement />} />
+        <Route path="update-profile" element={<UpdateProfileForm />} />
+        <Route path="products" element={<ProductManagement />}>
+          <Route path="">
+            <Route index element={<ProductManagementProductTab />} />
+            <Route path="entry" element={<ProductEntry />} />
+            <Route path="details" element={<ProductDetails />} />
+          </Route>
+          {/* <Route path="orders" element={<UnderConstruction />} /> */}
+          <Route path="other-info" element={<UnderConstruction />} />
+        </Route>
         <Route path="supplier-rfq" element={<SupplierRFQ />} />
         <Route path="supplier-profile" element={<SupplierProfile />} />
         <Route index element={<SupplierProfile />} />
         <Route path="order" element={<BuyerOrder />} />
         <Route path="analytics" element={<AnalyticsAndReporting />} />
-        <Route
-          path="notifications"
-          element={<div>Still under construction</div>}
-        />
+        <Route path="notifications" element={<UnderConstruction />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />

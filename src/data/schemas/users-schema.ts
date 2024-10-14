@@ -45,6 +45,47 @@ export const signupSchema = z
     path: ["confirmPassword"],
   });
 
+export const updateProfileSchema = z.object({
+  business_name: z
+    .string()
+    .min(2, { message: "Business name must be at least 2 characters." })
+    .optional(),
+  profile: z
+    .object({
+      phonenumber: z.string().optional(),
+      address: z.string().optional(),
+      city: z.string().optional(),
+      country_id: z.string().optional(),
+      slogan: z.string().optional(),
+      business_type: z.string().optional(),
+      number_of_employees: z.string().optional(),
+      year_started: z.string().optional(),
+    })
+    .optional(),
+  social_media: z
+    .array(
+      z.object({
+        link_id: z.string().uuid().optional(),
+        link_for: z.enum([
+          "INSTAGRAM",
+          "FACEBOOK",
+          "TWITTER",
+          "YOUTUBE",
+          "SNAPCHAT",
+          "TIKTOK",
+          "PINTEREST",
+          "LINKEDIN",
+          "TUMBLR",
+          "TELEGRAM",
+        ]),
+        link: z.string().url({ message: "Invalid URL format" }),
+      })
+    )
+    .optional(),
+  cover_id: z.string().uuid().optional(),
+  profile_id: z.string().uuid().optional(),
+  logo_id: z.string().uuid().optional(),
+});
 
 export const loginSchema = z.object({
   email: z
