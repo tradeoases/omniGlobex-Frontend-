@@ -1,26 +1,23 @@
 const BuyersFooter = () => {
   return (
     <footer className="bg-gray-800 text-white p-4 text-center">
-      <div className="flex justify-center space-x-4">
-        <a href="/terms" className="hover:underline">
+      <div className="flex justify-center space-x-4 w-full">
+        <a href="/terms-condition" className="hover:underline">
           Terms of Use
         </a>
-        <a href="/privacy" className="hover:underline">
+        <a href="/privacy-policy" className="hover:underline">
           Privacy Policy
         </a>
-        <a href="/security" className="hover:underline">
-          Security Measures
-        </a>
-        <a href="/ip-policy" className="hover:underline">
-          IP Policy
+
+        <a href="/faq" className="hover:underline">
+          FAQ
         </a>
         <a href="/cookie-policy" className="hover:underline">
           Cookie Policy
         </a>
       </div>
       <div className="mt-2">
-        Copyright © 2024 Publishers Representatives Limited. All rights
-        reserved.
+        Copyright © 2024 OmniGlobex. All rights reserved.
       </div>
     </footer>
   );
