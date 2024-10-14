@@ -124,6 +124,11 @@ export const dashboardNavs: IDashboardNav[] = [
     path: "sales-performance",
   },
 
+  // { icon: <IoCard />, title: "Payment Method" },
+  // { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
+  // { icon: <FaHeart />, title: "Cart" },
+  // { icon: <FaAddressBook />, title: "Address" },
+  // { icon: <MdReviews />, title: "Reviews" },
   { icon: <TbSubscript />, title: "Subscription", path: "subscription" },
   {
     icon: <NotificationsIcon />,
