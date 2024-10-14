@@ -1,10 +1,9 @@
-import { Outlet } from "react-router-dom";
+import { UnderConstruction } from "@/components/under-construction";
 
 const BuyerSettings = () => {
   return (
     <div>
-      {/* Placeholder for nested routes */}
-      <Outlet />
+      <UnderConstruction />
     </div>
   );
 };

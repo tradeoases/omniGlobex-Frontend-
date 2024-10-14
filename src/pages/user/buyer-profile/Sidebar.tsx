@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { menuItems } from "./constants";
-import { FaChevronDown, FaChevronUp, FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaSignOutAlt, FaTimes } from "react-icons/fa";
 import { SelectShowroom } from "@/components/select-show-room";
 
 const SideBar = ({
@@ -11,13 +11,9 @@ const SideBar = ({
   isOpen: boolean;
   toggleSidebar: () => void;
 }) => {
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const location = useLocation();
   const sidebarRef = useRef<HTMLDivElement | null>(null);
-
-  const toggleDropdown = (index: number) => {
-    setOpenDropdown(openDropdown === index ? null : index);
-  };
+  const navigate = useNavigate();
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -34,6 +30,18 @@ const SideBar = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("profile");
+    localStorage.removeItem("token");
+    navigate("/");
+    navigate(0);
+  };
+
+  const handleMenuItemClick = (path: string) => {
+    navigate(path);
+    toggleSidebar();
+  };
 
   return (
     <div>
@@ -64,8 +72,7 @@ const SideBar = ({
             <SelectShowroom />
           </div>
 
-          {menuItems.map(({ title, path, icon, subItems }, index) => {
-            const hasSubItems = Array.isArray(subItems) && subItems.length > 0;
+          {menuItems.map(({ title, path, icon }) => {
             const isActive = location.pathname.startsWith(path || "");
 
             return (
@@ -74,9 +81,7 @@ const SideBar = ({
                   className={`flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors duration-200 ${
                     isActive ? "" : ""
                   }`}
-                  onClick={
-                    hasSubItems ? () => toggleDropdown(index) : toggleSidebar
-                  }
+                  onClick={() => handleMenuItemClick(path || "")}
                 >
                   <div className="flex items-center">
                     <span className="mr-3">{icon}</span>
@@ -89,38 +94,14 @@ const SideBar = ({
                       {title}
                     </Link>
                   </div>
-                  {hasSubItems && (
-                    <span>
-                      {openDropdown === index ? (
-                        <FaChevronUp className="ml-2" />
-                      ) : (
-                        <FaChevronDown className="ml-2" />
-                      )}
-                    </span>
-                  )}
                 </div>
-
-                {/* Submenu */}
-                {hasSubItems && openDropdown === index && (
-                  <ul className="ml-4 mt-2 rounded-md shadow-lg transition-all duration-300 ease-in-out">
-                    {subItems.map(({ title, path }) => (
-                      <li key={title} className="my-1 hover:text-main">
-                        <Link
-                          to={path}
-                          className={`block p-2 pl-6 rounded-md transition-colors duration-200 ${
-                            location.pathname === path ? "" : ""
-                          }`}
-                          onClick={toggleSidebar}
-                        >
-                          {title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </li>
             );
           })}
+          <div onClick={handleLogout} className="flex gap-2 cursor-pointer">
+            <FaSignOutAlt className="ml-2 mt-2" />
+            <span className="hover:text-main">Log out</span>
+          </div>
         </ul>
       </div>
     </div>

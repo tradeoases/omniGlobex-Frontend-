@@ -1,6 +1,8 @@
+import { UnderConstruction } from "@/components/under-construction"
+
 const BuyersProfile = () => {
   return (
-    <div>BuyersProfile</div>
+    <div><UnderConstruction/></div>
   )
 }
 

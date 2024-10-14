@@ -8,25 +8,21 @@ import { useRecoilState } from "recoil";
 import { userStore } from "@/store/user-store";
 
 const BuyerDashboard = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar visibility state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [profile] = useRecoilState(userStore);
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-
   return (
     <div className="flex  flex-col h-screen">
-      {/* Navbar */}
       <BuyersNavBar />
 
       <div className="relative flex flex-1 overflow-hidden">
-        {/* Sidebar */}
         <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-        {/* Main Content */}
         <div
-          className={`flex flex-col flex-1 p-4 transition-all duration-300 bg-white`}
+          className={`flex flex-col flex-1 transition-all duration-300 bg-white`}
         >
           <main className="flex-1 w-full overflow-y-auto">
             <ProtectedRoute

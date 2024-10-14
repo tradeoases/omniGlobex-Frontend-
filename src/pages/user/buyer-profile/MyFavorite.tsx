@@ -1,7 +1,9 @@
+import { UnderConstruction } from "@/components/under-construction";
+
 const MyFavorites = () => {
   return (
     <div>
-      <h2>My favorite</h2>
+      <h2><UnderConstruction/></h2>
     </div>
   );
 };
