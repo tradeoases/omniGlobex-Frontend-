@@ -2,51 +2,50 @@
 import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
-import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import SupplierNavBar from "./supplier-profile/SupplierNavBar";
 import { Logo } from "@/components/logo";
-import { Link } from "react-router-dom";
+
 import { useRecoilState } from "recoil";
 import { userStore } from "@/store/user-store";
 import ProtectedRoute from "@/components/ProtectedRoutes";
 import { SelectShowroom } from "@/components/select-show-room";
+import { SupplierDropDownProfile } from "./supplier-profile/SupplierDropDownProfile";
 
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const sidebarRef = useRef(null); // Reference for the sidebar
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
-  };
-  const closeDropdown = () => {
-    setDropdownOpen(false);
-  };
+  const handleClickOutside = (event: MouseEvent) => {
+    // Debugging: Log the event target to see where the click is happening
+    console.log("Clicked target:", event.target);
 
-  const handleClickOutside = (event: any) => {
-    // Check if click is outside both dropdown and sidebar
+    // Check if the click is outside both the dropdown and sidebar
     if (
       dropdownRef.current &&
-      !(dropdownRef.current as any).contains(event.target) &&
+      !dropdownRef.current.contains(event.target as Node) &&
       sidebarRef.current &&
-      !(sidebarRef.current as any).contains(event.target)
+      !sidebarRef.current.contains(event.target as Node)
     ) {
-      setDropdownOpen(false);
+      console.log("Clicked outside the sidebar and dropdown. Closing sidebar.");
       setIsSidebarOpen(false); // Close sidebar on outside click
+    } else {
+      console.log("Clicked inside the sidebar or dropdown.");
     }
   };
 
   const [profile] = useRecoilState(userStore);
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside); // Changed from 'click' to 'mousedown'
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -63,51 +62,10 @@ const SuppliersDashboard = () => {
           <NavLink to="/" className="text-2xl font-bold text-black">
             <Logo />
           </NavLink>
-          <div className="relative group">
-            <div onClick={toggleDropdown}>
-              <FaUserCircle className="text-4xl text-gray-700 cursor-pointer transition duration-300" />
-            </div>
 
-            <div
-              ref={dropdownRef}
-              className={`absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 border border-gray-200 ${
-                dropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
-              } transition-opacity duration-300 z-50`}
-            >
-              <Link
-                to="/supplier-dashboard"
-                onClick={closeDropdown}
-                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
-              >
-                Manage account
-              </Link>
-
-              <Link to="subscription" onClick={closeDropdown}>
-                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                  Subscription
-                </div>
-              </Link>
-              <Link to="order" onClick={closeDropdown}>
-                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                  Sales Performance
-                </div>
-              </Link>
-              <Link to="supplier-rfq" onClick={closeDropdown}>
-                <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                  Request for Quotation
-                </div>
-              </Link>
-              <Link
-                to="/products"
-                onClick={closeDropdown}
-                className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer"
-              >
-                Storefront Preview
-              </Link>
-              <div className="hover:bg-gray-100 px-4 py-2 text-gray-800 cursor-pointer">
-                Log out
-              </div>
-            </div>
+          {/* SupplierDropDownProfile should also have the ref to track clicks */}
+          <div ref={dropdownRef}>
+            <SupplierDropDownProfile />
           </div>
         </div>
 

@@ -59,6 +59,11 @@ import { ProductManagementProductTab } from "./pages/user/components/product-man
 import ProductEntry from "./pages/user/components/ProductEntry";
 import ProductDetails from "./pages/user/components/ProductDetails";
 import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
+import StoreFrontPreview from "./pages/user/supplier-profile/StoreFrontPreview";
+import SupplierRatings from "./pages/user/supplier-profile/SupplierRatings";
+import SupplierNotifications from "./pages/user/supplier-profile/SupplierNotifications";
+import SalesPerformance from "./pages/user/supplier-profile/SalesPerformance";
+import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
 
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -137,6 +142,13 @@ const RoutesConfig = () => {
           {/* <Route path="orders" element={<UnderConstruction />} /> */}
           <Route path="other-info" element={<UnderConstruction />} />
         </Route>
+        <Route path="products" element={<ProductManagement />} />
+        <Route path="store-front-preview" element={<StoreFrontPreview />} />
+        <Route path="ratings" element={<SupplierRatings />} />
+        <Route path="security-settings" element={<SecuritySettings />} />
+        <Route path="notifications" element={<SupplierNotifications />} />
+        <Route path="sales-performance" element={<SalesPerformance />} />
+        <Route path="manage-users" element={<ManageUsers />} />
         <Route path="supplier-rfq" element={<SupplierRFQ />} />
         <Route path="supplier-profile" element={<SupplierProfile />} />
         <Route index element={<SupplierProfile />} />
