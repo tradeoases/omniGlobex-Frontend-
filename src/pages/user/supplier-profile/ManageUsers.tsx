@@ -1,11 +1,11 @@
 import { UnderConstruction } from "@/components/under-construction";
 
-const SecuritySettings = () => {
+const ManageUsers = () => {
   return (
     <div>
-      <h2><UnderConstruction/></h2>
+      <UnderConstruction />
     </div>
   );
 };
 
-export default SecuritySettings;
+export default ManageUsers;
