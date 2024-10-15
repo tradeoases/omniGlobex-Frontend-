@@ -18,7 +18,6 @@ import {
   // TbBabyBottle,
   TbTruckReturn,
   TbSubscript,
-  TbMessage2,
 } from "react-icons/tb";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
@@ -62,9 +61,13 @@ export enum MessageText {
 
 export type TActiveMenu =
   | "Dashboard"
-  | "Supplier Profile"
+  | "Sales Performance"
   | "Products"
+  | "Start Buying Now"
+  | "Storefront Preview"
   | "Payment Method"
+  | "Rating"
+  | "Settings"
   | "Order"
   | "Cart"
   | "Subscription"
@@ -80,9 +83,13 @@ export type TActiveMenu =
   | "Notifications";
 
 export type TActivePath =
-  | ""
+  | "sales-performance"
   | "supplier-profile"
   | "products"
+  | "store-front-preview"
+  | "/buyer-dashboard"
+  | "ratings"
+  | "security-settings"
   | "payment Method"
   | "order"
   | "cart"
@@ -102,14 +109,15 @@ export interface IDashboardNav {
 }
 
 export const dashboardNavs: IDashboardNav[] = [
-  // { icon: <MdDashboard />, title: "Dashboard" },
-  { icon: <FaUser />, title: "Supplier Profile", path: "supplier-profile" },
+  { icon: <FaUser />, title: "Messages", path: "messages" },
   { icon: <IoBagHandle />, title: "Products", path: "products" },
-  // { icon: <IoCard />, title: "Payment Method" },
-  { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
-  // { icon: <FaHeart />, title: "Cart" },
-  // { icon: <FaAddressBook />, title: "Address" },
-  // { icon: <MdReviews />, title: "Reviews" },
+
+  {
+    icon: <BsFillCartCheckFill />,
+    title: "Sales Performance",
+    path: "sales-performance",
+  },
+
   { icon: <TbSubscript />, title: "Subscription", path: "subscription" },
   {
     icon: <NotificationsIcon />,
@@ -117,11 +125,20 @@ export const dashboardNavs: IDashboardNav[] = [
     path: "notifications",
   },
 
-  { icon: <TbMessage2 />, title: "Messages", path: "messages" },
-
-  // { icon: <MdReviews />, title: "Business", path: "business" },
   { icon: <MdReviews />, title: "Analytics", path: "analytics" },
-  { icon: <HiLockClosed />, title: "Change Password", path: "change-password" },
+  {
+    icon: <HiLockClosed />,
+    title: "Start Buying Now",
+    path: "/buyer-dashboard",
+  },
+  { icon: <MdReviews />, title: "Analytics", path: "analytics" },
+  {
+    icon: <MdReviews />,
+    title: "Storefront Preview",
+    path: "store-front-preview",
+  },
+  { icon: <MdReviews />, title: "Rating", path: "ratings" },
+  { icon: <MdReviews />, title: "Settings", path: "security-settings" },
   { icon: <IoLogOut />, title: "Logout", path: "logout" },
 ];
 
@@ -334,7 +351,6 @@ export type TTopbarNav =
   | "About"
   | "Blogs"
   | "Contact";
-
 
 export interface ITopbarNav {
   title: TTopbarNav;
