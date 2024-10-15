@@ -61,6 +61,7 @@ export enum MessageText {
 }
 
 export type TActiveMenu =
+  | "Dashboard"
   | "Sales Performance"
   | "Products"
   | "Start Buying Now"
@@ -117,7 +118,11 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
 
-  { icon: <BsFillCartCheckFill />, title: "Sales Performance", path: "sales-performance" },
+  {
+    icon: <BsFillCartCheckFill />,
+    title: "Sales Performance",
+    path: "sales-performance",
+  },
 
   { icon: <TbSubscript />, title: "Subscription", path: "subscription" },
   {
