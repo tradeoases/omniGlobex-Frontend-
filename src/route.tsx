@@ -59,6 +59,7 @@ import SupplierRatings from "./pages/user/supplier-profile/SupplierRatings";
 import SupplierNotifications from "./pages/user/supplier-profile/SupplierNotifications";
 import SalesPerformance from "./pages/user/supplier-profile/SalesPerformance";
 import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
+import RFQForm from "./pages/user/buyer-profile/RfqsForm";
 
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -106,12 +107,16 @@ const RoutesConfig = () => {
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
+
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
         <Route path="messages" element={<MessagePage />}>
           <Route path=":convId" element={<ConversationMessageDisplay />} />
         </Route>
         <Route path="showRoom" element={<BuyersShowRoom />} />
         <Route path="rfq" element={<RFQManagement />} />
+
+        <Route path="rfq/RFQForm" element={<RFQForm />} />
+
         <Route path="orders" element={<OrderTracking />} />
         <Route path="ratings" element={<Ratings />} />
         <Route path="settings" element={<BuyerSettings />}>
@@ -126,6 +131,7 @@ const RoutesConfig = () => {
           <Route path="preferences" element={<SourcingPreferences />} />
         </Route>
       </Route>
+      
       <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
         <Route path="products" element={<ProductManagement />} />
         <Route path="store-front-preview" element={<StoreFrontPreview />} />
