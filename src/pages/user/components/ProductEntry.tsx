@@ -19,6 +19,7 @@ import { Textarea } from "../../../components/ui/textarea";
 import {
   createProduct,
   getAllProductCategories,
+  getOneProduct,
 } from "@/service/apis/product-services";
 import { getAllCountries, ICountry } from "@/service/apis/countries-services";
 // import { HiOutlineXMark } from "react-icons/hi2";
@@ -40,21 +41,28 @@ import {
 } from "@/components/ui/popover";
 import SingleImageUpload from "@/components/ui/SingleImageUploadArea";
 import { uploadImages } from "@/service/apis/image-service";
+import { useSearchParams } from "react-router-dom";
+import MultipleImageUpload from "@/components/ui/MultipleImageUploadArea";
 
 const ProductEntry = () => {
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  useEffect(() => {
-    if (isPopoverOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+  const [searchParams] = useSearchParams();
+  const editId = searchParams.get("edit");
+  const [images, setImages] = useState<{ [k: string]: string }>({});
 
-    // Clean up on unmount
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isPopoverOpen]);
+  const { data: product, isSuccess: isProductSuccess } = useQuery({
+    queryKey: ["product", editId],
+    queryFn: async () => {
+      const res = await getOneProduct(editId || "");
+      if (
+        res.status === HttpStatusCode.Ok ||
+        res.status === HttpStatusCode.Created
+      ) {
+        return res.data.data;
+      }
+    },
+    enabled: !!editId,
+  });
+
   const [showRooms, setShowRooms] = useState<
     {
       countryId: string;
@@ -74,6 +82,16 @@ const ProductEntry = () => {
     },
   });
 
+  useEffect(() => {
+    if (isProductSuccess) {
+      form.setValue("name", product.name);
+      form.setValue("categoryId", product?.category_id);
+      form.setValue("deliveryTerms", product.delivery_terms);
+      form.setValue("description", product.description);
+      form.setValue("priceCurrency", product.price_currency);
+      form.setValue("productPrice", product.product_price);
+    }
+  }, [isProductSuccess, product, form]);
   const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (values: z.infer<typeof createProductSchema>) => {
@@ -125,7 +143,6 @@ const ProductEntry = () => {
       }
     },
   });
-
   const [image, setImage] = useState<string | null>(null);
 
   const {
@@ -237,37 +254,40 @@ const ProductEntry = () => {
                   <FormField
                     control={form.control}
                     name="categoryId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select a Category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {categories &&
-                                categories.map(
-                                  (category: {
-                                    category_id: string;
-                                    name: string;
-                                  }) => (
-                                    <SelectItem
-                                      key={category.category_id}
-                                      value={category.category_id}
-                                    >
-                                      {category.name}
-                                    </SelectItem>
-                                  )
-                                )}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      console.log({ field });
+                      return (
+                        <FormItem>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={product?.category_id || field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {categories &&
+                                  categories.map(
+                                    (category: {
+                                      category_id: string;
+                                      name: string;
+                                    }) => (
+                                      <SelectItem
+                                        key={category.category_id}
+                                        value={category.category_id}
+                                      >
+                                        {category.name}
+                                      </SelectItem>
+                                    )
+                                  )}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                 </div>
               )}
@@ -279,14 +299,13 @@ const ProductEntry = () => {
                 </div>
               )}
               {countryLoading && <div>Loading showrooms...</div>}
-              <Popover onOpenChange={(isOpen) => setIsPopoverOpen(isOpen)}>
+              <Popover>
                 <PopoverTrigger>
                   <div className="cursor-pointer border py-2 rounded text-gray-600 text-sm">
                     Select Showrooms
                   </div>
                 </PopoverTrigger>
                 <PopoverContent className="max-h-60 cursor-pointer w-64 overflow-y-auto bg-white shadow-lg rounded-md p-4 border border-gray-200">
-                  {/* Your scrollable content */}
                   {showRooms.map((room, index) => (
                     <div
                       key={index}
@@ -411,60 +430,7 @@ const ProductEntry = () => {
                 />
               </div>
             </div>
-            {/* <div className="">
-                  <div>
-                    <p className="text-base font-medium">
-                      Attached files to the products
-                    </p>
-
-                    <Label className="text-blue-500">
-                      Upload product images
-                    </Label>
-
-                    <div
-                      onDrop={handleDrop}
-                      onDragOver={handleDragOver}
-                      className="cursor-pointer rounded-xl border border-dashed border-gray-300 p-6 text-center md:border-2"
-                    >
-                      <input
-                        type="file"
-                        id="file"
-                        multiple
-                        className="hidden"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        ref={fileInputRef}
-                      />
-                      <span className="mb-4 flex w-full items-center justify-center">
-                        <HiArrowUpTray className="text-xl" />
-                      </span>
-                      <div>
-                        <span
-                          className="text-sx cursor-pointer text-blue-600 underline md:text-sm"
-                          onClick={handleBoxClick}
-                        >
-                          Chose a file
-                        </span>{" "}
-                        to Upload
-                      </div>
-                    </div>
-                    <div className="flex text-xs items-center justify-between">
-                      <span>Supported formats: JPG, PNG</span>
-                      <span>Max File size 10MB</span>
-                    </div>
-
-                    <div className="mt-4 space-y-2">
-                      {files.map((file) => (
-                        <FileDisplayItem
-                          key={file.name}
-                          removeFile={removeFile}
-                          fileProgress={fileProgress}
-                          file={file}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div> */}
+            <MultipleImageUpload images={images} setImages={setImages} />
 
             <Button type="submit" className="w-full">
               Create

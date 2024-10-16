@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICreateProduct } from "@/data/product-data";
 import request from "../base.service";
 
@@ -58,3 +59,4 @@ export const getAllProductCategories = async () =>
 
 export const createProduct = async (data: ICreateProduct) =>
   await request.post(`/product/`, data);
+export const updateProduct = async (productId: string, data: any) => await request.put(`${PATH}${productId}`, data)
