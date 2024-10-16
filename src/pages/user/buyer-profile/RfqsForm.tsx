@@ -112,6 +112,7 @@ const RFQForm: React.FC = () => {
           <input
             type="text"
             name="productName"
+            placeholder="Enter a specific product name"
             value={formData.productName}
             onChange={handleInputChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
@@ -128,6 +129,7 @@ const RFQForm: React.FC = () => {
           <select
             name="productCategory"
             value={formData.productCategory}
+
             onChange={handleInputChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           >
@@ -149,6 +151,7 @@ const RFQForm: React.FC = () => {
           <textarea
             name="aboutProduct"
             value={formData.aboutProduct}
+            placeholder="Please indicate your detailed requirements to ensure fast and efficient response from suppliers."
             onChange={handleInputChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             rows={4}
