@@ -62,11 +62,11 @@ import SupplierRatings from "./pages/user/supplier-profile/SupplierRatings";
 import SupplierNotifications from "./pages/user/supplier-profile/SupplierNotifications";
 import SalesPerformance from "./pages/user/supplier-profile/SalesPerformance";
 import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
-import { UnderConstruction } from "./components/under-construction";
-import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
-import ProductEntry from "./pages/user/components/ProductEntry";
-import ProductDetails from "./pages/user/components/ProductDetails";
-import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
+// import { UnderConstruction } from "./components/under-construction";
+// import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
+// import ProductEntry from "./pages/user/components/ProductEntry";
+// import ProductDetails from "./pages/user/components/ProductDetails";
+// import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
 
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
