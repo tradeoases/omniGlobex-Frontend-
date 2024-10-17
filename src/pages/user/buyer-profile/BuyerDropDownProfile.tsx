@@ -35,7 +35,7 @@ export function BuyerDropDownProfile() {
           <Link to="/buyer-dashboard/myAccount/favorites">
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              <span>My Favourite</span>
+              <span>My Favorites</span>
             </DropdownMenuItem>
           </Link>
           <Link to="/buyer-dashboard/myAccount/preferences">
@@ -53,7 +53,7 @@ export function BuyerDropDownProfile() {
           <Link to="/buyer-dashboard/messages">
             <DropdownMenuItem>
               <Keyboard className="mr-2 h-4 w-4" />
-              <span className="cursor-pointer">Message</span>
+              <span className="cursor-pointer">Messages</span>
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
