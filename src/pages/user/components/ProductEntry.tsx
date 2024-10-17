@@ -21,7 +21,7 @@ import {
   getAllProductCategories,
   getOneProduct,
 } from "@/service/apis/product-services";
-import { getAllCountries, ICountry } from "@/service/apis/countries-services";
+import { getAllCurrencies, getAllShowrooms } from "@/service/apis/countries-services";
 // import { HiOutlineXMark } from "react-icons/hi2";
 import { ICreateProduct } from "@/data/product-data";
 import {
@@ -61,6 +61,20 @@ const ProductEntry = () => {
       }
     },
     enabled: !!editId,
+  });
+
+
+  const { data: currencies, isSuccess: isCurrencySuccess } = useQuery({
+    queryKey: ["product", editId],
+    queryFn: async () => {
+      const res = await getAllCurrencies()
+      if (
+        res.status === HttpStatusCode.Ok ||
+        res.status === HttpStatusCode.Created
+      ) {
+        return res.data.data;
+      }
+    }
   });
 
   const [showRooms, setShowRooms] = useState<
@@ -137,7 +151,6 @@ const ProductEntry = () => {
     queryKey: ["categories"],
     queryFn: async () => {
       const response: AxiosResponse<any, any> = await getAllProductCategories();
-
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data;
       }
@@ -155,13 +168,12 @@ const ProductEntry = () => {
   } = useQuery({
     queryKey: ["countries"],
     queryFn: async () => {
-      const response: AxiosResponse<any, any> = await getAllCountries();
+      const response: AxiosResponse<any, any> = await getAllShowrooms();
       if (response.status === HttpStatusCode.Ok) {
-        return response.data.data?.map((country: ICountry) => ({
-          countryId: country.country_id,
-          country: country.name,
+        return response.data.data?.map((country: any) => ({
+          countryId: country.showroom_id,
+          country: country.showroom_name,
           selected: false,
-          currency: country.currency_name,
         }));
       }
     },
@@ -172,6 +184,8 @@ const ProductEntry = () => {
       setShowRooms(countries);
     }
   }, [countryIsSuccess, countries]);
+
+  console.log({showRooms})
 
   return (
     <div>
@@ -357,7 +371,7 @@ const ProductEntry = () => {
               <p className="text-base font-bold">Price</p>
 
               <div className=" grid-cols-1 md:grid-cols-2 grid gap-4 ">
-                <FormField
+                {isCurrencySuccess && <FormField
                   control={form.control}
                   name="priceCurrency"
                   render={({ field }) => (
@@ -371,17 +385,18 @@ const ProductEntry = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            {countries &&
-                              countries.map(
-                                (country: {
-                                  countryId: string;
+                            {currencies &&
+                              currencies.map(
+                                (currency: {
+                                  currency_id: string;
                                   currency: string;
+                                  currency_name: string;
                                 }) => (
                                   <SelectItem
-                                    key={country.countryId}
-                                    value={country.countryId}
+                                    key={currency.currency_id}
+                                    value={currency.currency_id}
                                   >
-                                    {country.currency}
+                                    {currency.currency_name}
                                   </SelectItem>
                                 )
                               )}
@@ -391,7 +406,8 @@ const ProductEntry = () => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                />}
+                {}
                 <div className="w-full">
                   <FormField
                     control={form.control}

@@ -18,3 +18,7 @@ export const getOneCountry = async (country_id: string) =>
   await request.get(`country/${country_id}`);
 export const getAllCountriesByContinent = async (continent: string) =>
   await request.get(`country/continent/${continent}`);
+
+export const getAllShowrooms = async () => await request.get(`show-room/`);
+
+export const getAllCurrencies = async () => await request.get(`currency/`);
