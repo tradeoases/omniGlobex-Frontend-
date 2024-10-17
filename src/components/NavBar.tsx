@@ -159,7 +159,7 @@ const NavBar = () => {
                   <DropdownMenuItem
                     onClick={() => navigate(`/buyer-dashboard`)}
                   >
-                    {userData.fullname}
+                    {userData.business_name}
                   </DropdownMenuItem>
 
                   {userData.roles.includes("Buyer") && (
