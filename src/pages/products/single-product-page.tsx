@@ -4,16 +4,13 @@ import { FaFacebookF, FaTwitter } from "react-icons/fa6";
 import {
   HiChevronDown,
   HiMiniFlag,
-  HiMiniHeart,
-  HiOutlineMinusSmall,
-  HiOutlinePlusSmall,
 } from "react-icons/hi2";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IProduct, getOneProduct } from "@/service/apis/product-services";
 import { ProductStore, SingleProductStore } from "@/store/product-store";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductCard } from "@/components/product-card";
 import { ProductSellerInfoTab } from "@/components/product-seller-info-tab";
@@ -22,13 +19,13 @@ import { ProductReviewTab } from "@/components/product-review-tab";
 import { productDetailNavs } from "@/data/product-data";
 
 const SingleProduct = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);
   const products = useRecoilValue<IProduct[] | null>(ProductStore);
   const [product, setProduct] = useRecoilState<IProduct | null>(
     SingleProductStore
   );
-  const [count, setCount] = useState<number>(1);
+  // const [count, setCount] = useState<number>(1);
   const [searchParams] = useSearchParams();
 
   const product_id = searchParams.get(`product_id`);
@@ -145,7 +142,7 @@ const SingleProduct = () => {
           </div>
 
           <div className="w-full flex items-center gap-x-2 text-lg">
-            <div className="border w-32 bg-white flex items-center">
+            {/* <div className="border w-32 bg-white flex items-center">
               <Button
                 onClick={() => {
                   if (count === 1) return;
@@ -179,7 +176,7 @@ const SingleProduct = () => {
               onClick={() => navigate("/login")}
             >
               Add To Cart
-            </Button>
+            </Button> */}
           </div>
 
           <div className="space-y-2">

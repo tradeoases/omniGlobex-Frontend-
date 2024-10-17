@@ -11,3 +11,5 @@ export interface ICreateProduct {
 }
 
 export const productDetailNavs = [`Description`, `Reviews`, `Seller Info`];
+
+export const productDetailReviewNavs = [`Analytics`, `Reviews`, `Sells and Information`];

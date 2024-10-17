@@ -63,7 +63,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/" replace />;
   }
 
-  return <div className="w-full">{children}</div>;
+  return <div className="w-full max-h-full overflow-scroll">{children}</div>;
 };
 
 export default ProtectedRoute;
