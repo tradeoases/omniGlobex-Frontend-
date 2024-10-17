@@ -52,21 +52,27 @@ import SupplierRFQ from "./pages/user/supplier-profile/SupplierRFQ";
 import CountryShowroom from "./pages/show-room/CountryShowroom";
 import MessagePage from "./components/messageing/MessagePage";
 import ConversationMessageDisplay from "./components/messageing/ConversationMessageDisplay";
+
 import { UnderConstruction } from "./components/under-construction";
 import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
 import ProductEntry from "./pages/user/components/ProductEntry";
 import ProductDetails from "./pages/user/components/ProductDetails";
 import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
+
 import StoreFrontPreview from "./pages/user/supplier-profile/StoreFrontPreview";
 import SupplierRatings from "./pages/user/supplier-profile/SupplierRatings";
 import SupplierNotifications from "./pages/user/supplier-profile/SupplierNotifications";
 import SalesPerformance from "./pages/user/supplier-profile/SalesPerformance";
 import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
+
 // import { UnderConstruction } from "./components/under-construction";
 // import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
 // import ProductEntry from "./pages/user/components/ProductEntry";
 // import ProductDetails from "./pages/user/components/ProductDetails";
 // import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
+
+import RFQForm from "./pages/user/buyer-profile/RfqsForm";
+
 
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -114,12 +120,16 @@ const RoutesConfig = () => {
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
+
       <Route path="/buyer-dashboard" element={<BuyerDashboard />}>
         <Route path="messages" element={<MessagePage />}>
           <Route path=":convId" element={<ConversationMessageDisplay />} />
         </Route>
         <Route path="showRoom" element={<BuyersShowRoom />} />
         <Route path="rfq" element={<RFQManagement />} />
+
+        <Route path="rfq/RFQForm" element={<RFQForm />} />
+
         <Route path="orders" element={<OrderTracking />} />
         <Route path="ratings" element={<Ratings />} />
         <Route path="settings" element={<BuyerSettings />}>
@@ -134,6 +144,7 @@ const RoutesConfig = () => {
           <Route path="preferences" element={<SourcingPreferences />} />
         </Route>
       </Route>
+      
       <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
         <Route path="update-profile" element={<UpdateProfileForm />} />
         <Route path="products" element={<ProductManagement />}>
@@ -146,7 +157,9 @@ const RoutesConfig = () => {
           <Route path="other-info" element={<UnderConstruction />} />
         </Route>
         <Route path="products" element={<ProductManagement />} />
+
         <Route index element={<StoreFrontPreview />} />
+
         <Route path="ratings" element={<SupplierRatings />} />
         <Route path="security-settings" element={<SecuritySettings />} />
         <Route path="notifications" element={<SupplierNotifications />} />

@@ -78,8 +78,5 @@ const StoreFrontPreview = () => {
           </div>
         </>
       )}
-    </div>
-  );
-};
 
 export default StoreFrontPreview;

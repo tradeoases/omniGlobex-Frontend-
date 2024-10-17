@@ -111,6 +111,7 @@ export interface IDashboardNav {
 }
 
 export const dashboardNavs: IDashboardNav[] = [
+
   {
     icon: <MdReviews />,
     title: "Storefront Preview",
@@ -124,6 +125,8 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
 
+  { icon: <FaUser />, title: "Messages", path: "messages" },
+  { icon: <IoBagHandle />, title: "Products", path: "products" },
   {
     icon: <BsFillCartCheckFill />,
     title: "Sales Performance",
@@ -141,6 +144,13 @@ export const dashboardNavs: IDashboardNav[] = [
     icon: <HiLockClosed />,
     title: "Start Buying Now",
     path: "/buyer-dashboard",
+  },
+
+  { icon: <MdReviews />, title: "Analytics", path: "analytics" },
+  {
+    icon: <MdReviews />,
+    title: "Storefront Preview",
+    path: "store-front-preview",
   },
 
   { icon: <MdReviews />, title: "Rating", path: "ratings" },

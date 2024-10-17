@@ -94,8 +94,7 @@ const SupplierProfile = () => {
           Update Info
         </Link>
       </section>
-    </div>
-  );
-};
+
+
 
 export default SupplierProfile;
