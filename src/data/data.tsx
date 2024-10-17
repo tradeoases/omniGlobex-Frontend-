@@ -1,5 +1,6 @@
 // import { ICategory } from "@/components/Sidemenu";
 import {
+  BsFillCartCheckFill,
   BsMinecartLoaded,
   // BsPaintBucket
 } from "react-icons/bs";
@@ -19,7 +20,7 @@ import {
   TbTruckReturn,
   TbSubscript,
 } from "react-icons/tb";
-import { BsFillCartCheckFill } from "react-icons/bs";
+// import { BsFillCartCheckFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
 import { IoBagHandle, IoLogOut } from "react-icons/io5";
@@ -100,7 +101,8 @@ export type TActivePath =
   | "messages"
   | "supplier-dashboard"
   | "analytics"
-  | "notifications";
+  | "notifications"
+  | "";
 
 export interface IDashboardNav {
   icon: JSX.Element;
@@ -109,15 +111,27 @@ export interface IDashboardNav {
 }
 
 export const dashboardNavs: IDashboardNav[] = [
+
+  {
+    icon: <MdReviews />,
+    title: "Storefront Preview",
+    path: "",
+  },
   { icon: <FaUser />, title: "Messages", path: "messages" },
   { icon: <IoBagHandle />, title: "Products", path: "products" },
+  // { icon: <IoCard />, title: "Payment Method" },
+  // { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
+  // { icon: <FaHeart />, title: "Cart" },
+  // { icon: <FaAddressBook />, title: "Address" },
+  // { icon: <MdReviews />, title: "Reviews" },
 
+  { icon: <FaUser />, title: "Messages", path: "messages" },
+  { icon: <IoBagHandle />, title: "Products", path: "products" },
   {
     icon: <BsFillCartCheckFill />,
     title: "Sales Performance",
     path: "sales-performance",
   },
-
   { icon: <TbSubscript />, title: "Subscription", path: "subscription" },
   {
     icon: <NotificationsIcon />,
@@ -131,21 +145,26 @@ export const dashboardNavs: IDashboardNav[] = [
     title: "Start Buying Now",
     path: "/buyer-dashboard",
   },
+
   { icon: <MdReviews />, title: "Analytics", path: "analytics" },
   {
     icon: <MdReviews />,
     title: "Storefront Preview",
     path: "store-front-preview",
   },
+
   { icon: <MdReviews />, title: "Rating", path: "ratings" },
   { icon: <MdReviews />, title: "Settings", path: "security-settings" },
   { icon: <IoLogOut />, title: "Logout", path: "logout" },
 ];
 
-export const productNavs: TProductNav[] = [`Products`, `Orders`, `Other info`];
-
 export type TProductNav = "Products" | "Orders" | "Other info";
 
+export const productNavs: { name: TProductNav; route: string }[] = [
+  { name: `Products`, route: "" },
+  { name: `Orders`, route: "orders" },
+  { name: `Other info`, route: "other-info" },
+];
 export interface IMainMenu {
   name: string;
   route: string;

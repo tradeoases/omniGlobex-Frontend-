@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "./logo";
 import img from "../assets/omniGlobexlogo.png";
@@ -33,6 +34,7 @@ const TopBar = () => {
   const handleClickOutside = (event: MouseEvent) => {
     if (
       sidebarRef.current &&
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       !(sidebarRef.current as any).contains(event.target)
     ) {
       setSidemenu(false);
@@ -94,7 +96,7 @@ const TopBar = () => {
                     <DropdownMenuItem
                       onClick={() => navigate(`/buyer-dashboard`)}
                     >
-                      {userData.fullname}
+                      {userData.business_name}
                     </DropdownMenuItem>
 
                     {userData.roles.includes("Buyer") && (

@@ -246,14 +246,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginSchema } from "@/data/schemas/users-schema";
@@ -265,6 +257,14 @@ import { SetterOrUpdater, useRecoilState, useSetRecoilState } from "recoil";
 import { EmailStore, IUser, userStore } from "@/store/user-store";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { VERIFICATION_EMAIL_MSG } from "@/utils/constants/constants";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState<boolean>(false);

@@ -36,8 +36,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { EmailStore } from "@/store/user-store";
 import { useState } from "react";
-import SingleImageUpload from "@/components/ui/SingleImageUploadArea";
-import { uploadImages } from "@/service/apis/image-service";
 
 const IntegratedSignup = () => {
   const [continent, setContinent] = useState<
@@ -66,9 +64,6 @@ const IntegratedSignup = () => {
     },
   });
 
-  const [profile, setProfile] = useState<string | null>(null);
-  const [logo, setLogo] = useState<string | null>(null);
-  const [cover, setCover] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -117,44 +112,7 @@ const IntegratedSignup = () => {
         role,
         acceptTerms,
       };
-      if (profile) {
-        const imageResponse: AxiosResponse<any, any> = await uploadImages({
-          images: [profile],
-        });
-
-        if (
-          imageResponse.status === HttpStatusCode.Ok ||
-          imageResponse.status === HttpStatusCode.Created
-        ) {
-          data.profile = imageResponse.data.data[0].image_id;
-        }
-      }
-
-      if (cover) {
-        const imageResponse: AxiosResponse<any, any> = await uploadImages({
-          images: [cover],
-        });
-
-        if (
-          imageResponse.status === HttpStatusCode.Ok ||
-          imageResponse.status === HttpStatusCode.Created
-        ) {
-          data.cover = imageResponse.data.data[0].image_id;
-        }
-      }
-
-      if (logo) {
-        const imageResponse: AxiosResponse<any, any> = await uploadImages({
-          images: [logo],
-        });
-
-        if (
-          imageResponse.status === HttpStatusCode.Ok ||
-          imageResponse.status === HttpStatusCode.Created
-        ) {
-          data.logo = imageResponse.data.data[0].image_id;
-        }
-      }
+      
 
       const response: AxiosResponse<any, any> = await signup(data);
 
@@ -542,23 +500,7 @@ const IntegratedSignup = () => {
             </form>
           </Form>
         </div>
-        <div>
-          <SingleImageUpload
-            image={profile}
-            fieldName="Profile Image"
-            setImage={(image: string | null) => setProfile(image)}
-          />
-          <SingleImageUpload
-            image={cover}
-            fieldName="Cover Image"
-            setImage={(image: string | null) => setCover(image)}
-          />
-          <SingleImageUpload
-            image={logo}
-            fieldName="Logo Image"
-            setImage={(image: string | null) => setLogo(image)}
-          />
-        </div>
+        
       </div>
     </div>
   );

@@ -18,7 +18,6 @@ import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
 import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
 import BlogDetails from "./pages/Blogs/components/blog-details";
-import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
 import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
@@ -41,7 +40,6 @@ import { BuyerOrder } from "./components/buyer-order";
 import AnalyticsAndReporting from "./pages/user/supplier-profile/Analytics";
 import { ReviewsDashboard } from "./components/reviews-dashbaord";
 import Subscriptions from "./pages/user/pages/Subscriptions";
-import BusinessPage from "./pages/user/pages/BusinessPage";
 import App from "./App";
 import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
@@ -54,12 +52,27 @@ import SupplierRFQ from "./pages/user/supplier-profile/SupplierRFQ";
 import CountryShowroom from "./pages/show-room/CountryShowroom";
 import MessagePage from "./components/messageing/MessagePage";
 import ConversationMessageDisplay from "./components/messageing/ConversationMessageDisplay";
+
+import { UnderConstruction } from "./components/under-construction";
+import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
+import ProductEntry from "./pages/user/components/ProductEntry";
+import ProductDetails from "./pages/user/components/ProductDetails";
+import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
+
 import StoreFrontPreview from "./pages/user/supplier-profile/StoreFrontPreview";
 import SupplierRatings from "./pages/user/supplier-profile/SupplierRatings";
 import SupplierNotifications from "./pages/user/supplier-profile/SupplierNotifications";
 import SalesPerformance from "./pages/user/supplier-profile/SalesPerformance";
 import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
+
+// import { UnderConstruction } from "./components/under-construction";
+// import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
+// import ProductEntry from "./pages/user/components/ProductEntry";
+// import ProductDetails from "./pages/user/components/ProductDetails";
+// import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
+
 import RFQForm from "./pages/user/buyer-profile/RfqsForm";
+
 
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
@@ -133,28 +146,45 @@ const RoutesConfig = () => {
       </Route>
       
       <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
+        <Route path="update-profile" element={<UpdateProfileForm />} />
+        <Route path="products" element={<ProductManagement />}>
+          <Route path="">
+            <Route index element={<ProductManagementProductTab />} />
+            <Route path="entry" element={<ProductEntry />} />
+            <Route path="details" element={<ProductDetails />} />
+          </Route>
+          {/* <Route path="orders" element={<UnderConstruction />} /> */}
+          <Route path="other-info" element={<UnderConstruction />} />
+        </Route>
         <Route path="products" element={<ProductManagement />} />
-        <Route path="store-front-preview" element={<StoreFrontPreview />} />
+
+        <Route index element={<StoreFrontPreview />} />
+
         <Route path="ratings" element={<SupplierRatings />} />
         <Route path="security-settings" element={<SecuritySettings />} />
         <Route path="notifications" element={<SupplierNotifications />} />
         <Route path="sales-performance" element={<SalesPerformance />} />
         <Route path="manage-users" element={<ManageUsers />} />
+        <Route path="update-profile" element={<UpdateProfileForm />} />
+        <Route path="products" element={<ProductManagement />}>
+          <Route path="">
+            <Route index element={<ProductManagementProductTab />} />
+            <Route path="entry" element={<ProductEntry />} />
+            <Route path="details" element={<ProductDetails />} />
+          </Route>
+          {/* <Route path="orders" element={<UnderConstruction />} /> */}
+          <Route path="other-info" element={<UnderConstruction />} />
+        </Route>
         <Route path="supplier-rfq" element={<SupplierRFQ />} />
         <Route path="supplier-profile" element={<SupplierProfile />} />
         <Route index element={<SupplierProfile />} />
         <Route path="order" element={<BuyerOrder />} />
         <Route path="analytics" element={<AnalyticsAndReporting />} />
-        <Route
-          path="notifications"
-          element={<div>Still under construction</div>}
-        />
+        <Route path="notifications" element={<UnderConstruction />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />
-        <Route path="business" element={<BusinessPage />}>
-          <Route path=":businessId" element={<BusinessDetailPage />} />
-        </Route>
+        
         <Route path="messages" element={<MessagePage />}>
           <Route path=":convId" element={<ConversationMessageDisplay />} />
         </Route>

@@ -1,3 +1,4 @@
+import { IUpdateProfileData } from "@/store/user-store";
 import request from "../base.service";
 
 const PATH = "user/";
@@ -84,6 +85,10 @@ export const getUserPreferences = async () =>
 
 export const startPasswordReset = async (email: string) =>
   await request.post(`${PATH}reset-password/start/${email}`);
+
+export const updateProfile = async (data: IUpdateProfileData) =>
+  await request.put(`${PATH}update-profile/`, data);
+
 
 export const completePasswordResetComplete = async (data: {
   id: string;

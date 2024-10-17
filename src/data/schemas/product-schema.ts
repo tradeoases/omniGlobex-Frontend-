@@ -12,3 +12,18 @@ export const createProductSchema = z.object({
   // showRooms: z.array(z.string().uuid("Must be a valid UUID")).optional(),
   // brandId: z.string().uuid().optional(),
 });
+
+export const updateProductSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  categoryId: z.string().optional(),
+  productPrice: z.number().optional(),
+  priceCurrency: z.string().uuid().optional(),
+  tags: z.string().optional(),
+  deliveryTerms: z.string().optional(),
+  inStock: z.number().optional(),
+  coverImage: z.string().uuid().optional(),
+  productImages: z.array(z.string().uuid()).optional(),
+});
+
+
