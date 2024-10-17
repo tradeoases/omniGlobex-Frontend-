@@ -101,7 +101,8 @@ export type TActivePath =
   | "messages"
   | "supplier-dashboard"
   | "analytics"
-  | "notifications";
+  | "notifications"
+  | "";
 
 export interface IDashboardNav {
   icon: JSX.Element;
@@ -110,6 +111,11 @@ export interface IDashboardNav {
 }
 
 export const dashboardNavs: IDashboardNav[] = [
+  {
+    icon: <MdReviews />,
+    title: "Storefront Preview",
+    path: "",
+  },
   { icon: <FaUser />, title: "Messages", path: "messages" },
   { icon: <IoBagHandle />, title: "Products", path: "products" },
   // { icon: <IoCard />, title: "Payment Method" },
@@ -123,12 +129,6 @@ export const dashboardNavs: IDashboardNav[] = [
     title: "Sales Performance",
     path: "sales-performance",
   },
-
-  // { icon: <IoCard />, title: "Payment Method" },
-  // { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
-  // { icon: <FaHeart />, title: "Cart" },
-  // { icon: <FaAddressBook />, title: "Address" },
-  // { icon: <MdReviews />, title: "Reviews" },
   { icon: <TbSubscript />, title: "Subscription", path: "subscription" },
   {
     icon: <NotificationsIcon />,
@@ -142,12 +142,7 @@ export const dashboardNavs: IDashboardNav[] = [
     title: "Start Buying Now",
     path: "/buyer-dashboard",
   },
-  { icon: <MdReviews />, title: "Analytics", path: "analytics" },
-  {
-    icon: <MdReviews />,
-    title: "Storefront Preview",
-    path: "store-front-preview",
-  },
+
   { icon: <MdReviews />, title: "Rating", path: "ratings" },
   { icon: <MdReviews />, title: "Settings", path: "security-settings" },
   { icon: <IoLogOut />, title: "Logout", path: "logout" },

@@ -18,7 +18,6 @@ import IntegratedSignup from "./pages/Authentication/IntegratedSignup";
 import { TermsPage } from "./pages/privacy-policy/terms-page";
 import { CookiesPolicyPage } from "./pages/privacy-policy/cookies-page";
 import BlogDetails from "./pages/Blogs/components/blog-details";
-import BusinessDetailPage from "./pages/user/pages/BusinessDetailPage";
 import DashboardLayout from "./pages/user/DashboardLayout";
 import { Overview } from "./components/profile-dashboard/overview";
 import BuyersShowRoom from "./pages/user/buyer-profile/BuyersShowRoom";
@@ -41,7 +40,6 @@ import { BuyerOrder } from "./components/buyer-order";
 import AnalyticsAndReporting from "./pages/user/supplier-profile/Analytics";
 import { ReviewsDashboard } from "./components/reviews-dashbaord";
 import Subscriptions from "./pages/user/pages/Subscriptions";
-import BusinessPage from "./pages/user/pages/BusinessPage";
 import App from "./App";
 import SuppliersDashboard from "./pages/user/profile-page";
 import BuyerDashboard from "./pages/user/buyer-profile/BuyerDashboard";
@@ -148,7 +146,7 @@ const RoutesConfig = () => {
           <Route path="other-info" element={<UnderConstruction />} />
         </Route>
         <Route path="products" element={<ProductManagement />} />
-        <Route path="store-front-preview" element={<StoreFrontPreview />} />
+        <Route index element={<StoreFrontPreview />} />
         <Route path="ratings" element={<SupplierRatings />} />
         <Route path="security-settings" element={<SecuritySettings />} />
         <Route path="notifications" element={<SupplierNotifications />} />
@@ -173,9 +171,7 @@ const RoutesConfig = () => {
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />
-        <Route path="business" element={<BusinessPage />}>
-          <Route path=":businessId" element={<BusinessDetailPage />} />
-        </Route>
+        
         <Route path="messages" element={<MessagePage />}>
           <Route path=":convId" element={<ConversationMessageDisplay />} />
         </Route>
