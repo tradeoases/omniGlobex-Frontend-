@@ -17,7 +17,7 @@ export const ProductPageProductCard: React.FC<IProduct> = ({
     <div
       className="w-full rounded-xl p-6 relative shadow space-y-4 bg-white"
       onMouseEnter={() => setOpen(true)}
-      onClick={() => navigate(`entry?edit=${product_id}`)}
+      onClick={() => navigate(`details/${product_id}`)}
     >
       <div className="w-full h-52 rounded-xl flex items-center justify-center bg-gray-300">
         <img

@@ -111,7 +111,7 @@ const TopBar = () => {
                       <DropdownMenuItem
                         onClick={() => navigate(`/supplier-dashboard/messages`)}
                       >
-                        Manage supplies
+                        suppliers Dashboard
                       </DropdownMenuItem>
                     )}
 
