@@ -63,9 +63,7 @@ const AllProductsPage = () => {
       ...catParams,
     ],
     queryFn: async () => {
-      const params = `?page=${page}&pageSize=${pageSize}&countryId=${
-        searchParams.get("country") ? searchParams.get("country") : ""
-      }`;
+      const params = `?page=${page}&pageSize=${pageSize}`;
 
       if (searchParams.get("category"))
         catParams.push(searchParams.get("category") || "");
@@ -76,11 +74,16 @@ const AllProductsPage = () => {
             : ""
         }${catParams.length > 0 ? `&categories=${catParams.join(",")}` : ""} 
         ${
-           searchParams.get("currency")
+          searchParams.get("currency")
             ? `&currency=${searchParams.get("currency")}`
             : ""
         }
-        `
+        ${
+          searchParams.get("country")
+            ? `&countryId=${searchParams.get("country")}`
+            : ""
+        }
+        `.trim()
       );
 
       if (response.status === HttpStatusCode.Ok) {
@@ -106,6 +109,7 @@ const AllProductsPage = () => {
     fet();
   }, []);
 
+  console.log(products)
   return (
     <div className="w-full   grid grid-cols-1 lg:grid-cols-4 gap-x-8">
       <SideBar onOpen={() => setOpenMenu(false)} open={openMenu} />
@@ -340,6 +344,13 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
             Max
             <Input placeholder="max" />
           </Label>
+        </div>
+        <div className="pb-8 w-full gap-x-4">
+          <Label>Search</Label>
+          <Input
+            className="w-full"
+            placeholder="Search product, origin, price"
+          />
         </div>
       </div>
     </div>

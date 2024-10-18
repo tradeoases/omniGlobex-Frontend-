@@ -20,6 +20,7 @@ import {
   createProduct,
   getAllProductCategories,
   getOneProduct,
+  updateProduct,
 } from "@/service/apis/product-services";
 import {
   getAllCurrencies,
@@ -44,10 +45,11 @@ import {
 } from "@/components/ui/popover";
 import SingleImageUpload from "@/components/ui/SingleImageUploadArea";
 import { uploadImages } from "@/service/apis/image-service";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import MultipleImageUpload from "@/components/ui/MultipleImageUploadArea";
 
 const ProductEntry = () => {
+  const navigate =useNavigate()
   const [searchParams] = useSearchParams();
   const editId = searchParams.get("edit");
   const [images, setImages] = useState<{ [k: string]: string }>({});
@@ -72,14 +74,19 @@ const ProductEntry = () => {
     isError: isCurrencyError,
     isLoading: isCurrencyLoading,
   } = useQuery({
-    queryKey: ["product", editId],
+    queryKey: ["currencies"],
     queryFn: async () => {
       const res = await getAllCurrencies();
       if (
         res.status === HttpStatusCode.Ok ||
         res.status === HttpStatusCode.Created
       ) {
-        return res.data.data;
+        console.log({ currencies: res.data.data });
+        return res.data.data as {
+          currency: string;
+          currency_id: string;
+          currency_name: string;
+        }[];
       }
     },
   });
@@ -105,14 +112,19 @@ const ProductEntry = () => {
 
   useEffect(() => {
     if (isProductSuccess) {
+      const cur =
+        currencies?.find((cur) => cur.currency === product.price_currency)
+          ?.currency_id || "";
+      console.log({ cur });
+      console.log(product);
       form.setValue("name", product.name);
       form.setValue("categoryId", product?.category_id);
       form.setValue("deliveryTerms", product.delivery_terms);
       form.setValue("description", product.description);
-      form.setValue("priceCurrency", product.price_currency);
+      form.setValue("priceCurrency", cur);
       form.setValue("productPrice", product.product_price);
     }
-  }, [isProductSuccess, product, form]);
+  }, [isProductSuccess, product, form, currencies]);
   const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (values: z.infer<typeof createProductSchema>) => {
@@ -123,6 +135,7 @@ const ProductEntry = () => {
           .filter((i) => i.selected)
           .map((item) => item.countryId),
       };
+
       if (image) {
         const imageResponse: AxiosResponse<any, any> = await uploadImages({
           images: [image],
@@ -145,21 +158,38 @@ const ProductEntry = () => {
           imagesResponse.status === HttpStatusCode.Ok ||
           imagesResponse.status === HttpStatusCode.Created
         ) {
-          console.log(imagesResponse.data.data);
           data.productImages = imagesResponse.data.data.map(
             (image: { image_id: string }) => image.image_id
           );
         }
       }
 
-      const response: AxiosResponse<any, any> = await createProduct(data);
-      if (response.status === HttpStatusCode.Ok) {
-        form.reset();
-        setSuccessMessage("Product added successfully!");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 3000);
+      // If `editId` exists, update the product
+      if (editId) {
+        const response: AxiosResponse<any, any> = await updateProduct(
+          editId,
+          data
+        );
+        
+        if (response.status === HttpStatusCode.Ok) {
+          setSuccessMessage("Product updated successfully!");
+          navigate('/supplier-dashboard/products')
+        }
+      } else {
+        // Otherwise, create a new product
+        const response: AxiosResponse<any, any> = await createProduct(data);
+        if (response.status === HttpStatusCode.Ok) {
+          form.reset();
+          navigate('/supplier-dashboard/products')
+          setSuccessMessage("Product added successfully!");
+        }
       }
+
+      
+
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -204,13 +234,16 @@ const ProductEntry = () => {
       const showrooms = countries.map((country: any) => ({
         countryId: country.showroom_id,
         country: country.showroom_name,
-        selected: false,
+        selected: product.showRooms.find(
+          (psr: any) => country.showroom_id === psr.country_id
+        )
+          ? true
+          : false,
       }));
-      console.log({ showrooms });
 
       setShowRooms(showrooms);
     }
-  }, [countryIsSuccess, countries]);
+  }, [countryIsSuccess, countries, product, editId]);
 
   return (
     <div>
@@ -370,6 +403,7 @@ const ProductEntry = () => {
             <SingleImageUpload
               image={image}
               setImage={(image: string | null): void => setImage(image)}
+              image_url={product?.cover_image.thumbnail_url}
             />
 
             <div className="">
@@ -411,7 +445,13 @@ const ProductEntry = () => {
                         <FormItem>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
+                            defaultValue={
+                              currencies?.find(
+                                (r) => r.currency === product?.price_currency
+                              )?.currency_id ||
+                              field.value ||
+                              ""
+                            }
                           >
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select a currency" />
@@ -419,6 +459,7 @@ const ProductEntry = () => {
                             <SelectContent>
                               <SelectGroup>
                                 {currencies &&
+                                  Array.isArray(currencies) &&
                                   currencies?.map(
                                     (currency: {
                                       currency_id: string;

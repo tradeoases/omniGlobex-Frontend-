@@ -40,7 +40,7 @@ export function SelectShowroom() {
     queryFn: async () => {
       const response = await getAllShowrooms();
       if (response.status === 200) {
-        console.log({showrooms: response.data.data})
+        console.log({ showrooms: response.data.data });
         return response.data.data as any;
       }
     },
@@ -60,8 +60,6 @@ export function SelectShowroom() {
     }
   };
 
-  console.log();
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -71,10 +69,11 @@ export function SelectShowroom() {
           aria-expanded={open}
           className={`w-[170px] justify-between ${
             isFixed ? "fixed top-10 left-10 z-10" : ""
-          }`} // Add fixed class conditionally
+          }`}
         >
           {value
-            ? countries?.find((country: any) => country.showroom_name === value)?.showroom_name
+            ? countries?.find((country: any) => country.showroom_name === value)
+                ?.showroom_name
             : "Select showroom..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -104,7 +103,9 @@ export function SelectShowroom() {
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === country.showroom_name ? "opacity-100" : "opacity-0"
+                        value === country.showroom_name
+                          ? "opacity-100"
+                          : "opacity-0"
                       )}
                     />
                     {country.showroom_name}

@@ -10,6 +10,6 @@ export interface ICreateProduct {
   coverImage?: string;
 }
 
-export const productDetailNavs = [`Description`, `Reviews`, `Seller Info`];
+export const productDetailNavs = [`Delivery Terms`, `Reviews`, `Seller Info`];
 
 export const productDetailReviewNavs = [`Analytics`, `Reviews`, `Sells and Information`];
