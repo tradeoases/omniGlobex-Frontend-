@@ -49,7 +49,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import MultipleImageUpload from "@/components/ui/MultipleImageUploadArea";
 
 const ProductEntry = () => {
-  const navigate =useNavigate()
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const editId = searchParams.get("edit");
   const [images, setImages] = useState<{ [k: string]: string }>({});
@@ -170,22 +170,20 @@ const ProductEntry = () => {
           editId,
           data
         );
-        
+
         if (response.status === HttpStatusCode.Ok) {
           setSuccessMessage("Product updated successfully!");
-          navigate('/supplier-dashboard/products')
+          navigate("/supplier-dashboard/products");
         }
       } else {
         // Otherwise, create a new product
         const response: AxiosResponse<any, any> = await createProduct(data);
         if (response.status === HttpStatusCode.Ok) {
           form.reset();
-          navigate('/supplier-dashboard/products')
+          navigate("/supplier-dashboard/products");
           setSuccessMessage("Product added successfully!");
         }
       }
-
-      
 
       setTimeout(() => {
         setSuccessMessage("");
@@ -234,8 +232,8 @@ const ProductEntry = () => {
       const showrooms = countries.map((country: any) => ({
         countryId: country.showroom_id,
         country: country.showroom_name,
-        selected: product.showRooms.find(
-          (psr: any) => country.showroom_id === psr.country_id
+        selected: product?.showRooms?.find(
+          (psr: any) => country?.showroom_id === psr?.country_id
         )
           ? true
           : false,
