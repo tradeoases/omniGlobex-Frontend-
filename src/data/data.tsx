@@ -111,12 +111,12 @@ export interface IDashboardNav {
 }
 
 export const dashboardNavs: IDashboardNav[] = [
-
   {
     icon: <MdReviews />,
     title: "Storefront Preview",
     path: "",
   },
+
   // { icon: <FaUser />, title: "Messages", path: "messages" },
   // { icon: <IoBagHandle />, title: "Products", path: "products" },
   // { icon: <IoCard />, title: "Payment Method" },
@@ -124,6 +124,7 @@ export const dashboardNavs: IDashboardNav[] = [
   // { icon: <FaHeart />, title: "Cart" },
   // { icon: <FaAddressBook />, title: "Address" },
   // { icon: <MdReviews />, title: "Reviews" },
+
 
   { icon: <FaUser />, title: "Messages", path: "messages" },
   { icon: <IoBagHandle />, title: "Products", path: "products" },
@@ -139,22 +140,32 @@ export const dashboardNavs: IDashboardNav[] = [
     path: "notifications",
   },
 
-  { icon: <MdReviews />, title: "Analytics", path: "analytics" },
   {
     icon: <HiLockClosed />,
     title: "Start Buying Now",
     path: "/buyer-dashboard",
   },
-
   { icon: <MdReviews />, title: "Analytics", path: "analytics" },
-  {
-    icon: <MdReviews />,
-    title: "Storefront Preview",
-    path: "store-front-preview",
-  },
 
   { icon: <MdReviews />, title: "Rating", path: "ratings" },
-  { icon: <MdReviews />, title: "Settings", path: "security-settings" },
+
+  // Settings with Submenu
+  {
+    icon: <MdReviews />,
+    title: "Settings",
+    path: "security-settings", // No direct link for Settings
+    // submenu: [
+    //   {
+    //     title: "Security Settings",
+    //     path: "security-settings",
+    //   },
+    //   {
+    //     title: "Change Password",
+    //     path: "change-password",
+    //   },
+    // ],
+  },
+
   { icon: <IoLogOut />, title: "Logout", path: "logout" },
 ];
 
