@@ -8,7 +8,7 @@ import {
   // HiOutlinePlusSmall,
 } from "react-icons/hi2";
 import { BiLogoInstagramAlt } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getAllProductCategories,
   getOneProduct,
@@ -24,13 +24,16 @@ import { useQuery } from "@tanstack/react-query";
 import { UnderConstruction } from "@/components/under-construction";
 
 const SingleProduct = () => {
-  // const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);
-
-  // const [count, setCount] = useState<number>(1);
   const [searchParams] = useSearchParams();
-
   const product_id = searchParams.get(`product_id`);
+  const [productImage, setProductImages] = useState<
+    {
+      image_url?: string;
+      thumbnail_url?: string;
+      currentImage: boolean;
+    }[]
+  >();
 
   const {
     isLoading: categoryLoading,
@@ -70,7 +73,17 @@ const SingleProduct = () => {
     enabled: !!product_id, // Ensure that the query only runs if there's an ID
   });
 
-  console.log({ product });
+  useEffect(() => {
+    if (isProductSuccess && product) {
+      setProductImages([
+        { ...product.cover_image, currentImage: true },
+        ...product.productImages.map((image) => ({
+          ...image,
+          currentImage: false,
+        })),
+      ]);
+    }
+  }, [isProductSuccess, product]);
 
   if (isProductLoading) {
     return (
@@ -95,25 +108,35 @@ const SingleProduct = () => {
               <div className="w-full border p-8">
                 <div className="w-full h-96 flex items-center justify-center bg-gray-400">
                   <img
-                    src={product?.cover_image?.thumbnail_url}
+                    src={
+                      productImage?.find((image) => image.currentImage === true)
+                        ?.thumbnail_url
+                    }
                     alt={product?.name}
                     className="object-cover h-full w-full"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-5 gap-2">
-                {product?.productImages.map((productImage) => (
+                {productImage?.map((productImage) => (
                   <div
-                    key={productImage.image_id}
-                    className="w-full p-4 border"
+                    key={productImage.thumbnail_url}
+                    className="w-full p-0 border"
+                    onClick={() => {
+                      setProductImages((prev) => {
+                        return prev?.map((image) => ({
+                          ...image,
+                          currentImage:
+                            image.thumbnail_url === productImage.thumbnail_url,
+                        }));
+                      });
+                    }}
                   >
-                    <div className="h-20 bg-gray-400">
-                      <img
-                        src={productImage?.thumbnail_url}
-                        alt={product?.name}
-                        className="object-cover h-full w-full"
-                      />
-                    </div>
+                    <img
+                      src={productImage?.thumbnail_url}
+                      alt={product?.name}
+                      className="object-cover h-full w-full"
+                    />
                   </div>
                 ))}
               </div>
