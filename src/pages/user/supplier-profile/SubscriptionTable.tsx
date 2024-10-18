@@ -1,3 +1,153 @@
+// // import React from 'react';
+
+// // const MembershipPlansTable = () => {
+// //   // Subscription plans data
+// //   const plans = [
+// //     {
+// //       name: 'Basic Membership',
+// //       price: 'Free for 1 month',
+// //       features: {
+// //         basicServices: true,
+// //         analytics: 'Basic',
+// //         messaging: 'Limited',
+// //         consortium: false,
+// //         verification: false,
+// //         support: 'Basic',
+// //         upgrade: true,
+// //         advancedServices: false,
+// //         prioritySupport: false,
+// //         advertising: false,
+// //         accountManager: false,
+// //       },
+// //     },
+// //     {
+// //       name: 'Standard Membership',
+// //       price: '$1,000 per year',
+// //       features: {
+// //         basicServices: true,
+// //         analytics: 'Enhanced',
+// //         messaging: 'Unlimited',
+// //         consortium: true,
+// //         verification: true,
+// //         support: 'Standard',
+// //         upgrade: true,
+// //         advancedServices: true,
+// //         prioritySupport: false,
+// //         advertising: false,
+// //         accountManager: false,
+// //       },
+// //     },
+// //     {
+// //       name: 'Premium Membership',
+// //       price: '$2,500 per year',
+// //       features: {
+// //         basicServices: true,
+// //         analytics: 'Advanced',
+// //         messaging: 'Unlimited',
+// //         consortium: true,
+// //         verification: true,
+// //         support: 'Priority',
+// //         upgrade: true,
+// //         advancedServices: true,
+// //         prioritySupport: true,
+// //         advertising: true,
+// //         accountManager: true,
+// //       },
+// //     },
+// //   ];
+
+// //   return (
+// //     <div className="container mx-auto px-4 py-8">
+// //       <h1 className="text-3xl font-bold text-center mb-8">OmniGlobex Membership Plans</h1>
+// //       <div className="overflow-x-auto">
+// //         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+// //           <thead>
+// //             <tr>
+// //               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Features</th>
+// //               {plans.map((plan) => (
+// //                 <th key={plan.name} className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+// //                   {plan.name} <br />({plan.price})
+// //                 </th>
+// //               ))}
+// //             </tr>
+// //           </thead>
+// //           <tbody className="bg-white divide-y divide-gray-200">
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Access to basic services</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.basicServices ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Analytics and reporting tools</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.analytics}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Messaging capability</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.messaging}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Access to Consortium feature</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.consortium ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Verification sign included</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.verification ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Customer support level</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.support}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Upgrade options available</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.upgrade ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Advanced business services</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.advancedServices ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Priority customer support</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.prioritySupport ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Advertising tools</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.advertising ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //             <tr>
+// //               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Dedicated account manager</td>
+// //               {plans.map((plan) => (
+// //                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.accountManager ? '✔️' : '❌'}</td>
+// //               ))}
+// //             </tr>
+// //           </tbody>
+// //         </table>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default MembershipPlansTable;
+// // src/components/MembershipPlansTable.js
+
 // import React from 'react';
 
 // const MembershipPlansTable = () => {
@@ -63,9 +213,9 @@
 //         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
 //           <thead>
 //             <tr>
-//               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Features</th>
+//               <th className="px-2 py-3 text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">Features</th>
 //               {plans.map((plan) => (
-//                 <th key={plan.name} className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+//                 <th key={plan.name} className="px-2 py-3 text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">
 //                   {plan.name} <br />({plan.price})
 //                 </th>
 //               ))}
@@ -73,69 +223,69 @@
 //           </thead>
 //           <tbody className="bg-white divide-y divide-gray-200">
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Access to basic services</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Access to basic services</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.basicServices ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.basicServices ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Analytics and reporting tools</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Analytics and reporting tools</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.analytics}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.analytics}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Messaging capability</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Messaging capability</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.messaging}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.messaging}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Access to Consortium feature</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Access to Consortium feature</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.consortium ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.consortium ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Verification sign included</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Verification sign included</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.verification ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.verification ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Customer support level</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Customer support level</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.support}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.support}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Upgrade options available</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Upgrade options available</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.upgrade ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.upgrade ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Advanced business services</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Advanced business services</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.advancedServices ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.advancedServices ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Priority customer support</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Priority customer support</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.prioritySupport ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.prioritySupport ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Advertising tools</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Advertising tools</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.advertising ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.advertising ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //             <tr>
-//               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Dedicated account manager</td>
+//               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Dedicated account manager</td>
 //               {plans.map((plan) => (
-//                 <td key={plan.name} className="px-6 py-4 text-center">{plan.features.accountManager ? '✔️' : '❌'}</td>
+//                 <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.accountManager ? '✔️' : '❌'}</td>
 //               ))}
 //             </tr>
 //           </tbody>
@@ -156,6 +306,7 @@ const MembershipPlansTable = () => {
     {
       name: 'Basic Membership',
       price: 'Free for 1 month',
+      availability: 'Available',
       features: {
         basicServices: true,
         analytics: 'Basic',
@@ -173,35 +324,37 @@ const MembershipPlansTable = () => {
     {
       name: 'Standard Membership',
       price: '$1,000 per year',
+      availability: 'Not Available',
       features: {
         basicServices: true,
         analytics: 'Enhanced',
         messaging: 'Unlimited',
         consortium: true,
-        verification: true,
+        verification: 'Coming Soon',
         support: 'Standard',
         upgrade: true,
-        advancedServices: true,
+        advancedServices: 'Coming Soon',
         prioritySupport: false,
-        advertising: false,
+        advertising: 'Coming Soon',
         accountManager: false,
       },
     },
     {
       name: 'Premium Membership',
       price: '$2,500 per year',
+      availability: 'Not Available',
       features: {
         basicServices: true,
         analytics: 'Advanced',
         messaging: 'Unlimited',
         consortium: true,
-        verification: true,
+        verification: 'Coming Soon',
         support: 'Priority',
         upgrade: true,
-        advancedServices: true,
+        advancedServices: 'Coming Soon',
         prioritySupport: true,
-        advertising: true,
-        accountManager: true,
+        advertising: 'Coming Soon',
+        accountManager: 'Coming Soon',
       },
     },
   ];
@@ -216,7 +369,8 @@ const MembershipPlansTable = () => {
               <th className="px-2 py-3 text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">Features</th>
               {plans.map((plan) => (
                 <th key={plan.name} className="px-2 py-3 text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                  {plan.name} <br />({plan.price})
+                  {plan.name} <br />({plan.price}) <br></br>
+                  <div className={`font-bold ${plan.availability !== 'Available'? 'text-red-500': 'text-black'}`}>{plan.availability}</div>
                 </th>
               ))}
             </tr>
@@ -249,7 +403,14 @@ const MembershipPlansTable = () => {
             <tr>
               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Verification sign included</td>
               {plans.map((plan) => (
-                <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.verification ? '✔️' : '❌'}</td>
+                <td
+                  key={plan.name}
+                  className={`px-2 py-4 text-center text-xs md:text-sm ${
+                    plan.features.verification === 'Coming Soon' ? 'text-gray-500 italic' : ''
+                  }`}
+                >
+                  {plan.features.verification === 'Coming Soon' ? 'Coming Soon' : plan.features.verification ? '✔️' : '❌'}
+                </td>
               ))}
             </tr>
             <tr>
@@ -267,7 +428,14 @@ const MembershipPlansTable = () => {
             <tr>
               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Advanced business services</td>
               {plans.map((plan) => (
-                <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.advancedServices ? '✔️' : '❌'}</td>
+                <td
+                  key={plan.name}
+                  className={`px-2 py-4 text-center text-xs md:text-sm ${
+                    plan.features.advancedServices === 'Coming Soon' ? 'text-gray-500 italic' : ''
+                  }`}
+                >
+                  {plan.features.advancedServices === 'Coming Soon' ? 'Coming Soon' : plan.features.advancedServices ? '✔️' : '❌'}
+                </td>
               ))}
             </tr>
             <tr>
@@ -279,13 +447,27 @@ const MembershipPlansTable = () => {
             <tr>
               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Advertising tools</td>
               {plans.map((plan) => (
-                <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.advertising ? '✔️' : '❌'}</td>
+                <td
+                  key={plan.name}
+                  className={`px-2 py-4 text-center text-xs md:text-sm ${
+                    plan.features.advertising === 'Coming Soon' ? 'text-gray-500 italic' : ''
+                  }`}
+                >
+                  {plan.features.advertising === 'Coming Soon' ? 'Coming Soon' : plan.features.advertising ? '✔️' : '❌'}
+                </td>
               ))}
             </tr>
             <tr>
               <td className="px-2 py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">Dedicated account manager</td>
               {plans.map((plan) => (
-                <td key={plan.name} className="px-2 py-4 text-center text-xs md:text-sm">{plan.features.accountManager ? '✔️' : '❌'}</td>
+                <td
+                  key={plan.name}
+                  className={`px-2 py-4 text-center text-xs md:text-sm ${
+                    plan.features.accountManager === 'Coming Soon' ? 'text-gray-500 italic' : ''
+                  }`}
+                >
+                  {plan.features.accountManager === 'Coming Soon' ? 'Coming Soon' : plan.features.accountManager ? '✔️' : '❌'}
+                </td>
               ))}
             </tr>
           </tbody>
