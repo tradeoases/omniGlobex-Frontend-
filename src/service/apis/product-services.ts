@@ -12,14 +12,16 @@ export interface IProduct {
   product_id: string;
   name: string;
   product_price: number;
-  price_currency: string
+  price_currency: string;
   description: string;
   products: string;
+  delivery_terms: string;
+  productImages: {image_id: string; image_url: string; thumbnail_url:string}[]
   category_id: string;
   cover_image?: {
     image_url: string;
-    thumbnail_url: string
-  }
+    thumbnail_url: string;
+  };
   user_id: string;
   slug: string;
   tags: string;
@@ -51,12 +53,12 @@ export const getAllProducts = async (params: string) => {
 export const getOneProduct = async (productId: string) =>
   await request.get(`${PATH}${productId}`);
 
-export const getAllProductByUser = async () =>
-  await request.get(`${PATH}user`);
+export const getAllProductByUser = async () => await request.get(`${PATH}user`);
 
 export const getAllProductCategories = async () =>
   await request.get(`/category`);
 
 export const createProduct = async (data: ICreateProduct) =>
   await request.post(`/product/`, data);
-export const updateProduct = async (productId: string, data: any) => await request.put(`${PATH}${productId}`, data)
+export const updateProduct = async (productId: string, data: any) =>
+  await request.put(`${PATH}${productId}`, data);

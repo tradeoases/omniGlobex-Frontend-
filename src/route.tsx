@@ -56,7 +56,6 @@ import ConversationMessageDisplay from "./components/messageing/ConversationMess
 import { UnderConstruction } from "./components/under-construction";
 import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
 import ProductEntry from "./pages/user/components/ProductEntry";
-import ProductDetails from "./pages/user/components/ProductDetails";
 import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
 
 import StoreFrontPreview from "./pages/user/supplier-profile/StoreFrontPreview";
@@ -64,7 +63,6 @@ import SupplierRatings from "./pages/user/supplier-profile/SupplierRatings";
 import SupplierNotifications from "./pages/user/supplier-profile/SupplierNotifications";
 import SalesPerformance from "./pages/user/supplier-profile/SalesPerformance";
 import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
-
 // import { UnderConstruction } from "./components/under-construction";
 // import { ProductManagementProductTab } from "./pages/user/components/product-management-product-tab";
 // import ProductEntry from "./pages/user/components/ProductEntry";
@@ -72,6 +70,7 @@ import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
 // import UpdateProfileForm from "./pages/user/supplier-profile/UpdateProfile";
 
 import RFQForm from "./pages/user/buyer-profile/RfqsForm";
+import SinglePreviewProduct from "./pages/user/supplier-profile/SingleProductPreview";
 
 
 const RoutesConfig = () => {
@@ -151,9 +150,9 @@ const RoutesConfig = () => {
           <Route path="">
             <Route index element={<ProductManagementProductTab />} />
             <Route path="entry" element={<ProductEntry />} />
-            <Route path="details" element={<ProductDetails />} />
+            <Route path="details/:id" element={<SinglePreviewProduct />} />
           </Route>
-          {/* <Route path="orders" element={<UnderConstruction />} /> */}
+          <Route path="orders" element={<UnderConstruction />} />
           <Route path="other-info" element={<UnderConstruction />} />
         </Route>
         <Route path="products" element={<ProductManagement />} />
@@ -166,15 +165,7 @@ const RoutesConfig = () => {
         <Route path="sales-performance" element={<SalesPerformance />} />
         <Route path="manage-users" element={<ManageUsers />} />
         <Route path="update-profile" element={<UpdateProfileForm />} />
-        <Route path="products" element={<ProductManagement />}>
-          <Route path="">
-            <Route index element={<ProductManagementProductTab />} />
-            <Route path="entry" element={<ProductEntry />} />
-            <Route path="details" element={<ProductDetails />} />
-          </Route>
-          {/* <Route path="orders" element={<UnderConstruction />} /> */}
-          <Route path="other-info" element={<UnderConstruction />} />
-        </Route>
+
         <Route path="supplier-rfq" element={<SupplierRFQ />} />
         <Route path="supplier-profile" element={<SupplierProfile />} />
         <Route index element={<SupplierProfile />} />
@@ -184,7 +175,7 @@ const RoutesConfig = () => {
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />
-        
+
         <Route path="messages" element={<MessagePage />}>
           <Route path=":convId" element={<ConversationMessageDisplay />} />
         </Route>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   getAllPaymentMethods,
@@ -70,6 +71,17 @@ const Subscriptions = () => {
                 Period Started: {moment.unix(sub.start).format("Do MMMM YYYY")}
               </p>
               <p>Period Ends: {moment.unix(sub.end).format("Do MMMM YYYY")}</p>
+              <div className="flex gap-x-3 mt-4">
+                <Button className="w-full" disabled>
+                  Upgrade Subscription
+                </Button>
+                <Button className="w-full" disabled>
+                  Downgrade Subscription
+                </Button>
+                <Button className="w-full" disabled>
+                  Cancel Subscription
+                </Button>
+              </div>
             </Card>
           ))}
 
@@ -109,6 +121,14 @@ const Subscriptions = () => {
               </p>
               <p>Name: {meth.billingName}</p>
               <p>Email: {meth.billingEmail}</p>
+              <div className="flex gap-x-3 mt-4">
+               
+                
+                <Button className="w-full" disabled>
+                  Remove Payment Method
+                </Button>
+              </div>
+
             </Card>
           ))}
       </div>
@@ -116,15 +136,6 @@ const Subscriptions = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Button className="w-full" onClick={() => setOpenCreateModal(true)}>
           Add Payment Method
-        </Button>
-        <Button className="w-full" disabled>
-          Upgrade Subscription
-        </Button>
-        <Button className="w-full" disabled>
-          Downgrade Subscription
-        </Button>
-        <Button className="w-full" disabled>
-          Cancel Subscription
         </Button>
       </div>
     </div>

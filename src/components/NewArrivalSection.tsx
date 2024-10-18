@@ -7,6 +7,7 @@ interface Props {
 }
 
 const NewArrivalSection: React.FC<Props> = ({ products }) => {
+  console.log({products})
   return (
     <div className="w-full ">
       <div className="p-2 bg-main pb-3">

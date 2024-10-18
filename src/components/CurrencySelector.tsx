@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getAllCurrencies } from "@/service/apis/countries-services";
+import { useQuery } from "@tanstack/react-query";
+import { HttpStatusCode } from "axios";
 import React, { useMemo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Select, { SingleValue } from "react-select";
@@ -5,31 +9,24 @@ import Select, { SingleValue } from "react-select";
 const CurrencySelector: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
-
+  const { data: currencies, isSuccess: isCurrenciesSuccess } = useQuery({
+    queryKey: ["currencies"],
+    queryFn: async () => {
+      const res = await getAllCurrencies();
+      if (res.status === HttpStatusCode.Ok) {
+        return res.data.data;
+      }
+    },
+  });
   const options = useMemo(() => {
-    const currencies = [
-      { name: "Euro", code: "EUR", description: "Primary currency for Europe, including Belgium, Germany, and the Netherlands." },
-      { name: "US Dollar", code: "USD", description: "The global currency for international trade." },
-      { name: "British Pound", code: "GBP", description: "For transactions with the UK." },
-      { name: "Chinese Yuan", code: "CNY", description: "For suppliers and buyers in China." },
-      { name: "Saudi Riyal", code: "SAR", description: "For trade in Saudi Arabia and the Middle East." },
-      { name: "Emirati Dirham", code: "AED", description: "For the UAE market." },
-      { name: "Polish Zloty", code: "PLN", description: "Key for transactions in Poland." },
-      { name: "Swiss Franc", code: "CHF", description: "For the Swiss market." },
-      { name: "Canadian Dollar", code: "CAD", description: "For North American transactions, particularly Canada." },
-      { name: "Japanese Yen", code: "JPY", description: "For trade with Japan." },
-      { name: "Omani Rial", code: "OMR", description: "For the Oman market." },
-      { name: "Qatari Riyal", code: "QAR", description: "For the Qatar market." },
-      { name: "Indian Rupee", code: "INR", description: "For the Indian market." },
-      { name: "Brazilian Real", code: "BRL", description: "For the Brazilian market." },
-      { name: "Turkish Lira", code: "TRY", description: "For the Turkish market." }
-    ];
-
-    return currencies.map((currency) => ({
-      value: currency.code,
-      label: currency.name,
-    }));
-  }, []);
+    if (isCurrenciesSuccess) {
+      return currencies.map((currency: any) => ({
+        value: currency.currency,
+        label: currency.currency_name,
+      }));
+    }
+    return [];
+  }, [isCurrenciesSuccess, currencies]);
 
   useEffect(() => {
     // Load the currency from URL or default to USD if not present
@@ -70,7 +67,12 @@ const CurrencySelector: React.FC = () => {
     <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
       <Select
         options={options}
-        value={options.find((option) => option.value === selectedCurrency) || null}
+        value={
+          options.find(
+            (option: { value: string; label: string }) =>
+              option.value === selectedCurrency
+          ) || null
+        }
         onChange={handleCurrencyChange}
         styles={{
           control: (base) => ({

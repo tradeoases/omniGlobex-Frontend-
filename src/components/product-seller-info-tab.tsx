@@ -1,11 +1,8 @@
-import { IProduct } from "@/service/apis/product-services";
-import { ProductCard } from "./product-card";
 
-interface Props {
-  products: IProduct[] | null;
-}
 
-export const ProductSellerInfoTab: React.FC<Props> = ({ products }) => {
+interface Props {}
+
+export const ProductSellerInfoTab: React.FC<Props> = () => {
   return (
     <div className="w-full space-y-20">
       <div className=" space-y-10 lg:flex items-center justify-between border-b pb-8">
@@ -60,20 +57,6 @@ export const ProductSellerInfoTab: React.FC<Props> = ({ products }) => {
           <p>
             Products: <span className="text-gray-400">Beer, Foamer</span>
           </p>
-        </div>
-      </div>
-
-      <div className="space-y-8">
-        <p className="text-lg font-semibold">Product from Shop</p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products ? (
-            products
-              .slice(0, 8)
-              .map((product, i) => <ProductCard key={i} {...product} />)
-          ) : (
-            <div>loading</div>
-          )}
         </div>
       </div>
     </div>
