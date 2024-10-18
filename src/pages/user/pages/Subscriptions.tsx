@@ -71,7 +71,7 @@ const Subscriptions = () => {
                 Period Started: {moment.unix(sub.start).format("Do MMMM YYYY")}
               </p>
               <p>Period Ends: {moment.unix(sub.end).format("Do MMMM YYYY")}</p>
-              <div className="flex gap-x-3 mt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
                 <Button className="w-full" disabled>
                   Upgrade Subscription
                 </Button>
