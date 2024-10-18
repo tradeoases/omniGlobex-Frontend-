@@ -9,6 +9,7 @@ import moment from "moment";
 import { useState } from "react";
 import AddPaymentMethod from "../supplier-profile/add-credit-card";
 import { Card } from "@/components/ui/card";
+import MembershipPlansTable from "../supplier-profile/SubscriptionTable";
 
 const Subscriptions = () => {
   const {
@@ -138,6 +139,7 @@ const Subscriptions = () => {
           Add Payment Method
         </Button>
       </div>
+      <MembershipPlansTable />
     </div>
   );
 };
