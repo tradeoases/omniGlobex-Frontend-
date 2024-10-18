@@ -68,6 +68,7 @@ const SinglePreviewProduct = () => {
       </div>
     );
   }
+  console.log({product})
 
   return (
     <div className="my-20 w-full space-y-20">

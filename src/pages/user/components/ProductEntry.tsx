@@ -21,7 +21,10 @@ import {
   getAllProductCategories,
   getOneProduct,
 } from "@/service/apis/product-services";
-import { getAllCurrencies, getAllShowrooms } from "@/service/apis/countries-services";
+import {
+  getAllCurrencies,
+  getAllShowrooms,
+} from "@/service/apis/countries-services";
 // import { HiOutlineXMark } from "react-icons/hi2";
 import { ICreateProduct } from "@/data/product-data";
 import {
@@ -63,18 +66,22 @@ const ProductEntry = () => {
     enabled: !!editId,
   });
 
-
-  const { data: currencies, isSuccess: isCurrencySuccess } = useQuery({
+  const {
+    data: currencies,
+    isSuccess: isCurrencySuccess,
+    isError: isCurrencyError,
+    isLoading: isCurrencyLoading,
+  } = useQuery({
     queryKey: ["product", editId],
     queryFn: async () => {
-      const res = await getAllCurrencies()
+      const res = await getAllCurrencies();
       if (
         res.status === HttpStatusCode.Ok ||
         res.status === HttpStatusCode.Created
       ) {
         return res.data.data;
       }
-    }
+    },
   });
 
   const [showRooms, setShowRooms] = useState<
@@ -128,6 +135,23 @@ const ProductEntry = () => {
           data.coverImage = imageResponse.data.data[0].image_id;
         }
       }
+
+      if (Object.values(images).length > 0) {
+        const imagesResponse: AxiosResponse<any, any> = await uploadImages({
+          images: Object.values(images),
+        });
+
+        if (
+          imagesResponse.status === HttpStatusCode.Ok ||
+          imagesResponse.status === HttpStatusCode.Created
+        ) {
+          console.log(imagesResponse.data.data);
+          data.productImages = imagesResponse.data.data.map(
+            (image: { image_id: string }) => image.image_id
+          );
+        }
+      }
+
       const response: AxiosResponse<any, any> = await createProduct(data);
       if (response.status === HttpStatusCode.Ok) {
         form.reset();
@@ -170,22 +194,23 @@ const ProductEntry = () => {
     queryFn: async () => {
       const response: AxiosResponse<any, any> = await getAllShowrooms();
       if (response.status === HttpStatusCode.Ok) {
-        return response.data.data?.map((country: any) => ({
-          countryId: country.showroom_id,
-          country: country.showroom_name,
-          selected: false,
-        }));
+        return response.data.data;
       }
     },
   });
 
   useEffect(() => {
     if (countryIsSuccess) {
-      setShowRooms(countries);
+      const showrooms = countries.map((country: any) => ({
+        countryId: country.showroom_id,
+        country: country.showroom_name,
+        selected: false,
+      }));
+      console.log({ showrooms });
+
+      setShowRooms(showrooms);
     }
   }, [countryIsSuccess, countries]);
-
-  console.log({showRooms})
 
   return (
     <div>
@@ -270,7 +295,6 @@ const ProductEntry = () => {
                     control={form.control}
                     name="categoryId"
                     render={({ field }) => {
-                      console.log({ field });
                       return (
                         <FormItem>
                           <Select
@@ -357,7 +381,7 @@ const ProductEntry = () => {
                     <FormControl>
                       <Textarea
                         placeholder="Enter the product details"
-                        className="resize-none"
+                        className=""
                         {...field}
                       />
                     </FormControl>
@@ -371,42 +395,52 @@ const ProductEntry = () => {
               <p className="text-base font-bold">Price</p>
 
               <div className=" grid-cols-1 md:grid-cols-2 grid gap-4 ">
-                {isCurrencySuccess && <FormField
-                  control={form.control}
-                  name="priceCurrency"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a currency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {currencies &&
-                              currencies.map(
-                                (currency: {
-                                  currency_id: string;
-                                  currency: string;
-                                  currency_name: string;
-                                }) => (
-                                  <SelectItem
-                                    key={currency.currency_id}
-                                    value={currency.currency_id}
-                                  >
-                                    {currency.currency_name}
-                                  </SelectItem>
-                                )
-                              )}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
+                {isCurrencyError && (
+                  <div>
+                    <h1>An error occured while loading currencies</h1>
+                  </div>
+                )}
+                {isCurrencyLoading && <div>Currencies is loading...</div>}
+                {isCurrencySuccess &&
+                  !isCurrencyLoading &&
+                  !isCurrencyError && (
+                    <FormField
+                      control={form.control}
+                      name="priceCurrency"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a currency" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {currencies &&
+                                  currencies?.map(
+                                    (currency: {
+                                      currency_id: string;
+                                      currency: string;
+                                      currency_name: string;
+                                    }) => (
+                                      <SelectItem
+                                        key={currency.currency_id}
+                                        value={currency.currency_id}
+                                      >
+                                        {currency.currency_name}
+                                      </SelectItem>
+                                    )
+                                  )}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   )}
-                />}
                 {}
                 <div className="w-full">
                   <FormField
@@ -437,7 +471,7 @@ const ProductEntry = () => {
                       <FormControl>
                         <Textarea
                           placeholder="Enter the Payment & Delivery Terms"
-                          className="resize-none"
+                          className=""
                           {...field}
                         />
                       </FormControl>
@@ -446,6 +480,24 @@ const ProductEntry = () => {
                   )}
                 />
               </div>
+            </div>
+            <div className="w-full">
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        placeholder="Product Tags"
+                        className=""
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <MultipleImageUpload images={images} setImages={setImages} />
 

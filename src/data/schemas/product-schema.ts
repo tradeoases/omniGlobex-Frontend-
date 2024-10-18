@@ -9,6 +9,7 @@ export const createProductSchema = z.object({
   deliveryTerms: z
     .string()
     .min(1, "You are required to enter the delivery terms"),
+  tags: z.string().min(0, "Tags required").optional(),
   // showRooms: z.array(z.string().uuid("Must be a valid UUID")).optional(),
   // brandId: z.string().uuid().optional(),
 });
@@ -25,5 +26,3 @@ export const updateProductSchema = z.object({
   coverImage: z.string().uuid().optional(),
   productImages: z.array(z.string().uuid()).optional(),
 });
-
-
