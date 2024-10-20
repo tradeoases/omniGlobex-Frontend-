@@ -89,7 +89,6 @@ export const startPasswordReset = async (email: string) =>
 export const updateProfile = async (data: IUpdateProfileData) =>
   await request.put(`${PATH}update-profile/`, data);
 
-
 export const completePasswordResetComplete = async (data: {
   id: string;
   key: string;
