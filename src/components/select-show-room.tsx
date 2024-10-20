@@ -29,14 +29,13 @@ export function SelectShowroom() {
   const [isFixed, setIsFixed] = React.useState(false); // New state to track fixed status
   const navigate = useNavigate();
 
-  // Fetch countries using react-query
   const {
     data: countries,
     isSuccess,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["countries"],
+    queryKey: ["showrooms"],
     queryFn: async () => {
       const response = await getAllShowrooms();
       if (response.status === 200) {
@@ -68,7 +67,7 @@ export function SelectShowroom() {
           role="combobox"
           aria-expanded={open}
           className={`w-[170px] justify-between ${
-            isFixed ? "fixed top-10 left-10 z-10" : ""
+            isFixed ? "top-10 left-10 z-10" : ""
           }`}
         >
           {value

@@ -144,7 +144,7 @@ const TopBar = () => {
       </div>
 
       {/* Desktop View */}
-      <div className="hidden lg:flex lg:items-center lg:justify-between gap-2 w-10/12 xl:w-8/12 mx-auto">
+      <div className="hidden lg:flex lg:items-center lg:justify-between gap-2  xl:w-10/12 mx-auto">
         <div className="flex items-center gap-x-4">
           <img
             src={img}

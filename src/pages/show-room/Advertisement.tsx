@@ -1,5 +1,5 @@
 import { UnderConstruction } from "@/components/under-construction";
-import { getOneCountry } from "@/service/apis/countries-services";
+import { getSingleShowrooms } from "@/service/apis/countries-services";
 import { useQuery } from "@tanstack/react-query";
 import { HttpStatusCode } from "axios";
 
@@ -7,7 +7,7 @@ const Advertisements = ({ country_id }: { country_id: string }) => {
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ["fetchCountry", country_id],
     queryFn: async () => {
-      const res = await getOneCountry(country_id);
+      const res = await getSingleShowrooms(country_id);
       if (res.status === HttpStatusCode.Ok) {
         return res.data.data;
       }
@@ -20,7 +20,7 @@ const Advertisements = ({ country_id }: { country_id: string }) => {
       {isSuccess && (
         <>
           <h2 className="font-semibold text-lg">
-            Advertisements for {data.name}
+            Advertisements for {data.showroom_name}
           </h2>
           <UnderConstruction />
         </>
