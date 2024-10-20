@@ -36,6 +36,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { EmailStore } from "@/store/user-store";
 import { useState } from "react";
+import RegisterDashboard from "./RegisterDashboard";
 
 const IntegratedSignup = () => {
   const [continent, setContinent] = useState<
@@ -63,7 +64,6 @@ const IntegratedSignup = () => {
       }
     },
   });
-
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -112,7 +112,6 @@ const IntegratedSignup = () => {
         role,
         acceptTerms,
       };
-      
 
       const response: AxiosResponse<any, any> = await signup(data);
 
@@ -139,8 +138,9 @@ const IntegratedSignup = () => {
 
   return (
     <div className="w-full space-y-8 mb-10">
+      <RegisterDashboard />
       <div className="flex flex-col items-center">
-        <p className="text-4xl font-extrabold text-center">Create Account</p>
+        <p className="text-2xl font-bold text-center">Register Now</p>
         <div className="-mt-2">
           <svg
             className="w-80"
@@ -159,12 +159,12 @@ const IntegratedSignup = () => {
           </svg>
         </div>
       </div>
-      <div className="w-full lg:w-8/12 mx-auto flex flex-col-reverse lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-7 px-7 py-10 bg-white">
+      <div className="w-full lg:w-8/12 mx-auto flex flex-col-reverse lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-7 px-7 bg-white">
         <div className="col-span-2 mt-14 lg:m-0">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit((e) => onSubmit(e))}
-              className="space-y-8 mt-10"
+              className="space-y-8"
             >
               <div className="w-full space-y-8 md:space-y-0 md:flex items-center justify-between gap-2">
                 <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -500,7 +500,6 @@ const IntegratedSignup = () => {
             </form>
           </Form>
         </div>
-        
       </div>
     </div>
   );
