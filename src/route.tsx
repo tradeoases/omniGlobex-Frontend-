@@ -71,6 +71,7 @@ import ManageUsers from "./pages/user/supplier-profile/ManageUsers";
 
 import RFQForm from "./pages/user/buyer-profile/RfqsForm";
 import SinglePreviewProduct from "./pages/user/supplier-profile/SingleProductPreview";
+import Users from "./pages/user/supplier-profile/Users";
 
 
 const RoutesConfig = () => {
@@ -92,6 +93,7 @@ const RoutesConfig = () => {
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="signup" element={<IntegratedSignup />} />
       </Route>
+      <Route path="RFQForm" element={<RFQForm />} />
       <Route path="/" element={<App />}>
         <Route index element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
@@ -127,7 +129,7 @@ const RoutesConfig = () => {
         <Route path="showRoom" element={<BuyersShowRoom />} />
         <Route path="rfq" element={<RFQManagement />} />
 
-        <Route path="rfq/RFQForm" element={<RFQForm />} />
+        {/* <Route path="rfq/RFQForm" element={<RFQForm />} /> */}
 
         <Route path="orders" element={<OrderTracking />} />
         <Route path="ratings" element={<Ratings />} />
@@ -157,7 +159,7 @@ const RoutesConfig = () => {
         </Route>
         <Route path="products" element={<ProductManagement />} />
 
-        <Route index element={<StoreFrontPreview />} />
+        <Route path="store-front-preview" element={<StoreFrontPreview />} />
 
         <Route path="ratings" element={<SupplierRatings />} />
         <Route path="security-settings" element={<SecuritySettings />} />
@@ -172,6 +174,7 @@ const RoutesConfig = () => {
         <Route path="order" element={<BuyerOrder />} />
         <Route path="analytics" element={<AnalyticsAndReporting />} />
         <Route path="notifications" element={<UnderConstruction />} />
+        <Route path="users" element={<Users/>}/>
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />

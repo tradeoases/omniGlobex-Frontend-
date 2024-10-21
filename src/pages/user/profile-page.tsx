@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { IDashboardNav, dashboardNavs } from "@/data/data";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaChevronDown, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import SupplierNavBar from "./supplier-profile/SupplierNavBar";
 import { Logo } from "@/components/logo";
-
 import { useRecoilState } from "recoil";
 import { userStore } from "@/store/user-store";
 import ProtectedRoute from "@/components/ProtectedRoutes";
@@ -16,6 +14,8 @@ import { SupplierDropDownProfile } from "./supplier-profile/SupplierDropDownProf
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
+  const [settingsSubMenuOpen, setSettingsSubMenuOpen] = useState<boolean>(false); // State for settings submenu
+  const [activeItem, setActiveItem] = useState<string | null>(null); // State to track the active item
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -25,31 +25,35 @@ const SuppliersDashboard = () => {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    // Debugging: Log the event target to see where the click is happening
-    console.log("Clicked target:", event.target);
-
-    // Check if the click is outside both the dropdown and sidebar
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as Node) &&
       sidebarRef.current &&
       !sidebarRef.current.contains(event.target as Node)
     ) {
-      console.log("Clicked outside the sidebar and dropdown. Closing sidebar.");
-      setIsSidebarOpen(false); // Close sidebar on outside click
-    } else {
-      console.log("Clicked inside the sidebar or dropdown.");
+      setIsSidebarOpen(false);
+      setSettingsSubMenuOpen(false); // Close settings submenu if open
     }
   };
 
   const [profile] = useRecoilState(userStore);
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside); // Changed from 'click' to 'mousedown'
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleNavClick = (navTitle: string, navPath: string) => {
+    if (navTitle === "Settings") {
+      setSettingsSubMenuOpen(!settingsSubMenuOpen); // Toggle settings submenu
+    } else {
+      setSettingsSubMenuOpen(false); // Close submenu for other items
+      setIsSidebarOpen(false); // Close sidebar for other items
+    }
+    setActiveItem(navPath); // Set the clicked item as active
+  };
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row w-full">
@@ -62,16 +66,14 @@ const SuppliersDashboard = () => {
           <NavLink to="/" className="text-2xl font-bold text-black">
             <Logo />
           </NavLink>
-
-          {/* SupplierDropDownProfile should also have the ref to track clicks */}
           <div ref={dropdownRef}>
             <SupplierDropDownProfile />
           </div>
         </div>
 
         <div
-          ref={sidebarRef} // Sidebar reference
-          className={`lg:block bg-gray-600 overflow-scroll flex flex-col justify-start items-center text-xl lg:static fixed top-0 left-0 z-40 w-64 transition-transform duration-300 ease-in-out ${
+          ref={sidebarRef}
+          className={`lg:block bg-gray-600 overflow-scroll flex flex-col justify-start items-start text-xl lg:static fixed top-0 left-0 z-40 w-64 transition-transform duration-300 ease-in-out ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 h-full lg:h-full pt-16`}
         >
@@ -82,19 +84,51 @@ const SuppliersDashboard = () => {
           </div>
           <SelectShowroom />
           {navigations.map((nav) => (
-            <NavLink
-              to={nav.path}
-              key={nav.path}
-              className={({ isActive }) =>
-                `w-full text-xs cursor-pointer flex justify-start px-6 py-4 items-center gap-x-5 ${
-                  isActive ? "text-black" : "text-white"
-                }`
-              }
-              onClick={toggleSidebar}
-            >
-              <span>{nav.icon}</span>
-              <span>{nav.title}</span>
-            </NavLink>
+            <div key={nav.path}>
+              <NavLink
+                to={nav.path || "#"}
+                className={() =>
+                  `flex items-center text-sm gap-x-3 px-4 py-3 rounded-lg transition-colors duration-200 ease-in-out ${
+                    activeItem === nav.path
+                      ? "bg-gray-700 text-white" // Active item style
+                      : "text-white hover:bg-gray-600 hover:text-main"
+                  }`
+                }
+                onClick={() => handleNavClick(nav.title, nav.path)} // Call the new click handler
+              >
+                <span>{nav.icon}</span>
+                <span>{nav.title}</span>
+                {nav.submenu && (
+                  <span className="ml-auto">
+                    <FaChevronDown />
+                  </span>
+                )}
+              </NavLink>
+
+              {nav.title === "Settings" && settingsSubMenuOpen && nav.submenu && (
+                <div className="ml-4"> {/* Control the margin for submenu items */}
+                  {nav.submenu.map((subItem) => (
+                    <NavLink
+                      to={subItem.path}
+                      key={subItem.path}
+                      className={() =>
+                        `flex items-center text-white gap-x-3 text-sm px-4 py-2 rounded-lg transition-colors duration-200 ease-in-out ${
+                          activeItem === subItem.path
+                            ? "bg-gray-700 text-white" // Active submenu item style
+                            : "text-gray-400 hover:bg-gray-500 hover:text-white"
+                        }`
+                      }
+                      onClick={() => {
+                        setIsSidebarOpen(false); // Close sidebar when clicking submenu item
+                        setActiveItem(subItem.path); // Set the active submenu item
+                      }}
+                    >
+                      <span>{subItem.title}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>
