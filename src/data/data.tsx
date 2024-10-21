@@ -108,24 +108,15 @@ export interface IDashboardNav {
   icon: JSX.Element;
   title: TActiveMenu;
   path: TActivePath;
+  submenu?: { title: string; path: string }[];
 }
 
 export const dashboardNavs: IDashboardNav[] = [
   {
     icon: <MdReviews />,
     title: "Storefront Preview",
-    path: "",
+    path: "store-front-preview",
   },
-
-  // { icon: <FaUser />, title: "Messages", path: "messages" },
-  // { icon: <IoBagHandle />, title: "Products", path: "products" },
-  // { icon: <IoCard />, title: "Payment Method" },
-  // { icon: <BsFillCartCheckFill />, title: "Order", path: "order" },
-  // { icon: <FaHeart />, title: "Cart" },
-  // { icon: <FaAddressBook />, title: "Address" },
-  // { icon: <MdReviews />, title: "Reviews" },
-
-
   { icon: <FaUser />, title: "Messages", path: "messages" },
   { icon: <IoBagHandle />, title: "Products", path: "products" },
   {
@@ -139,34 +130,33 @@ export const dashboardNavs: IDashboardNav[] = [
     title: "Notifications",
     path: "notifications",
   },
-
   {
     icon: <HiLockClosed />,
     title: "Start Buying Now",
     path: "/buyer-dashboard",
   },
   { icon: <MdReviews />, title: "Analytics", path: "analytics" },
-
   { icon: <MdReviews />, title: "Rating", path: "ratings" },
-
-  // Settings with Submenu
   {
     icon: <MdReviews />,
     title: "Settings",
-    path: "security-settings", // No direct link for Settings
-    // submenu: [
-    //   {
-    //     title: "Security Settings",
-    //     path: "security-settings",
-    //   },
-    //   {
-    //     title: "Change Password",
-    //     path: "change-password",
-    //   },
-    // ],
+    path: "", // No direct link for Settings
+    submenu: [
+      {
+        title: "Security Settings",
+        path: "security-settings",
+      },
+      {
+        title: "Change Password",
+        path: "change-password",
+      },
+    ],
   },
-
-  { icon: <IoLogOut />, title: "Logout", path: "logout" },
+  {
+    icon: <IoLogOut />,
+    title: "Logout",
+    path: "logout",
+  },
 ];
 
 export type TProductNav = "Products" | "Orders" | "Other info";

@@ -6,7 +6,7 @@ import { BuyerDropDownProfile } from "./BuyerDropDownProfile";
 const BuyersNavBar = () => {
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto flex items-center justify-between py-4 px-6">
+      <div className="container mx-auto flex items-center justify-between py-2 px-6">
         <div className="flex items-center space-x-8">
           <img src={img} alt="Omniglobex logo" className="h-12 w-auto" />
 

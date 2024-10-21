@@ -38,7 +38,7 @@ const RFQManagement = () => {
     if (!canCreateRFQ) {
       setShowUpgradeModal(true);
     } else {
-      navigate("/buyer-dashboard/rfq/RFQForm");
+      navigate("/RFQForm");
     }
   };
   return (
