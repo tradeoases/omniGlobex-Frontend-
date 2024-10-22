@@ -14,11 +14,11 @@ const CountryShowroom = () => {
     searchParams.get("country") || searchParams.get("countryId") || "";
 
   return (
-    <div className=" w-full px-4 lg:px-12 py-8 bg-gray-50">
+    <div className=" w-full px-4 lg:px-12 py-4 bg-gray-50">
       <CountryHeader country_id={country_id} />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10">
         <div className="lg:col-span-1">
-          <h1 className="text-3xl font-bold">Promotions</h1>
+          <h1 className="text-3xl font-bold mt-4">Promotions</h1>
           <LocalPromotions />
         </div>
       </div>
