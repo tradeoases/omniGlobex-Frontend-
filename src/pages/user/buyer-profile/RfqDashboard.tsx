@@ -32,7 +32,7 @@ const RfqDashboard = () => {
       <div className="w-10/12 xl:w-10/12 mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-8">
           <Link
-            to="/"
+            to="/buyer-dashboard/rfq"
             className="text-gray-900 hover:text-blue-600 font-medium"
           >
             <Logo />

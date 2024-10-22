@@ -5,6 +5,8 @@ import RfqUnits from "./RfqUnits";
 import RfqCurrencies from "./RfqCurrencies";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface FormData {
   productName: string;
@@ -107,6 +109,14 @@ const RFQForm: React.FC = () => {
 
   return (
     <div>
+      <div className="block sm:hidden text-center my-4">
+        <Link
+          to="/buyer-dashboard/rfq"
+          className="text-main font-bold cursor-pointer hover:underline"
+        >
+          My RFQs
+        </Link>
+      </div>
       <RfqDashboard />
       <div className="max-w-4xl mx-auto my-8">
         <div className="flex justify-between border py-4 px-4 items-start space-x-6">
@@ -179,7 +189,7 @@ const RFQForm: React.FC = () => {
             <textarea
               name="aboutProduct"
               value={formData.aboutProduct}
-              placeholder="Please indicate your detailed requirements to ensure fast and efficient response from suppliers."
+              placeholder="Please indicate your detailed requirements to ensure fast and efficient response from suppliers.You may include: Size/Dimension,Packaging requirements and/ or others."
               onChange={handleInputChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               rows={4}
@@ -269,9 +279,19 @@ const RFQForm: React.FC = () => {
               )}
             </div>
           </div>
-
+          <div className="flex items-center space-x-2">
+            <Checkbox id="remember" />
+            <label
+              htmlFor="remember"
+              className="text-sm text-gray-600"
+            >
+              I'd like to send this RFQ to more suppliers, if I have not
+              received 20 quotations within the next 48 hours.
+            </label>
+          </div>
           <div>
             <button
+              onClick={() => alert("Under implementation")}
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
             >

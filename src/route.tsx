@@ -73,7 +73,6 @@ import RFQForm from "./pages/user/buyer-profile/RfqsForm";
 import SinglePreviewProduct from "./pages/user/supplier-profile/SingleProductPreview";
 import Users from "./pages/user/supplier-profile/Users";
 
-
 const RoutesConfig = () => {
   const [, setUserData] = useRecoilState<IUser | null>(userStore);
 
@@ -145,7 +144,7 @@ const RoutesConfig = () => {
           <Route path="preferences" element={<SourcingPreferences />} />
         </Route>
       </Route>
-      
+
       <Route path="/supplier-dashboard" element={<SuppliersDashboard />}>
         <Route path="update-profile" element={<UpdateProfileForm />} />
         <Route path="products" element={<ProductManagement />}>
@@ -174,7 +173,7 @@ const RoutesConfig = () => {
         <Route path="order" element={<BuyerOrder />} />
         <Route path="analytics" element={<AnalyticsAndReporting />} />
         <Route path="notifications" element={<UnderConstruction />} />
-        <Route path="users" element={<Users/>}/>
+        <Route path="users" element={<Users />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="reviews" element={<ReviewsDashboard />} />
         <Route path="subscription" element={<Subscriptions />} />
