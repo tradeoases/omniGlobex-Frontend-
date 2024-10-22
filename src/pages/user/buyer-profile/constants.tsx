@@ -25,5 +25,15 @@ export const menuItems = [
     title: "Settings",
     path: "settings",
     icon: <FaCog />,
+    submenu: [
+      {
+        title: "Security Settings",
+        path: "settings/security",
+      },
+      {
+        title: "Change Password",
+        path: "settings/change-password",
+      },
+    ],
   },
 ];

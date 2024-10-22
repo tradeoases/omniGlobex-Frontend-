@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { menuItems } from "./constants";
-import { FaBars, FaSignOutAlt, FaTimes } from "react-icons/fa";
+import { FaBars, FaSignOutAlt, FaTimes, FaChevronDown } from "react-icons/fa";
 import { SelectShowroom } from "@/components/select-show-room";
 
 const SideBar = ({
@@ -14,6 +14,7 @@ const SideBar = ({
   const location = useLocation();
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -41,6 +42,14 @@ const SideBar = ({
   const handleMenuItemClick = (path: string) => {
     navigate(path);
     toggleSidebar();
+  };
+
+  const toggleSubmenu = (title: string) => {
+    if (openSubmenu === title) {
+      setOpenSubmenu(null);
+    } else {
+      setOpenSubmenu(title);
+    }
   };
 
   return (
@@ -72,29 +81,63 @@ const SideBar = ({
             <SelectShowroom />
           </div>
 
-          {menuItems.map(({ title, path, icon }) => {
+          {menuItems.map(({ title, path, icon, submenu }) => {
             const isActive = location.pathname.startsWith(path || "");
 
             return (
               <li key={title} className="my-2">
                 <div
-                  className={`flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors duration-200 ${
-                    isActive ? "" : ""
-                  }`}
-                  onClick={() => handleMenuItemClick(path || "")}
+                  className={`flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors duration-200`}
+                  onClick={() =>
+                    submenu ? toggleSubmenu(title) : handleMenuItemClick(path || "")
+                  }
                 >
                   <div className="flex items-center">
                     <span className="mr-3">{icon}</span>
-                    <Link
-                      to={path || ""}
-                      className={`flex-grow text-white hover:text-main ${
-                        isActive ? "text-main" : ""
-                      }`}
-                    >
-                      {title}
-                    </Link>
+                    {/* Only render a Link if the path exists */}
+                    {path ? (
+                      <Link
+                        to={path || ""}
+                        className={`flex-grow text-white hover:text-main ${
+                          isActive ? "text-main" : ""
+                        }`}
+                      >
+                        {title}
+                      </Link>
+                    ) : (
+                      <span
+                        className={`flex-grow text-white ${
+                          openSubmenu === title ? "text-main" : ""
+                        }`}
+                      >
+                        {title}
+                      </span>
+                    )}
                   </div>
+                  {/* If submenu exists, add a dropdown icon */}
+                  {submenu && (
+                    <FaChevronDown
+                      className={`transition-transform ${
+                        openSubmenu === title ? "rotate-180" : ""
+                      }`}
+                    />
+                  )}
                 </div>
+                
+                {/* Submenu */}
+                {submenu && openSubmenu === title && (
+                  <ul className="pl-6">
+                    {submenu.map((subItem) => (
+                      <li
+                        key={subItem.title}
+                        className="my-1 cursor-pointer hover:text-main"
+                        onClick={() => handleMenuItemClick(subItem.path)}
+                      >
+                        {subItem.title}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             );
           })}

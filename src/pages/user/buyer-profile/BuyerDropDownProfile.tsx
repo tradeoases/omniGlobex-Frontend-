@@ -1,17 +1,20 @@
-import { CreditCard, Keyboard, LogOut, Settings, User } from "lucide-react";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuGroup,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuSub,
+//   DropdownMenuSubContent,
+//   DropdownMenuSubTrigger,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
+import "./profile.css";
 
 export function BuyerDropDownProfile() {
   const navigate = useNavigate();
@@ -21,51 +24,61 @@ export function BuyerDropDownProfile() {
     navigate("/");
     navigate(0);
   };
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className=" text-2xl cursor-pointer">
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <button className="IconButton" aria-label="Customise options">
           <FaUserCircle />
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <Link to="/buyer-dashboard/myAccount/favorites">
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>My Favourite</span>
-            </DropdownMenuItem>
-          </Link>
-          <Link to="/buyer-dashboard/myAccount/preferences">
-            <DropdownMenuItem>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Sourcing Preferences</span>
-            </DropdownMenuItem>
-          </Link>
-          <Link to="/buyer-dashboard/myAccount/profile">
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>User Profile</span>
-            </DropdownMenuItem>
-          </Link>
+        </button>
+      </DropdownMenu.Trigger>
+
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+              My Account
+              <div className="RightSlot">
+                <ChevronRightIcon />
+              </div>
+            </DropdownMenu.SubTrigger>
+
+            {/* Updated SubContent positioning */}
+            <DropdownMenu.Portal>
+              <DropdownMenu.SubContent className="DropdownMenuSubContent">
+                <Link to="/buyer-dashboard/myAccount/favorites">
+                  <DropdownMenu.Item className="DropdownMenuItem">
+                    My Favorites
+                  </DropdownMenu.Item>
+                </Link>
+                <Link to="/buyer-dashboard/myAccount/preferences">
+                  <DropdownMenu.Item className="DropdownMenuItem">
+                    Sourcing Preferences
+                  </DropdownMenu.Item>
+                </Link>
+                <Link to="/buyer-dashboard/myAccount/profile">
+                  <DropdownMenu.Item className="DropdownMenuItem">
+                    User Profile
+                  </DropdownMenu.Item>
+                </Link>
+              </DropdownMenu.SubContent>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Sub>
           <Link to="/buyer-dashboard/messages">
-            <DropdownMenuItem>
-              <Keyboard className="mr-2 h-4 w-4" />
-              <span className="cursor-pointer">Message</span>
-            </DropdownMenuItem>
+            <DropdownMenu.Item className="DropdownMenuItem">
+              Messages
+            </DropdownMenu.Item>
           </Link>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuSub></DropdownMenuSub>
-        </DropdownMenuGroup>
-        <DropdownMenuItem onClick={handleLogout}>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span className="cursor-pointer">Log out</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenu.Item
+            className="DropdownMenuItem"
+            onClick={handleLogout}
+          >
+            Logout
+          </DropdownMenu.Item>
+
+          <DropdownMenu.Arrow className="DropdownMenuArrow" />
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   );
 }
