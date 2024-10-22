@@ -14,7 +14,7 @@ import {
   getOneProduct,
   IProduct,
 } from "@/service/apis/product-services";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductSellerInfoTab } from "@/components/product-seller-info-tab";
 import ProductDeliveryTermsTab from "@/components/product-delivery-tab";
@@ -22,6 +22,8 @@ import { ProductReviewTab } from "@/components/product-review-tab";
 import { productDetailNavs } from "@/data/product-data";
 import { useQuery } from "@tanstack/react-query";
 import { UnderConstruction } from "@/components/under-construction";
+import { Button } from "@/components/ui/button";
+import { createConversation } from "@/service/apis/message-service";
 
 const SingleProduct = () => {
   const [activeTab, setActiveTab] = useState<string>(productDetailNavs[0]);
@@ -72,6 +74,26 @@ const SingleProduct = () => {
     },
     enabled: !!product_id, // Ensure that the query only runs if there's an ID
   });
+  console.log({ product });
+  const navigate = useNavigate();
+  const handleStartConversation = async (id: string, product_id: string) => {
+    const res = await createConversation({
+      id,
+      type: "DIRECT",
+    });
+    if (
+      res.status === HttpStatusCode.Created ||
+      res.status === HttpStatusCode.Ok
+    ) {
+      const r = res.data.data;
+      console.log({ r });
+      navigate(`/buyer-dashboard/messages/${r.id}`, {
+        state: {
+          url: `https://www.omniglobex.com/single-product/?product_id=${product_id}`,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     if (isProductSuccess && product) {
@@ -249,6 +271,16 @@ const SingleProduct = () => {
 
                   <div className="flex items-center gap-x-4">
                     <span>Share this </span>
+                    <Button
+                      onClick={() => {
+                        handleStartConversation(
+                          product?.business_id || "",
+                          product?.product_id || ""
+                        );
+                      }}
+                    >
+                      Message Suppliers
+                    </Button>
                     <FaFacebookF className="text-xl text-blue-800 cursor-pointer" />
                     <BiLogoInstagramAlt className="text-xl text-pink-600 cursor-pointer" />
                     <FaTwitter className="text-xl text-sky-600 cursor-pointer" />
