@@ -1,24 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICategory } from "@/components/Sidemenu";
-
-// import { Checkbox } from "@/components/ui/checkbox";
-import React, {
-  useEffect,
-  useRef,
-  // useEffect,
-  useState, // { useState }
-} from "react";
-// import { FaMinus, FaPlus } from "react-icons/fa6";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuLabel,
-//   DropdownMenuRadioGroup,
-//   DropdownMenuRadioItem,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-// import { MdKeyboardArrowDown } from "react-icons/md";
+import { Checkbox } from "@/components/ui/checkbox";
+import React, { useState } from "react";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import {
@@ -55,32 +39,42 @@ const AllProductsPage = () => {
       searchParams.get("pageSize"),
       searchParams.get("page"),
       searchParams.get("search"),
-      ...selectedCategories, // Include selected categories in the queryKey
+      searchParams.get("min"),
+      searchParams.get("max"),
+      searchParams.get("q"),
+      searchParams.get("category"),
+      ...catParams,
     ],
     queryFn: async () => {
-      const params = `?page=${page}&pageSize=${pageSize}`;
-      const categoryParam =
-        selectedCategories.length > 0
-          ? `&categories=${selectedCategories.join(",")}`
-          : "";
-      const response: AxiosResponse<any, any> = await getAllProducts(
-        `${params}${categoryParam} 
-        ${
-          searchParams.get("search")
-            ? `&search=${searchParams.get("search")}`
-            : ""
-        }
-        ${
-          searchParams.get("currency")
-            ? `&currency=${searchParams.get("currency")}`
-            : ""
-        }
-        ${
-          searchParams.get("country")
-            ? `&countryId=${searchParams.get("country")}`
-            : ""
-        }`.trim()
-      );
+      let params = `?page=${page}&pageSize=${pageSize}`;
+
+      if (searchParams.get("search")?.trim() !== "") {
+        params = params.concat(`&search=${searchParams.get("search")}`);
+      }
+      if (catParams.length > 0) {
+        params = params.concat(`&categories=${catParams.join(",")}`);
+      }
+      if (searchParams.get("currency")?.trim() !== "") {
+        params = params.concat(`&currency=${searchParams.get("currency")}`);
+      }
+
+      if (searchParams.get("country")?.trim() !== "") {
+        params = params.concat(`&countryId=${searchParams.get("country")}`);
+      }
+
+      if (searchParams.get("q")?.trim() !== "") {
+        params = params.concat(`&q=${searchParams.get("q")}`);
+      }
+      if (searchParams.get("min")?.trim() !== "") {
+        params = params.concat(`&min=${searchParams.get("min")}`);
+      }
+      if (searchParams.get("max")?.trim() !== "") {
+        params = params.concat(`&max=${searchParams.get("max")}`);
+      }
+
+      if (searchParams.get("category"))
+        catParams.push(searchParams.get("category") || "");
+      const response: AxiosResponse<any, any> = await filteredProducts(params);
 
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data as {
@@ -281,19 +275,12 @@ interface ISideBarProps {
   setSelectedCategories: (categories: string[]) => void;
 }
 
-interface ISideBarProps {
-  open: boolean;
-  onOpen: () => void;
-  setSelectedCategories: (categories: string[]) => void;
-}
-
 const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
   const [price, setPrice] = useState<{ min: string; max: string }>({
     min: "",
     max: "",
   });
   const [search, setSearch] = useState<string>("");
-
   const { data: categories, isSuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -303,7 +290,6 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
       }
     },
   });
-
 
   const [searchParams, setSearchParams] = useSearchParams();
   const handleSearch = () => {
@@ -319,59 +305,6 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
     }
     setSearchParams(newSearchParams);
   };
-
-  const [localSelectedCategories, setLocalSelectedCategories] = useState<
-    string[]
-  >([]);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [minPrice, setMinPrice] = useState<number | "">(""); // State for minimum price
-  const [maxPrice, setMaxPrice] = useState<number | "">(""); // State for maximum price
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const handleCategoryToggle = (categoryId: string) => {
-    setLocalSelectedCategories((prevCategories) =>
-      prevCategories.includes(categoryId)
-        ? prevCategories.filter((id) => id !== categoryId)
-        : [...prevCategories, categoryId]
-    );
-  };
-
-  useEffect(() => {
-    setSelectedCategories(localSelectedCategories);
-  }, [localSelectedCategories, setSelectedCategories]);
-
-  const isCategorySelected = (categoryId: string) =>
-    localSelectedCategories.includes(categoryId);
-
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
-
-  // Function to reset filters
-  const resetFilters = () => {
-    setLocalSelectedCategories([]);
-    setSelectedCategories([]); // Reset the selected categories in the parent component if needed
-    setMinPrice(""); // Reset min price
-    setMaxPrice(""); // Reset max price
-  };
-
-
   return (
     <div
       className={`fixed z-10 overflow-x-scroll h-full top-0 left-0 right-0 rounded-xl lg:static lg:block bg-white lg:bg-gray-100 border max-h-fit py-10 px-10 lg:px-6 space-y-10 ${
@@ -428,38 +361,39 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
           <Label>
             Min{" "}
             <Input
-              placeholder="min"
-              value={minPrice}
               onChange={(e) =>
-                setMinPrice(e.target.value === "" ? "" : Number(e.target.value))
+                setPrice((v) => ({ ...v, [e.target.name]: e.target.value }))
               }
+              value={price.min}
+              name="min"
+              placeholder="min"
+              type="number"
             />
           </Label>
           <Label>
-            Max{" "}
+            Max
             <Input
-              placeholder="max"
-              value={maxPrice}
               onChange={(e) =>
-                setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))
+                setPrice((v) => ({ ...v, [e.target.name]: e.target.value }))
               }
+              value={price.max}
+              name="max"
+              placeholder="max"
+              type="number"
             />
           </Label>
         </div>
-
-        <div className="flex gap-x-4">
-          <button
-            onClick={resetFilters}
-            className="border text-main py-2 px-6 rounded-lg"
-          >
-            Reset Filters
-          </button>
-          <button
-            onClick={onOpen}
-            className="border bg-main text-white py-2 px-6 rounded-lg"
-          >
-            Apply Filter
-          </button>
+        <div className="pb-8 w-full gap-x-4">
+          <Label>Search</Label>
+          <Input
+            className="w-full"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            placeholder="Search product, origin, price"
+          />
+          <Button onClick={handleSearch}>Search</Button>
         </div>
       </div>
     </div>
