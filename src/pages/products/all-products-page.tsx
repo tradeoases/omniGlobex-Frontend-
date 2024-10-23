@@ -1,28 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICategory } from "@/components/Sidemenu";
 import { Checkbox } from "@/components/ui/checkbox";
-import React, {
-  useEffect,
-  // useEffect,
-  useState, // { useState }
-} from "react";
+import React, { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuLabel,
-//   DropdownMenuRadioGroup,
-//   DropdownMenuRadioItem,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-// import { MdKeyboardArrowDown } from "react-icons/md";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import {
   IProduct,
   getAllProductCategories,
-  getAllProducts,
+  filteredProducts,
 } from "@/service/apis/product-services";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductCard } from "@/components/product-card";
@@ -30,10 +16,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
+import { Button } from "@/components/ui/button";
 
-// import { Input } from "@/components/ui/input";
 const AllProductsPage = () => {
-  // const [position, setPosition] = useState<string>("bottom");
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1", 10);
@@ -59,57 +44,53 @@ const AllProductsPage = () => {
       searchParams.get("pageSize"),
       searchParams.get("page"),
       searchParams.get("search"),
+      searchParams.get("min"),
+      searchParams.get("max"),
+      searchParams.get("q"),
       searchParams.get("category"),
       ...catParams,
     ],
     queryFn: async () => {
-      const params = `?page=${page}&pageSize=${pageSize}`;
+      let params = `?page=${page}&pageSize=${pageSize}`;
+
+      if (searchParams.get("search")?.trim() !== "") {
+        params = params.concat(`&search=${searchParams.get("search")}`);
+      }
+      if (catParams.length > 0) {
+        params = params.concat(`&categories=${catParams.join(",")}`);
+      }
+      if (searchParams.get("currency")?.trim() !== "") {
+        params = params.concat(`&currency=${searchParams.get("currency")}`);
+      }
+
+      if (searchParams.get("country")?.trim() !== "") {
+        params = params.concat(`&countryId=${searchParams.get("country")}`);
+      }
+
+      if (searchParams.get("q")?.trim() !== "") {
+        params = params.concat(`&q=${searchParams.get("q")}`);
+      }
+      if (searchParams.get("min")?.trim() !== "") {
+        params = params.concat(`&min=${searchParams.get("min")}`);
+      }
+      if (searchParams.get("max")?.trim() !== "") {
+        params = params.concat(`&max=${searchParams.get("max")}`);
+      }
 
       if (searchParams.get("category"))
         catParams.push(searchParams.get("category") || "");
-      const response: AxiosResponse<any, any> = await getAllProducts(
-        `${params}${
-          searchParams.get("search")
-            ? `&search=${searchParams.get("search")}`
-            : ""
-        }${catParams.length > 0 ? `&categories=${catParams.join(",")}` : ""} 
-        ${
-          searchParams.get("currency")
-            ? `&currency=${searchParams.get("currency")}`
-            : ""
-        }
-        ${
-          searchParams.get("country")
-            ? `&countryId=${searchParams.get("country")}`
-            : ""
-        }
-        `.trim()
-      );
+      const response: AxiosResponse<any, any> = await filteredProducts(params);
 
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data as {
           products: IProduct[];
           pageSize: number;
           page: number;
-          showRoom: string;
         };
       }
     },
   });
 
-  useEffect(() => {
-    const fet = async () => {
-      const res = await fetch("https://ipapi.co/json/");
-      if (res.ok) {
-        const country = await res.json();
-
-        console.log({ country });
-      }
-    };
-    fet();
-  }, []);
-
-  console.log(products)
   return (
     <div className="w-full   grid grid-cols-1 lg:grid-cols-4 gap-x-8">
       <SideBar onOpen={() => setOpenMenu(false)} open={openMenu} />
@@ -298,6 +279,11 @@ interface ISideBarProps {
 }
 
 const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
+  const [price, setPrice] = useState<{ min: string; max: string }>({
+    min: "",
+    max: "",
+  });
+  const [search, setSearch] = useState<string>("");
   const { data: categories, isSuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -308,6 +294,21 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
       }
     },
   });
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handleSearch = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (price.max.trim() !== "") {
+      newSearchParams.set("max", price.max.trim());
+    }
+    if (price.min.trim() !== "") {
+      newSearchParams.set("min", price.min.trim());
+    }
+    if (search.trim() !== "") {
+      newSearchParams.set("q", search.trim());
+    }
+    setSearchParams(newSearchParams);
+  };
   return (
     <div
       className={`fixed z-10 overflow-x-scroll h-full top-0 left-0 right-0 rounded-xl lg:static lg:block bg-white lg:bg-gray-100 border max-h-fit py-10 px-10 lg:px-6 space-y-10 ${
@@ -338,19 +339,41 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
 
         <div className="pb-8 gap-x-4 flex">
           <Label>
-            Min <Input placeholder="min" />
+            Min{" "}
+            <Input
+              onChange={(e) =>
+                setPrice((v) => ({ ...v, [e.target.name]: e.target.value }))
+              }
+              value={price.min}
+              name="min"
+              placeholder="min"
+              type="number"
+            />
           </Label>
           <Label>
             Max
-            <Input placeholder="max" />
+            <Input
+              onChange={(e) =>
+                setPrice((v) => ({ ...v, [e.target.name]: e.target.value }))
+              }
+              value={price.max}
+              name="max"
+              placeholder="max"
+              type="number"
+            />
           </Label>
         </div>
         <div className="pb-8 w-full gap-x-4">
           <Label>Search</Label>
           <Input
             className="w-full"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
             placeholder="Search product, origin, price"
           />
+          <Button onClick={handleSearch}>Search</Button>
         </div>
       </div>
     </div>

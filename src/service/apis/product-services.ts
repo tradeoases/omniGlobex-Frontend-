@@ -52,7 +52,7 @@ export interface SellerInfo {
 }
 
 export const getAllProducts = async (params: string) => {
-  return await request.get(`${PATH}${params}`);
+  return await request.get(`/product/${params}`);
 };
 
 export const getOneProduct = async (productId: string) =>
@@ -67,3 +67,5 @@ export const createProduct = async (data: ICreateProduct) =>
   await request.post(`/product/`, data);
 export const updateProduct = async (productId: string, data: any) =>
   await request.put(`${PATH}${productId}`, data);
+
+export const filteredProducts = async (params: string)=> await request.get(`/search/product/${params}`)
