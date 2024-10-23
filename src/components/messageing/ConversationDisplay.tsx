@@ -22,7 +22,7 @@ const ConversationDisplay = () => {
         return res.data.data as IConversation[];
       }
     },
-    staleTime: 1000,
+    staleTime: 10,
   });
 
   console.log({ error });
@@ -68,7 +68,7 @@ const ConversationDisplay = () => {
             >
               Read
             </a>
-          </div> 
+          </div>
 
         <hr className="border-gray-300 mb-4" />
         */}
@@ -78,7 +78,7 @@ const ConversationDisplay = () => {
         {isError && (
           <div>
             <h2>An error occured while loading conversations</h2>
-            
+
           </div>
         )}
         {isSuccess && conversations?.map((c) => <ConversationCard {...c} />)}
@@ -88,3 +88,53 @@ const ConversationDisplay = () => {
 };
 
 export default ConversationDisplay;
+// import { useEffect, useState } from "react";
+// import ConversationCard, { IConversation } from "./ConversationCard";
+
+// const ConversationDisplay = () => {
+//   const [conversations, setConversations] = useState<IConversation[]>([]);
+
+//   useEffect(() => {
+//     const token = localStorage.getItem("token");
+//     const eventSource = new EventSource(
+//       `https://api.omniglobex.com/api/message/conversation/?token=${token}`
+//     );
+
+//     console.log(eventSource);
+
+//     eventSource.onmessage = (event) => {
+//       const newConversations = JSON.parse(event.data);
+//       console.log({newConversations});
+//       setConversations((prevConversations) => [
+//         ...prevConversations,
+//         ...newConversations,
+//       ]);
+//     };
+
+//     eventSource.onerror = (error) => {
+//       console.error("Error with SSE connection:", error);
+//       eventSource.close(); // Close connection on error
+//     };
+
+//     // Cleanup: close the connection when the component unmounts
+//     // return () => {
+//     //   eventSource.close();
+//     // };
+//   }, []);
+
+//   return (
+//     <div>
+//       <h2 className="text-lg font-semibold mb-4">My Messages</h2>
+//       <div className="flex gap-y-2 flex-col">
+//         {/* {isLoading && <div>Loading conversations...</div>}
+//         {isError && <div>An error occurred while loading conversations</div>}
+//         {isSuccess && */}
+//         {conversations?.map((c) => (
+//           <ConversationCard key={c.id} {...c} />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ConversationDisplay;
