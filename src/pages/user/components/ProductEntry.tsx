@@ -24,6 +24,7 @@ import {
 } from "@/service/apis/product-services";
 import {
   getAllCurrencies,
+  getAllProductUnits,
   getAllShowrooms,
 } from "@/service/apis/countries-services";
 // import { HiOutlineXMark } from "react-icons/hi2";
@@ -223,6 +224,26 @@ const ProductEntry = () => {
       const response: AxiosResponse<any, any> = await getAllShowrooms();
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data;
+      }
+    },
+  });
+
+  const {
+    isLoading: unitsLoading,
+    data: units,
+    isError: unitsIsError,
+    error: unitsError,
+    isSuccess: unitsIsSuccess,
+  } = useQuery({
+    queryKey: ["units"],
+    queryFn: async () => {
+      const response: AxiosResponse<any, any> = await getAllProductUnits();
+      if (response.status === HttpStatusCode.Ok) {
+        return response.data.data as {
+          unit_id: string;
+          unit: string;
+          unit_name: string;
+        }[];
       }
     },
   });
@@ -520,23 +541,72 @@ const ProductEntry = () => {
                 />
               </div>
             </div>
-            <div className="w-full">
-              <FormField
-                control={form.control}
-                name="tags"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Input
-                        placeholder="Product Tags"
-                        className=""
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className=" grid-cols-1 md:grid-cols-2 grid gap-4 ">
+              <div className="w-full">
+                <FormField
+                  control={form.control}
+                  name="tags"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input
+                          placeholder="Product Tags"
+                          className=""
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {unitsLoading && <div>Loading units...</div>}
+              {unitsIsError && (
+                <div>
+                  <h1>An error occured while loading units</h1>
+                  <h2>{JSON.stringify(unitsError)}</h2>
+                </div>
+              )}
+              {unitsIsSuccess && (
+                <div className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="unit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={
+                            units?.find((r) => r.unit_id === product?.unit_id)
+                              ?.unit_id ||
+                            field.value ||
+                            ""
+                          }
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a Unit" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {units &&
+                                Array.isArray(units) &&
+                                units?.map((unit) => (
+                                  <SelectItem
+                                    key={unit.unit_id}
+                                    value={unit.unit_id}
+                                  >
+                                    {unit.unit_name} ({unit.unit})
+                                  </SelectItem>
+                                ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
             </div>
             <MultipleImageUpload images={images} setImages={setImages} />
 

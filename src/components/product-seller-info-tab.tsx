@@ -1,5 +1,3 @@
-
-
 interface Props {}
 
 export const ProductSellerInfoTab: React.FC<Props> = () => {
@@ -27,36 +25,6 @@ export const ProductSellerInfoTab: React.FC<Props> = () => {
               <span>(4.5)</span>
             </div>
           </div>
-        </div>
-
-        <div className="space-y-3 ml-10">
-          <p>
-            Products: <span className="text-gray-400">120</span>
-          </p>
-          <p>
-            Category:{" "}
-            <span className="text-gray-400">
-              Mobile Phone, Sports, Gaming, Electronics
-            </span>
-          </p>
-          <p>
-            Products: <span className="text-gray-400">Beer, Foamer</span>
-          </p>
-        </div>
-
-        <div className="space-y-3 pl-10">
-          <p>
-            Products: <span className="text-gray-400">120</span>
-          </p>
-          <p>
-            Category:{" "}
-            <span className="text-gray-400">
-              Mobile Phone, Sports, Gaming, Electronics
-            </span>
-          </p>
-          <p>
-            Products: <span className="text-gray-400">Beer, Foamer</span>
-          </p>
         </div>
       </div>
     </div>

@@ -25,3 +25,5 @@ export const getSingleShowrooms = async (showroom: string) =>
   await request.get(`show-room/${showroom}`);
 
 export const getAllCurrencies = async () => await request.get(`currency/`);
+
+export const getAllProductUnits = async () => await request.get(`units/`);

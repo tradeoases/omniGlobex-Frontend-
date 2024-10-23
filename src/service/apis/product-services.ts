@@ -10,13 +10,18 @@ export interface IPage {
 
 export interface IProduct {
   product_id: string;
+  business_id: string;
   name: string;
   product_price: number;
   price_currency: string;
   description: string;
   products: string;
   delivery_terms: string;
-  productImages: {image_id: string; image_url: string; thumbnail_url:string}[]
+  productImages: {
+    image_id: string;
+    image_url: string;
+    thumbnail_url: string;
+  }[];
   category_id: string;
   cover_image?: {
     image_url: string;
