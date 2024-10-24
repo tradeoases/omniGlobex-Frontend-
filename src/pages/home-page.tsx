@@ -14,6 +14,7 @@ import { HeaderSection } from "@/components/header-section";
 import { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts, IProduct } from "@/service/apis/product-services";
+import RfqHomeSection from "@/components/RfqHomeSection";
 
 export default function HomePage() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -53,12 +54,21 @@ export default function HomePage() {
     <main className=" mx-auto py-8 space-y-10">
       <HeaderSection onScroll={() => scrollToSection()} />
       <OurServiceSection sectionRef={sectionRef} />
-      <GameWorldSection products={products?.products} name="Country showrooms" route="" />
+      <GameWorldSection
+        products={products?.products}
+        name="Country showrooms"
+        route=""
+      />
       <ShopBrandSection />
       <AnnounceBanner />
+      <RfqHomeSection />
       <TopSellingProducts products={products?.products} />
       <BestSeller />
-      <GameWorldSection products={products?.products} name="Popular Sales" route="" />
+      <GameWorldSection
+        products={products?.products}
+        name="Popular Sales"
+        route=""
+      />
       <NewArrivalSection products={products?.products} />
       {/* <PopularSales products={products?.products} /> */}
     </main>

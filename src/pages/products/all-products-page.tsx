@@ -1,8 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICategory } from "@/components/Sidemenu";
-import { Checkbox } from "@/components/ui/checkbox";
-import React, { useState } from "react";
-import { FaMinus, FaPlus } from "react-icons/fa6";
+
+// import { Checkbox } from "@/components/ui/checkbox";
+import React, {
+  useEffect,
+  useRef,
+  // useEffect,
+  useState, // { useState }
+} from "react";
+// import { FaMinus, FaPlus } from "react-icons/fa6";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuRadioGroup,
+//   DropdownMenuRadioItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { MdKeyboardArrowDown } from "react-icons/md";
 import { LuFilter } from "react-icons/lu";
 import { LiaTimesSolid } from "react-icons/lia";
 import {
@@ -20,15 +36,10 @@ import { Button } from "@/components/ui/button";
 
 const AllProductsPage = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1", 10);
   const pageSize = parseInt(searchParams.get("pageSize") || "15", 10);
-  const catParams: string[] = [];
-  searchParams.forEach((value, key) => {
-    if (key.match(/^cat\d+$/)) {
-      catParams.push(value);
-    }
-  });
 
   const {
     data: products,
@@ -44,42 +55,32 @@ const AllProductsPage = () => {
       searchParams.get("pageSize"),
       searchParams.get("page"),
       searchParams.get("search"),
-      searchParams.get("min"),
-      searchParams.get("max"),
-      searchParams.get("q"),
-      searchParams.get("category"),
-      ...catParams,
+      ...selectedCategories, // Include selected categories in the queryKey
     ],
     queryFn: async () => {
-      let params = `?page=${page}&pageSize=${pageSize}`;
-
-      if (searchParams.get("search")?.trim() !== "") {
-        params = params.concat(`&search=${searchParams.get("search")}`);
-      }
-      if (catParams.length > 0) {
-        params = params.concat(`&categories=${catParams.join(",")}`);
-      }
-      if (searchParams.get("currency")?.trim() !== "") {
-        params = params.concat(`&currency=${searchParams.get("currency")}`);
-      }
-
-      if (searchParams.get("country")?.trim() !== "") {
-        params = params.concat(`&countryId=${searchParams.get("country")}`);
-      }
-
-      if (searchParams.get("q")?.trim() !== "") {
-        params = params.concat(`&q=${searchParams.get("q")}`);
-      }
-      if (searchParams.get("min")?.trim() !== "") {
-        params = params.concat(`&min=${searchParams.get("min")}`);
-      }
-      if (searchParams.get("max")?.trim() !== "") {
-        params = params.concat(`&max=${searchParams.get("max")}`);
-      }
-
-      if (searchParams.get("category"))
-        catParams.push(searchParams.get("category") || "");
-      const response: AxiosResponse<any, any> = await filteredProducts(params);
+      const params = `?page=${page}&pageSize=${pageSize}`;
+      const categoryParam =
+        selectedCategories.length > 0
+          ? `&categories=${selectedCategories.join(",")}`
+          : "";
+      const response: AxiosResponse<any, any> = await getAllProducts(
+        `${params}${categoryParam} 
+        ${
+          searchParams.get("search")
+            ? `&search=${searchParams.get("search")}`
+            : ""
+        }
+        ${
+          searchParams.get("currency")
+            ? `&currency=${searchParams.get("currency")}`
+            : ""
+        }
+        ${
+          searchParams.get("country")
+            ? `&countryId=${searchParams.get("country")}`
+            : ""
+        }`.trim()
+      );
 
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data as {
@@ -92,8 +93,12 @@ const AllProductsPage = () => {
   });
 
   return (
-    <div className="w-full   grid grid-cols-1 lg:grid-cols-4 gap-x-8">
-      <SideBar onOpen={() => setOpenMenu(false)} open={openMenu} />
+    <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-x-8">
+      <SideBar
+        onOpen={() => setOpenMenu(false)}
+        open={openMenu}
+        setSelectedCategories={setSelectedCategories} // Pass setSelectedCategories to SideBar
+      />
       <div className="lg:col-span-3 w-full space-y-8">
         <div className="bg-white border rounded-xl px-6 py-6 w-full space-y-8 md:space-y-0 md:flex items-center justify-between">
           <p>
@@ -106,33 +111,6 @@ const AllProductsPage = () => {
               "0 results"
             )}
           </p>
-
-          {/* <div className="flex items-center gap-2">
-            <p>Sort by:</p>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <p className="cursor-pointer py-2 font-bold border-b flex items-center gap-x-3">
-                  <span>{position}</span> <MdKeyboardArrowDown />
-                </p>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-36">
-                <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                  value={position}
-                  onValueChange={setPosition}
-                >
-                  <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="bottom">
-                    Bottom
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="right">
-                    Right
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div> */}
           <button
             onClick={() => setOpenMenu(true)}
             type="button"
@@ -143,20 +121,44 @@ const AllProductsPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {productIsLoading && <div>Loading...</div>}
+          {/* Loading State */}
+          {productIsLoading && (
+            <div className="flex justify-center items-center w-full h-64">
+              <p>Loading...</p>
+            </div>
+          )}
+
+          {/* Error State */}
           {productIsError && (
-            <div>
-              <h1>An error occured while loading products</h1>
+            <div className="flex flex-col items-center justify-center w-full h-64 text-center">
+              <h1>An error occurred while loading products</h1>
               <h2>{productError.message}</h2>
             </div>
           )}
-          {productSuccess && products && products?.products.length > 0 ? (
-            products?.products.map((product) => (
-              <ProductCard key={product.product_id} {...product} />
-            ))
-          ) : (
-            <div>No products found based on filters</div>
-          )}
+
+          {/* Success State */}
+          {productSuccess && products && products.products.length > 0
+            ? products.products.map((product) => (
+                <ProductCard key={product.product_id} {...product} />
+              ))
+            : // Show "No products found" message if there are no products
+              productSuccess &&
+              products?.products.length === 0 && (
+                <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 px-4">
+                  <div className="text-3xl font-bold text-gray-800">
+                    No products found
+                  </div>
+                  <p className="text-lg text-gray-500">
+                    Try adjusting your filters to find more products.
+                  </p>
+                  <button
+                    onClick={() => window.location.reload()} // Replace this with any other action you'd like
+                    className="mt-4 bg-main hover:bg-yellow-500 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              )}
         </div>
       </div>
     </div>
@@ -165,117 +167,124 @@ const AllProductsPage = () => {
 
 export default AllProductsPage;
 
-const ProductCategoryItem: React.FC<ICategory> = ({ category_id, name }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+// const ProductCategoryItem: React.FC<ICategory> = ({ category_id, name }) => {
+//   const [searchParams, setSearchParams] = useSearchParams();
 
-  const getCategoriesFromSearchParams = () => {
-    const categories: { key: string; value: string }[] = [];
-    const nonCategories: { key: string; value: string }[] = [];
+//   const getCategoriesFromSearchParams = () => {
+//     const categories: { key: string; value: string }[] = [];
+//     const nonCategories: { key: string; value: string }[] = [];
 
-    for (const [key, value] of searchParams.entries()) {
-      if (key.startsWith("cat")) {
-        categories.push({ key, value });
-      } else {
-        nonCategories.push({ key, value });
-      }
-    }
-    return { categories, nonCategories };
-  };
+//     for (const [key, value] of searchParams.entries()) {
+//       if (key.startsWith("cat")) {
+//         categories.push({ key, value });
+//       } else {
+//         nonCategories.push({ key, value });
+//       }
+//     }
+//     return { categories, nonCategories };
+//   };
 
-  const addCategory = (newCategory: string) => {
-    const { categories, nonCategories } = getCategoriesFromSearchParams();
-    const nextCategoryNumber = categories.length + 1;
-    const newCategoryKey = `cat${nextCategoryNumber}`;
+//   const addCategory = (newCategory: string) => {
+//     const { categories, nonCategories } = getCategoriesFromSearchParams();
+//     const nextCategoryNumber = categories.length + 1;
+//     const newCategoryKey = `cat${nextCategoryNumber}`;
 
-    const updatedSearchParams = new URLSearchParams();
+//     const updatedSearchParams = new URLSearchParams();
 
-    // Add the new category
-    updatedSearchParams.set(newCategoryKey, newCategory);
+//     // Add the new category
+//     updatedSearchParams.set(newCategoryKey, newCategory);
 
-    // Keep the rest of the existing params
-    nonCategories.forEach(({ key, value }) =>
-      updatedSearchParams.set(key, value)
-    );
-    categories.forEach(({ key, value }) => updatedSearchParams.set(key, value));
+//     // Keep the rest of the existing params
+//     nonCategories.forEach(({ key, value }) =>
+//       updatedSearchParams.set(key, value)
+//     );
+//     categories.forEach(({ key, value }) => updatedSearchParams.set(key, value));
 
-    setSearchParams(updatedSearchParams);
-  };
+//     setSearchParams(updatedSearchParams);
+//   };
 
-  const deleteCategory = (categoryName: string) => {
-    const { categories, nonCategories } = getCategoriesFromSearchParams();
+//   const deleteCategory = (categoryName: string) => {
+//     const { categories, nonCategories } = getCategoriesFromSearchParams();
 
-    // Filter out the category we want to delete
-    const updatedCategories = categories.filter(
-      ({ value }) => value !== categoryName
-    );
+//     // Filter out the category we want to delete
+//     const updatedCategories = categories.filter(
+//       ({ value }) => value !== categoryName
+//     );
 
-    // Renumber categories and update the search params
-    const updatedSearchParams = new URLSearchParams();
+//     // Renumber categories and update the search params
+//     const updatedSearchParams = new URLSearchParams();
 
-    updatedCategories.forEach(({ value }, index) => {
-      updatedSearchParams.set(`cat${index + 1}`, value);
-    });
+//     updatedCategories.forEach(({ value }, index) => {
+//       updatedSearchParams.set(`cat${index + 1}`, value);
+//     });
 
-    // Keep the rest of the existing params
-    nonCategories.forEach(({ key, value }) =>
-      updatedSearchParams.set(key, value)
-    );
+//     // Keep the rest of the existing params
+//     nonCategories.forEach(({ key, value }) =>
+//       updatedSearchParams.set(key, value)
+//     );
 
-    setSearchParams(updatedSearchParams);
-  };
+//     setSearchParams(updatedSearchParams);
+//   };
 
-  const isCategorySelected = () => {
-    return getCategoriesFromSearchParams().categories.some(
-      ({ value }) => value === category_id
-    );
-  };
+//   const isCategorySelected = () => {
+//     return getCategoriesFromSearchParams().categories.some(
+//       ({ value }) => value === category_id
+//     );
+//   };
 
-  const handleCheckboxChange = () => {
-    if (isCategorySelected()) {
-      deleteCategory(category_id);
-    } else {
-      addCategory(category_id);
-    }
-  };
+//   const handleCheckboxChange = () => {
+//     if (isCategorySelected()) {
+//       deleteCategory(category_id);
+//     } else {
+//       addCategory(category_id);
+//     }
+//   };
 
-  return (
-    <div className="flex py-2 items-center justify-between">
-      <div className="flex items-center gap-4">
-        {/* Checkbox toggles the category */}
-        <Checkbox
-          id={category_id}
-          checked={isCategorySelected()}
-          onClick={handleCheckboxChange}
-          className=""
-        />
-        <label
-          onClick={handleCheckboxChange}
-          htmlFor={category_id}
-          className="line-clamp-1 text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          {name}
-        </label>
-      </div>
+//   return (
+//     <div className="flex py-2 items-center justify-between">
+//       <div className="flex items-center gap-4">
+//         {/* Checkbox toggles the category */}
+//         <Checkbox
+//           id={category_id}
+//           checked={isCategorySelected()}
+//           onClick={handleCheckboxChange}
+//           className=""
+//         />
+//         <label
+//           onClick={handleCheckboxChange}
+//           htmlFor={category_id}
+//           className="line-clamp-1 text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+//         >
+//           {name}
+//         </label>
+//       </div>
 
-      {/* Add or remove icon depending on selection */}
-      {isCategorySelected() ? (
-        <FaMinus
-          className="text-gray-400 text-xs"
-          onClick={handleCheckboxChange}
-        />
-      ) : (
-        <FaPlus
-          className="text-gray-400 text-xs"
-          onClick={handleCheckboxChange}
-        />
-      )}
-    </div>
-  );
-};
+//       {/* Add or remove icon depending on selection */}
+//       {isCategorySelected() ? (
+//         <FaMinus
+//           className="text-gray-400 text-xs"
+//           onClick={handleCheckboxChange}
+//         />
+//       ) : (
+//         <FaPlus
+//           className="text-gray-400 text-xs"
+//           onClick={handleCheckboxChange}
+//         />
+//       )}
+//     </div>
+//   );
+// };
 
 interface ISideBarProps {
   open: boolean;
   onOpen: () => void;
+  setSelectedCategories: (categories: string[]) => void;
+}
+
+interface ISideBarProps {
+  open: boolean;
+  onOpen: () => void;
+  setSelectedCategories: (categories: string[]) => void;
 }
 
 const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
@@ -284,16 +293,17 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
     max: "",
   });
   const [search, setSearch] = useState<string>("");
+
   const { data: categories, isSuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
       const response: AxiosResponse<any, any> = await getAllProductCategories();
-
       if (response.status === HttpStatusCode.Ok) {
         return response.data.data as ICategory[];
       }
     },
   });
+
 
   const [searchParams, setSearchParams] = useSearchParams();
   const handleSearch = () => {
@@ -309,6 +319,59 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
     }
     setSearchParams(newSearchParams);
   };
+
+  const [localSelectedCategories, setLocalSelectedCategories] = useState<
+    string[]
+  >([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [minPrice, setMinPrice] = useState<number | "">(""); // State for minimum price
+  const [maxPrice, setMaxPrice] = useState<number | "">(""); // State for maximum price
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleCategoryToggle = (categoryId: string) => {
+    setLocalSelectedCategories((prevCategories) =>
+      prevCategories.includes(categoryId)
+        ? prevCategories.filter((id) => id !== categoryId)
+        : [...prevCategories, categoryId]
+    );
+  };
+
+  useEffect(() => {
+    setSelectedCategories(localSelectedCategories);
+  }, [localSelectedCategories, setSelectedCategories]);
+
+  const isCategorySelected = (categoryId: string) =>
+    localSelectedCategories.includes(categoryId);
+
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  // Function to reset filters
+  const resetFilters = () => {
+    setLocalSelectedCategories([]);
+    setSelectedCategories([]); // Reset the selected categories in the parent component if needed
+    setMinPrice(""); // Reset min price
+    setMaxPrice(""); // Reset max price
+  };
+
+
   return (
     <div
       className={`fixed z-10 overflow-x-scroll h-full top-0 left-0 right-0 rounded-xl lg:static lg:block bg-white lg:bg-gray-100 border max-h-fit py-10 px-10 lg:px-6 space-y-10 ${
@@ -323,57 +386,80 @@ const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
           <LiaTimesSolid />
         </button>
       </div>
-      <div className="space-y-6 border-b">
-        <p className="text-lg font-bold ">Product Categories</p>
 
-        <div className="space-y-2 pb-8">
-          {isSuccess &&
-            categories?.map((cat: ICategory) => (
-              <ProductCategoryItem {...cat} key={cat.category_id} />
-            ))}
+      <div className="space-y-6 border-b">
+        <p className="text-lg font-bold">Product Filters</p>
+
+        {/* Dropdown for Categories */}
+        <div ref={dropdownRef} className="w-full p-2 border rounded-lg">
+          <button
+            onClick={toggleDropdown}
+            className="w-full text-left flex justify-between items-center p-2 border rounded-md"
+          >
+            <span>Select Categories</span>
+            <span>{dropdownOpen ? "▲" : "▼"}</span>
+          </button>
+
+          {dropdownOpen && isSuccess && (
+            <div className="mt-2 max-h-48 overflow-auto space-y-2">
+              {categories?.map((cat: ICategory) => (
+                <div key={cat.category_id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={cat.category_id}
+                    checked={isCategorySelected(cat.category_id)}
+                    onChange={() => handleCategoryToggle(cat.category_id)}
+                    className="mr-2"
+                  />
+                  <label htmlFor={cat.category_id} className="cursor-pointer">
+                    {cat.name}
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="space-y-6 border-b">
-        <p className="text-lg font-bold ">Price</p>
+      <div className="space-y-2 border-b">
+        <p className="text-lg font-bold">Price</p>
 
         <div className="pb-8 gap-x-4 flex">
           <Label>
             Min{" "}
             <Input
-              onChange={(e) =>
-                setPrice((v) => ({ ...v, [e.target.name]: e.target.value }))
-              }
-              value={price.min}
-              name="min"
               placeholder="min"
-              type="number"
+              value={minPrice}
+              onChange={(e) =>
+                setMinPrice(e.target.value === "" ? "" : Number(e.target.value))
+              }
             />
           </Label>
           <Label>
-            Max
+            Max{" "}
             <Input
-              onChange={(e) =>
-                setPrice((v) => ({ ...v, [e.target.name]: e.target.value }))
-              }
-              value={price.max}
-              name="max"
               placeholder="max"
-              type="number"
+              value={maxPrice}
+              onChange={(e) =>
+                setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))
+              }
             />
           </Label>
         </div>
-        <div className="pb-8 w-full gap-x-4">
-          <Label>Search</Label>
-          <Input
-            className="w-full"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-            placeholder="Search product, origin, price"
-          />
-          <Button onClick={handleSearch}>Search</Button>
+
+        <div className="flex gap-x-4">
+          <button
+            onClick={resetFilters}
+            className="border text-main py-2 px-6 rounded-lg"
+          >
+            Reset Filters
+          </button>
+          <button
+            onClick={onOpen}
+            className="border bg-main text-white py-2 px-6 rounded-lg"
+          >
+            Apply Filter
+          </button>
         </div>
       </div>
     </div>

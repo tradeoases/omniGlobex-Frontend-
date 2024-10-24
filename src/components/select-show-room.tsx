@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
 import { useQuery } from "@tanstack/react-query";
 import { getAllShowrooms } from "@/service/apis/countries-services";
 
@@ -26,8 +26,9 @@ import {
 export function SelectShowroom() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const [isFixed, setIsFixed] = React.useState(false); // New state to track fixed status
+  const [isFixed, setIsFixed] = React.useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     data: countries,
@@ -39,22 +40,28 @@ export function SelectShowroom() {
     queryFn: async () => {
       const response = await getAllShowrooms();
       if (response.status === 200) {
-        console.log({ showrooms: response.data.data });
         return response.data.data as any;
       }
     },
   });
 
+  React.useEffect(() => {
+    if (!location.pathname.includes("/show-room")) {
+      setValue("");
+      setIsFixed(false);
+    }
+  }, [location.pathname]);
+
   // Handle selection of a country
-  const handleSelectChange = (currentValue: string) => {
+  const handleSelectChange = (currentValue: string, showroomName: string) => {
     const country = countries?.find(
       (country: any) => country.showroom_id === currentValue
     );
-    setValue(currentValue === value ? "" : currentValue);
+    setValue(showroomName);
     setOpen(false);
 
     if (country) {
-      setIsFixed(true); // Set the button to fixed when an item is selected
+      setIsFixed(true);
       navigate(`/show-room?country=${country.showroom_id}`);
     }
   };
@@ -70,10 +77,7 @@ export function SelectShowroom() {
             isFixed ? "top-10 left-10 z-10" : ""
           }`}
         >
-          {value
-            ? countries?.find((country: any) => country.showroom_name === value)
-                ?.showroom_name
-            : "Select showroom..."}
+          {value || "Select showroom..."}{" "}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -95,9 +99,14 @@ export function SelectShowroom() {
               <CommandGroup>
                 {countries.map((country: any) => (
                   <CommandItem
-                    key={country.showroom_id} // Changed to country_id for uniqueness
-                    value={country.showroom_id} // Ensure value is unique and matches selection logic
-                    onSelect={handleSelectChange}
+                    key={country.showroom_id}
+                    value={country.showroom_name}
+                    onSelect={() =>
+                      handleSelectChange(
+                        country.showroom_id,
+                        country.showroom_name
+                      )
+                    }
                   >
                     <Check
                       className={cn(

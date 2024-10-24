@@ -14,8 +14,8 @@ import { SupplierDropDownProfile } from "./supplier-profile/SupplierDropDownProf
 const SuppliersDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [navigations] = useState<IDashboardNav[]>(dashboardNavs);
-  const [settingsSubMenuOpen, setSettingsSubMenuOpen] = useState<boolean>(false); // State for settings submenu
-  const [activeItem, setActiveItem] = useState<string | null>(null); // State to track the active item
+  const [settingsSubMenuOpen, setSettingsSubMenuOpen] = useState<boolean>(false); 
+  const [activeItem, setActiveItem] = useState<string | null>(null); 
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -32,7 +32,7 @@ const SuppliersDashboard = () => {
       !sidebarRef.current.contains(event.target as Node)
     ) {
       setIsSidebarOpen(false);
-      setSettingsSubMenuOpen(false); // Close settings submenu if open
+      setSettingsSubMenuOpen(false);
     }
   };
 
@@ -47,12 +47,12 @@ const SuppliersDashboard = () => {
 
   const handleNavClick = (navTitle: string, navPath: string) => {
     if (navTitle === "Settings") {
-      setSettingsSubMenuOpen(!settingsSubMenuOpen); // Toggle settings submenu
+      setSettingsSubMenuOpen(!settingsSubMenuOpen); 
     } else {
-      setSettingsSubMenuOpen(false); // Close submenu for other items
-      setIsSidebarOpen(false); // Close sidebar for other items
+      setSettingsSubMenuOpen(false); 
+      setIsSidebarOpen(false); 
     }
-    setActiveItem(navPath); // Set the clicked item as active
+    setActiveItem(navPath);
   };
 
   return (
@@ -90,11 +90,11 @@ const SuppliersDashboard = () => {
                 className={() =>
                   `flex items-center text-sm gap-x-3 px-4 py-3 rounded-lg transition-colors duration-200 ease-in-out ${
                     activeItem === nav.path
-                      ? "bg-gray-700 text-white" // Active item style
+                      ? "bg-gray-700 text-white" 
                       : "text-white hover:bg-gray-600 hover:text-main"
                   }`
                 }
-                onClick={() => handleNavClick(nav.title, nav.path)} // Call the new click handler
+                onClick={() => handleNavClick(nav.title, nav.path)} 
               >
                 <span>{nav.icon}</span>
                 <span>{nav.title}</span>
