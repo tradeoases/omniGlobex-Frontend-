@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICategory } from "@/components/Sidemenu";
+
 // import { Checkbox } from "@/components/ui/checkbox";
 import React, {
   useEffect,
@@ -23,7 +24,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import {
   IProduct,
   getAllProductCategories,
-  getAllProducts,
+  filteredProducts,
 } from "@/service/apis/product-services";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { ProductCard } from "@/components/product-card";
@@ -31,8 +32,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
+import { Button } from "@/components/ui/button";
 
-// import { Input } from "@/components/ui/input";
 const AllProductsPage = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -86,7 +87,6 @@ const AllProductsPage = () => {
           products: IProduct[];
           pageSize: number;
           page: number;
-          showRoom: string;
         };
       }
     },
@@ -287,11 +287,13 @@ interface ISideBarProps {
   setSelectedCategories: (categories: string[]) => void;
 }
 
-const SideBar: React.FC<ISideBarProps> = ({
-  onOpen,
-  open,
-  setSelectedCategories,
-}) => {
+const SideBar: React.FC<ISideBarProps> = ({ onOpen, open }) => {
+  const [price, setPrice] = useState<{ min: string; max: string }>({
+    min: "",
+    max: "",
+  });
+  const [search, setSearch] = useState<string>("");
+
   const { data: categories, isSuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -301,6 +303,22 @@ const SideBar: React.FC<ISideBarProps> = ({
       }
     },
   });
+
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handleSearch = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (price.max.trim() !== "") {
+      newSearchParams.set("max", price.max.trim());
+    }
+    if (price.min.trim() !== "") {
+      newSearchParams.set("min", price.min.trim());
+    }
+    if (search.trim() !== "") {
+      newSearchParams.set("q", search.trim());
+    }
+    setSearchParams(newSearchParams);
+  };
 
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
@@ -352,6 +370,7 @@ const SideBar: React.FC<ISideBarProps> = ({
     setMinPrice(""); // Reset min price
     setMaxPrice(""); // Reset max price
   };
+
 
   return (
     <div
