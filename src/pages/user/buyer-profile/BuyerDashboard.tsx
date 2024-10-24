@@ -15,29 +15,21 @@ const BuyerDashboard = () => {
   };
 
   return (
-    <div className="flex  flex-col h-screen">
+    <div className="flex  flex-col h-screen ">
       <BuyersNavBar />
 
       <div className="relative flex flex-1 overflow-hidden">
         <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-        <div
-          className={`flex flex-col flex-1 transition-all duration-300 bg-white`}
-        >
-          <main className="flex-1 w-full overflow-y-auto">
-            <ProtectedRoute
-              isAuthenticated={!!profile}
-              userRole={profile?.roles || []}
-              requiredRoles={["Buyer"]}
-            >
-              <Outlet />
-            </ProtectedRoute>
-          </main>
-
-          <div className="hidden md:block">
-            <BuyersFooter />
-          </div>
-        </div>
+        <main className="flex-1 w-full overflow-y-auto">
+          <ProtectedRoute
+            isAuthenticated={!!profile}
+            userRole={profile?.roles || []}
+            requiredRoles={["Buyer"]}
+          >
+            <Outlet />
+          </ProtectedRoute>
+        </main>
       </div>
     </div>
   );
