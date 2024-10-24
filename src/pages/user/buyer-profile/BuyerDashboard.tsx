@@ -28,7 +28,7 @@ const BuyerDashboard = () => {
             <ProtectedRoute
               isAuthenticated={!!profile}
               userRole={profile?.roles || []}
-              requiredRoles={["Buyer"]}
+              requiredRoles={["Buyer", 'Supplier']}
             >
               <Outlet />
             </ProtectedRoute>

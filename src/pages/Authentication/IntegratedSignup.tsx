@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AxiosResponse, HttpStatusCode } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -48,6 +48,7 @@ const IntegratedSignup = () => {
     | "AUSTRALIA"
   >("EUROPE");
 
+  const location = useLocation()
   const {
     data: countries,
     isError: isCountryError,
@@ -64,6 +65,11 @@ const IntegratedSignup = () => {
       }
     },
   });
+
+  const searchParams = new URLSearchParams(location.search);
+  const redirectPath = searchParams.get("redirect") || "/";
+  const previousPath = searchParams.get("previous") || "/";
+
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -128,7 +134,7 @@ const IntegratedSignup = () => {
       setTimeout(() => {
         form.reset();
       }, 2000);
-      navigate("/verify-email");
+      navigate(`/verify-email?${redirectPath ?`redirect=${redirectPath}&`:''}${previousPath? `previous=${previousPath}`:''}`);
     },
     onError: (e: any) => {
       console.log(e);
