@@ -29,6 +29,7 @@ const BuyerDashboard = () => {
             <Outlet />
           </ProtectedRoute>
         </main>
+
       </div>
     </div>
   );

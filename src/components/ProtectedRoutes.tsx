@@ -56,6 +56,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 
+  
+
   if (
     requiredRoles &&
     userRole.every((role) => !requiredRoles.includes(role))
