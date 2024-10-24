@@ -645,12 +645,13 @@ const SideBar: React.FC<ISideBarProps> = ({
     };
   }, [dropdownRef]);
 
-  // Function to reset filters
+  console.log(localSelectedCategories);
+
   const resetFilters = () => {
     setLocalSelectedCategories([]);
-    setSelectedCategories([]); // Reset the selected categories in the parent component if needed
-    setMinPrice(""); // Reset min price
-    setMaxPrice(""); // Reset max price
+    setSelectedCategories([]);
+    setMinPrice("");
+    setMaxPrice("");
   };
 
   return (
